@@ -8,18 +8,18 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import java.util.stream.Stream;
 
-public class OWLIndividualMapper implements OWLIndividualVisitorEx<MappingResult> {
+public class OWLIndividualMapper implements OWLIndividualVisitorEx<Result> {
     @Override
-    public MappingResult visit( final OWLAnonymousIndividual individual ) {
+    public Result visit( final OWLAnonymousIndividual individual ) {
         final Node node = new NodeType.Individual( Mappers.getIdentifierMapper().getSyntheticId(), "[]" );
-        return new MappingResult( node, Stream.empty() );
+        return new Result( node, Stream.empty() );
     }
 
     @Override
-    public MappingResult visit( final OWLNamedIndividual individual ) {
+    public Result visit( final OWLNamedIndividual individual ) {
         final Node.Id id = Mappers.getIdentifierMapper().getIdForIri( individual.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.Individual( id, label );
-        return new MappingResult( node, Stream.empty() );
+        return new Result( node, Stream.empty() );
     }
 }

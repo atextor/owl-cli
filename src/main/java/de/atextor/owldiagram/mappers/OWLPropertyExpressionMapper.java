@@ -13,40 +13,40 @@ import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
 import java.util.stream.Stream;
 
-public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<MappingResult> {
+public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Result> {
     @Override
-    public MappingResult visit( final OWLObjectInverseOf property ) {
+    public Result visit( final OWLObjectInverseOf property ) {
         final Node complementNode = new NodeType.Complement( Mappers.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
-        final MappingResult propertyVisitorResult =
+        final Result propertyVisitorResult =
                 invertedProperty.accept( Mappers.getOwlPropertyExpressionMapper() );
         final Edge propertyEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
                 propertyVisitorResult.getNode().getId() );
-        return new MappingResult( complementNode, Stream.concat( Stream.of( propertyEdge,
+        return new Result( complementNode, Stream.concat( Stream.of( propertyEdge,
                 propertyVisitorResult.getNode() ), propertyVisitorResult.getRemainingElements() ) );
     }
 
     @Override
-    public MappingResult visit( final OWLObjectProperty property ) {
+    public Result visit( final OWLObjectProperty property ) {
         final Node.Id id = Mappers.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AbstractRole( id, label );
-        return new MappingResult( node, Stream.empty() );
+        return new Result( node, Stream.empty() );
     }
 
     @Override
-    public MappingResult visit( final OWLDataProperty property ) {
+    public Result visit( final OWLDataProperty property ) {
         final Node.Id id = Mappers.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.ConcreteRole( id, label );
-        return new MappingResult( node, Stream.empty() );
+        return new Result( node, Stream.empty() );
     }
 
     @Override
-    public MappingResult visit( final OWLAnnotationProperty property ) {
+    public Result visit( final OWLAnnotationProperty property ) {
         final Node.Id id = Mappers.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AnnotationRole( id, label );
-        return new MappingResult( node, Stream.empty() );
+        return new Result( node, Stream.empty() );
     }
 }

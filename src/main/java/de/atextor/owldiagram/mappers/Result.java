@@ -7,17 +7,17 @@ import lombok.Value;
 import java.util.stream.Stream;
 
 @Value
-public class MappingResult {
+public class Result {
     Node node;
     Stream<GraphElement> remainingElements;
 
-    public MappingResult and( final MappingResult other ) {
-        return new MappingResult( node, Stream.concat( Stream.of( other.getNode() ),
+    public Result and( final Result other ) {
+        return new Result( node, Stream.concat( Stream.of( other.getNode() ),
                 other.getRemainingElements() ) );
     }
 
-    public MappingResult and( final GraphElement element ) {
-        return new MappingResult( node, Stream.concat( Stream.of( element ), remainingElements ) );
+    public Result and( final GraphElement element ) {
+        return new Result( node, Stream.concat( Stream.of( element ), remainingElements ) );
     }
 
     public Stream<GraphElement> toStream() {

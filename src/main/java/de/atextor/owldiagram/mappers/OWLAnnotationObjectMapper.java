@@ -12,44 +12,44 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 
 import static io.vavr.API.TODO;
 
-public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<MappingResult> {
+public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Result> {
     @Override
-    public MappingResult visit( final OWLAnnotation node ) {
+    public Result visit( final OWLAnnotation node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLAnnotationAssertionAxiom axiom ) {
+    public Result visit( final OWLAnnotationAssertionAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLSubAnnotationPropertyOfAxiom axiom ) {
+    public Result visit( final OWLSubAnnotationPropertyOfAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLAnnotationPropertyDomainAxiom axiom ) {
+    public Result visit( final OWLAnnotationPropertyDomainAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLAnnotationPropertyRangeAxiom axiom ) {
+    public Result visit( final OWLAnnotationPropertyRangeAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final IRI iri ) {
+    public Result visit( final IRI iri ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLAnonymousIndividual individual ) {
+    public Result visit( final OWLAnonymousIndividual individual ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLLiteral node ) {
+    public Result visit( final OWLLiteral node ) {
         return TODO();
     }
 }

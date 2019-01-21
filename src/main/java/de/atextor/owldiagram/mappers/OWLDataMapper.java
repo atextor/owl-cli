@@ -12,44 +12,44 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 
 import static io.vavr.API.TODO;
 
-public class OWLDataMapper implements OWLDataVisitorEx<MappingResult> {
+public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     @Override
-    public MappingResult visit( final OWLDataComplementOf node ) {
+    public Result visit( final OWLDataComplementOf node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLDataOneOf node ) {
+    public Result visit( final OWLDataOneOf node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLDataIntersectionOf node ) {
+    public Result visit( final OWLDataIntersectionOf node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLDataUnionOf node ) {
+    public Result visit( final OWLDataUnionOf node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLDatatypeRestriction node ) {
+    public Result visit( final OWLDatatypeRestriction node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLFacetRestriction node ) {
+    public Result visit( final OWLFacetRestriction node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLDatatype node ) {
+    public Result visit( final OWLDatatype node ) {
         return TODO();
     }
 
     @Override
-    public MappingResult visit( final OWLLiteral node ) {
+    public Result visit( final OWLLiteral node ) {
         return TODO();
     }
 }

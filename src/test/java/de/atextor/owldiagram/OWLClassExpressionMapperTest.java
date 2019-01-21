@@ -1,8 +1,8 @@
 package de.atextor.owldiagram;
 
 import de.atextor.owldiagram.graph.NodeType;
-import de.atextor.owldiagram.mappers.MappingResult;
 import de.atextor.owldiagram.mappers.OWLClassExpressionMapper;
+import de.atextor.owldiagram.mappers.Result;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
@@ -17,7 +17,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final OWLDeclarationAxiom axiom = getAxiom( ":Foo a owl:Class ." );
         final OWLClass class_ = (OWLClass) axiom.getEntity();
 
-        final MappingResult result = mapper.visit( class_ );
+        final Result result = mapper.visit( class_ );
         assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Class.class );
         assertThat( result.getRemainingElements() ).isEmpty();
     }
