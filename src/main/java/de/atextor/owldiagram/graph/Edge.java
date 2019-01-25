@@ -12,6 +12,8 @@ public interface Edge extends GraphElement {
 
     Node.Id getTo();
 
+    Edge.Type getType();
+
     @Override
     default boolean isEdge() {
         return true;

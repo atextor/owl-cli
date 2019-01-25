@@ -108,7 +108,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLEquivalentObjectPropertiesAxiom axiom ) {
-        return Stream.empty();
+        return visit( axiom, Mappers.getOwlObjectMapper() );
     }
 
     @Override
@@ -148,7 +148,15 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLSubObjectPropertyOfAxiom axiom ) {
-        return Stream.empty();
+        final OWLPropertyExpressionMapper mapper = Mappers.getOwlPropertyExpressionMapper();
+
+        final Result superPropertyResult = axiom.getSuperProperty().accept( mapper );
+        final Result subPropertyResult = axiom.getSubProperty().accept( mapper );
+
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
+                superPropertyResult.getNode().getId() );
+
+        return superPropertyResult.and( subPropertyResult ).and( edge ).toStream();
     }
 
     @Override
