@@ -1,5 +1,8 @@
 package de.atextor.owldiagram;
 
+import de.atextor.owldiagram.graph.Edge;
+import de.atextor.owldiagram.graph.GraphElement;
+import de.atextor.owldiagram.graph.Node;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -10,6 +13,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Fail.fail;
 
@@ -45,4 +51,28 @@ public class MapperTestBase {
     protected <T extends OWLAxiom> T getAxiom( final String content, final AxiomType axiomType ) {
         return (T) createOntology( content ).axioms().filter( axiom -> axiom.isOfType( axiomType ) ).findAny().get();
     }
+
+    protected List<Edge> edges( final List<GraphElement> elements ) {
+        return elements.stream()
+                .filter( GraphElement::isEdge )
+                .map( GraphElement::asEdge )
+                .collect( Collectors.toList() );
+    }
+
+    protected List<Node> nodes( final List<GraphElement> elements ) {
+        return elements.stream()
+                .filter( GraphElement::isNode )
+                .map( GraphElement::asNode )
+                .collect( Collectors.toList() );
+    }
+
+    protected Predicate<Node> isNodeWithId( final String targetId ) {
+        return node -> node.getId().getId().equals( targetId );
+    }
+
+    protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
+        return edge -> edge.getFrom().getId().equals( fromId )
+                && edge.getTo().getId().equals( toId );
+    }
+
 }
