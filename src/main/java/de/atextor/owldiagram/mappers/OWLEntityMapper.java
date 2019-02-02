@@ -16,42 +16,42 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     @Override
     public Result visit( final OWLClass classExpression ) {
         final Node node = new NodeType.Class( Mappers.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( classExpression ) );
+                Mappers.getNameMapper().getName( classExpression ) );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLDatatype dataType ) {
         final Node node = new NodeType.Datatype( Mappers.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( dataType ) );
+                Mappers.getNameMapper().getName( dataType ) );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLNamedIndividual individual ) {
         final Node node = new NodeType.Individual( Mappers.getIdentifierMapper().getIdForIri( individual.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( individual ) );
+                Mappers.getNameMapper().getName( individual ) );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLObjectProperty property ) {
         final Node node = new NodeType.AbstractRole( Mappers.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( property ) );
+                Mappers.getNameMapper().getName( property ) );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLDataProperty property ) {
         final Node node = new NodeType.ConcreteRole( Mappers.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( property ) );
+                Mappers.getNameMapper().getName( property ) );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLAnnotationProperty property ) {
         final Node node = new NodeType.AnnotationRole( Mappers.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                Mappers.getNameMapper().getNameForEntity( property ) );
+                Mappers.getNameMapper().getName( property ) );
         return new Result( node, Stream.empty() );
     }
 }

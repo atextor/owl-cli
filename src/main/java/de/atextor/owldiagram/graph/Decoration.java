@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 public abstract class Decoration {
-    interface Visitor<T> {
+    public interface Visitor<T> {
         T visit( final Label label );
 
         T visit( final ClassSymbol classSymbol );
@@ -28,6 +28,7 @@ public abstract class Decoration {
     public static final class Label extends Decoration {
         String text;
 
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -36,6 +37,7 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class ClassSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -44,6 +46,7 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class AbstractRoleSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -52,6 +55,7 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class ConcreteRoleSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -60,6 +64,7 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class DataRangeSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -68,6 +73,7 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class IndividualSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
@@ -76,8 +82,11 @@ public abstract class Decoration {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class LiteralSymbol extends Decoration {
+        @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
         }
     }
+
+    abstract public <T> T accept( final Visitor<T> visitor );
 }

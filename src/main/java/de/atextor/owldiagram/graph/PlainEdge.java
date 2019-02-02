@@ -7,4 +7,9 @@ public class PlainEdge implements Edge {
     Edge.Type type;
     Node.Id from;
     Node.Id to;
+
+    @Override
+    public <T> T accept( final Visitor<T> visitor ) {
+        return visitor.visit( this );
+    }
 }

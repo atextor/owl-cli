@@ -1,9 +1,9 @@
 package de.atextor.owldiagram.mappers;
 
-import org.semanticweb.owlapi.model.OWLObject;
+import org.semanticweb.owlapi.model.HasIRI;
 
-public class NameMapper {
-    public String getNameForEntity( final OWLObject object ) {
-        return object.toString();
+class NameMapper {
+    String getName( final HasIRI object ) {
+        return object.getIRI().getFragment();
     }
 }
