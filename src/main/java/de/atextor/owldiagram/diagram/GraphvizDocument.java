@@ -63,9 +63,15 @@ public class GraphvizDocument implements Function<Configuration, String> {
         buffer.append( "digraph G {\n" );
         buffer.append( configuration.toFragment() );
         buffer.append( "\n" );
-        nodeStatements.forEach( statement -> buffer.append( statement.toFragment() ) );
+        nodeStatements.forEach( statement -> {
+            buffer.append( "   " );
+            buffer.append( statement.toFragment() );
+        } );
         buffer.append( "\n" );
-        edgeStatements.forEach( statement -> buffer.append( statement.toFragment() ) );
+        edgeStatements.forEach( statement -> {
+            buffer.append( "   " );
+            buffer.append( statement.toFragment() );
+        } );
         buffer.append( "}" );
         return buffer.toString();
     }

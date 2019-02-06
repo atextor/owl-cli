@@ -2,6 +2,7 @@ package de.atextor.owldiagram.diagram;
 
 import de.atextor.owldiagram.graph.DecoratedEdge;
 import de.atextor.owldiagram.graph.Decoration;
+import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.graph.GraphVisitor;
 import de.atextor.owldiagram.graph.Node;
@@ -53,7 +54,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return "label=<\n" +
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img src=\"" +
+                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
                     imageName + ".svg\" /></td>\n" +
                     "       </tr>\n" +
                     "     </table> >";
@@ -191,7 +192,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "  " + node.getId().getId() + " [label=<\n" +
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
-                            "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
+                            "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
                             "src=\"" + symbolName + ".svg\" /></td><td>" + node.getName() + "</td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
@@ -223,14 +224,33 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
     };
 
-    private final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge ->
-            GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                    edge.getFrom().getId() + " -> " + edge.getTo().getId() ) );
+    private String edgeTypeToGraphviz( final Edge.Type type ) {
+        switch ( type ) {
+            case DEFAULT_ARROW:
+                return "arrowhead = normal";
+            case DASHED_ARROW:
+                return "arrowhead = normal, style = dashed";
+            case HOLLOW_ARROW:
+                return "arrowhead = empty";
+            case DOUBLE_ENDED_HOLLOW_ARROW:
+                return "dir = both, arrowhead = empty, arrowtail = empty";
+            default:
+                return "";
+        }
+    }
+
+    private final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
+        final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
+        return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
+                edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
+    };
 
     private final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
         final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
+        final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
         return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + decoration + "]" ) );
+                edge.getFrom().getId() + " -> " + edge.getTo().getId()
+                        + " [" + decoration + ", " + edgeStyle + "]" ) );
     };
 
     private final GraphVisitor<GraphvizDocument> graphVisitor = new GraphVisitor<>(
