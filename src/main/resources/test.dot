@@ -1,0 +1,35 @@
+digraph G {
+  fontname = "Verdana"
+  fontsize = 12
+
+  node [
+    fontname = "Verdana"
+    fontsize = 12
+    shape = "box"
+    margin = 0.01
+    style = "rounded"
+  ]
+
+     Foo [label=<
+     <table border="0">
+       <tr>
+         <td border="0" fixedsize="true" width="24" height="24"><img src="owl-class.svg" /></td><td>Foo</td>
+       </tr>
+     </table> >]
+     Bar [label=<
+     <table border="0">
+       <tr>
+         <td border="0" fixedsize="true" width="24" height="24"><img src="owl-class.svg" /></td><td>Bar</td>
+       </tr>
+     </table> >]
+     Baz [label=<
+     <table border="0">
+       <tr>
+         <td border="0" fixedsize="true" width="24" height="24"><img src="owl-class.svg" /></td><td>Baz</td>
+       </tr>
+     </table> >]
+
+   Bar -> Baz [dir = both, arrowhead = empty, arrowtail = empty]
+   Bar -> Foo [dir = both, arrowhead = empty, arrowtail = empty]
+   Baz -> Foo [dir = both, arrowhead = empty, arrowtail = empty]
+}
