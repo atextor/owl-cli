@@ -4,6 +4,14 @@ import lombok.Builder;
 
 @Builder
 class Configuration {
+    public enum Format {
+        PNG, SVG;
+
+        public String getExtension() {
+            return toString().toLowerCase();
+        }
+    }
+
     @Builder.Default
     String fontname = "Verdana";
     @Builder.Default
@@ -18,6 +26,8 @@ class Configuration {
     double nodeMargin = 0.01;
     @Builder.Default
     String nodeStyle = "rounded";
+    @Builder.Default
+    Format format = Format.SVG;
 
     String toFragment() {
         return "  fontname = \"" + fontname + "\"\n" +

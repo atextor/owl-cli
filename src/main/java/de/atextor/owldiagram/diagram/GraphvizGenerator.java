@@ -22,40 +22,40 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public String visit( final Decoration.ClassSymbol classSymbol ) {
-            return generateImageLabel( "edge-c" );
+            return generateImageLabel( Resource.EDGE_C );
         }
 
         @Override
         public String visit( final Decoration.AbstractRoleSymbol abstractRoleSymbol ) {
-            return generateImageLabel( "edge-r" );
+            return generateImageLabel( Resource.EDGE_R );
         }
 
         @Override
         public String visit( final Decoration.ConcreteRoleSymbol concreteRoleSymbol ) {
-            return generateImageLabel( "edge-u" );
+            return generateImageLabel( Resource.EDGE_U );
         }
 
         @Override
         public String visit( final Decoration.DataRangeSymbol dataRangeSymbol ) {
-            return generateImageLabel( "edge-range" );
+            return generateImageLabel( Resource.EDGE_RANGE );
         }
 
         @Override
         public String visit( final Decoration.IndividualSymbol individualSymbol ) {
-            return generateImageLabel( "edge-o" );
+            return generateImageLabel( Resource.EDGE_O );
         }
 
         @Override
         public String visit( final Decoration.LiteralSymbol literalSymbol ) {
-            return generateImageLabel( "literal" );
+            return generateImageLabel( Resource.LITERAL );
         }
 
-        private String generateImageLabel( final String imageName ) {
+        private String generateImageLabel( final Resource image ) {
             return "label=<\n" +
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
                     "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
-                    imageName + ".svg\" /></td>\n" +
+                    image.getResourceName() + ".svg\" /></td>\n" +
                     "       </tr>\n" +
                     "     </table> >";
         }
@@ -64,161 +64,162 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     private final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz = new NodeType.Visitor<GraphvizDocument>() {
         @Override
         public GraphvizDocument visit( final NodeType.Class class_ ) {
-            return generateNamedNode( class_, "owl-class" );
+            return generateNamedNode( class_, Resource.OWL_CLASS );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractRole abstractRole ) {
-            return generateNamedNode( abstractRole, "owl-object-property" );
+            return generateNamedNode( abstractRole, Resource.OWL_OBJECT_PROPERTY );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ConcreteRole concreteRole ) {
-            return generateNamedNode( concreteRole, "owl-data-property" );
+            return generateNamedNode( concreteRole, Resource.OWL_DATA_PROPERTY );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AnnotationRole annotationRole ) {
-            return generateNamedNode( annotationRole, "owl-annotation-property" );
+            return generateNamedNode( annotationRole, Resource.OWL_ANNOTATION_PROPERTY );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Individual individual ) {
-            return generateNamedNode( individual, "owl-individual" );
+            return generateNamedNode( individual, Resource.OWL_INDIVIDUAL );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Datatype datatype ) {
-            return generateNamedNode( datatype, "owl-datatype" );
+            return generateNamedNode( datatype, Resource.OWL_DATATYPE );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ExistentialRestriction existentialRestriction ) {
-            return generateAnonymousNode( existentialRestriction.getId(), "owl-somevalues" );
+            return generateAnonymousNode( existentialRestriction.getId(), Resource.OWL_SOMEVALUES );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ValueRestriction valueRestriction ) {
-            return generateAnonymousNode( valueRestriction.getId(), "owl-hasvalue" );
+            return generateAnonymousNode( valueRestriction.getId(), Resource.OWL_HASVALUE );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.UniversalRestriction universalRestriction ) {
-            return generateAnonymousNode( universalRestriction.getId(), "owl-allvalues" );
+            return generateAnonymousNode( universalRestriction.getId(), Resource.OWL_ALLVALUES );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Intersection intersection ) {
-            return generateAnonymousNode( intersection.getId(), "owl-intersection" );
+            return generateAnonymousNode( intersection.getId(), Resource.OWL_INTERSECTION );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Union union ) {
-            return generateAnonymousNode( union.getId(), "owl-union" );
+            return generateAnonymousNode( union.getId(), Resource.OWL_UNION );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ClosedClass closedClass ) {
-            return generateAnonymousNode( closedClass.getId(), "owl-closedclass" );
+            return generateAnonymousNode( closedClass.getId(), Resource.OWL_CLOSEDCLASS );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Domain domain ) {
-            return generateAnonymousNode( domain.getId(), "owl-domain" );
+            return generateAnonymousNode( domain.getId(), Resource.OWL_DOMAIN );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Range range ) {
-            return generateAnonymousNode( range.getId(), "owl-range" );
+            return generateAnonymousNode( range.getId(), Resource.OWL_RANGE );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Complement complement ) {
-            return generateAnonymousNode( complement.getId(), "owl-complement" );
+            return generateAnonymousNode( complement.getId(), Resource.OWL_COMPLEMENT );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.Self self ) {
-            return generateAnonymousNode( self.getId(), "owl-self" );
+            return generateAnonymousNode( self.getId(), Resource.OWL_SELF );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractMinimalCardinality abstractMinimalCardinality ) {
-            return generateCardinalityNode( abstractMinimalCardinality, "get", "r" );
+            return generateCardinalityNode( abstractMinimalCardinality, Resource.GET, Resource.R );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractQualifiedMinimalCardinality abstractQualifiedMinimalCardinality ) {
-            return generateCardinalityNode( abstractQualifiedMinimalCardinality, "get", "r-c" );
+            return generateCardinalityNode( abstractQualifiedMinimalCardinality, Resource.GET, Resource.R_C );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractMaximalCardinality abstractMaximalCardinality ) {
-            return generateCardinalityNode( abstractMaximalCardinality, "let", "r" );
+            return generateCardinalityNode( abstractMaximalCardinality, Resource.LET, Resource.R );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractQualifiedMaximalCardinality abstractQualifiedMaximalCardinality ) {
-            return generateCardinalityNode( abstractQualifiedMaximalCardinality, "let", "r-c" );
+            return generateCardinalityNode( abstractQualifiedMaximalCardinality, Resource.LET, Resource.R_C );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractExactCardinality abstractExactCardinality ) {
-            return generateCardinalityNode( abstractExactCardinality, "eq", "r" );
+            return generateCardinalityNode( abstractExactCardinality, Resource.EQ, Resource.R );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.AbstractQualifiedExactCardinality abstractQualifiedExactCardinality ) {
-            return generateCardinalityNode( abstractQualifiedExactCardinality, "eq", "r-c" );
+            return generateCardinalityNode( abstractQualifiedExactCardinality, Resource.EQ, Resource.R_C );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ConcreteMinimalCardinality concreteMinimalCardinality ) {
-            return generateCardinalityNode( concreteMinimalCardinality, "get", "u" );
+            return generateCardinalityNode( concreteMinimalCardinality, Resource.GET, Resource.U );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ConcreteMaximalCardinality concreteMaximalCardinality ) {
-            return generateCardinalityNode( concreteMaximalCardinality, "let", "u" );
+            return generateCardinalityNode( concreteMaximalCardinality, Resource.LET, Resource.U );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ConcreteExactCardinality concreteExactCardinality ) {
-            return generateCardinalityNode( concreteExactCardinality, "eq", "u" );
+            return generateCardinalityNode( concreteExactCardinality, Resource.EQ, Resource.U );
         }
 
-        private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final String symbolName ) {
+        private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
                     "  " + node.getId().getId() + " [label=<\n" +
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                            "src=\"" + symbolName + ".svg\" /></td><td>" + node.getName() + "</td>\n" +
+                            "src=\"" + symbol.getResourceName() + ".svg\" /></td><td>" + node.getName() + "</td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
 
-        private GraphvizDocument generateAnonymousNode( final Node.Id nodeId, final String symbolName ) {
+        private GraphvizDocument generateAnonymousNode( final Node.Id nodeId, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
                     "  " + nodeId.getId() + " [label=<\n" +
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbolName + ".svg\" /></td>\n" +
+                            "src=\"" + symbol.getResourceName() + ".svg\" /></td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
 
         private GraphvizDocument generateCardinalityNode( final NodeType.CardinalityNode node,
-                                                          final String symbolPrefix,
-                                                          final String symbolPostfix ) {
+                                                          final Resource symbolPrefix,
+                                                          final Resource symbolPostfix ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
                     "  " + node.getId().getId() + " [label=<\n" +
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbolPrefix + ".svg\" /><td>" + node.getCardinality() + "</td><td><img " +
-                            "src=\"" + symbolPostfix + ".svg\" /></td>\n" +
+                            "src=\"" + symbolPrefix.getResourceName() + ".svg\" /><td>" + node.getCardinality() +
+                            "</td><td><img " +
+                            "src=\"" + symbolPostfix.getResourceName() + ".svg\" /></td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
