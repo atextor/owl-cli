@@ -2,104 +2,133 @@ package de.atextor.owldiagram.diagram;
 
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.mappers.OWLAxiomMapper;
+import io.vavr.control.Try;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.function.Consumer;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class DiagramGenerator {
     private final OWLAxiomMapper visitor = new OWLAxiomMapper();
     private final GraphvizGenerator graphvizGenerator = new GraphvizGenerator();
 
-    private void writeStreamToOutput( final InputStream in, final OutputStream out ) throws IOException {
-        final byte[] buffer = new byte[1024];
-        for ( ; ; ) {
-            final int bytesRead = in.read( buffer );
-            if ( bytesRead == -1 ) {
-                break;
+    private Try<Void> writeStreamToOutput( final InputStream in, final OutputStream out ) {
+        try {
+            final byte[] buffer = new byte[1024];
+            for ( ; ; ) {
+                final int bytesRead;
+                bytesRead = in.read( buffer );
+                if ( bytesRead == -1 ) {
+                    return Try.success( null );
+                }
+                out.write( buffer, 0, bytesRead );
             }
-            out.write( buffer, 0, bytesRead );
+        } catch ( final IOException exception ) {
+            return Try.failure( exception );
         }
     }
 
-    private void executeDot( final Consumer<OutputStream> contentProvider, final OutputStream output,
-                             final File workingDir, final Configuration configuration ) {
+    private Try<Void> executeDot( final ThrowingConsumer<OutputStream, IOException> contentProvider,
+                                  final OutputStream output,
+                                  final File workingDir,
+                                  final Configuration configuration ) {
+        final String command = "dot -T" + configuration.format.getExtension();
+        final Process process;
         try {
-            final String command = "dot -T" + configuration.format.getExtension();
-            final Process process;
             process = Runtime.getRuntime().exec( command, null, workingDir );
-            final OutputStream processStdIn = process.getOutputStream();
-            final InputStream processStdOut = process.getInputStream();
-            contentProvider.accept( processStdIn );
-            writeStreamToOutput( processStdOut, output );
-            process.waitFor();
         } catch ( final IOException exception ) {
-            System.err.println( "Error while running dot: " + exception.getMessage() );
-        } catch ( final InterruptedException exception ) {
-            System.err.println( "Command interrupted: " + exception.getMessage() );
+            return Try.failure( exception );
         }
-    }
 
-    private File setupTempDirectory( final Configuration configuration ) {
+        final OutputStream processStdIn = process.getOutputStream();
+        final InputStream processStdOut = process.getInputStream();
         try {
-            final Path tempDir = Files.createTempDirectory( "owl-diagram" );
-
-            for ( int i = 0; i < Resource.values().length; i++ ) {
-                final Resource resource = Resource.values()[i];
-                final String resourceName = resource.getResourceName() + "." + configuration.format.getExtension();
-                final InputStream resourceInput =
-                        DiagramGenerator.class.getResourceAsStream( "/" + resourceName );
-                final File resourceFile = tempDir.resolve( resourceName ).toFile();
-                final OutputStream resourceOutput = new FileOutputStream( resourceFile );
-                writeStreamToOutput( resourceInput, resourceOutput );
-            }
-
-            return tempDir.toFile();
+            contentProvider.accept( processStdIn );
         } catch ( final IOException exception ) {
-            exception.printStackTrace();
+            return Try.failure( exception );
         }
 
-        return null;
+        return writeStreamToOutput( processStdOut, output ).flatMap( writingResult -> {
+            try {
+                process.waitFor();
+                return Try.success( null );
+            } catch ( final InterruptedException exception ) {
+                return Try.failure( exception );
+            }
+        } );
     }
 
-    public void generate( final InputStream ontologyInputStream, final OutputStream output,
-                          final Configuration configuration ) {
+    private Try<Void> writeResourceToDirectory( final Resource resource, final Path directory,
+                                                final Configuration configuration ) {
+        final String resourceName = resource.getResourceName() + "." + configuration.format.getExtension();
+        final InputStream resourceInput =
+                DiagramGenerator.class.getResourceAsStream( "/" + resourceName );
+        final File resourceFile = directory.resolve( resourceName ).toFile();
+
+        final OutputStream resourceOutput;
+        try {
+            resourceOutput = new FileOutputStream( resourceFile );
+        } catch ( final FileNotFoundException exception ) {
+            return Try.failure( exception );
+        }
+
+        return writeStreamToOutput( resourceInput, resourceOutput );
+    }
+
+    private Try<File> setupTempDirectory( final Configuration configuration ) {
+        final Path tempDir;
+        try {
+            tempDir = Files.createTempDirectory( "owl-diagram" );
+        } catch ( final IOException exception ) {
+            return Try.failure( exception );
+        }
+
+        final Stream<Try<Void>> resources = Arrays.stream( Resource.values() ).map( resource ->
+                writeResourceToDirectory( resource, tempDir, configuration ) );
+
+        return resources.filter( Try::isFailure ).findAny()
+                .map( element -> Try.<File>failure( element.getCause() ) )
+                .orElse( Try.success( tempDir.toFile() ) );
+    }
+
+    public Try<Void> generate( final InputStream ontologyInputStream, final OutputStream output,
+                               final Configuration configuration ) {
         final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         final OWLOntology ontology;
         try {
             ontology = m.loadOntologyFromOntologyDocument( ontologyInputStream );
             generate( ontology, output, configuration );
+            return Try.success( null );
         } catch ( final OWLOntologyCreationException exception ) {
-            exception.printStackTrace();
+            return Try.failure( exception );
         }
     }
 
-    public void generate( final OWLOntology ontology, final OutputStream output, final Configuration configuration ) {
+    public Try<Void> generate( final OWLOntology ontology, final OutputStream output,
+                               final Configuration configuration ) {
         final Stream<GraphElement> graphElements = ontology.axioms().flatMap( axiom -> axiom.accept( visitor ) );
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( graphElements );
         final String graphvizGraph = graphvizDocument.apply( configuration );
 
-        final Consumer<OutputStream> contentProvider = outputStream -> {
-            try {
-                outputStream.write( graphvizGraph.getBytes() );
-                outputStream.flush();
-                outputStream.close();
-            } catch ( final IOException exception ) {
-                System.err.println( "Error while writing to output: " + exception.getMessage() );
-            }
+        final ThrowingConsumer<OutputStream, IOException> contentProvider = outputStream -> {
+            outputStream.write( graphvizGraph.getBytes() );
+            outputStream.flush();
+            outputStream.close();
         };
 
-        final File workingDir = setupTempDirectory( configuration );
-        executeDot( contentProvider, output, workingDir, configuration );
+        final Try<File> tempDirectory = setupTempDirectory( configuration );
+        return tempDirectory.map( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) )
+                .getOrElse( Try.failure( tempDirectory.getCause() ) );
     }
 }
