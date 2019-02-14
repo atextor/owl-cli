@@ -108,8 +108,7 @@ public class DiagramGenerator {
         final OWLOntology ontology;
         try {
             ontology = m.loadOntologyFromOntologyDocument( ontologyInputStream );
-            generate( ontology, output, configuration );
-            return Try.success( null );
+            return generate( ontology, output, configuration );
         } catch ( final OWLOntologyCreationException exception ) {
             return Try.failure( exception );
         }
@@ -127,8 +126,7 @@ public class DiagramGenerator {
             outputStream.close();
         };
 
-        final Try<File> tempDirectory = setupTempDirectory( configuration );
-        return tempDirectory.map( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) )
-                .getOrElse( Try.failure( tempDirectory.getCause() ) );
+        return setupTempDirectory( configuration )
+                .flatMap( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) );
     }
 }
