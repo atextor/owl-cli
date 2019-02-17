@@ -3,7 +3,7 @@ package de.atextor.owldiagram.diagram;
 import lombok.Builder;
 
 @Builder
-class Configuration {
+public class Configuration {
     public enum Format {
         PNG, SVG;
 
@@ -13,21 +13,21 @@ class Configuration {
     }
 
     @Builder.Default
-    String fontname = "Verdana";
+    public String fontname = "Verdana";
     @Builder.Default
-    int fontsize = 12;
+    public int fontsize = 12;
     @Builder.Default
-    String nodeFontname = "Verdana";
+    public String nodeFontname = "Verdana";
     @Builder.Default
-    int nodeFontsize = 12;
+    public int nodeFontsize = 12;
     @Builder.Default
-    String nodeShape = "box";
+    public String nodeShape = "box";
     @Builder.Default
-    double nodeMargin = 0.01;
+    public double nodeMargin = 0.01;
     @Builder.Default
-    String nodeStyle = "rounded";
+    public String nodeStyle = "rounded";
     @Builder.Default
-    Format format = Format.SVG;
+    public Format format = Format.SVG;
 
     String toFragment() {
         return "  fontname = \"" + fontname + "\"\n" +
