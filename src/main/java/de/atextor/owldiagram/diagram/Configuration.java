@@ -12,6 +12,11 @@ public class Configuration {
         }
     }
 
+    public enum LayoutDirection {
+        TOP_TO_BOTTOM,
+        LEFT_TO_RIGHT
+    }
+
     @Builder.Default
     public String fontname = "Verdana";
     @Builder.Default
@@ -28,9 +33,12 @@ public class Configuration {
     public String nodeStyle = "rounded";
     @Builder.Default
     public Format format = Format.SVG;
+    @Builder.Default
+    public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
 
     String toFragment() {
-        return "  fontname = \"" + fontname + "\"\n" +
+        return "  rankdir = " + ( layoutDirection == LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR" ) + "\n" +
+                "  fontname = \"" + fontname + "\"\n" +
                 "  fontsize = " + fontsize + "\n" +
                 "\n" +
                 "  node [\n" +
