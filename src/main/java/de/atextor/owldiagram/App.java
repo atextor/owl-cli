@@ -1,5 +1,6 @@
 package de.atextor.owldiagram;
 
+import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import de.atextor.owldiagram.diagram.Configuration;
@@ -16,6 +17,20 @@ import java.util.List;
 
 public class App {
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
+
+    private static class FormatParser implements IStringConverter<Configuration.Format> {
+        @Override
+        public Configuration.Format convert( final String value ) {
+            return Configuration.Format.valueOf( value.toUpperCase() );
+        }
+    }
+
+    private static class LayoutDirectionParser implements IStringConverter<Configuration.LayoutDirection> {
+        @Override
+        public Configuration.LayoutDirection convert( final String value ) {
+            return Configuration.LayoutDirection.valueOf( value.toUpperCase() );
+        }
+    }
 
     private static class Arguments {
         @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
@@ -45,11 +60,16 @@ public class App {
         @Parameter( names = { "--nodestyle" }, description = "Node style" )
         private String nodeStyle = config.nodeStyle;
 
-        @Parameter( names = { "--format" }, description = "Output file format, one of: png svg" )
-        private String format = config.format.toString().toLowerCase();
+        @Parameter( names = { "--format" }, description = "Output file format", converter = FormatParser.class )
+        private Configuration.Format format = config.format;
+
+        @Parameter( names = { "--direction" }, description = "Diagram layout direction", converter =
+                LayoutDirectionParser.class )
+        private Configuration.LayoutDirection layoutDirection = config.layoutDirection;
     }
 
-    private static Try<OutputStream> openOutput( final List<String> inputOutput, final String targetFormat ) {
+    private static Try<OutputStream> openOutput( final List<String> inputOutput,
+                                                 final Configuration.Format targetFormat ) {
         final String inputFilename = inputOutput.get( 0 );
 
         if ( inputOutput.size() == 2 ) {
@@ -76,7 +96,8 @@ public class App {
 
         // Input is something else, output is not given -> interpret input as filename,
         // change input's file extension to target format and use as output file name
-        final String outputFilename = inputFilename.replaceFirst( "[.][^.]+$", "." + targetFormat );
+        final String outputFilename = inputFilename.replaceFirst( "[.][^.]+$",
+                "." + targetFormat.toString().toLowerCase() );
         try {
             return Try.success( new FileOutputStream( outputFilename ) );
         } catch ( final FileNotFoundException exception ) {
@@ -95,6 +116,21 @@ public class App {
         }
     }
 
+    private static Try<Void> parseCommandLineArguments( final String[] args, final JCommander jCommander ) {
+        try {
+            jCommander.parse( args );
+            return Try.success( null );
+        } catch ( final IllegalArgumentException exception ) {
+            if ( exception.getMessage().contains( Configuration.Format.class.getSimpleName() ) ) {
+                return Try.failure( new RuntimeException( "Invalid format" ) );
+            }
+            if ( exception.getMessage().contains( Configuration.LayoutDirection.class.getSimpleName() ) ) {
+                return Try.failure( new RuntimeException( "Invalid layout direction" ) );
+            }
+            return Try.failure( exception );
+        }
+    }
+
     private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
         return Configuration.builder()
                 .fontname( arguments.fontname )
@@ -104,7 +140,14 @@ public class App {
                 .nodeShape( arguments.nodeShape )
                 .nodeMargin( arguments.nodeMargin )
                 .nodeStyle( arguments.nodeStyle )
+                .format( arguments.format )
+                .layoutDirection( arguments.layoutDirection )
                 .build();
+    }
+
+    private static void exitWithErrorMessage( final Throwable throwable ) {
+        System.err.println( "Error: " + throwable.getMessage() );
+        System.exit( 1 );
     }
 
     public static void main( final String[] args ) {
@@ -113,7 +156,8 @@ public class App {
         final JCommander jCommander = JCommander.newBuilder()
                 .addObject( arguments )
                 .build();
-        jCommander.parse( args );
+
+        parseCommandLineArguments( args, jCommander ).onFailure( App::exitWithErrorMessage );
 
         if ( arguments.help || arguments.inputOutput.size() > 2 ) {
             jCommander.usage();
@@ -124,6 +168,6 @@ public class App {
         openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
                 openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
                         new DiagramGenerator().generate( input, output, configuration ) )
-        ).onFailure( throwable -> System.err.println( "Error: " + throwable.getMessage() ) );
+        ).onFailure( App::exitWithErrorMessage );
     }
 }
