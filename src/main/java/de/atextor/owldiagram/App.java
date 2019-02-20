@@ -66,6 +66,9 @@ public class App {
         @Parameter( names = { "--direction" }, description = "Diagram layout direction", converter =
                 LayoutDirectionParser.class )
         private Configuration.LayoutDirection layoutDirection = config.layoutDirection;
+
+        @Parameter( names = { "--dotbinary" }, description = "Path to dot binary" )
+        private String dotBinary = config.dotBinary;
     }
 
     private static Try<OutputStream> openOutput( final List<String> inputOutput,
@@ -142,6 +145,7 @@ public class App {
                 .nodeStyle( arguments.nodeStyle )
                 .format( arguments.format )
                 .layoutDirection( arguments.layoutDirection )
+                .dotBinary( arguments.dotBinary )
                 .build();
     }
 

@@ -18,6 +18,8 @@ public class Configuration {
     }
 
     @Builder.Default
+    public String dotBinary = "dot";
+    @Builder.Default
     public String fontname = "Verdana";
     @Builder.Default
     public int fontsize = 12;

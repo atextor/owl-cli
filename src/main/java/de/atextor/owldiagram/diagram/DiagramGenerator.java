@@ -43,7 +43,7 @@ public class DiagramGenerator {
                                   final OutputStream output,
                                   final File workingDir,
                                   final Configuration configuration ) {
-        final String command = "dot -T" + configuration.format.getExtension();
+        final String command = configuration.dotBinary + " -T" + configuration.format.getExtension();
         final Process process;
         try {
             process = Runtime.getRuntime().exec( command, null, workingDir );
