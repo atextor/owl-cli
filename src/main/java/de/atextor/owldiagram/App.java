@@ -154,6 +154,17 @@ public class App {
         System.exit( 1 );
     }
 
+    private static void exitWithHelp( final JCommander jCommander ) {
+        System.out.println( "Generate diagrams for OWL ontologies" );
+        System.out.println();
+        jCommander.usage();
+        System.out.println();
+        System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
+        System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
+                "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
+        System.exit( 0 );
+    }
+
     public static void main( final String[] args ) {
         final Arguments arguments = new Arguments();
 
@@ -164,8 +175,7 @@ public class App {
         parseCommandLineArguments( args, jCommander ).onFailure( App::exitWithErrorMessage );
 
         if ( arguments.help || arguments.inputOutput.size() > 2 ) {
-            jCommander.usage();
-            System.exit( 0 );
+            exitWithHelp( jCommander );
         }
 
         final Configuration configuration = buildConfigurationFromArguments( arguments );
