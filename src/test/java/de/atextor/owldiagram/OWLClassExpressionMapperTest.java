@@ -1,6 +1,7 @@
 package de.atextor.owldiagram;
 
 import de.atextor.owldiagram.graph.NodeType;
+import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owldiagram.mappers.OWLClassExpressionMapper;
 import de.atextor.owldiagram.mappers.Result;
 import org.junit.Test;
@@ -10,7 +11,7 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLClassExpressionMapperTest extends MapperTestBase {
-    OWLClassExpressionMapper mapper = new OWLClassExpressionMapper();
+    OWLClassExpressionMapper mapper = new OWLClassExpressionMapper( DefaultMappingConfiguration.builder().build() );
 
     @Test
     public void testOWLClass() {

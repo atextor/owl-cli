@@ -6,6 +6,8 @@ import com.beust.jcommander.Parameter;
 import de.atextor.owldiagram.diagram.Configuration;
 import de.atextor.owldiagram.diagram.DiagramGenerator;
 import de.atextor.owldiagram.diagram.GraphvizDocument;
+import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
+import de.atextor.owldiagram.mappers.MappingConfiguration;
 import io.vavr.control.Try;
 
 import java.io.FileInputStream;
@@ -179,9 +181,10 @@ public class App {
         }
 
         final Configuration configuration = buildConfigurationFromArguments( arguments );
+        final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
                 openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
-                        new DiagramGenerator().generate( input, output, configuration ) )
+                        new DiagramGenerator( mappingConfig ).generate( input, output, configuration ) )
         ).onFailure( App::exitWithErrorMessage );
     }
 }

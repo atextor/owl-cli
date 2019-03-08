@@ -13,6 +13,12 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import static io.vavr.API.TODO;
 
 public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Result> {
+    private MappingConfiguration mappingConfig;
+
+    public OWLAnnotationObjectMapper( final MappingConfiguration mappingConfig ) {
+        this.mappingConfig = mappingConfig;
+    }
+
     @Override
     public Result visit( final OWLAnnotation node ) {
         return TODO();

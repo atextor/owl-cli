@@ -1,9 +1,10 @@
 package de.atextor.owldiagram.diagram;
 
 import de.atextor.owldiagram.graph.GraphElement;
-import de.atextor.owldiagram.mappers.OWLAxiomMapper;
+import de.atextor.owldiagram.mappers.MappingConfiguration;
 import io.vavr.control.Try;
 import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
@@ -17,11 +18,17 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 public class DiagramGenerator {
-    private final OWLAxiomMapper visitor = new OWLAxiomMapper();
-    private final GraphvizGenerator graphvizGenerator = new GraphvizGenerator();
+    private final OWLAxiomVisitorEx<Stream<GraphElement>> visitor;
+
+    private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator = new GraphvizGenerator();
+
+    public DiagramGenerator( final MappingConfiguration mappingConfig ) {
+        visitor = mappingConfig.getOwlAxiomMapper();
+    }
 
     private Try<Void> writeStreamToOutput( final InputStream in, final OutputStream out ) {
         try {

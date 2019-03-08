@@ -25,113 +25,119 @@ import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 public class OWLObjectMapper implements OWLObjectVisitorEx<Result> {
+    private MappingConfiguration mappingConfig;
+
+    public OWLObjectMapper( final MappingConfiguration mappingConfig ) {
+        this.mappingConfig = mappingConfig;
+    }
+
     @Override
     public Result visit( final OWLObjectIntersectionOf classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectUnionOf classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectComplementOf classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectSomeValuesFrom classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectAllValuesFrom classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectHasValue classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectMinCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectExactCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectMaxCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectHasSelf classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectOneOf classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataSomeValuesFrom classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataAllValuesFrom classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataHasValue classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataMinCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataExactCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLDataMaxCardinality classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 
     @Override
     public Result visit( final OWLObjectInverseOf property ) {
-        return Mappers.getOwlPropertyExpressionMapper().visit( property );
+        return mappingConfig.getOwlPropertyExpressionMapper().visit( property );
     }
 
     @Override
     public Result visit( final OWLObjectProperty property ) {
-        return Mappers.getOwlPropertyExpressionMapper().visit( property );
+        return mappingConfig.getOwlPropertyExpressionMapper().visit( property );
     }
 
     @Override
     public Result visit( final OWLDataProperty property ) {
-        return Mappers.getOwlPropertyExpressionMapper().visit( property );
+        return mappingConfig.getOwlPropertyExpressionMapper().visit( property );
     }
 
     @Override
     public Result visit( final OWLAnnotationProperty property ) {
-        return Mappers.getOwlPropertyExpressionMapper().visit( property );
+        return mappingConfig.getOwlPropertyExpressionMapper().visit( property );
     }
 
     @Override
     public Result visit( final OWLClass classExpression ) {
-        return Mappers.getOwlClassExpressionMapper().visit( classExpression );
+        return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
     }
 }

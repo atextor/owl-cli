@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
@@ -21,6 +22,7 @@ import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
+import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
@@ -39,6 +41,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
@@ -62,10 +65,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
+    private MappingConfiguration mappingConfig;
+
+    public OWLAxiomMapper( final MappingConfiguration mappingConfig ) {
+        this.mappingConfig = mappingConfig;
+    }
 
     @Override
     public Stream<GraphElement> visit( final OWLSubClassOfAxiom axiom ) {
-        final OWLClassExpressionMapper mapper = Mappers.getOwlClassExpressionMapper();
+        final OWLClassExpressionVisitorEx<Result> mapper = mappingConfig.getOwlClassExpressionMapper();
 
         final Result superClassResult = axiom.getSuperClass().accept( mapper );
         final Result subClassResult = axiom.getSubClass().accept( mapper );
@@ -108,7 +116,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLEquivalentObjectPropertiesAxiom axiom ) {
-        return visit( axiom, Mappers.getOwlObjectMapper() );
+        return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
@@ -148,7 +156,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLSubObjectPropertyOfAxiom axiom ) {
-        final OWLPropertyExpressionMapper mapper = Mappers.getOwlPropertyExpressionMapper();
+        final OWLPropertyExpressionVisitorEx<Result> mapper = mappingConfig.getOwlPropertyExpressionMapper();
 
         final Result superPropertyResult = axiom.getSuperProperty().accept( mapper );
         final Result subPropertyResult = axiom.getSubProperty().accept( mapper );
@@ -196,8 +204,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Map<O, Result> operands = axiom.operands().collect( Collectors.toMap( Function.identity(),
                 object -> object.accept( visitor ) ) );
 
-        // Create all combinations of operands, but (1) every keep every combination only once,
-        // regardless of direction and (2) remove those conbinations where both elements are the same
+        // Create all combinations of operands, but (1) keep every combination only once,
+        // regardless of direction and (2) remove those combinations where both elements are the same
         final Set<List<O>> combinations = Sets.cartesianProduct( Arrays.asList( operands.keySet(),
                 operands.keySet() ) ).stream().map( expressionsList -> {
                     final List<O> newList = new ArrayList<>( expressionsList );
@@ -223,15 +231,16 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLEquivalentDataPropertiesAxiom axiom ) {
-        return visit( axiom, Mappers.getOwlObjectMapper() );
+        return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
     public Stream<GraphElement> visit( final OWLClassAssertionAxiom axiom ) {
         final OWLIndividual individual = axiom.getIndividual();
         final OWLClassExpression classExpression = axiom.getClassExpression();
-        final Result individualResult = individual.accept( Mappers.getOwlIndividualMapper() );
-        final Result classExpressionResult = classExpression.accept( Mappers.getOwlClassExpressionMapper() );
+        final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
+        final Result classExpressionResult =
+                classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
 
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualResult.getNode().getId(),
                 classExpressionResult.getNode().getId() );
@@ -240,7 +249,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLEquivalentClassesAxiom axiom ) {
-        return visit( axiom, Mappers.getOwlObjectMapper() );
+        return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
@@ -290,7 +299,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLDeclarationAxiom axiom ) {
-        final OWLEntityMapper mapper = Mappers.getOwlEntityMapper();
+        final OWLEntityVisitorEx<Result> mapper = mappingConfig.getOwlEntityMapper();
         final Result result = axiom.getEntity().accept( mapper );
         return result.toStream();
     }

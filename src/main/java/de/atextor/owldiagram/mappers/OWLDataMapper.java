@@ -13,6 +13,12 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import static io.vavr.API.TODO;
 
 public class OWLDataMapper implements OWLDataVisitorEx<Result> {
+    private MappingConfiguration mappingConfig;
+
+    public OWLDataMapper( final MappingConfiguration mappingConfig ) {
+        this.mappingConfig = mappingConfig;
+    }
+
     @Override
     public Result visit( final OWLDataComplementOf node ) {
         return TODO();

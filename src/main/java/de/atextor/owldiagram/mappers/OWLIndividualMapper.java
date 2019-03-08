@@ -9,15 +9,21 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import java.util.stream.Stream;
 
 public class OWLIndividualMapper implements OWLIndividualVisitorEx<Result> {
+    private MappingConfiguration mappingConfig;
+
+    public OWLIndividualMapper( final MappingConfiguration mappingConfig ) {
+        this.mappingConfig = mappingConfig;
+    }
+
     @Override
     public Result visit( final OWLAnonymousIndividual individual ) {
-        final Node node = new NodeType.Individual( Mappers.getIdentifierMapper().getSyntheticId(), "[]" );
+        final Node node = new NodeType.Individual( mappingConfig.getIdentifierMapper().getSyntheticId(), "[]" );
         return new Result( node, Stream.empty() );
     }
 
     @Override
     public Result visit( final OWLNamedIndividual individual ) {
-        final Node.Id id = Mappers.getIdentifierMapper().getIdForIri( individual.getIRI() );
+        final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.Individual( id, label );
         return new Result( node, Stream.empty() );
