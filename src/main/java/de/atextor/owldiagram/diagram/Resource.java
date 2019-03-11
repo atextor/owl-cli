@@ -14,7 +14,6 @@ enum Resource {
     OWL_UNION,
     OWL_CLOSEDCLASS,
     OWL_DOMAIN,
-    OWL_RANGE,
     OWL_COMPLEMENT,
     OWL_SELF,
     EDGE_C,
