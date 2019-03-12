@@ -37,7 +37,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public String visit( final Decoration.DataRangeSymbol dataRangeSymbol ) {
-            return generateImageLabel( Resource.EDGE_RANGE );
+            return generateImageLabel( Resource.EDGE_R );
         }
 
         @Override

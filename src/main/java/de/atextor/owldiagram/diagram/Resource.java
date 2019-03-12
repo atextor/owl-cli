@@ -19,7 +19,6 @@ enum Resource {
     EDGE_C,
     EDGE_R,
     EDGE_U,
-    EDGE_RANGE,
     EDGE_O,
     LITERAL,
     GET,
