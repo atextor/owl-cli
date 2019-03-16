@@ -23,11 +23,11 @@ import java.util.stream.Stream;
 
 public class DiagramGenerator {
     private final OWLAxiomVisitorEx<Stream<GraphElement>> visitor;
+    private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator;
 
-    private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator = new GraphvizGenerator();
-
-    public DiagramGenerator( final MappingConfiguration mappingConfig ) {
+    public DiagramGenerator( final Configuration configuration, final MappingConfiguration mappingConfig ) {
         visitor = mappingConfig.getOwlAxiomMapper();
+        graphvizGenerator = new GraphvizGenerator( configuration );
     }
 
     private Try<Void> writeStreamToOutput( final InputStream in, final OutputStream out ) {
@@ -78,9 +78,8 @@ public class DiagramGenerator {
 
     private Try<Void> writeResourceToDirectory( final Resource resource, final Path directory,
                                                 final Configuration configuration ) {
-        final String resourceName = resource.getResourceName() + "." + configuration.format.getExtension();
-        final InputStream resourceInput =
-                DiagramGenerator.class.getResourceAsStream( "/" + resourceName );
+        final String resourceName = resource.getResourceName( configuration.format );
+        final InputStream resourceInput = DiagramGenerator.class.getResourceAsStream( "/" + resourceName );
         final File resourceFile = directory.resolve( resourceName ).toFile();
 
         final OutputStream resourceOutput;

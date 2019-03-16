@@ -28,7 +28,7 @@ enum Resource {
     R_C,
     U;
 
-    public String getResourceName() {
-        return toString().toLowerCase().replace( '_', '-' );
+    public String getResourceName( final Configuration.Format format ) {
+        return toString().toLowerCase().replace( '_', '-' ) + "." + format.getExtension();
     }
 }

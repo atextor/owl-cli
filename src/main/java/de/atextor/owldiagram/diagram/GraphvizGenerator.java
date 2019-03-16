@@ -14,7 +14,61 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
-    private final Decoration.Visitor<String> decorationToGraphvizFragment = new Decoration.Visitor<String>() {
+    private final Decoration.Visitor<String> decorationToGraphvizFragment;
+    private final GraphVisitor<GraphvizDocument> graphVisitor;
+
+    GraphvizGenerator( final Configuration configuration ) {
+        decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format );
+        final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz =
+                new GraphvizNodeTypeVisitor( configuration.format );
+
+        final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
+            final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
+            final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
+            return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
+                    edge.getFrom().getId() + " -> " + edge.getTo().getId()
+                            + " [" + decoration + ", " + edgeStyle + "]" ) );
+        };
+
+        final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
+            final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
+            return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
+                    edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
+        };
+
+        graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
+    }
+
+    private String edgeTypeToGraphviz( final Edge.Type type ) {
+        switch ( type ) {
+            case DEFAULT_ARROW:
+                return "arrowhead = normal";
+            case DASHED_ARROW:
+                return "arrowhead = normal, style = dashed";
+            case HOLLOW_ARROW:
+                return "arrowhead = empty";
+            case DOUBLE_ENDED_HOLLOW_ARROW:
+                return "dir = both, arrowhead = empty, arrowtail = empty";
+            default:
+                return "";
+        }
+    }
+
+    @Override
+    public GraphvizDocument apply( final Stream<GraphElement> graph ) {
+        return graph.collect( Collectors.toSet() )
+                .stream()
+                .map( graphElement -> graphElement.accept( graphVisitor ) )
+                .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
+    }
+
+    class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
+        Configuration.Format format;
+
+        GraphvizDecorationVisitor( final Configuration.Format format ) {
+            this.format = format;
+        }
+
         @Override
         public String visit( final Decoration.Label label ) {
             return "label=\"" + label.getText() + "\"";
@@ -55,13 +109,19 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
                     "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
-                    image.getResourceName() + ".svg\" /></td>\n" +
+                    image.getResourceName( format ) + "\" /></td>\n" +
                     "       </tr>\n" +
                     "     </table> >";
         }
-    };
+    }
 
-    private final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz = new NodeType.Visitor<GraphvizDocument>() {
+    class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
+        Configuration.Format format;
+
+        GraphvizNodeTypeVisitor( final Configuration.Format format ) {
+            this.format = format;
+        }
+
         @Override
         public GraphvizDocument visit( final NodeType.Class class_ ) {
             return generateNamedNode( class_, Resource.OWL_CLASS );
@@ -193,7 +253,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                            "src=\"" + symbol.getResourceName() + ".svg\" /></td><td>" + node.getName() + "</td>\n" +
+                            "src=\"" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
+                            ">\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
@@ -204,7 +265,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbol.getResourceName() + ".svg\" /></td>\n" +
+                            "src=\"" + symbol.getResourceName( format ) + "\" /></td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
@@ -217,51 +278,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                             "     <table border=\"0\">\n" +
                             "       <tr>\n" +
                             "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbolPrefix.getResourceName() + ".svg\" /><td>" + node.getCardinality() +
+                            "src=\"" + symbolPrefix.getResourceName( format ) + "\" /><td>" + node.getCardinality() +
                             "</td><td><img " +
-                            "src=\"" + symbolPostfix.getResourceName() + ".svg\" /></td>\n" +
+                            "src=\"" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
                             "       </tr>\n" +
                             "     </table> >]" ) );
         }
-    };
-
-    private String edgeTypeToGraphviz( final Edge.Type type ) {
-        switch ( type ) {
-            case DEFAULT_ARROW:
-                return "arrowhead = normal";
-            case DASHED_ARROW:
-                return "arrowhead = normal, style = dashed";
-            case HOLLOW_ARROW:
-                return "arrowhead = empty";
-            case DOUBLE_ENDED_HOLLOW_ARROW:
-                return "dir = both, arrowhead = empty, arrowtail = empty";
-            default:
-                return "";
-        }
-    }
-
-    private final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
-        final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
-        return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
-    };
-
-    private final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
-        final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
-        final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
-        return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                edge.getFrom().getId() + " -> " + edge.getTo().getId()
-                        + " [" + decoration + ", " + edgeStyle + "]" ) );
-    };
-
-    private final GraphVisitor<GraphvizDocument> graphVisitor = new GraphVisitor<>(
-            nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
-
-    @Override
-    public GraphvizDocument apply( final Stream<GraphElement> graph ) {
-        return graph.collect( Collectors.toSet() )
-                .stream()
-                .map( graphElement -> graphElement.accept( graphVisitor ) )
-                .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
     }
 }

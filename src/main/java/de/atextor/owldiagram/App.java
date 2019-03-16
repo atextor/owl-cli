@@ -184,7 +184,7 @@ public class App {
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
                 openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
-                        new DiagramGenerator( mappingConfig ).generate( input, output, configuration ) )
+                        new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
         ).onFailure( App::exitWithErrorMessage );
     }
 }
