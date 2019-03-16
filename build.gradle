@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
 repositories {
@@ -19,5 +20,13 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.11.1'
 }
+
+shadowJar {
+    baseName = 'owl-diagram'
+    classifier = null
+    version = null
+}
+
+defaultTasks 'shadowJar'
 
 mainClassName = 'de.atextor.owldiagram.App'
