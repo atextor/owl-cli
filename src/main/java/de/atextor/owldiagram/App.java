@@ -3,6 +3,7 @@ package de.atextor.owldiagram;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParameterException;
 import de.atextor.owldiagram.diagram.Configuration;
 import de.atextor.owldiagram.diagram.DiagramGenerator;
 import de.atextor.owldiagram.diagram.GraphvizDocument;
@@ -133,6 +134,8 @@ public class App {
                 return Try.failure( new RuntimeException( "Invalid layout direction" ) );
             }
             return Try.failure( exception );
+        } catch ( final ParameterException exception ) {
+            return Try.failure( new RuntimeException( "Invalid parameters. Start with --help for more information." ) );
         }
     }
 
