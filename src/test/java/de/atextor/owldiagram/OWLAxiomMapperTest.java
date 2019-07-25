@@ -4,6 +4,8 @@ import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.graph.Node;
 import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
+import de.atextor.owldiagram.mappers.IdentifierMapper;
+import de.atextor.owldiagram.mappers.MappingConfiguration;
 import de.atextor.owldiagram.mappers.OWLAxiomMapper;
 import org.junit.Test;
 import org.semanticweb.owlapi.model.IRI;
@@ -31,7 +33,8 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLAxiomMapperTest extends MapperTestBase {
-    private final OWLAxiomMapper mapper = new OWLAxiomMapper( DefaultMappingConfiguration.builder().build() );
+    private final MappingConfiguration mappingConfiguration = DefaultMappingConfiguration.builder().build();
+    private final OWLAxiomMapper mapper = new OWLAxiomMapper( mappingConfiguration );
 
     @Test
     public void testOWLSubClassOfAxiom() {
@@ -75,7 +78,10 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 1 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "Foo", "Thing" ) );
+
+        final Edge theEdge = edges.get( 0 );
+        assertThat( theEdge ).matches( isEdgeWithFromAndTo( "Foo", "Thing" ) );
+        assertThat( theEdge.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
     }
 
     private void assertEquivalentResult( final List<GraphElement> result, final IRI fooIri, final IRI barIri,
@@ -83,9 +89,11 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
 
-        final String foo = fooIri.getFragment();
-        final String bar = barIri.getFragment();
-        final String baz = bazIri.getFragment();
+        final IdentifierMapper identifierMapper = mappingConfiguration.getIdentifierMapper();
+        final Node.Id foo = identifierMapper.getIdForIri( fooIri );
+        final Node.Id bar = identifierMapper.getIdForIri( barIri );
+        final Node.Id baz = identifierMapper.getIdForIri( bazIri );
+
         assertThat( nodes ).anyMatch( isNodeWithId( foo ) );
         assertThat( nodes ).anyMatch( isNodeWithId( bar ) );
         assertThat( nodes ).anyMatch( isNodeWithId( baz ) );

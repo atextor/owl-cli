@@ -70,9 +70,16 @@ public class MapperTestBase {
         return node -> node.getId().getId().equals( targetId );
     }
 
+    protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
+        return isNodeWithId( targetId.getId() );
+    }
+
     protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
         return edge -> edge.getFrom().getId().equals( fromId )
                 && edge.getTo().getId().equals( toId );
     }
 
+    protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {
+        return isEdgeWithFromAndTo( fromId.getId(), toId.getId() );
+    }
 }
