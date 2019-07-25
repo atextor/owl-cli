@@ -129,7 +129,9 @@ public class DiagramGenerator {
         final ThrowingConsumer<OutputStream, IOException> contentProvider = outputStream -> {
             outputStream.write( graphvizGraph.getBytes() );
             outputStream.flush();
-            outputStream.close();
+            if ( outputStream != System.out ) {
+                outputStream.close();
+            }
         };
 
         return setupTempDirectory( configuration )
