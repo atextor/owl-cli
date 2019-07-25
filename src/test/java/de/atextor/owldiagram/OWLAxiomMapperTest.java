@@ -3,7 +3,6 @@ package de.atextor.owldiagram;
 import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.graph.Node;
-import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owldiagram.mappers.IdentifierMapper;
 import de.atextor.owldiagram.mappers.MappingConfiguration;
 import de.atextor.owldiagram.mappers.OWLAxiomMapper;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLAxiomMapperTest extends MapperTestBase {
-    private final MappingConfiguration mappingConfiguration = DefaultMappingConfiguration.builder().build();
+    private final MappingConfiguration mappingConfiguration = createTestMappingConfiguration();
     private final OWLAxiomMapper mapper = new OWLAxiomMapper( mappingConfiguration );
 
     @Test

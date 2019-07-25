@@ -3,6 +3,8 @@ package de.atextor.owldiagram;
 import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.graph.Node;
+import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
+import de.atextor.owldiagram.mappers.MappingConfiguration;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAxiom;
@@ -20,6 +22,10 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Fail.fail;
 
 public class MapperTestBase {
+    protected MappingConfiguration createTestMappingConfiguration() {
+        return DefaultMappingConfiguration.builder().identifierMapper( TestIdentifierMapper::new ).build();
+    }
+
     protected OWLOntology createOntology( final String content ) {
         final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         final String ontologyContent = "@prefix : <http://test.de/> .\n" +
