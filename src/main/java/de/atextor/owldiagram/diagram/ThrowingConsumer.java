@@ -3,7 +3,7 @@ package de.atextor.owldiagram.diagram;
 /**
  * See {@link java.util.function.Consumer}
  *
- * @param <T> Thr processed type
+ * @param <T> The processed type
  * @param <E> The exception type
  */
 @FunctionalInterface

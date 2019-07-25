@@ -110,10 +110,10 @@ public class DiagramGenerator {
 
     public Try<Void> generate( final InputStream ontologyInputStream, final OutputStream output,
                                final Configuration configuration ) {
-        final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
+        final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         final OWLOntology ontology;
         try {
-            ontology = m.loadOntologyFromOntologyDocument( ontologyInputStream );
+            ontology = manager.loadOntologyFromOntologyDocument( ontologyInputStream );
             return generate( ontology, output, configuration );
         } catch ( final OWLOntologyCreationException exception ) {
             return Try.failure( exception );
