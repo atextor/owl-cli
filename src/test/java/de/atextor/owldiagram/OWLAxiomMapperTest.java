@@ -56,13 +56,109 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLDeclarationAxiom() {
-        final OWLDeclarationAxiom axiom = getAxiom( ":Foo a owl:Class ." );
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
-        assertThat( result ).hasSize( 1 );
+    public void testOWLNegativeObjectPropertyAssertionAxiom() {
+    }
 
-        final Node theNode = nodes( result ).get( 0 );
-        assertThat( theNode ).matches( isNodeWithId( "Foo" ) );
+    @Test
+    public void testOWLAsymmetricObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLReflexiveObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLDisjointClassesAxiom() {
+    }
+
+    @Test
+    public void testOWLDataPropertyDomainAxiom() {
+    }
+
+    @Test
+    public void testOWLObjectPropertyDomainAxiom() {
+    }
+
+    @Test
+    public void testOWLEquivalentObjectPropertiesAxiom() {
+        final IRI fooIri = IRI.create( "http://test.de#foo" );
+        final IRI barIri = IRI.create( "http://test.de#bar" );
+        final IRI bazIri = IRI.create( "http://test.de#baz" );
+        final OWLObjectPropertyExpression dataPropertyExpression1 = new OWLObjectPropertyImpl( fooIri );
+        final OWLObjectPropertyExpression dataPropertyExpression2 = new OWLObjectPropertyImpl( barIri );
+        final OWLObjectPropertyExpression dataPropertyExpression3 = new OWLObjectPropertyImpl( bazIri );
+        final OWLEquivalentObjectPropertiesAxiom axiom =
+                new OWLEquivalentObjectPropertiesAxiomImpl( Arrays.asList( dataPropertyExpression1,
+                        dataPropertyExpression2, dataPropertyExpression3 ), Collections.emptyList() );
+
+        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+
+        assertEquivalentResult( result, fooIri, barIri, bazIri );
+    }
+
+    @Test
+    public void testOWLNegativeDataPropertyAssertionAxiom() {
+    }
+
+    @Test
+    public void testOWLDifferentIndividualsAxiom() {
+    }
+
+    @Test
+    public void testOWLDisjointDataPropertiesAxiom() {
+    }
+
+    @Test
+    public void testOWLDisjointObjectPropertiesAxiom() {
+    }
+
+    @Test
+    public void testOWLObjectPropertyRangeAxiom() {
+    }
+
+    @Test
+    public void testOWLObjectPropertyAssertionAxiom() {
+    }
+
+    @Test
+    public void testOWLFunctionalObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLSubObjectPropertyOfAxiom() {
+    }
+
+    @Test
+    public void testOWLDisjointUnionAxiom() {
+    }
+
+    @Test
+    public void testOWLSymmetricObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLDataPropertyRangeAxiom() {
+    }
+
+    @Test
+    public void testOWLFunctionalDataPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLEquivalentDataPropertiesAxiom() {
+        final IRI fooIri = IRI.create( "http://test.de#foo" );
+        final IRI barIri = IRI.create( "http://test.de#bar" );
+        final IRI bazIri = IRI.create( "http://test.de#baz" );
+        final OWLDataPropertyExpression dataPropertyExpression1 = new OWLDataPropertyImpl( fooIri );
+        final OWLDataPropertyExpression dataPropertyExpression2 = new OWLDataPropertyImpl( barIri );
+        final OWLDataPropertyExpression dataPropertyExpression3 = new OWLDataPropertyImpl( bazIri );
+        final OWLEquivalentDataPropertiesAxiom axiom =
+                new OWLEquivalentDataPropertiesAxiomImpl( Arrays.asList( dataPropertyExpression1,
+                        dataPropertyExpression2, dataPropertyExpression3 ), Collections.emptyList() );
+
+        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+
+        assertEquivalentResult( result, fooIri, barIri, bazIri );
     }
 
     @Test
@@ -82,6 +178,91 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Edge theEdge = edges.get( 0 );
         assertThat( theEdge ).matches( isEdgeWithFromAndTo( "Foo", "Thing" ) );
         assertThat( theEdge.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+    }
+
+    @Test
+    public void testOWLEquivalentClassesAxiom() {
+        final IRI fooIri = IRI.create( "http://test.de#Foo" );
+        final IRI barIri = IRI.create( "http://test.de#Bar" );
+        final IRI bazIri = IRI.create( "http://test.de#Baz" );
+        final OWLClassExpression classExpression1 = new OWLClassImpl( fooIri );
+        final OWLClassExpression classExpression2 = new OWLClassImpl( barIri );
+        final OWLClassExpression classExpression3 = new OWLClassImpl( bazIri );
+        final OWLEquivalentClassesAxiom axiom = new OWLEquivalentClassesAxiomImpl( Arrays.asList( classExpression1,
+                classExpression2, classExpression3 ), Collections.emptyList() );
+        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+
+        assertEquivalentResult( result, fooIri, barIri, bazIri );
+    }
+
+    @Test
+    public void testOWLDataPropertyAssertionAxiom() {
+    }
+
+    @Test
+    public void testOWLTransitiveObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLIrreflexiveObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLSubDataPropertyOfAxiom() {
+    }
+
+    @Test
+    public void testOWLInverseFunctionalObjectPropertyAxiom() {
+    }
+
+    @Test
+    public void testOWLSameIndividualAxiom() {
+    }
+
+    @Test
+    public void testOWLSubPropertyChainOfAxiom() {
+    }
+
+    @Test
+    public void testOWLInverseObjectPropertiesAxiom() {
+    }
+
+    @Test
+    public void testOWLHasKeyAxiom() {
+    }
+
+    @Test
+    public void testOWLDeclarationAxiom() {
+        final OWLDeclarationAxiom axiom = getAxiom( ":Foo a owl:Class ." );
+        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        assertThat( result ).hasSize( 1 );
+
+        final Node theNode = nodes( result ).get( 0 );
+        assertThat( theNode ).matches( isNodeWithId( "Foo" ) );
+    }
+
+    @Test
+    public void testOWLDatatypeDefinitionAxiom() {
+    }
+
+    @Test
+    public void testOWLAnnotationAssertionAxiom() {
+    }
+
+    @Test
+    public void testOWLSubAnnotationPropertyOfAxiom() {
+    }
+
+    @Test
+    public void testOWLAnnotationPropertyDomainAxiom() {
+    }
+
+    @Test
+    public void testOWLAnnotationPropertyRangeAxiom() {
+    }
+
+    @Test
+    public void testSWRLRule() {
     }
 
     private void assertEquivalentResult( final List<GraphElement> result, final IRI fooIri, final IRI barIri,
@@ -111,54 +292,5 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( edges ).noneMatch( isEdgeWithFromAndTo( foo, foo ) );
         assertThat( edges ).noneMatch( isEdgeWithFromAndTo( bar, bar ) );
         assertThat( edges ).noneMatch( isEdgeWithFromAndTo( baz, baz ) );
-    }
-
-    @Test
-    public void testOWLEquivalentClassesAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#Foo" );
-        final IRI barIri = IRI.create( "http://test.de#Bar" );
-        final IRI bazIri = IRI.create( "http://test.de#Baz" );
-        final OWLClassExpression classExpression1 = new OWLClassImpl( fooIri );
-        final OWLClassExpression classExpression2 = new OWLClassImpl( barIri );
-        final OWLClassExpression classExpression3 = new OWLClassImpl( bazIri );
-        final OWLEquivalentClassesAxiom axiom = new OWLEquivalentClassesAxiomImpl( Arrays.asList( classExpression1,
-                classExpression2, classExpression3 ), Collections.emptyList() );
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
-
-        assertEquivalentResult( result, fooIri, barIri, bazIri );
-    }
-
-    @Test
-    public void testOWLEquivalentDataPropertiesAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#foo" );
-        final IRI barIri = IRI.create( "http://test.de#bar" );
-        final IRI bazIri = IRI.create( "http://test.de#baz" );
-        final OWLDataPropertyExpression dataPropertyExpression1 = new OWLDataPropertyImpl( fooIri );
-        final OWLDataPropertyExpression dataPropertyExpression2 = new OWLDataPropertyImpl( barIri );
-        final OWLDataPropertyExpression dataPropertyExpression3 = new OWLDataPropertyImpl( bazIri );
-        final OWLEquivalentDataPropertiesAxiom axiom =
-                new OWLEquivalentDataPropertiesAxiomImpl( Arrays.asList( dataPropertyExpression1,
-                        dataPropertyExpression2, dataPropertyExpression3 ), Collections.emptyList() );
-
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
-
-        assertEquivalentResult( result, fooIri, barIri, bazIri );
-    }
-
-    @Test
-    public void testOWLEquivalentObjectPropertiesAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#foo" );
-        final IRI barIri = IRI.create( "http://test.de#bar" );
-        final IRI bazIri = IRI.create( "http://test.de#baz" );
-        final OWLObjectPropertyExpression dataPropertyExpression1 = new OWLObjectPropertyImpl( fooIri );
-        final OWLObjectPropertyExpression dataPropertyExpression2 = new OWLObjectPropertyImpl( barIri );
-        final OWLObjectPropertyExpression dataPropertyExpression3 = new OWLObjectPropertyImpl( bazIri );
-        final OWLEquivalentObjectPropertiesAxiom axiom =
-                new OWLEquivalentObjectPropertiesAxiomImpl( Arrays.asList( dataPropertyExpression1,
-                        dataPropertyExpression2, dataPropertyExpression3 ), Collections.emptyList() );
-
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
-
-        assertEquivalentResult( result, fooIri, barIri, bazIri );
     }
 }
