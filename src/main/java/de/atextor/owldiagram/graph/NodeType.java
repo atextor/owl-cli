@@ -62,6 +62,146 @@ public abstract class NodeType implements Node {
         T visit( ConcreteMaximalCardinality concreteMaximalCardinality );
 
         T visit( ConcreteExactCardinality concreteExactCardinality );
+
+        T visit( Invisible invisible );
+    }
+
+    public static class VisitorAdapter<T> implements Visitor<T> {
+        private final T defaultValue;
+
+        public VisitorAdapter( final T defaultValue ) {
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public T visit( final Class class_ ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractRole abstractRole ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ConcreteRole concreteRole ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AnnotationRole annotationRole ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Individual individual ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Datatype datatype ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ExistentialRestriction existentialRestriction ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ValueRestriction valueRestriction ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final UniversalRestriction universalRestriction ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Intersection intersection ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Union union ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ClosedClass closedClass ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Domain domain ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Range range ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Complement complement ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Self self ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractMinimalCardinality abstractMinimalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractQualifiedMinimalCardinality abstractQualifiedMinimalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractMaximalCardinality abstractMaximalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractQualifiedMaximalCardinality abstractQualifiedMaximalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractExactCardinality abstractExactCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final AbstractQualifiedExactCardinality abstractQualifiedExactCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ConcreteMinimalCardinality concreteMinimalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ConcreteMaximalCardinality concreteMaximalCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final ConcreteExactCardinality concreteExactCardinality ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Invisible invisible ) {
+            return defaultValue;
+        }
     }
 
     public interface NamedNode extends Node {
@@ -70,6 +210,9 @@ public abstract class NodeType implements Node {
 
     public interface CardinalityNode extends Node {
         int getCardinality();
+    }
+
+    public interface InvisibleNode extends Node {
     }
 
     private NodeType() {
@@ -358,6 +501,17 @@ public abstract class NodeType implements Node {
     public static final class ConcreteExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static final class Invisible extends NodeType implements InvisibleNode {
+        Id id;
 
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {

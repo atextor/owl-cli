@@ -3,6 +3,7 @@ package de.atextor.owldiagram;
 import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
 import de.atextor.owldiagram.graph.Node;
+import de.atextor.owldiagram.graph.NodeType;
 import de.atextor.owldiagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owldiagram.mappers.MappingConfiguration;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -22,20 +23,22 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Fail.fail;
 
 public class MapperTestBase {
+    protected TestIdentifierMapper testIdentifierMapper = new TestIdentifierMapper();
+
     protected MappingConfiguration createTestMappingConfiguration() {
-        return DefaultMappingConfiguration.builder().identifierMapper( TestIdentifierMapper::new ).build();
+        return DefaultMappingConfiguration.builder().identifierMapper( () -> testIdentifierMapper ).build();
     }
 
     protected OWLOntology createOntology( final String content ) {
         final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
         final String ontologyContent = "@prefix : <http://test.de/> .\n" +
-                "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
-                "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
-                "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
-                "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
-                "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-                "\n" +
-                content;
+            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
+            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
+            "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
+            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
+            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
+            "\n" +
+            content;
         final OWLOntology ontology;
 
         try {
@@ -60,20 +63,38 @@ public class MapperTestBase {
 
     protected List<Edge> edges( final List<GraphElement> elements ) {
         return elements.stream()
-                .filter( GraphElement::isEdge )
-                .map( GraphElement::asEdge )
-                .collect( Collectors.toList() );
+            .filter( GraphElement::isEdge )
+            .map( GraphElement::asEdge )
+            .collect( Collectors.toList() );
     }
 
     protected List<Node> nodes( final List<GraphElement> elements ) {
         return elements.stream()
-                .filter( GraphElement::isNode )
-                .map( GraphElement::asNode )
-                .collect( Collectors.toList() );
+            .filter( GraphElement::isNode )
+            .map( GraphElement::asNode )
+            .collect( Collectors.toList() );
     }
 
     protected Predicate<Node> isNodeWithId( final String targetId ) {
         return node -> node.getId().getId().equals( targetId );
+    }
+
+    protected Predicate<Node> isInvisible() {
+        final NodeType.Visitor<Boolean> nodeTypeVisitor = new NodeType.VisitorAdapter<Boolean>( false ) {
+            @Override
+            public Boolean visit( final NodeType.Invisible invisible ) {
+                return true;
+            }
+        };
+
+        final GraphElement.Visitor<Boolean> elementVisitor = new GraphElement.VisitorAdapter<Boolean>( false ) {
+            @Override
+            public Boolean visit( final NodeType nodeType ) {
+                return nodeType.accept( nodeTypeVisitor );
+            }
+        };
+
+        return node -> node.accept( elementVisitor );
     }
 
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
@@ -82,7 +103,7 @@ public class MapperTestBase {
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
         return edge -> edge.getFrom().getId().equals( fromId )
-                && edge.getTo().getId().equals( toId );
+            && edge.getTo().getId().equals( toId );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {

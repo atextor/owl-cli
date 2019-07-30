@@ -5,7 +5,9 @@ public interface Edge extends GraphElement {
         DEFAULT_ARROW,
         HOLLOW_ARROW,
         DOUBLE_ENDED_HOLLOW_ARROW,
-        DASHED_ARROW
+        INVERSE_HOLLOW_ARROW,
+        DASHED_ARROW,
+        NO_ARROW
     }
 
     Node.Id getFrom();

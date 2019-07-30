@@ -20,20 +20,20 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     GraphvizGenerator( final Configuration configuration ) {
         decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format );
         final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz =
-                new GraphvizNodeTypeVisitor( configuration.format );
+            new GraphvizNodeTypeVisitor( configuration.format );
 
         final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                    edge.getFrom().getId() + " -> " + edge.getTo().getId()
-                            + " [" + decoration + ", " + edgeStyle + "]" ) );
+                edge.getFrom().getId() + " -> " + edge.getTo().getId()
+                    + " [" + decoration + ", " + edgeStyle + "]" ) );
         };
 
         final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                    edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
+                edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
         };
 
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
@@ -57,9 +57,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     @Override
     public GraphvizDocument apply( final Stream<GraphElement> graph ) {
         return graph.collect( Collectors.toSet() )
-                .stream()
-                .map( graphElement -> graphElement.accept( graphVisitor ) )
-                .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
+            .stream()
+            .map( graphElement -> graphElement.accept( graphVisitor ) )
+            .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
     }
 
     class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
@@ -106,12 +106,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         private String generateImageLabel( final Resource image ) {
             return "label=<\n" +
-                    "     <table border=\"0\">\n" +
-                    "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
-                    image.getResourceName( format ) + "\" /></td>\n" +
-                    "       </tr>\n" +
-                    "     </table> >";
+                "     <table border=\"0\">\n" +
+                "       <tr>\n" +
+                "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
+                image.getResourceName( format ) + "\" /></td>\n" +
+                "       </tr>\n" +
+                "     </table> >";
         }
     }
 
@@ -247,42 +247,53 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return generateCardinalityNode( concreteExactCardinality, Resource.EQ, Resource.U );
         }
 
+        @Override
+        public GraphvizDocument visit( final NodeType.Invisible invisible ) {
+            return generateInvisibleNode( invisible.getId() );
+        }
+
         private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                    "  " + node.getId().getId() + " [label=<\n" +
-                            "     <table border=\"0\">\n" +
-                            "       <tr>\n" +
-                            "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                            "src=\"" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
-                            ">\n" +
-                            "       </tr>\n" +
-                            "     </table> >]" ) );
+                "  " + node.getId().getId() + " [label=<\n" +
+                    "     <table border=\"0\">\n" +
+                    "       <tr>\n" +
+                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
+                    "src=\"" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
+                    ">\n" +
+                    "       </tr>\n" +
+                    "     </table> >]" ) );
         }
 
         private GraphvizDocument generateAnonymousNode( final Node.Id nodeId, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                    "  " + nodeId.getId() + " [label=<\n" +
-                            "     <table border=\"0\">\n" +
-                            "       <tr>\n" +
-                            "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbol.getResourceName( format ) + "\" /></td>\n" +
-                            "       </tr>\n" +
-                            "     </table> >]" ) );
+                "  " + nodeId.getId() + " [label=<\n" +
+                    "     <table border=\"0\">\n" +
+                    "       <tr>\n" +
+                    "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
+                    "src=\"" + symbol.getResourceName( format ) + "\" /></td>\n" +
+                    "       </tr>\n" +
+                    "     </table> >]" ) );
         }
 
         private GraphvizDocument generateCardinalityNode( final NodeType.CardinalityNode node,
                                                           final Resource symbolPrefix,
                                                           final Resource symbolPostfix ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                    "  " + node.getId().getId() + " [label=<\n" +
-                            "     <table border=\"0\">\n" +
-                            "       <tr>\n" +
-                            "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                            "src=\"" + symbolPrefix.getResourceName( format ) + "\" /><td>" + node.getCardinality() +
-                            "</td><td><img " +
-                            "src=\"" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
-                            "       </tr>\n" +
-                            "     </table> >]" ) );
+                "  " + node.getId().getId() + " [label=<\n" +
+                    "     <table border=\"0\">\n" +
+                    "       <tr>\n" +
+                    "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
+                    "src=\"" + symbolPrefix.getResourceName( format ) + "\" /><td>" + node.getCardinality() +
+                    "</td><td><img " +
+                    "src=\"" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
+                    "       </tr>\n" +
+                    "     </table> >]" ) );
+        }
+
+        private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement(
+                "  " + nodeId.getId() + " [style=invis]"
+            ) );
         }
     }
 }
