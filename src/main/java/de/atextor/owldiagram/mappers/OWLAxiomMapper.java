@@ -3,6 +3,8 @@ package de.atextor.owldiagram.mappers;
 import com.google.common.collect.Sets;
 import de.atextor.owldiagram.graph.Edge;
 import de.atextor.owldiagram.graph.GraphElement;
+import de.atextor.owldiagram.graph.Node;
+import de.atextor.owldiagram.graph.NodeType;
 import de.atextor.owldiagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
@@ -30,6 +32,7 @@ import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
@@ -79,7 +82,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Result subClassResult = axiom.getSubClass().accept( mapper );
 
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassResult.getNode().getId(),
-                superClassResult.getNode().getId() );
+            superClassResult.getNode().getId() );
 
         return superClassResult.and( subClassResult ).and( edge ).toStream();
     }
@@ -146,7 +149,29 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLObjectPropertyAssertionAxiom axiom ) {
-        return Stream.empty();
+        final OWLIndividualVisitorEx<Result> individualMapper = mappingConfig.getOwlIndividualMapper();
+        final OWLPropertyExpressionVisitorEx<Result> propertyMapper = mappingConfig.getOwlPropertyExpressionMapper();
+        final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
+
+        final Result subjectResult = axiom.getSubject().accept( individualMapper );
+        final Result propertyResult = axiom.getProperty().accept( propertyMapper );
+        final Result objectResult = axiom.getObject().accept( individualMapper );
+
+        final Node invisible = new NodeType.Invisible( identifierMapper.getSyntheticId() );
+        final Edge subjectToInvisible = new PlainEdge( Edge.Type.NO_ARROW, subjectResult.getNode().getId(),
+            invisible.getId() );
+        final Edge invisibleToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, invisible.getId(),
+            objectResult.getNode().getId() );
+        final Edge invisibleToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, invisible.getId(),
+            propertyResult.getNode().getId() );
+
+        return subjectResult
+            .and( propertyResult )
+            .and( objectResult )
+            .and( invisible )
+            .and( subjectToInvisible )
+            .and( invisibleToObject )
+            .and( invisibleToProperty ).toStream();
     }
 
     @Override
@@ -162,7 +187,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Result subPropertyResult = axiom.getSubProperty().accept( mapper );
 
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
-                superPropertyResult.getNode().getId() );
+            superPropertyResult.getNode().getId() );
 
         return superPropertyResult.and( subPropertyResult ).and( edge ).toStream();
     }
@@ -202,16 +227,16 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     Stream<GraphElement> visit( final A axiom, final V visitor ) {
 
         final Map<O, Result> operands = axiom.operands().collect( Collectors.toMap( Function.identity(),
-                object -> object.accept( visitor ) ) );
+            object -> object.accept( visitor ) ) );
 
         // Create all combinations of operands, but (1) keep every combination only once,
         // regardless of direction and (2) remove those combinations where both elements are the same
         final Set<List<O>> combinations = Sets.cartesianProduct( Arrays.asList( operands.keySet(),
-                operands.keySet() ) ).stream().map( expressionsList -> {
-                    final List<O> newList = new ArrayList<>( expressionsList );
-                    newList.sort( Comparator.comparing( o -> operands.get( o ).getNode().getId().getId() ) );
-                    return newList;
-                }
+            operands.keySet() ) ).stream().map( expressionsList -> {
+                final List<O> newList = new ArrayList<>( expressionsList );
+                newList.sort( Comparator.comparing( o -> operands.get( o ).getNode().getId().getId() ) );
+                return newList;
+            }
         ).filter( expressionsList -> {
             final Iterator<O> iterator = expressionsList.iterator();
             return !iterator.next().equals( iterator.next() );
@@ -223,7 +248,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
             final Result result1 = operands.get( iterator.next() );
             final Result result2 = operands.get( iterator.next() );
             return new PlainEdge( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, result1.getNode().getId(),
-                    result2.getNode().getId() );
+                result2.getNode().getId() );
         } );
 
         return Stream.concat( operands.values().stream().flatMap( Result::toStream ), edges );
@@ -240,10 +265,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final OWLClassExpression classExpression = axiom.getClassExpression();
         final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
         final Result classExpressionResult =
-                classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
+            classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
 
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualResult.getNode().getId(),
-                classExpressionResult.getNode().getId() );
+            classExpressionResult.getNode().getId() );
         return individualResult.and( classExpressionResult ).and( edge ).toStream();
     }
 
