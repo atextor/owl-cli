@@ -23,14 +23,14 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     @Override
     public Result visit( final OWLObjectInverseOf property ) {
         final Node complementNode =
-                new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
+            new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
         final Result propertyVisitorResult =
-                invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
+            invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge propertyEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
-                propertyVisitorResult.getNode().getId() );
+            propertyVisitorResult.getNode().getId() );
         return new Result( complementNode, Stream.concat( Stream.of( propertyEdge,
-                propertyVisitorResult.getNode() ), propertyVisitorResult.getRemainingElements() ) );
+            propertyVisitorResult.getNode() ), propertyVisitorResult.getRemainingElements() ) );
     }
 
     @Override
@@ -38,7 +38,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AbstractRole( id, label );
-        return new Result( node, Stream.empty() );
+        return Result.of( node );
     }
 
     @Override
@@ -46,7 +46,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.ConcreteRole( id, label );
-        return new Result( node, Stream.empty() );
+        return Result.of( node );
     }
 
     @Override
@@ -54,6 +54,6 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AnnotationRole( id, label );
-        return new Result( node, Stream.empty() );
+        return Result.of( node );
     }
 }

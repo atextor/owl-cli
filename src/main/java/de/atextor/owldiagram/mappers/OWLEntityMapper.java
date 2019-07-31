@@ -10,8 +10,6 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
-import java.util.stream.Stream;
-
 public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     private MappingConfiguration mappingConfig;
 
@@ -22,48 +20,48 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     @Override
     public Result visit( final OWLClass classExpression ) {
         final Node node =
-                new NodeType.Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
-                        mappingConfig.getNameMapper().getName( classExpression ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
+                mappingConfig.getNameMapper().getName( classExpression ) );
+        return Result.of( node );
     }
 
     @Override
     public Result visit( final OWLDatatype dataType ) {
         final Node node =
-                new NodeType.Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
-                        mappingConfig.getNameMapper().getName( dataType ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
+                mappingConfig.getNameMapper().getName( dataType ) );
+        return Result.of( node );
     }
 
     @Override
     public Result visit( final OWLNamedIndividual individual ) {
         final Node node =
-                new NodeType.Individual( mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() ),
-                        mappingConfig.getNameMapper().getName( individual ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.Individual( mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() ),
+                mappingConfig.getNameMapper().getName( individual ) );
+        return Result.of( node );
     }
 
     @Override
     public Result visit( final OWLObjectProperty property ) {
         final Node node =
-                new NodeType.AbstractRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                        mappingConfig.getNameMapper().getName( property ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.AbstractRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+                mappingConfig.getNameMapper().getName( property ) );
+        return Result.of( node );
     }
 
     @Override
     public Result visit( final OWLDataProperty property ) {
         final Node node =
-                new NodeType.ConcreteRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                        mappingConfig.getNameMapper().getName( property ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.ConcreteRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+                mappingConfig.getNameMapper().getName( property ) );
+        return Result.of( node );
     }
 
     @Override
     public Result visit( final OWLAnnotationProperty property ) {
         final Node node =
-                new NodeType.AnnotationRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                        mappingConfig.getNameMapper().getName( property ) );
-        return new Result( node, Stream.empty() );
+            new NodeType.AnnotationRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+                mappingConfig.getNameMapper().getName( property ) );
+        return Result.of( node );
     }
 }

@@ -11,6 +11,10 @@ public class Result {
     Node node;
     Stream<GraphElement> remainingElements;
 
+    public static Result of( final Node node ) {
+        return new Result( node, Stream.empty() );
+    }
+
     public Result and( final Result other ) {
         final Stream<GraphElement> otherParts = Stream.concat( Stream.of( other.getNode() ),
             other.getRemainingElements() );
