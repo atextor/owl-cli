@@ -101,11 +101,11 @@ public class DiagramGenerator {
         }
 
         final Stream<Try<Void>> resources = Arrays.stream( Resource.values() ).map( resource ->
-                writeResourceToDirectory( resource, tempDir, configuration ) );
+            writeResourceToDirectory( resource, tempDir, configuration ) );
 
         return resources.filter( Try::isFailure ).findAny()
-                .map( element -> Try.<File>failure( element.getCause() ) )
-                .orElse( Try.success( tempDir.toFile() ) );
+            .map( element -> Try.<File>failure( element.getCause() ) )
+            .orElse( Try.success( tempDir.toFile() ) );
     }
 
     public Try<Void> generate( final InputStream ontologyInputStream, final OutputStream output,
@@ -135,6 +135,6 @@ public class DiagramGenerator {
         };
 
         return setupTempDirectory( configuration )
-                .flatMap( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) );
+            .flatMap( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) );
     }
 }

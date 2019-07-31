@@ -49,6 +49,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 return "arrowhead = empty";
             case DOUBLE_ENDED_HOLLOW_ARROW:
                 return "dir = both, arrowhead = empty, arrowtail = empty";
+            case NO_ARROW:
+                return "arrowhead = none";
             default:
                 return "";
         }
@@ -292,7 +294,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                "  " + nodeId.getId() + " [style=invis]"
+                "  " + nodeId.getId() + " [label=\"\", width=\"0\", style=\"invis\"]"
             ) );
         }
     }
