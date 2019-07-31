@@ -19,6 +19,6 @@ public class IdentifierMapperImpl implements IdentifierMapper {
 
     @Override
     public Node.Id getSyntheticId() {
-        return new Node.Id( UUID.randomUUID().toString() );
+        return new Node.Id( "_" + UUID.randomUUID().toString().replace( "-", "" ) );
     }
 }
