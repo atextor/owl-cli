@@ -92,7 +92,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
-    visit( final OWLPropertyAssertionAxiom<P, O> axiom, final Supplier<Node> thirdNodeSupplier ) {
+    visit( final OWLPropertyAssertionAxiom<P, O> axiom, final Supplier<Node> thirdNodeSupplier,
+           final Supplier<Edge.Type> toThirdNodeEdgeSupplier ) {
 
         final OWLIndividualVisitorEx<Result> individualMapper = mappingConfig.getOwlIndividualMapper();
         final OWLPropertyExpressionVisitorEx<Result> propertyMapper = mappingConfig.getOwlPropertyExpressionMapper();
@@ -103,7 +104,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Result objectResult = axiom.getObject().accept( objectMapper );
 
         final Node thirdNode = thirdNodeSupplier.get();
-        final Edge subectToThirdNode = new PlainEdge( Edge.Type.NO_ARROW, subjectResult.getNode().getId(),
+        final Edge subectToThirdNode = new PlainEdge( toThirdNodeEdgeSupplier.get(), subjectResult.getNode().getId(),
             thirdNode.getId() );
         final Edge thirdNodeToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
             objectResult.getNode().getId() );
@@ -124,7 +125,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
 
         final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Complement( identifierMapper.getSyntheticId() );
-        return visit( axiom, thirdNodeSupplier );
+        final Supplier<Edge.Type> toThirdNodeEdgeSupplier = () -> Edge.Type.DEFAULT_ARROW;
+        return visit( axiom, thirdNodeSupplier, toThirdNodeEdgeSupplier );
     }
 
     @Override
@@ -187,7 +189,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
 
         final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Invisible( identifierMapper.getSyntheticId() );
-        return visit( axiom, thirdNodeSupplier );
+        final Supplier<Edge.Type> toThirdNodeEdgeSupplier = () -> Edge.Type.NO_ARROW;
+        return visit( axiom, thirdNodeSupplier, toThirdNodeEdgeSupplier );
     }
 
     @Override
