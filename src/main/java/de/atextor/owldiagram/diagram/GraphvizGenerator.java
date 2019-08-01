@@ -271,8 +271,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 "  " + nodeId.getId() + " [label=<\n" +
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                    "src=\"" + symbol.getResourceName( format ) + "\" /></td>\n" +
+                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
+                    "src=\"" + symbol.getResourceName( format ) + "\" scale=\"true\"/></td>\n" +
                     "       </tr>\n" +
                     "     </table> >]" ) );
         }
