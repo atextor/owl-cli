@@ -80,21 +80,31 @@ public class MapperTestBase {
     }
 
     protected Predicate<Node> isInvisible() {
-        final NodeType.Visitor<Boolean> nodeTypeVisitor = new NodeType.VisitorAdapter<Boolean>( false ) {
-            @Override
-            public Boolean visit( final NodeType.Invisible invisible ) {
-                return true;
-            }
-        };
-
-        final GraphElement.Visitor<Boolean> elementVisitor = new GraphElement.VisitorAdapter<Boolean>( false ) {
+        return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
             @Override
             public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( nodeTypeVisitor );
+                return nodeType.accept( new NodeType.VisitorAdapter<Boolean>( false ) {
+                    @Override
+                    public Boolean visit( final NodeType.Invisible invisible ) {
+                        return true;
+                    }
+                } );
             }
-        };
+        } );
+    }
 
-        return node -> node.accept( elementVisitor );
+    protected Predicate<Node> isComplement() {
+        return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
+            @Override
+            public Boolean visit( final NodeType nodeType ) {
+                return nodeType.accept( new NodeType.VisitorAdapter<Boolean>( false ) {
+                    @Override
+                    public Boolean visit( final NodeType.Complement invisible ) {
+                        return true;
+                    }
+                } );
+            }
+        } );
     }
 
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {

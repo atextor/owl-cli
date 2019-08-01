@@ -9,6 +9,7 @@ import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
@@ -139,5 +140,10 @@ public class OWLObjectMapper implements OWLObjectVisitorEx<Result> {
     @Override
     public Result visit( final OWLClass classExpression ) {
         return mappingConfig.getOwlClassExpressionMapper().visit( classExpression );
+    }
+
+    @Override
+    public Result visit( final OWLNamedIndividual individual ) {
+        return mappingConfig.getOwlIndividualMapper().visit( individual );
     }
 }

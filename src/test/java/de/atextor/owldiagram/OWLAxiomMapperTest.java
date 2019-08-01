@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIndividual;
+import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
@@ -26,6 +27,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentClassesAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentDataPropertiesAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentObjectPropertiesAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLNegativeObjectPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLSubObjectPropertyOfAxiomImpl;
@@ -62,6 +64,41 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLNegativeObjectPropertyAssertionAxiom() {
+        final IRI fooIri = IRI.create( "http://test.de#foo" );
+        final IRI barIri = IRI.create( "http://test.de#bar" );
+        final IRI propertyIri = IRI.create( "http://test.de#property" );
+
+        final OWLIndividual foo = new OWLNamedIndividualImpl( fooIri );
+        final OWLIndividual bar = new OWLNamedIndividualImpl( barIri );
+        final OWLObjectPropertyExpression property = new OWLObjectPropertyImpl( propertyIri );
+        final OWLNegativeObjectPropertyAssertionAxiom axiom = new OWLNegativeObjectPropertyAssertionAxiomImpl( foo,
+            property, bar, Collections.emptyList() );
+
+        final String complementId = "complementNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
+
+        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        assertThat( result ).hasSize( 7 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "property" ) );
+        assertThat( nodes ).anyMatch( isComplement() );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+
+        final Edge fooToComplement =
+            edges.stream().filter( isEdgeWithFromAndTo( "foo", complementId ) ).findAny().get();
+        final Edge complementToBar =
+            edges.stream().filter( isEdgeWithFromAndTo( complementId, "bar" ) ).findAny().get();
+        final Edge complementToProp =
+            edges.stream().filter( isEdgeWithFromAndTo( complementId, "property" ) ).findAny().get();
+        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.NO_ARROW );
+        assertThat( complementToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( complementToProp.getType() ).isEqualTo( Edge.Type.DASHED_ARROW );
     }
 
     @Test

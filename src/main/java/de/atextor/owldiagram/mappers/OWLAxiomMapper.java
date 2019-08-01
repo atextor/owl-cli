@@ -44,6 +44,9 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
@@ -64,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -87,9 +91,40 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         return superClassResult.and( subClassResult ).and( edge ).toStream();
     }
 
+    private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
+    visit( final OWLPropertyAssertionAxiom<P, O> axiom, final Supplier<Node> thirdNodeSupplier ) {
+
+        final OWLIndividualVisitorEx<Result> individualMapper = mappingConfig.getOwlIndividualMapper();
+        final OWLPropertyExpressionVisitorEx<Result> propertyMapper = mappingConfig.getOwlPropertyExpressionMapper();
+        final OWLObjectVisitorEx<Result> objectMapper = mappingConfig.getOwlObjectMapper();
+
+        final Result subjectResult = axiom.getSubject().accept( individualMapper );
+        final Result propertyResult = axiom.getProperty().accept( propertyMapper );
+        final Result objectResult = axiom.getObject().accept( objectMapper );
+
+        final Node thirdNode = thirdNodeSupplier.get();
+        final Edge subectToThirdNode = new PlainEdge( Edge.Type.NO_ARROW, subjectResult.getNode().getId(),
+            thirdNode.getId() );
+        final Edge thirdNodeToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
+            objectResult.getNode().getId() );
+        final Edge thirdNodeToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, thirdNode.getId(),
+            propertyResult.getNode().getId() );
+
+        return subjectResult
+            .and( propertyResult )
+            .and( objectResult )
+            .and( thirdNode )
+            .and( subectToThirdNode )
+            .and( thirdNodeToObject )
+            .and( thirdNodeToProperty ).toStream();
+    }
+
     @Override
     public Stream<GraphElement> visit( final OWLNegativeObjectPropertyAssertionAxiom axiom ) {
-        return Stream.empty();
+        final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
+
+        final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Complement( identifierMapper.getSyntheticId() );
+        return visit( axiom, thirdNodeSupplier );
     }
 
     @Override
@@ -149,29 +184,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final OWLObjectPropertyAssertionAxiom axiom ) {
-        final OWLIndividualVisitorEx<Result> individualMapper = mappingConfig.getOwlIndividualMapper();
-        final OWLPropertyExpressionVisitorEx<Result> propertyMapper = mappingConfig.getOwlPropertyExpressionMapper();
         final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
 
-        final Result subjectResult = axiom.getSubject().accept( individualMapper );
-        final Result propertyResult = axiom.getProperty().accept( propertyMapper );
-        final Result objectResult = axiom.getObject().accept( individualMapper );
-
-        final Node invisible = new NodeType.Invisible( identifierMapper.getSyntheticId() );
-        final Edge subjectToInvisible = new PlainEdge( Edge.Type.NO_ARROW, subjectResult.getNode().getId(),
-            invisible.getId() );
-        final Edge invisibleToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, invisible.getId(),
-            objectResult.getNode().getId() );
-        final Edge invisibleToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, invisible.getId(),
-            propertyResult.getNode().getId() );
-
-        return subjectResult
-            .and( propertyResult )
-            .and( objectResult )
-            .and( invisible )
-            .and( subjectToInvisible )
-            .and( invisibleToObject )
-            .and( invisibleToProperty ).toStream();
+        final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Invisible( identifierMapper.getSyntheticId() );
+        return visit( axiom, thirdNodeSupplier );
     }
 
     @Override
