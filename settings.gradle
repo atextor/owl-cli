@@ -1,3 +1,4 @@
 rootProject.name = 'owl-cli'
-include 'diagram'
-include 'cli'
+include ':diagram'
+include ':cli'
+include ':docs'

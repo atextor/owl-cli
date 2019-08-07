@@ -1,0 +1,11 @@
+plugins {
+    id 'org.asciidoctor.jvm.convert'
+}
+
+asciidoctor {
+    sources {
+        include 'index.adoc'
+    }
+}
+
+build.dependsOn 'asciidoctor'

@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id "com.github.ben-manes.versions" version "0.22.0"
+    id 'org.asciidoctor.jvm.convert' version "2.3.0" apply false
  }
 
 allprojects {
@@ -17,3 +18,4 @@ apply plugin: 'java'
 
 
 defaultTasks 'test', 'shadowJar'
+
