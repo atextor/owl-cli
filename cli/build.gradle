@@ -10,12 +10,12 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
 dependencies {
     implementation project(':diagram')
-    implementation 'net.sourceforge.owlapi:owlapi-distribution:5.1.8'
+    implementation 'net.sourceforge.owlapi:owlapi-distribution:5.1.11'
     implementation 'io.vavr:vavr:0.10.0'
     implementation 'com.beust:jcommander:1.72'
 }
