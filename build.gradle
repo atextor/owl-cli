@@ -15,4 +15,4 @@ subprojects {
 apply plugin: 'java'
 
 
-defaultTasks 'shadowJar'
+defaultTasks 'test', 'shadowJar'

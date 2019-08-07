@@ -14,3 +14,14 @@ dependencies {
     testCompile 'org.assertj:assertj-core:3.11.1'
 }
 
+test {
+    useJUnit()
+    maxHeapSize = '1G'
+    ignoreFailures = false
+    failFast = true
+
+    filter {
+        includeTestsMatching "*Test"
+    }
+}
+
