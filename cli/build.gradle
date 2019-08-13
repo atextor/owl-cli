@@ -11,6 +11,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id "lt.neworld.jdeploy" version "0.6.0"
 }
 
 dependencies {
@@ -23,7 +24,20 @@ dependencies {
 shadowJar {
     baseName = 'owl-cli'
     classifier = null
-    version = null
+    version = "$version"
+}
+
+jdeploy {
+    name = "owl-cli"
+    binName = "owl"
+    author = "Andreas Textor"
+    description = "Command line tool for ontology engineering"
+    license = "LGPL"
+    repository = "https://github.com/atextor/owl-cli"
+
+    options {
+        allowGlobalInstall = true
+    }
 }
 
 mainClassName = 'de.atextor.owlcli.App'
