@@ -103,7 +103,7 @@ public class App {
         // Input is something else, output is not given -> interpret input as filename,
         // change input's file extension to target format and use as output file name
         final String outputFilename = inputFilename.replaceFirst( "[.][^.]+$",
-                "." + targetFormat.toString().toLowerCase() );
+            "." + targetFormat.toString().toLowerCase() );
         try {
             return Try.success( new FileOutputStream( outputFilename ) );
         } catch ( final FileNotFoundException exception ) {
@@ -141,17 +141,17 @@ public class App {
 
     private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
         return Configuration.builder()
-                .fontname( arguments.fontname )
-                .fontsize( arguments.fontsize )
-                .nodeFontname( arguments.nodeFontName )
-                .nodeFontsize( arguments.nodeFontsize )
-                .nodeShape( arguments.nodeShape )
-                .nodeMargin( arguments.nodeMargin )
-                .nodeStyle( arguments.nodeStyle )
-                .format( arguments.format )
-                .layoutDirection( arguments.layoutDirection )
-                .dotBinary( arguments.dotBinary )
-                .build();
+            .fontname( arguments.fontname )
+            .fontsize( arguments.fontsize )
+            .nodeFontname( arguments.nodeFontName )
+            .nodeFontsize( arguments.nodeFontsize )
+            .nodeShape( arguments.nodeShape )
+            .nodeMargin( arguments.nodeMargin )
+            .nodeStyle( arguments.nodeStyle )
+            .format( arguments.format )
+            .layoutDirection( arguments.layoutDirection )
+            .dotBinary( arguments.dotBinary )
+            .build();
     }
 
     private static void exitWithErrorMessage( final Throwable throwable ) {
@@ -166,7 +166,7 @@ public class App {
         System.out.println();
         System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
         System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
-                "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
+            "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
         System.exit( 0 );
     }
 
@@ -174,8 +174,8 @@ public class App {
         final Arguments arguments = new Arguments();
 
         final JCommander jCommander = JCommander.newBuilder()
-                .addObject( arguments )
-                .build();
+            .addObject( arguments )
+            .build();
 
         parseCommandLineArguments( args, jCommander ).onFailure( App::exitWithErrorMessage );
 
@@ -186,8 +186,8 @@ public class App {
         final Configuration configuration = buildConfigurationFromArguments( arguments );
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
-                openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
-                        new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
+            openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
+                new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
         ).onFailure( App::exitWithErrorMessage );
     }
 }
