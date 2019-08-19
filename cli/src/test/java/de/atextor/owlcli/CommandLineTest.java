@@ -16,14 +16,14 @@ public class CommandLineTest {
 
     @Test
     public void testHelp() {
-        exit.expectSystemExit();
+        exit.expectSystemExitWithStatus( 0 );
         exit.checkAssertionAfterwards( () -> assertThat( systemOutRule.getLog() ).contains( "Usage: " ) );
         App.main( new String[]{ "-h" } );
     }
 
     @Test
     public void testHelp2() {
-        exit.expectSystemExit();
+        exit.expectSystemExitWithStatus( 0 );
         exit.checkAssertionAfterwards( () -> assertThat( systemOutRule.getLog() ).contains( "Usage: " ) );
         App.main( new String[]{ "--help" } );
     }
