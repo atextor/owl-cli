@@ -82,5 +82,7 @@ public class App extends CommandBase<App.Arguments> {
         }
 
         System.out.println( app.getHelp() );
+
+        System.exit( 0 );
     }
 }

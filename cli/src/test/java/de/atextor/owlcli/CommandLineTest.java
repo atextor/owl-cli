@@ -1,31 +1,30 @@
 package de.atextor.owlcli;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.contrib.java.lang.system.ExpectedSystemExit;
-import org.junit.contrib.java.lang.system.SystemOutRule;
+import org.junit.jupiter.api.Test;
 
+import static de.atextor.owlcli.MainClassRunner.run;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommandLineTest {
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
-
-    @Rule
-    public final ExpectedSystemExit exit = ExpectedSystemExit.none();
-
     @Test
     public void testHelp() {
-        exit.expectSystemExitWithStatus( 0 );
-        exit.checkAssertionAfterwards( () -> assertThat( systemOutRule.getLog() ).contains( "Usage: " ) );
-        App.main( new String[]{ "-h" } );
+        final Runnable command = () -> App.main( new String[]{ "-h" } );
+        final MainClassRunner.ExecutionResult result = run( command );
+
+        assertThat( result.getExitStatus() ).isEqualTo( 0 );
+        assertThat( result.getStdOut() ).contains( "Usage: " );
+        assertThat( result.getStdErr() ).isEmpty();
+        assertThat( false ).isFalse();
     }
 
     @Test
     public void testHelp2() {
-        exit.expectSystemExitWithStatus( 0 );
-        exit.checkAssertionAfterwards( () -> assertThat( systemOutRule.getLog() ).contains( "Usage: " ) );
-        App.main( new String[]{ "--help" } );
-    }
+        final Runnable command = () -> App.main( new String[]{ "--help" } );
+        final MainClassRunner.ExecutionResult result = run( command );
 
+        assertThat( result.getExitStatus() ).isEqualTo( 0 );
+        assertThat( result.getStdOut() ).contains( "Usage: " );
+        assertThat( result.getStdErr() ).isEmpty();
+        assertThat( false ).isFalse();
+    }
 }

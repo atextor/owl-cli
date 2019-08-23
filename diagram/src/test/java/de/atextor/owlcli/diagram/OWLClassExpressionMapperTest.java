@@ -3,7 +3,7 @@ package de.atextor.owlcli.diagram;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLClassExpressionMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 

@@ -6,7 +6,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
