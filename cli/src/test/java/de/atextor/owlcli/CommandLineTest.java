@@ -14,7 +14,6 @@ public class CommandLineTest {
         assertThat( result.getExitStatus() ).isEqualTo( 0 );
         assertThat( result.getStdOut() ).contains( "Usage: " );
         assertThat( result.getStdErr() ).isEmpty();
-        assertThat( false ).isFalse();
     }
 
     @Test
@@ -25,6 +24,5 @@ public class CommandLineTest {
         assertThat( result.getExitStatus() ).isEqualTo( 0 );
         assertThat( result.getStdOut() ).contains( "Usage: " );
         assertThat( result.getStdErr() ).isEmpty();
-        assertThat( false ).isFalse();
     }
 }
