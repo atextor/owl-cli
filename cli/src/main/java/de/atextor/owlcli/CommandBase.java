@@ -3,6 +3,7 @@ package de.atextor.owlcli;
 import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -47,6 +48,10 @@ abstract public class CommandBase<T> implements Consumer<T> {
         // change input's file extension to target format and use as output file name
         final String outputFilename = inputFilename.replaceFirst( "[.][^.]+$",
             "." + targetFormat.toString().toLowerCase() );
+        if ( outputFilename.equals( inputFilename ) ) {
+            return Try.failure( new ErrorMessage( "Can't determine an ouput filename" ) );
+        }
+
         try {
             return Try.success( new FileOutputStream( outputFilename ) );
         } catch ( final FileNotFoundException exception ) {
@@ -59,7 +64,11 @@ abstract public class CommandBase<T> implements Consumer<T> {
             return Try.success( System.in );
         }
         try {
-            return Try.success( new FileInputStream( input ) );
+            final File inputFile = new File( input );
+            if ( !inputFile.exists() ) {
+                return Try.failure( new FileNotFoundException( input ) );
+            }
+            return Try.success( new FileInputStream( inputFile ) );
         } catch ( final FileNotFoundException exception ) {
             return Try.failure( exception );
         }

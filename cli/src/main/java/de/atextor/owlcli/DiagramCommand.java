@@ -31,41 +31,41 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
     @Parameters( commandDescription = "Generate diagrams for OWL ontologies" )
     static class Arguments {
         @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
-        private boolean help;
+        public boolean help;
 
         @Parameter( description = "input [output]", required = true, variableArity = true )
-        private List<String> inputOutput;
+        public List<String> inputOutput;
 
         @Parameter( names = { "--fontname" }, description = "Default font" )
-        private String fontname = config.fontname;
+        public String fontname = config.fontname;
 
         @Parameter( names = { "--fontsize" }, description = "Default font size" )
-        private int fontsize = config.fontsize;
+        public int fontsize = config.fontsize;
 
         @Parameter( names = { "--nodefontname" }, description = "Font for nodes" )
-        private String nodeFontName = config.nodeFontname;
+        public String nodeFontName = config.nodeFontname;
 
         @Parameter( names = { "--nodefontsize" }, description = "Font size for nodes" )
-        private int nodeFontsize = config.nodeFontsize;
+        public int nodeFontsize = config.nodeFontsize;
 
         @Parameter( names = { "--nodeshape" }, description = "Node shape" )
-        private String nodeShape = config.nodeShape;
+        public String nodeShape = config.nodeShape;
 
         @Parameter( names = { "--nodemargin" }, description = "Node margin" )
-        private double nodeMargin = config.nodeMargin;
+        public double nodeMargin = config.nodeMargin;
 
         @Parameter( names = { "--nodestyle" }, description = "Node style" )
-        private String nodeStyle = config.nodeStyle;
+        public String nodeStyle = config.nodeStyle;
 
         @Parameter( names = { "--format" }, description = "Output file format", converter = FormatParser.class )
-        private Configuration.Format format = config.format;
+        public Configuration.Format format = config.format;
 
         @Parameter( names = { "--direction" }, description = "Diagram layout direction", converter =
             LayoutDirectionParser.class )
-        private Configuration.LayoutDirection layoutDirection = config.layoutDirection;
+        public Configuration.LayoutDirection layoutDirection = config.layoutDirection;
 
         @Parameter( names = { "--dotbinary" }, description = "Path to dot binary" )
-        private String dotBinary = config.dotBinary;
+        public String dotBinary = config.dotBinary;
     }
 
     private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
@@ -85,10 +85,6 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
 
     @Override
     public void accept( final Arguments arguments ) {
-        if ( arguments.inputOutput.size() > 2 ) {
-            exitWithErrorMessage( new ErrorMessage( "Invalid number of input/output arguments" ) );
-        }
-
         if ( arguments.help ) {
             System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
             System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
@@ -96,10 +92,14 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
             System.exit( 0 );
         }
 
+        if ( arguments.inputOutput == null || arguments.inputOutput.size() > 2 ) {
+            exitWithErrorMessage( new ErrorMessage( "Error: Invalid number of input/output arguments" ) );
+        }
+
         final Configuration configuration = buildConfigurationFromArguments( arguments );
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
-        openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
-            openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
+        openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
+            openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
                 new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
         ).onFailure( this::exitWithErrorMessage );
     }

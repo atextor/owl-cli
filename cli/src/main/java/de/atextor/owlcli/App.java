@@ -72,8 +72,13 @@ public class App extends CommandBase<App.Arguments> {
 
         final App app = new App();
         app.setjCommander( jCommander );
-        app.parseCommandLineArguments( args ).onFailure( app::exitWithErrorMessage );
 
+        if ( args.length == 0 ) {
+            System.out.println( app.getHelp() );
+            System.exit( 0 );
+        }
+
+        app.parseCommandLineArguments( args ).onFailure( app::exitWithErrorMessage );
         app.accept( arguments );
 
         if ( jCommander.getParsedCommand().equals( diagramCommand.getCommandName() ) ) {
@@ -82,7 +87,6 @@ public class App extends CommandBase<App.Arguments> {
         }
 
         System.out.println( app.getHelp() );
-
         System.exit( 0 );
     }
 }
