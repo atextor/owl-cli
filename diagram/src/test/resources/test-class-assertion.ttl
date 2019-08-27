@@ -1,0 +1,6 @@
+@prefix : <http://test.de/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<http://test.de/> a owl:Ontology .
+:Foo a owl:Class .
+:Bar a owl:NamedIndividual, :Foo .

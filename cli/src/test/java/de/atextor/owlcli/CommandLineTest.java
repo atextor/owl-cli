@@ -45,34 +45,4 @@ public class CommandLineTest {
         assertThat( result.getStdOut() ).isEmpty();
         assertThat( result.getStdErr() ).contains( "Error: " );
     }
-
-    @Test
-    public void testDiagramWithoutParameters() {
-        final Runnable command = () -> App.main( new String[]{ "diagram" } );
-        final MainClassRunner.ExecutionResult result = run( command );
-
-        assertThat( result.getExitStatus() ).isEqualTo( 1 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).contains( "Error: " );
-    }
-
-    @Test
-    public void testDiagramWithHelp() {
-        final Runnable command = () -> App.main( new String[]{ "diagram", "--help" } );
-        final MainClassRunner.ExecutionResult result = run( command );
-
-        assertThat( result.getExitStatus() ).isEqualTo( 0 );
-        assertThat( result.getStdOut() ).isNotEmpty();
-        assertThat( result.getStdErr() ).isEmpty();
-    }
-
-    @Test
-    public void testDiagramWithInvalidInput() {
-        final Runnable command = () -> App.main( new String[]{ "diagram", "definitelynotexistingfile" } );
-        final MainClassRunner.ExecutionResult result = run( command );
-
-        assertThat( result.getExitStatus() ).isEqualTo( 1 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).contains( "Error: " );
-    }
 }
