@@ -215,7 +215,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
                 identifierMapper( () -> new IdentifierMapperImpl( mappingConfig ) );
             }
             if ( nameMapperSupplier == null ) {
-                nameMapper( () -> new NameMapperImpl( mappingConfig ) );
+                nameMapper( () -> new DefaultNameMapper( mappingConfig ) );
             }
 
             mappingConfig.setOwlAxiomMapper( owlAxiomMapperSupplier.get() );

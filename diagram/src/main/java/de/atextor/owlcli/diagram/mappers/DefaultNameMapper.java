@@ -2,10 +2,10 @@ package de.atextor.owlcli.diagram.mappers;
 
 import org.semanticweb.owlapi.model.HasIRI;
 
-class NameMapperImpl implements NameMapper {
-    private MappingConfiguration mappingConfig;
+class DefaultNameMapper implements NameMapper {
+    private final MappingConfiguration mappingConfig;
 
-    public NameMapperImpl( final MappingConfiguration mappingConfig ) {
+    public DefaultNameMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
