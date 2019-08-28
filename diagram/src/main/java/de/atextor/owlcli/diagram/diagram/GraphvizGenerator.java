@@ -18,9 +18,10 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     private final GraphVisitor<GraphvizDocument> graphVisitor;
 
     GraphvizGenerator( final Configuration configuration ) {
-        decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format );
+        decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format,
+            configuration.resourceDirectoryName );
         final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz =
-            new GraphvizNodeTypeVisitor( configuration.format );
+            new GraphvizNodeTypeVisitor( configuration.format, configuration.resourceDirectoryName );
 
         final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
@@ -66,9 +67,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
     class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
         Configuration.Format format;
+        String resourceDirectoryName;
 
-        GraphvizDecorationVisitor( final Configuration.Format format ) {
+        GraphvizDecorationVisitor( final Configuration.Format format, final String resourceDirectoryName ) {
             this.format = format;
+            this.resourceDirectoryName = resourceDirectoryName;
         }
 
         @Override
@@ -111,7 +114,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 "     <table border=\"0\">\n" +
                 "       <tr>\n" +
                 "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
-                image.getResourceName( format ) + "\" /></td>\n" +
+                resourceDirectoryName + "/" + image.getResourceName( format ) + "\" /></td>\n" +
                 "       </tr>\n" +
                 "     </table> >";
         }
@@ -119,9 +122,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
     class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
         Configuration.Format format;
+        String resourceDirectoryname;
 
-        GraphvizNodeTypeVisitor( final Configuration.Format format ) {
+        GraphvizNodeTypeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
             this.format = format;
+            this.resourceDirectoryname = resourceDirectoryname;
         }
 
         @Override
@@ -260,7 +265,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
                     "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                    "src=\"" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
+                    "src=\"" + resourceDirectoryname + "/" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
                     ">\n" +
                     "       </tr>\n" +
                     "     </table> >]" ) );
@@ -272,7 +277,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
                     "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                    "src=\"" + symbol.getResourceName( format ) + "\" scale=\"true\"/></td>\n" +
+                    "src=\"" + resourceDirectoryname + "/" + symbol.getResourceName( format ) + "\" scale=\"true" +
+                    "\"/></td>\n" +
                     "       </tr>\n" +
                     "     </table> >]" ) );
         }
@@ -285,9 +291,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "     <table border=\"0\">\n" +
                     "       <tr>\n" +
                     "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                    "src=\"" + symbolPrefix.getResourceName( format ) + "\" /><td>" + node.getCardinality() +
-                    "</td><td><img " +
-                    "src=\"" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
+                    "src=\"" + resourceDirectoryname + "/" + symbolPrefix.getResourceName( format ) + "\" /><td>"
+                    + node.getCardinality() + "</td><td><img " +
+                    "src=\"" + resourceDirectoryname + "/" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
                     "       </tr>\n" +
                     "     </table> >]" ) );
         }

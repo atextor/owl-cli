@@ -53,15 +53,26 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     GraphvizDocument merge( final GraphvizDocument other ) {
         return new GraphvizDocument(
-                Stream.concat( getNodeStatements().stream(), other.getNodeStatements().stream() ).collect( Collectors.toList() ),
-                Stream.concat( getEdgeStatements().stream(), other.getEdgeStatements().stream() ).collect( Collectors.toList() ) );
+            Stream.concat( getNodeStatements().stream(), other.getNodeStatements().stream() ).collect( Collectors.toList() ),
+            Stream.concat( getEdgeStatements().stream(), other.getEdgeStatements().stream() ).collect( Collectors.toList() ) );
     }
 
     @Override
     public String apply( final Configuration configuration ) {
         final StringBuffer buffer = new StringBuffer();
         buffer.append( "digraph G {\n" );
-        buffer.append( configuration.toFragment() );
+        buffer.append( "  rankdir = " ).append( configuration.layoutDirection == Configuration.LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR" );
+        buffer.append( "\n" );
+        buffer.append( "  fontname = \"" ).append( configuration.fontname ).append( "\"\n" );
+        buffer.append( "  fontsize = " ).append( configuration.fontsize ).append( "\n" );
+        buffer.append( "\n" );
+        buffer.append( "  node [\n" );
+        buffer.append( "    fontname = \"" ).append( configuration.nodeFontname ).append( "\"\n" );
+        buffer.append( "    fontsize = " ).append( configuration.nodeFontsize ).append( "\n" );
+        buffer.append( "    shape = \"" ).append( configuration.nodeShape ).append( "\"\n" );
+        buffer.append( "    margin = " ).append( configuration.nodeMargin ).append( "\n" );
+        buffer.append( "    style = \"" ).append( configuration.nodeStyle ).append( "\"\n" );
+        buffer.append( "  ]\n" );
         buffer.append( "\n" );
         nodeStatements.forEach( statement -> {
             buffer.append( "   " );

@@ -66,6 +66,9 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
 
         @Parameter( names = { "--dotbinary" }, description = "Path to dot binary" )
         public String dotBinary = config.dotBinary;
+
+        @Parameter( names = { "--resourcedir-name" }, description = "Name of the resource directory" )
+        public String resourceDirectoryName = config.resourceDirectoryName;
     }
 
     private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
@@ -80,6 +83,7 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
             .format( arguments.format )
             .layoutDirection( arguments.layoutDirection )
             .dotBinary( arguments.dotBinary )
+            .resourceDirectoryName( arguments.resourceDirectoryName )
             .build();
     }
 

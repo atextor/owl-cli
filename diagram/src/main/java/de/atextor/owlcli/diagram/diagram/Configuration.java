@@ -37,18 +37,6 @@ public class Configuration {
     public Format format = Format.SVG;
     @Builder.Default
     public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
-
-    String toFragment() {
-        return "  rankdir = " + ( layoutDirection == LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR" ) + "\n" +
-                "  fontname = \"" + fontname + "\"\n" +
-                "  fontsize = " + fontsize + "\n" +
-                "\n" +
-                "  node [\n" +
-                "    fontname = \"" + nodeFontname + "\"\n" +
-                "    fontsize = " + nodeFontsize + "\n" +
-                "    shape = \"" + nodeShape + "\"\n" +
-                "    margin = " + nodeMargin + "\n" +
-                "    style = \"" + nodeStyle + "\"\n" +
-                "  ]\n";
-    }
+    @Builder.Default
+    public String resourceDirectoryName = "static";
 }

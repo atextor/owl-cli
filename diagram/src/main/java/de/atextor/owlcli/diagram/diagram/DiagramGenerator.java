@@ -1,7 +1,8 @@
 package de.atextor.owlcli.diagram.diagram;
 
-import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.graph.GraphElement;
+import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
+import io.vavr.control.Either;
 import io.vavr.control.Try;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
@@ -15,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.function.Function;
@@ -92,23 +92,19 @@ public class DiagramGenerator {
         return writeStreamToOutput( resourceInput, resourceOutput );
     }
 
-    private Try<File> setupTempDirectory( final Configuration configuration ) {
-        final Path tempDir;
-        try {
-            tempDir = Files.createTempDirectory( "owl-diagram" );
-        } catch ( final IOException exception ) {
-            return Try.failure( exception );
-        }
+    private Try<Path> setupResourceDirectory( final Path outputFilePath, final Configuration configuration ) {
+        final Path targetDirectory = outputFilePath.getParent().resolve( configuration.resourceDirectoryName );
+        targetDirectory.toFile().mkdirs();
 
         final Stream<Try<Void>> resources = Arrays.stream( Resource.values() ).map( resource ->
-            writeResourceToDirectory( resource, tempDir, configuration ) );
+            writeResourceToDirectory( resource, targetDirectory, configuration ) );
 
         return resources.filter( Try::isFailure ).findAny()
-            .map( element -> Try.<File>failure( element.getCause() ) )
-            .orElse( Try.success( tempDir.toFile() ) );
+            .map( element -> Try.<Path>failure( element.getCause() ) )
+            .orElse( Try.success( targetDirectory.getParent() ) );
     }
 
-    public Try<Void> generate( final InputStream ontologyInputStream, final OutputStream output,
+    public Try<Void> generate( final InputStream ontologyInputStream, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
         final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         final OWLOntology ontology;
@@ -120,7 +116,15 @@ public class DiagramGenerator {
         }
     }
 
-    public Try<Void> generate( final OWLOntology ontology, final OutputStream output,
+    private Try<OutputStream> openStream( final Path filePath ) {
+        try {
+            return Try.success( new FileOutputStream( filePath.toFile() ) );
+        } catch ( final FileNotFoundException exeception ) {
+            return Try.failure( exeception );
+        }
+    }
+
+    public Try<Void> generate( final OWLOntology ontology, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
         final Stream<GraphElement> graphElements = ontology.axioms().flatMap( axiom -> axiom.accept( visitor ) );
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( graphElements );
@@ -134,7 +138,12 @@ public class DiagramGenerator {
             }
         };
 
-        return setupTempDirectory( configuration )
-            .flatMap( workingDir -> executeDot( contentProvider, output, workingDir, configuration ) );
+        return output.fold(
+            outputStream -> executeDot( contentProvider, outputStream,
+                new File( System.getProperty( "user.dir" ) ), configuration ),
+            path -> setupResourceDirectory( path, configuration ).flatMap( workingDir ->
+                openStream( path ).map( outputStream ->
+                    executeDot( contentProvider, outputStream, workingDir.toFile(), configuration ) ) ) )
+            .map( __ -> null );
     }
 }

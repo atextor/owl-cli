@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 
 import static de.atextor.owlcli.MainClassRunner.run;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,15 +67,23 @@ public class DiagramCommandTest {
             final Runnable command = () -> App.main( new String[]{ "diagram", output.getAbsolutePath() } );
             final MainClassRunner.ExecutionResult result = run( command );
 
+            System.out.println( result.getStdOut() );
+            System.out.println( result.getStdErr() );
+
             assertThat( result.getExitStatus() ).isEqualTo( 0 );
             assertThat( result.getStdOut() ).isEmpty();
             assertThat( result.getStdErr() ).isEmpty();
 
-            final File writtenFile = tempDir.toPath().resolve( testFileName + ".svg" ).toFile();
+            final Path workingDirectory = tempDir.toPath();
+            final Path resourceDirectory = workingDirectory.resolve( "static" );
+            assertThat( resourceDirectory.toFile().isDirectory() );
+
+            final Path sentinelResource = resourceDirectory.resolve( "owl-class.svg" );
+            assertThat( sentinelResource.toFile() ).exists();
+
+            final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
             assertThat( writtenFile ).isFile();
-            final byte[] fileContent = fileContent( writtenFile );
-            assertThat( fileContent ).isNotEmpty();
-            assertThat( fileContent ).contains( "<svg".getBytes() );
+            assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
         } finally {
             FileUtils.deleteDirectory( tempDir );
         }
