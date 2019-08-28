@@ -5,10 +5,10 @@ import org.semanticweb.owlapi.model.IRI;
 
 import java.util.UUID;
 
-public class IdentifierMapperImpl implements IdentifierMapper {
-    private MappingConfiguration mappingConfig;
+public class DefaultIdentifierMapper implements IdentifierMapper {
+    private final MappingConfiguration mappingConfig;
 
-    public IdentifierMapperImpl( final MappingConfiguration mappingConfig ) {
+    public DefaultIdentifierMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
