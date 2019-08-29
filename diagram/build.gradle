@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'io.franzbecker.gradle-lombok' version '3.1.0'
+    id 'com.adarshr.test-logger'
 }
 
 dependencies {
@@ -25,4 +26,3 @@ test {
         includeTestsMatching "*Test"
     }
 }
-
