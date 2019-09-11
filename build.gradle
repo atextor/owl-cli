@@ -1,9 +1,10 @@
 plugins {
     id 'java'
-    id "com.github.ben-manes.versions" version "0.22.0"
+    id 'jacoco'
+    id 'com.github.ben-manes.versions' version "0.24.0"
     id 'org.asciidoctor.jvm.convert' version "2.3.0" apply false
     id 'com.adarshr.test-logger' version '1.7.0'
- }
+}
 
 allprojects {
     repositories {
@@ -15,8 +16,24 @@ subprojects {
     version = '0.1.0'
 }
 
+apply plugin: 'jacoco'
 apply plugin: 'java'
 
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+    description = 'Generates an aggregate report from all subprojects'
+    classDirectories.from = ["${projectDir}/cli/build/classes", "${projectDir}/diagram/build/classes"]
+    additionalClassDirs.from = ["${projectDir}/cli/build/classes", "${projectDir}/diagram/build/classes"]
+
+    def mainIncludeFilter = ['**/**/src/main/java', '**/**/src/test/java']
+    sourceDirectories.from = fileTree(dir: project.projectDir, includes: mainIncludeFilter)
+    additionalSourceDirs.from = fileTree(dir: project.projectDir, includes: mainIncludeFilter)
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        xml.destination(new File("${buildDir}/reports/jacoco/report.xml"))
+        csv.enabled = false
+    }
+}
 
 defaultTasks 'test', 'shadowJar'
-
