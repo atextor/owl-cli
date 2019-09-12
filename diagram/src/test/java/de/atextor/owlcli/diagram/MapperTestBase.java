@@ -16,7 +16,9 @@ import org.semanticweb.owlapi.model.OWLOntologyManager;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -57,7 +59,7 @@ public class MapperTestBase {
     }
 
     @SuppressWarnings( "unchecked" )
-    protected <T extends OWLAxiom> T getAxiom( final String content, final AxiomType axiomType ) {
+    protected <T extends OWLAxiom> T getAxiom( final String content, final AxiomType<T> axiomType ) {
         return (T) createOntology( content ).axioms().filter( axiom -> axiom.isOfType( axiomType ) ).findAny().get();
     }
 
@@ -68,11 +70,19 @@ public class MapperTestBase {
             .collect( Collectors.toList() );
     }
 
+    protected List<Edge> edges( final Set<GraphElement> elements ) {
+        return edges( new ArrayList<>( elements ) );
+    }
+
     protected List<Node> nodes( final List<GraphElement> elements ) {
         return elements.stream()
             .filter( GraphElement::isNode )
             .map( GraphElement::asNode )
             .collect( Collectors.toList() );
+    }
+
+    protected List<Node> nodes( final Set<GraphElement> elements ) {
+        return nodes( new ArrayList<>( elements ) );
     }
 
     protected Predicate<Node> isNodeWithId( final String targetId ) {
