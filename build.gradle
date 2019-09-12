@@ -22,16 +22,12 @@ apply plugin: 'java'
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
     classDirectories.from = [
-        "${projectDir}/cli/build/classes",
-        "${projectDir}/diagram/build/classes"
-    ]
-    additionalClassDirs.from = [
-        "${projectDir}/cli/build/classes",
-        "${projectDir}/diagram/build/classes"
+        "${projectDir}/cli/build/classes/java/main",
+        "${projectDir}/diagram/build/classes/java/main"
     ]
     sourceDirectories.from = [
         "${projectDir}/cli/src/main/java",
-        "${projectDir}/diagram/src/main/java"
+        "${projectDir}/diagram/src/main/java",
     ]
 
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
