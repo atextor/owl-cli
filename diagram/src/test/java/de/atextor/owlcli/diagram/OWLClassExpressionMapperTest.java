@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 
@@ -91,7 +92,32 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectComplementOf() {
+        final String ontology = "" +
+            ":Dog a owl:Class ." +
+            ":TalkingDog a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Class ;" +
+            "      owl:complementOf :Dog" +
+            "   ] .";
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectComplementOf union = (OWLObjectComplementOf) axiom.getOperandsAsList().get( 1 );
 
+        final String complementId = "complementNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
+
+        final Result result = mapper.visit( union );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Complement.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( complementId ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( complementId, "Dog" ) );
     }
 
     @Test
