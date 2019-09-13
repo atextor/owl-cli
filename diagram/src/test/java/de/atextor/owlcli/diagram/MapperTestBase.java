@@ -1,5 +1,7 @@
 package de.atextor.owlcli.diagram;
 
+import de.atextor.owlcli.diagram.graph.DecoratedEdge;
+import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
@@ -124,6 +126,13 @@ public class MapperTestBase {
     protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
         return edge -> edge.getFrom().getId().equals( fromId )
             && edge.getTo().getId().equals( toId );
+    }
+
+    protected Predicate<Edge> isEdgeWithFromAndToAndDecoration( final String fromId, final String toId,
+                                                                final Decoration decoration ) {
+        return edge -> edge.getFrom().getId().equals( fromId )
+            && edge.getTo().getId().equals( toId )
+            && ( (DecoratedEdge) edge ).getDecoration().equals( decoration );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {

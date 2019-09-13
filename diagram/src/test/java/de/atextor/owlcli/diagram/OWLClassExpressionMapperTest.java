@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram;
 
+import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
@@ -13,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 
 import java.util.List;
@@ -122,7 +124,36 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectSomeValuesFrom() {
+        final String ontology = "" +
+            ":Dog a owl:Class ." +
+            ":hasDog a owl:ObjectProperty ." +
+            ":DogOwner a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Restriction ;" +
+            "      owl:onProperty :hasDog ;" +
+            "      owl:someValuesFrom :Dog" +
+            "   ] .";
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectSomeValuesFrom someValuesFrom = (OWLObjectSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
 
+        final String restrictionNode = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
+
+        final Result result = mapper.visit( someValuesFrom );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.ExistentialRestriction.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "Dog", DecoratedEdge.CLASS ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
     }
 
     @Test
