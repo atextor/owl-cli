@@ -12,6 +12,7 @@ import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 
 import java.util.List;
 import java.util.Set;
@@ -24,19 +25,19 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectIntersectionOf() {
-        final String ontology =
+        final String ontology = "" +
             ":Dog a owl:Class ." +
-                ":CanTalk a owl:Class ." +
-                ":TalkingDog a owl:Class ;" +
-                "   owl:equivalentClass [" +
-                "      a owl:Class ;" +
-                "      owl:intersectionOf ( :Dog :CanTalk )" +
-                "   ] .";
+            ":CanTalk a owl:Class ." +
+            ":TalkingDog a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Class ;" +
+            "      owl:intersectionOf ( :Dog :CanTalk )" +
+            "   ] .";
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectIntersectionOf intersection = (OWLObjectIntersectionOf) axiom.getOperandsAsList().get( 1 );
 
-        final String complementId = "intersectionNode";
-        testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
+        final String intersectionId = "intersectionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
         final Result result = mapper.visit( intersection );
         assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Intersection.class );
@@ -47,17 +48,45 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 3 );
         assertThat( nodes ).anyMatch( isNodeWithId( "CanTalk" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "intersectionNode" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( intersectionId ) );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "intersectionNode", "Dog" ) );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "intersectionNode", "CanTalk" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( intersectionId, "Dog" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( intersectionId, "CanTalk" ) );
     }
 
     @Test
     public void testOWLObjectUnionOf() {
+        final String ontology = "" +
+            ":Dog a owl:Class ." +
+            ":CanTalk a owl:Class ." +
+            ":TalkingDog a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Class ;" +
+            "      owl:unionOf ( :Dog :CanTalk )" +
+            "   ] .";
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectUnionOf union = (OWLObjectUnionOf) axiom.getOperandsAsList().get( 1 );
 
+        final String unionId = "unionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( unionId ) );
+
+        final Result result = mapper.visit( union );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Union.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "CanTalk" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( unionId ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( unionId, "Dog" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( unionId, "CanTalk" ) );
     }
 
     @Test
