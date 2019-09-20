@@ -14,6 +14,7 @@ import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
+import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
@@ -193,7 +194,38 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectHasValue() {
+        final String ontology = "" +
+            ":bar a owl:ObjectProperty ." +
+            ":baz a owl:NamedIndividual ." +
+            ":Foo a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Restriction ;" +
+            "      owl:onProperty :bar ;" +
+            "      owl:hasValue :baz" +
+            "   ] .";
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectHasValue hasValue = (OWLObjectHasValue) axiom.getOperandsAsList().get( 1 );
 
+        final String restrictionNode = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
+
+        final Result result = mapper.visit( hasValue );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.ValueRestriction.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( restrictionNode ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "baz" ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "baz",
+            DecoratedEdge.INDIVIDUAL ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "bar",
+            DecoratedEdge.ABSTRACT_ROLE ) );
     }
 
     @Test
