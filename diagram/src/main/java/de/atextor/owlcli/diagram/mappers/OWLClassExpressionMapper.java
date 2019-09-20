@@ -40,7 +40,7 @@ import org.semanticweb.owlapi.model.OWLRestriction;
 import java.util.stream.Stream;
 
 public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Result> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLClassExpressionMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
@@ -152,11 +152,11 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final OWLIndividual individual = classExpression.getFiller();
         final Result oNodeResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
         final Edge oEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
-            rNodeResult.getNode().getId(), DecoratedEdge.INDIVIDUAL );
+            oNodeResult.getNode().getId(), DecoratedEdge.INDIVIDUAL );
         final Stream<GraphElement> remainingElements = Stream.concat( rNodeResult.getRemainingElements(),
             oNodeResult.getRemainingElements() );
-        return new Result( restrictionNode, Stream.concat( Stream.of( oEdge, rNodeResult.getNode() ),
-            remainingElements ) );
+        return new Result( restrictionNode, Stream.concat( Stream.of( oEdge, rNodeResult.getNode(),
+            oNodeResult.getNode() ), remainingElements ) );
     }
 
     @Override
