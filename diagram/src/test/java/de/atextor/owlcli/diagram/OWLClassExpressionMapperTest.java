@@ -16,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 
@@ -229,7 +230,42 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLObjectMinCardinality() {
+    public void testOWLObjectUnqualifiedMinCardinality() {
+        final String ontology = "" +
+            ":hasDog a owl:ObjectProperty ." +
+            ":DogOwner a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Restriction ;" +
+            "      owl:onProperty :hasDog ;" +
+            "      owl:minCardinality \"1\"^^xsd:nonNegativeInteger" +
+            "   ] .";
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectMinCardinality minCardinality = (OWLObjectMinCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( minCardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractMinimalCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( restrictionNodeId ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+
+        assertThat( ( (NodeType.AbstractMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
+    }
+
+    @Test
+    public void testOWLObjectQualifiedMinCardinality() {
 
     }
 
