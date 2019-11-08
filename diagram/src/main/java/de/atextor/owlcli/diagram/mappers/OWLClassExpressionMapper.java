@@ -125,7 +125,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
             rNodeResult.getNode().getId(), edgeDecoration );
         final Stream<GraphElement> remainingElements = rNodeResult.getRemainingElements();
-        return new Result( restrictionNode, Stream.concat( Stream.of( restrictionNode, rEdge, rNodeResult.getNode() ),
+        return new Result( restrictionNode, Stream.concat( Stream.of( rEdge, rNodeResult.getNode() ),
             remainingElements ) );
     }
 
