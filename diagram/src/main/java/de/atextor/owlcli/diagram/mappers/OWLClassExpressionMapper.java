@@ -97,8 +97,8 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Stream<GraphElement> remainingElements = Stream.concat( cNodeResult.getRemainingElements(),
             rNodeResult.getRemainingElements() );
 
-        return new Result( restrictionNode, Stream.concat( Stream.of( restrictionNode, cEdge, cNodeResult.getNode(),
-            rEdge, rNodeResult.getNode() ), remainingElements ) );
+        return new Result( restrictionNode, Stream.concat( Stream.of( cEdge, cNodeResult.getNode(), rEdge,
+            rNodeResult.getNode() ), remainingElements ) );
     }
 
     private Result createPropertyAndObjectRangeEdges( final Node restrictionNode,
