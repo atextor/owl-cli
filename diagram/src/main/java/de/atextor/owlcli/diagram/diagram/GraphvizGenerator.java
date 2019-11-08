@@ -9,6 +9,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,20 +42,20 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     }
 
     private String edgeTypeToGraphviz( final Edge.Type type ) {
-        switch ( type ) {
+        return switch ( type ) {
             case DEFAULT_ARROW:
-                return "arrowhead = normal";
+                yield "arrowhead = normal";
             case DASHED_ARROW:
-                return "arrowhead = normal, style = dashed";
+                yield "arrowhead = normal, style = dashed";
             case HOLLOW_ARROW:
-                return "arrowhead = empty";
+                yield "arrowhead = empty";
             case DOUBLE_ENDED_HOLLOW_ARROW:
-                return "dir = both, arrowhead = empty, arrowtail = empty";
+                yield "dir = both, arrowhead = empty, arrowtail = empty";
             case NO_ARROW:
-                return "arrowhead = none";
+                yield "arrowhead = none";
             default:
-                return "";
-        }
+                yield "";
+        };
     }
 
     @Override
@@ -123,6 +124,36 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
         Configuration.Format format;
         String resourceDirectoryname;
+
+        final Template namedNodeTemplate = new Template( """
+            ${nodeId} [label=<
+              <table border="0">
+                <tr>
+                  <td border="0" fixedsize="true" width="24" height="24"><img src="${directory}/${resource}" /></td>
+                  <td>${nodeName}</td>
+                </tr>
+              </table> >]""" );
+
+        final Template anonymousNodeTemplate = new Template( """
+            ${nodeId} [label=<
+              <table border="0">
+                <tr>
+                  <td border="0" fixedsize="true" width="24" height="24"><img src="${directory}/${resource}" scale="true" /></td>
+                </tr>
+              </table> >]""" );
+
+        final Template cardinalityNodeTemplate = new Template( """
+            ${nodeId} [label=<
+              <table border="0">
+                <tr>
+                  <td border="0" fixedsize="true" width="16" height="16"><img src="${directory}/${prefixResource}" /></td>
+                  <td>${cardinality}</td>
+                  <td><img src="${directory}/${postfixResource}" /></td>
+                </tr>
+              </table> >]""" );
+
+        final Template invisibleNodeTemplate = new Template( """
+            ${nodeId} [label="", width="0", style="invis"] """ );
 
         GraphvizNodeTypeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
             this.format = format;
@@ -260,48 +291,34 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {
-            return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                "  " + node.getId().getId() + " [label=<\n" +
-                    "     <table border=\"0\">\n" +
-                    "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                    "src=\"" + resourceDirectoryname + "/" + symbol.getResourceName( format ) + "\" /></td><td>" + node.getName() + "</td" +
-                    ">\n" +
-                    "       </tr>\n" +
-                    "     </table> >]" ) );
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( namedNodeTemplate.apply(
+                Map.of( "nodeId", node.getId().getId(),
+                    "directory", resourceDirectoryname,
+                    "resource", symbol.getResourceName( format ),
+                    "nodeName", node.getName() ) ) ) );
         }
 
         private GraphvizDocument generateAnonymousNode( final Node.Id nodeId, final Resource symbol ) {
-            return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                "  " + nodeId.getId() + " [label=<\n" +
-                    "     <table border=\"0\">\n" +
-                    "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img " +
-                    "src=\"" + resourceDirectoryname + "/" + symbol.getResourceName( format ) + "\" scale=\"true" +
-                    "\"/></td>\n" +
-                    "       </tr>\n" +
-                    "     </table> >]" ) );
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( anonymousNodeTemplate.apply(
+                Map.of( "nodeId", nodeId.getId(),
+                    "directory", resourceDirectoryname,
+                    "resource", symbol.getResourceName( format ) ) ) ) );
         }
 
         private GraphvizDocument generateCardinalityNode( final NodeType.CardinalityNode node,
                                                           final Resource symbolPrefix,
                                                           final Resource symbolPostfix ) {
-            return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                "  " + node.getId().getId() + " [label=<\n" +
-                    "     <table border=\"0\">\n" +
-                    "       <tr>\n" +
-                    "         <td border=\"0\" fixedsize=\"true\" width=\"16\" height=\"16\"><img " +
-                    "src=\"" + resourceDirectoryname + "/" + symbolPrefix.getResourceName( format ) + "\" /><td>"
-                    + node.getCardinality() + "</td><td><img " +
-                    "src=\"" + resourceDirectoryname + "/" + symbolPostfix.getResourceName( format ) + "\" /></td>\n" +
-                    "       </tr>\n" +
-                    "     </table> >]" ) );
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( cardinalityNodeTemplate.apply(
+                Map.of( "nodeId", node.getId().getId(),
+                    "directory", resourceDirectoryname,
+                    "prefixResource", symbolPrefix.getResourceName( format ),
+                    "postfixResource", symbolPostfix.getResourceName( format ),
+                    "cardinality", node.getCardinality() ) ) ) );
         }
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
-            return GraphvizDocument.withNode( new GraphvizDocument.Statement(
-                "  " + nodeId.getId() + " [label=\"\", width=\"0\", style=\"invis\"]"
-            ) );
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( invisibleNodeTemplate.apply(
+                Map.of( "nodeId", nodeId.getId() ) ) ) );
         }
     }
 }

@@ -35,8 +35,19 @@ shadowJar {
     version = "$version"
 }
 
+compileJava {
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    sourceCompatibility = 13
+    targetCompatibility = 13
+}
+
+compileTestJava {
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+}
+
 test {
     useJUnitPlatform()
+    jvmArgs '--enable-preview'
     maxHeapSize = '1G'
     ignoreFailures = false
     failFast = true
