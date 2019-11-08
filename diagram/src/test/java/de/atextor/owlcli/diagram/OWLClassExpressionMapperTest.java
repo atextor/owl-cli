@@ -252,8 +252,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
-        assertThat( nodes ).hasSize( 2 );
-        assertThat( nodes ).anyMatch( isNodeWithId( restrictionNodeId ) );
+        assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
 
         assertThat( ( (NodeType.AbstractMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
@@ -290,8 +289,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
-        assertThat( nodes ).hasSize( 3 );
-        assertThat( nodes ).anyMatch( isNodeWithId( restrictionNodeId ) );
+        assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 

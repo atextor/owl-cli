@@ -111,7 +111,7 @@ public class MapperTestBase {
             public Boolean visit( final NodeType nodeType ) {
                 return nodeType.accept( new NodeType.VisitorAdapter<Boolean>( false ) {
                     @Override
-                    public Boolean visit( final NodeType.Complement invisible ) {
+                    public Boolean visit( final NodeType.Complement complement ) {
                         return true;
                     }
                 } );
