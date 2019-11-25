@@ -17,6 +17,7 @@ import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
 import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
@@ -346,7 +347,42 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectMaxCardinality() {
+        final String ontology = "" +
+            ":Dog a owl:Class ." +
+            ":hasDog a owl:ObjectProperty ." +
+            ":DogOwner a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Restriction ;" +
+            "      owl:onProperty :hasDog ;" +
+            "      owl:maxQualifiedCardinality \"1\"^^xsd:nonNegativeInteger ;" +
+            "      owl:onClass :Dog " +
+            "   ] .";
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectMaxCardinality maxCardinality = (OWLObjectMaxCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( maxCardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedMaximalCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+
+        assertThat( ( (NodeType.AbstractQualifiedMaximalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "Dog",
+            DecoratedEdge.CLASS ) );
     }
 
     @Test
