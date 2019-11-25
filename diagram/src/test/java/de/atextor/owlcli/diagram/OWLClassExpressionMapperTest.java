@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
 import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectHasSelf;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
 import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
@@ -387,7 +388,36 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectHasSelf() {
+        final String ontology = "" +
+            ":Dog a owl:Class ." +
+            ":hasDog a owl:ObjectProperty ." +
+            ":DogOwner a owl:Class ;" +
+            "   owl:equivalentClass [" +
+            "      a owl:Restriction ;" +
+            "      owl:onProperty :hasDog ;" +
+            "      owl:hasSelf true " +
+            "   ] .";
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectHasSelf hasSelf = (OWLObjectHasSelf) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( hasSelf );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.Self.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 1 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
     }
 
     @Test
