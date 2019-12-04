@@ -1,5 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.NodeType;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
@@ -13,7 +15,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import static io.vavr.API.TODO;
 
 public class OWLDataMapper implements OWLDataVisitorEx<Result> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLDataMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
@@ -51,7 +53,9 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
 
     @Override
     public Result visit( final OWLDatatype node ) {
-        return TODO();
+        final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( node.getIRI() );
+        final String name = mappingConfig.getNameMapper().getName( node );
+        return Result.of( new NodeType.Datatype( id, name ) );
     }
 
     @Override
