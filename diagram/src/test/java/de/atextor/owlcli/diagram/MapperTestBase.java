@@ -28,9 +28,13 @@ import static org.assertj.core.api.Fail.fail;
 
 public class MapperTestBase {
     protected TestIdentifierMapper testIdentifierMapper = new TestIdentifierMapper();
+    protected TestNameMapper testNameMapper = new TestNameMapper();
 
     protected MappingConfiguration createTestMappingConfiguration() {
-        return DefaultMappingConfiguration.builder().identifierMapper( () -> testIdentifierMapper ).build();
+        return DefaultMappingConfiguration.builder()
+            .identifierMapper( () -> testIdentifierMapper )
+            .nameMapper( () -> testNameMapper )
+            .build();
     }
 
     protected OWLOntology createOntology( final String content ) {
