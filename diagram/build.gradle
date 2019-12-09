@@ -17,8 +17,19 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
 }
 
+compileJava {
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+}
+
+compileTestJava {
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    sourceCompatibility = 13
+    targetCompatibility = 13
+}
+
 test {
     useJUnitPlatform()
+    jvmArgs '--enable-preview'
     maxHeapSize = '1G'
     ignoreFailures = false
     failFast = true

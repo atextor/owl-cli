@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,6 +19,26 @@ import java.util.stream.Stream;
 public class GraphvizDocument implements Function<Configuration, String> {
     public static final GraphvizDocument BLANK = new GraphvizDocument();
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
+    private static final Template GRAPHVIZ_TEMPLATE = new Template( """
+        digraph G {
+          rankdir = ${rankdir}
+
+          fontname = "${fontname}"
+          fontsize = ${fontsize}
+
+          node [
+            fontname = "${nodeFontname}"
+            fontsize = ${nodeFontsize}
+            shape = "${nodeShape}"
+            margin = ${nodeMargin}
+            style = "${nodeStyle}"
+          ]
+
+          ${statements}
+
+        }
+        """
+    );
 
     @Value
     static class Statement {
@@ -59,31 +80,17 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     @Override
     public String apply( final Configuration configuration ) {
-        final StringBuffer buffer = new StringBuffer();
-        buffer.append( "digraph G {\n" );
-        buffer.append( "  rankdir = " ).append( configuration.layoutDirection == Configuration.LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR" );
-        buffer.append( "\n" );
-        buffer.append( "  fontname = \"" ).append( configuration.fontname ).append( "\"\n" );
-        buffer.append( "  fontsize = " ).append( configuration.fontsize ).append( "\n" );
-        buffer.append( "\n" );
-        buffer.append( "  node [\n" );
-        buffer.append( "    fontname = \"" ).append( configuration.nodeFontname ).append( "\"\n" );
-        buffer.append( "    fontsize = " ).append( configuration.nodeFontsize ).append( "\n" );
-        buffer.append( "    shape = \"" ).append( configuration.nodeShape ).append( "\"\n" );
-        buffer.append( "    margin = " ).append( configuration.nodeMargin ).append( "\n" );
-        buffer.append( "    style = \"" ).append( configuration.nodeStyle ).append( "\"\n" );
-        buffer.append( "  ]\n" );
-        buffer.append( "\n" );
-        nodeStatements.forEach( statement -> {
-            buffer.append( "   " );
-            buffer.append( statement.toFragment() );
-        } );
-        buffer.append( "\n" );
-        edgeStatements.forEach( statement -> {
-            buffer.append( "   " );
-            buffer.append( statement.toFragment() );
-        } );
-        buffer.append( "}" );
-        return buffer.toString();
+        return GRAPHVIZ_TEMPLATE.apply( Map.of(
+            "rankdir", configuration.layoutDirection == Configuration.LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR",
+            "fontname", configuration.fontname,
+            "fontsize", configuration.fontsize,
+            "nodeFontname", configuration.nodeFontname,
+            "nodeFontsize", configuration.nodeFontsize,
+            "nodeShape", configuration.nodeShape,
+            "margin", configuration.nodeMargin,
+            "style", configuration.nodeStyle,
+            "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
+                .map( Statement::toFragment )
+                .collect( Collectors.joining( "   \n" ) ) ) );
     }
 }
