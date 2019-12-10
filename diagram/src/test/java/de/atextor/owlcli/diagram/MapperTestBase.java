@@ -35,14 +35,14 @@ public class MapperTestBase {
 
     protected OWLOntology createOntology( final String content ) {
         final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        final String ontologyContent = "@prefix : <http://test.de/> .\n" +
-            "@prefix owl: <http://www.w3.org/2002/07/owl#> .\n" +
-            "@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n" +
-            "@prefix xml: <http://www.w3.org/XML/1998/namespace> .\n" +
-            "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n" +
-            "@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n" +
-            "\n" +
-            content;
+        final String ontologyContent = """
+            @prefix : <http://test.de/> .
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix xml: <http://www.w3.org/XML/1998/namespace> .
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            """ + content;
         final OWLOntology ontology;
 
         try {
@@ -95,7 +95,7 @@ public class MapperTestBase {
         return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
             @Override
             public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( new NodeType.VisitorAdapter<Boolean>( false ) {
+                return nodeType.accept( new NodeType.VisitorAdapter<>( false ) {
                     @Override
                     public Boolean visit( final NodeType.Invisible invisible ) {
                         return true;
@@ -109,7 +109,7 @@ public class MapperTestBase {
         return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
             @Override
             public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( new NodeType.VisitorAdapter<Boolean>( false ) {
+                return nodeType.accept( new NodeType.VisitorAdapter<>( false ) {
                     @Override
                     public Boolean visit( final NodeType.Complement invisible ) {
                         return true;

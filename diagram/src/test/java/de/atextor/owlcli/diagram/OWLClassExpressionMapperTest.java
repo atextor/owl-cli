@@ -10,12 +10,18 @@ import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectComplementOf;
+import org.semanticweb.owlapi.model.OWLObjectExactCardinality;
+import org.semanticweb.owlapi.model.OWLObjectHasSelf;
 import org.semanticweb.owlapi.model.OWLObjectHasValue;
 import org.semanticweb.owlapi.model.OWLObjectIntersectionOf;
+import org.semanticweb.owlapi.model.OWLObjectMaxCardinality;
+import org.semanticweb.owlapi.model.OWLObjectMinCardinality;
+import org.semanticweb.owlapi.model.OWLObjectOneOf;
 import org.semanticweb.owlapi.model.OWLObjectSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLObjectUnionOf;
 
@@ -30,14 +36,15 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectIntersectionOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":CanTalk a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:intersectionOf ( :Dog :CanTalk )" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :CanTalk a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:intersectionOf ( :Dog :CanTalk )
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectIntersectionOf intersection = (OWLObjectIntersectionOf) axiom.getOperandsAsList().get( 1 );
 
@@ -63,14 +70,15 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectUnionOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":CanTalk a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:unionOf ( :Dog :CanTalk )" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :CanTalk a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:unionOf ( :Dog :CanTalk )
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectUnionOf union = (OWLObjectUnionOf) axiom.getOperandsAsList().get( 1 );
 
@@ -96,13 +104,14 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectComplementOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:complementOf :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:complementOf :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectComplementOf union = (OWLObjectComplementOf) axiom.getOperandsAsList().get( 1 );
 
@@ -126,15 +135,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectSomeValuesFrom() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:someValuesFrom :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:someValuesFrom :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectSomeValuesFrom someValuesFrom = (OWLObjectSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
 
@@ -160,15 +170,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectAllValuesFrom() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:allValuesFrom :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:allValuesFrom :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectAllValuesFrom allValuesFrom = (OWLObjectAllValuesFrom) axiom.getOperandsAsList().get( 1 );
 
@@ -194,15 +205,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectHasValue() {
-        final String ontology = "" +
-            ":bar a owl:ObjectProperty ." +
-            ":baz a owl:NamedIndividual ." +
-            ":Foo a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :bar ;" +
-            "      owl:hasValue :baz" +
-            "   ] .";
+        final String ontology = """
+            :bar a owl:ObjectProperty .
+            :baz a owl:NamedIndividual .
+            :Foo a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :bar ;
+                  owl:hasValue :baz
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectHasValue hasValue = (OWLObjectHasValue) axiom.getOperandsAsList().get( 1 );
 
@@ -229,33 +241,207 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLObjectMinCardinality() {
+    public void testOWLObjectUnqualifiedMinCardinality() {
+        final String ontology = """
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:minCardinality "1"^^xsd:nonNegativeInteger
+               ] .
+            """;
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectMinCardinality minCardinality = (OWLObjectMinCardinality) axiom.getOperandsAsList().get( 1 );
 
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( minCardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractMinimalCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 1 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+
+        assertThat( ( (NodeType.AbstractMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
+    }
+
+    @Test
+    public void testOWLObjectQualifiedMinCardinality() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
+
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectMinCardinality minCardinality = (OWLObjectMinCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( minCardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedMinimalCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+
+        assertThat( ( (NodeType.AbstractQualifiedMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
+            DecoratedEdge.ABSTRACT_ROLE ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "Dog",
+            DecoratedEdge.CLASS ) );
     }
 
     @Test
     public void testOWLObjectExactCardinality() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectExactCardinality cardinality = (OWLObjectExactCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( cardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedExactCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
+
+        assertThat( ( (NodeType.AbstractQualifiedExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
     }
 
     @Test
     public void testOWLObjectMaxCardinality() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectMaxCardinality maxCardinality = (OWLObjectMaxCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( maxCardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedMaximalCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
     }
 
     @Test
     public void testOWLObjectHasSelf() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:hasSelf true
+               ] .
+            """;
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectHasSelf hasSelf = (OWLObjectHasSelf) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( hasSelf );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.Self.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 1 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
     }
 
     @Test
     public void testOWLObjectOneOf() {
+        final String ontology = """
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:oneOf ( :Fido :Bello )
+               ] .
+            """;
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLObjectOneOf hasSelf = (OWLObjectOneOf) axiom.getOperandsAsList().get( 1 );
     }
 
     @Test
     public void testOWLDataSomeValuesFrom() {
+        final String ontology = """
+            :name a owl:DatatypeProperty .
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :name ;
+                  owl:someValuesFrom xsd:string
+               ] .
+            """;
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLDataSomeValuesFrom someValuesFrom = (OWLDataSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
 
+        final String restrictionNode = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
+
+        final Result result = mapper.visit( someValuesFrom );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.ExistentialRestriction.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
     }
 
     @Test
