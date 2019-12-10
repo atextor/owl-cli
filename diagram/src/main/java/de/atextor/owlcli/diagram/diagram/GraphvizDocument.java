@@ -37,8 +37,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
           ${statements}
 
         }
-        """
-    );
+        """ );
 
     @Value
     static class Statement {
@@ -87,8 +86,8 @@ public class GraphvizDocument implements Function<Configuration, String> {
             "nodeFontname", configuration.nodeFontname,
             "nodeFontsize", configuration.nodeFontsize,
             "nodeShape", configuration.nodeShape,
-            "margin", configuration.nodeMargin,
-            "style", configuration.nodeStyle,
+            "nodeMargin", configuration.nodeMargin,
+            "nodeStyle", configuration.nodeStyle,
             "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
                 .map( Statement::toFragment )
                 .collect( Collectors.joining( "   \n" ) ) ) );

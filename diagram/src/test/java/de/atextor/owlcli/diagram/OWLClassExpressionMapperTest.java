@@ -7,6 +7,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLClassExpressionMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -36,14 +37,15 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectIntersectionOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":CanTalk a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:intersectionOf ( :Dog :CanTalk )" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :CanTalk a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:intersectionOf ( :Dog :CanTalk )
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectIntersectionOf intersection = (OWLObjectIntersectionOf) axiom.getOperandsAsList().get( 1 );
 
@@ -69,14 +71,15 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectUnionOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":CanTalk a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:unionOf ( :Dog :CanTalk )" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :CanTalk a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:unionOf ( :Dog :CanTalk )
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectUnionOf union = (OWLObjectUnionOf) axiom.getOperandsAsList().get( 1 );
 
@@ -102,13 +105,14 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectComplementOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":TalkingDog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:complementOf :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :TalkingDog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:complementOf :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectComplementOf union = (OWLObjectComplementOf) axiom.getOperandsAsList().get( 1 );
 
@@ -132,15 +136,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectSomeValuesFrom() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:someValuesFrom :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:someValuesFrom :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectSomeValuesFrom someValuesFrom = (OWLObjectSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
 
@@ -166,15 +171,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectAllValuesFrom() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:allValuesFrom :Dog" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:allValuesFrom :Dog
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectAllValuesFrom allValuesFrom = (OWLObjectAllValuesFrom) axiom.getOperandsAsList().get( 1 );
 
@@ -200,15 +206,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectHasValue() {
-        final String ontology = "" +
-            ":bar a owl:ObjectProperty ." +
-            ":baz a owl:NamedIndividual ." +
-            ":Foo a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :bar ;" +
-            "      owl:hasValue :baz" +
-            "   ] .";
+        final String ontology = """
+            :bar a owl:ObjectProperty .
+            :baz a owl:NamedIndividual .
+            :Foo a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :bar ;
+                  owl:hasValue :baz
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectHasValue hasValue = (OWLObjectHasValue) axiom.getOperandsAsList().get( 1 );
 
@@ -236,14 +243,15 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectUnqualifiedMinCardinality() {
-        final String ontology = "" +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:minCardinality \"1\"^^xsd:nonNegativeInteger" +
-            "   ] .";
+        final String ontology = """
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:minCardinality "1"^^xsd:nonNegativeInteger
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectMinCardinality minCardinality = (OWLObjectMinCardinality) axiom.getOperandsAsList().get( 1 );
 
@@ -270,16 +278,17 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectQualifiedMinCardinality() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:minQualifiedCardinality \"1\"^^xsd:nonNegativeInteger ;" +
-            "      owl:onClass :Dog " +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
 
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectMinCardinality minCardinality = (OWLObjectMinCardinality) axiom.getOperandsAsList().get( 1 );
@@ -310,16 +319,17 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectExactCardinality() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:qualifiedCardinality \"1\"^^xsd:nonNegativeInteger ;" +
-            "      owl:onClass :Dog " +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
 
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectExactCardinality cardinality = (OWLObjectExactCardinality) axiom.getOperandsAsList().get( 1 );
@@ -350,16 +360,17 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectMaxCardinality() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:maxQualifiedCardinality \"1\"^^xsd:nonNegativeInteger ;" +
-            "      owl:onClass :Dog " +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onClass :Dog
+               ] .
+            """;
 
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectMaxCardinality maxCardinality = (OWLObjectMaxCardinality) axiom.getOperandsAsList().get( 1 );
@@ -390,15 +401,16 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectHasSelf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ." +
-            ":hasDog a owl:ObjectProperty ." +
-            ":DogOwner a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :hasDog ;" +
-            "      owl:hasSelf true " +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class .
+            :hasDog a owl:ObjectProperty .
+            :DogOwner a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasDog ;
+                  owl:hasSelf true
+               ] .
+            """;
 
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectHasSelf hasSelf = (OWLObjectHasSelf) axiom.getOperandsAsList().get( 1 );
@@ -424,12 +436,13 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectOneOf() {
-        final String ontology = "" +
-            ":Dog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Class ;" +
-            "      owl:oneOf ( :Fido :Bello )" +
-            "   ] .";
+        final String ontology = """
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Class ;
+                  owl:oneOf ( :Fido :Bello )
+               ] .
+            """;
 
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLObjectOneOf hasSelf = (OWLObjectOneOf) axiom.getOperandsAsList().get( 1 );
@@ -455,15 +468,17 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     }
 
     @Test
+    @Disabled
     public void testOWLDataSomeValuesFrom() {
-        final String ontology = "" +
-            ":name a owl:DatatypeProperty ." +
-            ":Dog a owl:Class ;" +
-            "   owl:equivalentClass [" +
-            "      a owl:Restriction ;" +
-            "      owl:onProperty :name ;" +
-            "      owl:someValuesFrom xsd:string" +
-            "   ] .";
+        final String ontology = """
+            :name a owl:DatatypeProperty .
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :name ;
+                  owl:someValuesFrom xsd:string
+               ] .
+            """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
         final OWLDataSomeValuesFrom someValuesFrom = (OWLDataSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
 

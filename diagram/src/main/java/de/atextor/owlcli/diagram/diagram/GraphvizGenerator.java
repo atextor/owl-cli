@@ -28,14 +28,14 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                edge.getFrom().getId() + " -> " + edge.getTo().getId()
-                    + " [" + decoration + ", " + edgeStyle + "]" ) );
+                String.format( "%s -> %s [%s, %s]", edge.getFrom().getId(), edge.getTo().getId(), decoration,
+                    edgeStyle ) ) );
         };
 
         final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                edge.getFrom().getId() + " -> " + edge.getTo().getId() + " [" + edgeStyle + "]" ) );
+                String.format( "%s -> %s [%s]", edge.getFrom().getId(), edge.getTo().getId(), edgeStyle ) ) );
         };
 
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
@@ -66,9 +66,20 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
     }
 
-    class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
+    static class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
         Configuration.Format format;
         String resourceDirectoryName;
+
+        private final Template imageLabelTemplate = new Template( """
+            label=<
+              <table border="0">
+                <tr>
+                  <td border="0" fixedsize="true" width="24" height="24">
+                    <img src="${resourceDirectoryName}/${imageName}" />
+                  </td>
+                </tr>
+              </table> >
+            """ );
 
         GraphvizDecorationVisitor( final Configuration.Format format, final String resourceDirectoryName ) {
             this.format = format;
@@ -111,17 +122,14 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         private String generateImageLabel( final Resource image ) {
-            return "label=<\n" +
-                "     <table border=\"0\">\n" +
-                "       <tr>\n" +
-                "         <td border=\"0\" fixedsize=\"true\" width=\"24\" height=\"24\"><img src=\"" +
-                resourceDirectoryName + "/" + image.getResourceName( format ) + "\" /></td>\n" +
-                "       </tr>\n" +
-                "     </table> >";
+            return imageLabelTemplate.apply( Map.of(
+                "resourceDirectoryName", resourceDirectoryName,
+                "imageName", image.getResourceName( format )
+            ) );
         }
     }
 
-    class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
+    static class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
         Configuration.Format format;
         String resourceDirectoryname;
 
