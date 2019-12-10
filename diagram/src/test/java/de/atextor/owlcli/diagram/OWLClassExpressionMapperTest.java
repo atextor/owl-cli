@@ -7,6 +7,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLClassExpressionMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -422,6 +423,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     }
 
     @Test
+    @Disabled
     public void testOWLDataSomeValuesFrom() {
         final String ontology = """
             :name a owl:DatatypeProperty .
