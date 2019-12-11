@@ -7,7 +7,6 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLClassExpressionMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
@@ -468,7 +467,6 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     }
 
     @Test
-    @Disabled
     public void testOWLDataSomeValuesFrom() {
         final String ontology = """
             :name a owl:DatatypeProperty .
@@ -505,7 +503,37 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataAllValuesFrom() {
+        final String ontology = """
+            :name a owl:DatatypeProperty .
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :name ;
+                  owl:allValuesFrom xsd:string
+               ] .
+            """;
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLDataAllValuesFrom allValuesFrom = (OWLDataAllValuesFrom) axiom.getOperandsAsList().get( 1 );
 
+        final String restrictionNode = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
+
+        final Result result = mapper.visit( allValuesFrom );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.UniversalRestriction.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "name" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "string" ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "name",
+            DecoratedEdge.CONCRETE_ROLE ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "string",
+            DecoratedEdge.DATA_RANGE ) );
     }
 
     @Test
