@@ -60,6 +60,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
 
     @Override
     public Result visit( final OWLLiteral node ) {
-        return TODO();
+        final Node.Id id = mappingConfig.getIdentifierMapper().getSyntheticId();
+        return Result.of( new NodeType.Literal( id, node.getLiteral() ) );
     }
 }
