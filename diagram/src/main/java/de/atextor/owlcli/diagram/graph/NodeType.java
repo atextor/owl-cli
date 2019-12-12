@@ -23,6 +23,8 @@ public abstract class NodeType implements Node {
 
         T visit( Individual individual );
 
+        T visit( Literal literal );
+
         T visit( Datatype datatype );
 
         T visit( ExistentialRestriction existentialRestriction );
@@ -95,6 +97,11 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final Individual individual ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Literal literal ) {
             return defaultValue;
         }
 
@@ -289,6 +296,19 @@ public abstract class NodeType implements Node {
             return visitor.visit( this );
         }
     }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static final class Literal extends NodeType {
+        Id id;
+        String value;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+    }
+
 
     @Value
     @EqualsAndHashCode( callSuper = true )

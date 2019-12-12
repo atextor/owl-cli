@@ -160,6 +160,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 </tr>
               </table> >]""" );
 
+        final Template literalNodeTemplate = new Template( """
+            ${nodeId} [label="${value}"] """ );
+
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
 
@@ -191,6 +194,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         @Override
         public GraphvizDocument visit( final NodeType.Individual individual ) {
             return generateNamedNode( individual, Resource.OWL_INDIVIDUAL );
+        }
+
+        @Override
+        public GraphvizDocument visit( final NodeType.Literal literal ) {
+            return generateLiteralNode( literal.getId(), literal.getValue() );
         }
 
         @Override
@@ -327,6 +335,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( invisibleNodeTemplate.apply(
                 Map.of( "nodeId", nodeId.getId() ) ) ) );
+        }
+
+        private GraphvizDocument generateLiteralNode( final Node.Id nodeId, final String value ) {
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( literalNodeTemplate.apply(
+                Map.of( "nodeId", nodeId.getId(),
+                    "value", value ) ) ) );
         }
     }
 }
