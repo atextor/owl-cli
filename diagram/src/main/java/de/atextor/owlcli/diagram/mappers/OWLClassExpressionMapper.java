@@ -244,11 +244,11 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final OWLLiteral literal = classExpression.getFiller();
         final Result vNodeResult = literal.accept( mappingConfig.getOwlDataMapper() );
         final Edge vEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
-            uNodeResult.getNode().getId(), DecoratedEdge.LITERAL );
+            vNodeResult.getNode().getId(), DecoratedEdge.LITERAL );
         final Stream<GraphElement> remainingElements = Stream.concat( uNodeResult.getRemainingElements(),
             vNodeResult.getRemainingElements() );
-        return new Result( restrictionNode, Stream.concat( Stream.of( vEdge, uNodeResult.getNode() ),
-            remainingElements ) );
+        return new Result( restrictionNode, Stream.concat( Stream.of( vEdge, uNodeResult.getNode(),
+            vNodeResult.getNode() ), remainingElements ) );
     }
 
     @Override
