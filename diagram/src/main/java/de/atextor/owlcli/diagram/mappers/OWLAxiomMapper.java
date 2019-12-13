@@ -59,6 +59,7 @@ import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.SWRLRule;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -72,14 +73,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLAxiomMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSubClassOfAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSubClassOfAxiom axiom ) {
         final OWLClassExpressionVisitorEx<Result> mapper = mappingConfig.getOwlClassExpressionMapper();
 
         final Result superClassResult = axiom.getSuperClass().accept( mapper );
@@ -121,7 +122,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLNegativeObjectPropertyAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom ) {
         final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
 
         final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Complement( identifierMapper.getSyntheticId() );
@@ -130,62 +131,62 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLAsymmetricObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLAsymmetricObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLReflexiveObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLReflexiveObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDisjointClassesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDataPropertyDomainAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLObjectPropertyDomainAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyDomainAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLEquivalentObjectPropertiesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentObjectPropertiesAxiom axiom ) {
         return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLNegativeDataPropertyAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDifferentIndividualsAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDifferentIndividualsAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDisjointDataPropertiesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDisjointDataPropertiesAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDisjointObjectPropertiesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDisjointObjectPropertiesAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLObjectPropertyRangeAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyRangeAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLObjectPropertyAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyAssertionAxiom axiom ) {
         final IdentifierMapper identifierMapper = mappingConfig.getIdentifierMapper();
 
         final Supplier<Node> thirdNodeSupplier = () -> new NodeType.Invisible( identifierMapper.getSyntheticId() );
@@ -194,12 +195,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLFunctionalObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSubObjectPropertyOfAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSubObjectPropertyOfAxiom axiom ) {
         final OWLPropertyExpressionVisitorEx<Result> mapper = mappingConfig.getOwlPropertyExpressionMapper();
 
         final Result superPropertyResult = axiom.getSuperProperty().accept( mapper );
@@ -212,22 +213,22 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDisjointUnionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDisjointUnionAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSymmetricObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSymmetricObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDataPropertyRangeAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyRangeAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLFunctionalDataPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLFunctionalDataPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
@@ -274,12 +275,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLEquivalentDataPropertiesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentDataPropertiesAxiom axiom ) {
         return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLClassAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLClassAssertionAxiom axiom ) {
         final OWLIndividual individual = axiom.getIndividual();
         final OWLClassExpression classExpression = axiom.getClassExpression();
         final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
@@ -292,90 +293,90 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLEquivalentClassesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentClassesAxiom axiom ) {
         return visit( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDataPropertyAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLTransitiveObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLTransitiveObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLIrreflexiveObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLIrreflexiveObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSubDataPropertyOfAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSubDataPropertyOfAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLInverseFunctionalObjectPropertyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSameIndividualAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSameIndividualAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSubPropertyChainOfAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSubPropertyChainOfAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLInverseObjectPropertiesAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLInverseObjectPropertiesAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLHasKeyAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLHasKeyAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDeclarationAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDeclarationAxiom axiom ) {
         final OWLEntityVisitorEx<Result> mapper = mappingConfig.getOwlEntityMapper();
         final Result result = axiom.getEntity().accept( mapper );
         return result.toStream();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLDatatypeDefinitionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLDatatypeDefinitionAxiom axiom ) {
         return Stream.empty();
     }
 
 
     @Override
-    public Stream<GraphElement> visit( final OWLAnnotationAssertionAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationAssertionAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLSubAnnotationPropertyOfAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLAnnotationPropertyDomainAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final OWLAnnotationPropertyRangeAxiom axiom ) {
+    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationPropertyRangeAxiom axiom ) {
         return Stream.empty();
     }
 
     @Override
-    public Stream<GraphElement> visit( final SWRLRule node ) {
+    public Stream<GraphElement> visit( final @Nonnull SWRLRule node ) {
         return Stream.empty();
     }
 

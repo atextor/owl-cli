@@ -12,6 +12,8 @@ import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
+import javax.annotation.Nonnull;
+
 import static io.vavr.API.TODO;
 
 public class OWLDataMapper implements OWLDataVisitorEx<Result> {
@@ -22,44 +24,44 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLDataComplementOf node ) {
+    public Result visit( final @Nonnull OWLDataComplementOf node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLDataOneOf node ) {
+    public Result visit( final @Nonnull OWLDataOneOf node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLDataIntersectionOf node ) {
+    public Result visit( final @Nonnull OWLDataIntersectionOf node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLDataUnionOf node ) {
+    public Result visit( final @Nonnull OWLDataUnionOf node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLDatatypeRestriction node ) {
+    public Result visit( final @Nonnull OWLDatatypeRestriction node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLFacetRestriction node ) {
+    public Result visit( final @Nonnull OWLFacetRestriction node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLDatatype node ) {
+    public Result visit( final @Nonnull OWLDatatype node ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( node.getIRI() );
         final String name = mappingConfig.getNameMapper().getName( node );
         return Result.of( new NodeType.Datatype( id, name ) );
     }
 
     @Override
-    public Result visit( final OWLLiteral node ) {
+    public Result visit( final @Nonnull OWLLiteral node ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getSyntheticId();
         return Result.of( new NodeType.Literal( id, node.getLiteral() ) );
     }

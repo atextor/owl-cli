@@ -10,15 +10,17 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
+import javax.annotation.Nonnull;
+
 public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLEntityMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
     @Override
-    public Result visit( final OWLClass classExpression ) {
+    public Result visit( final @Nonnull OWLClass classExpression ) {
         final Node node =
             new NodeType.Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
                 mappingConfig.getNameMapper().getName( classExpression ) );
@@ -26,7 +28,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLDatatype dataType ) {
+    public Result visit( final @Nonnull OWLDatatype dataType ) {
         final Node node =
             new NodeType.Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
                 mappingConfig.getNameMapper().getName( dataType ) );
@@ -34,7 +36,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLNamedIndividual individual ) {
+    public Result visit( final @Nonnull OWLNamedIndividual individual ) {
         final Node node =
             new NodeType.Individual( mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() ),
                 mappingConfig.getNameMapper().getName( individual ) );
@@ -42,7 +44,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLObjectProperty property ) {
+    public Result visit( final @Nonnull OWLObjectProperty property ) {
         final Node node =
             new NodeType.AbstractRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
@@ -50,7 +52,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLDataProperty property ) {
+    public Result visit( final @Nonnull OWLDataProperty property ) {
         final Node node =
             new NodeType.ConcreteRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
@@ -58,7 +60,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final OWLAnnotationProperty property ) {
+    public Result visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node node =
             new NodeType.AnnotationRole( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );

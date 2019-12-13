@@ -11,17 +11,18 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
+import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
 public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Result> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLPropertyExpressionMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
     @Override
-    public Result visit( final OWLObjectInverseOf property ) {
+    public Result visit( final @Nonnull OWLObjectInverseOf property ) {
         final Node complementNode =
             new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
@@ -34,7 +35,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     }
 
     @Override
-    public Result visit( final OWLObjectProperty property ) {
+    public Result visit( final @Nonnull OWLObjectProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AbstractRole( id, label );
@@ -42,7 +43,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     }
 
     @Override
-    public Result visit( final OWLDataProperty property ) {
+    public Result visit( final @Nonnull OWLDataProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.ConcreteRole( id, label );
@@ -50,7 +51,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     }
 
     @Override
-    public Result visit( final OWLAnnotationProperty property ) {
+    public Result visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AnnotationRole( id, label );

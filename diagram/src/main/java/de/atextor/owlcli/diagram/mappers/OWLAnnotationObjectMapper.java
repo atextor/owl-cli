@@ -10,52 +10,54 @@ import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 
+import javax.annotation.Nonnull;
+
 import static io.vavr.API.TODO;
 
 public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Result> {
-    private MappingConfiguration mappingConfig;
+    private final MappingConfiguration mappingConfig;
 
     public OWLAnnotationObjectMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }
 
     @Override
-    public Result visit( final OWLAnnotation node ) {
+    public Result visit( final @Nonnull OWLAnnotation node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLAnnotationAssertionAxiom axiom ) {
+    public Result visit( final @Nonnull OWLAnnotationAssertionAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLSubAnnotationPropertyOfAxiom axiom ) {
+    public Result visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLAnnotationPropertyDomainAxiom axiom ) {
+    public Result visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLAnnotationPropertyRangeAxiom axiom ) {
+    public Result visit( final @Nonnull OWLAnnotationPropertyRangeAxiom axiom ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final IRI iri ) {
+    public Result visit( final @Nonnull IRI iri ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLAnonymousIndividual individual ) {
+    public Result visit( final @Nonnull OWLAnonymousIndividual individual ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final OWLLiteral node ) {
+    public Result visit( final @Nonnull OWLLiteral node ) {
         return TODO();
     }
 }
