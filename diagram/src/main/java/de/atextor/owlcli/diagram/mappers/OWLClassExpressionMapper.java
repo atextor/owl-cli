@@ -272,7 +272,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Node restrictionNode =
             new NodeType.ConcreteMaximalCardinality( mappingConfig.getIdentifierMapper().getSyntheticId(),
                 classExpression.getCardinality() );
-        return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.ABSTRACT_ROLE );
+        return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
     }
 
     @Override
