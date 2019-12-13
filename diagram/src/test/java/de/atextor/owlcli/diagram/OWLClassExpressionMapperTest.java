@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataExactCardinality;
 import org.semanticweb.owlapi.model.OWLDataHasValue;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
@@ -613,7 +614,39 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataExactCardinality() {
+        final String ontology = """
+            :hasName a owl:DatatypeProperty .
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :hasName ;
+                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                  owl:onDataRange xsd:string
+               ] .
+            """;
 
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLDataExactCardinality cardinality = (OWLDataExactCardinality) axiom.getOperandsAsList().get( 1 );
+
+        final String restrictionNodeId = "restrictionNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
+
+        final Result result = mapper.visit( cardinality );
+        final Node restrictionNode = result.getNode();
+        assertThat( restrictionNode ).isInstanceOf( NodeType.ConcreteExactCardinality.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 1 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
+
+        assertThat( ( (NodeType.ConcreteExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasName",
+            DecoratedEdge.CONCRETE_ROLE ) );
     }
 
     @Test
