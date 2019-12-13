@@ -30,19 +30,18 @@ dependencies {
 }
 
 shadowJar {
-    baseName = 'owl-cli'
+    archiveBaseName = 'owl-cli'
     classifier = null
-    version = "$version"
 }
 
 compileJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview"]
     sourceCompatibility = 13
     targetCompatibility = 13
 }
 
 compileTestJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview"]
 }
 
 test {
