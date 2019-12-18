@@ -18,10 +18,8 @@ public class OWLIndividualMapperTest extends MapperTestBase {
     public void testOWLAnonymousIndividual() {
         final String ontology = """
             :Dog a owl:Class .
-            :name a owl:DatatypeProperty .
             [
-              a :Dog ;
-              :name "Max"
+              a :Dog
             ] .
             """;
         final OWLClassAssertionAxiom axiom = getAxiom( ontology, AxiomType.CLASS_ASSERTION );
