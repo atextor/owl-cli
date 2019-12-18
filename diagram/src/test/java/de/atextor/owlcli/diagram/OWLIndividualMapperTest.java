@@ -32,4 +32,21 @@ public class OWLIndividualMapperTest extends MapperTestBase {
         assertThat( ( (NodeType.Individual) result.getNode() ).getName() ).isEqualTo( "[]" );
         assertThat( result.getRemainingElements() ).isEmpty();
     }
+
+    @Test
+    public void testOWLNamedIndividual() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :Max a owl:NamedIndividual, :Dog .
+            """;
+        final OWLClassAssertionAxiom axiom = getAxiom( ontology, AxiomType.CLASS_ASSERTION );
+        final OWLIndividual individual = axiom.getIndividual();
+        assertThat( individual.isAnonymous() ).isFalse();
+
+        final Result result = mapper.visit( individual.asOWLNamedIndividual() );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Individual.class );
+
+        assertThat( (NodeType.Individual) result.getNode() ).matches( isNodeWithId( "Max" ) );
+        assertThat( result.getRemainingElements() ).isEmpty();
+    }
 }
