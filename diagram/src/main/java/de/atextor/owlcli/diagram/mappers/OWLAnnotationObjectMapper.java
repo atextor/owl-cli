@@ -58,6 +58,6 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
 
     @Override
     public Result visit( final @Nonnull OWLLiteral node ) {
-        return TODO();
+        return node.accept( mappingConfig.getOwlDataMapper() );
     }
 }

@@ -37,10 +37,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Result> {
 
     @Override
     public Result visit( final @Nonnull OWLNamedIndividual individual ) {
-        final Node node =
-            new NodeType.Individual( mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() ),
-                mappingConfig.getNameMapper().getName( individual ) );
-        return Result.of( node );
+        return individual.accept( mappingConfig.getOwlIndividualMapper() );
     }
 
     @Override

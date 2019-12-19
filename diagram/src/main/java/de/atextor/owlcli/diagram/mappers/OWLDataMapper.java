@@ -55,9 +55,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
 
     @Override
     public Result visit( final @Nonnull OWLDatatype node ) {
-        final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( node.getIRI() );
-        final String name = mappingConfig.getNameMapper().getName( node );
-        return Result.of( new NodeType.Datatype( id, name ) );
+        return node.accept( mappingConfig.getOwlEntityMapper() );
     }
 
     @Override
