@@ -5,6 +5,7 @@ import de.atextor.owlcli.diagram.mappers.OWLPropertyExpressionMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
 
@@ -36,6 +37,18 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataProperty() {
+        final String ontology = """
+            :foo a owl:DatatypeProperty .
+            """;
+        final OWLDeclarationAxiom axiom = getAxiom( ontology, AxiomType.DECLARATION );
+        final OWLDataProperty property = axiom.getEntity().asOWLDataProperty();
+
+        final Result result = property.accept( mapper );
+
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.ConcreteRole.class );
+
+        assertThat( ( (NodeType.ConcreteRole) result.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( result.getRemainingElements() ).isEmpty();
     }
 
     @Test
