@@ -31,10 +31,12 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void tesstOWLAnonymousIndividual() {
+    public void testOWLAnonymousIndividual() {
+        new OWLIndividualMapperTest().testOWLAnonymousIndividual();
     }
 
     @Test
     public void testOWLLiteral() {
+        new OWLDataMapperTest().testOWLLiteral();
     }
 }

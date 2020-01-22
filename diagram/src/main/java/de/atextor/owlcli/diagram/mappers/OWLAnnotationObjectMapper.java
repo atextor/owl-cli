@@ -53,7 +53,7 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
 
     @Override
     public Result visit( final @Nonnull OWLAnonymousIndividual individual ) {
-        return TODO();
+        return individual.accept( mappingConfig.getOwlIndividualMapper() );
     }
 
     @Override
