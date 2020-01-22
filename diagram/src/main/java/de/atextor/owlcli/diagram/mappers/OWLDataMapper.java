@@ -1,7 +1,10 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
@@ -13,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
+import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
@@ -29,8 +33,18 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataOneOf node ) {
-        return TODO();
+    public Result visit( final @Nonnull OWLDataOneOf classExpression ) {
+        final Node restrictionNode =
+            new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Stream<GraphElement> valueEdgesAndNodes = classExpression.values().flatMap( value -> {
+            final Result valueResult = value.accept( mappingConfig.getOwlDataMapper() );
+            final Edge vEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
+                valueResult.getNode().getId() );
+            final Stream<GraphElement> remainingElements = Stream.concat( valueResult.getRemainingElements(),
+                Stream.of( vEdge ) );
+            return Stream.concat( Stream.of( valueResult.getNode() ), remainingElements );
+        } );
+        return new Result( restrictionNode, valueEdgesAndNodes );
     }
 
     @Override
