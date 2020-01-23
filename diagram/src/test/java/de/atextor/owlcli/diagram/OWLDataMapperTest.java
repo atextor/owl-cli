@@ -8,6 +8,7 @@ import de.atextor.owlcli.diagram.mappers.OWLDataMapper;
 import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
@@ -24,6 +25,39 @@ public class OWLDataMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataComplementOf() {
+        final String ontology = """
+            :name a owl:DatatypeProperty .
+            :Dog a owl:Class ;
+               owl:equivalentClass [
+                  a owl:Restriction ;
+                  owl:onProperty :name ;
+                  owl:someValuesFrom [
+                    a rdfs:Datatype ;
+                    owl:datatypeComplementOf xsd:string
+                  ]
+               ] .
+            """;
+
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
+        final OWLDataSomeValuesFrom someValuesFrom = (OWLDataSomeValuesFrom) axiom.getOperandsAsList().get( 1 );
+        final OWLDataComplementOf owlDataOneOf = (OWLDataComplementOf) someValuesFrom.getFiller();
+
+        final String complementId = "complementNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
+
+        final Result result = mapper.visit( owlDataOneOf );
+        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Complement.class );
+        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        assertThat( remainingElements ).isNotEmpty();
+
+        final List<Node> nodes = nodes( remainingElements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "string" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( complementId ) );
+
+        final List<Edge> edges = edges( remainingElements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( complementId, "string" ) );
     }
 
     @Test
