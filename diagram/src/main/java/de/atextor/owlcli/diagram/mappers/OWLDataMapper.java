@@ -8,6 +8,7 @@ import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
+import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLDataVisitorEx;
 import org.semanticweb.owlapi.model.OWLDatatype;
@@ -27,9 +28,25 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
         this.mappingConfig = mappingConfig;
     }
 
+    private Stream<GraphElement> createEdgeToDataRange( final Node sourceNode,
+                                                        final OWLDataRange classExpression ) {
+        final Result diagramPartsForDataRange = classExpression.accept( this );
+        final Node targetNode = diagramPartsForDataRange.getNode();
+        final Stream<GraphElement> remainingElements = diagramPartsForDataRange.getRemainingElements();
+        final Node.Id from = sourceNode.getId();
+        final Node.Id to = targetNode.getId();
+        final Edge operandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, from, to );
+
+        return Stream.concat( Stream.of( sourceNode, targetNode, operandEdge ), remainingElements );
+    }
+
     @Override
-    public Result visit( final @Nonnull OWLDataComplementOf node ) {
-        return TODO();
+    public Result visit( final @Nonnull OWLDataComplementOf dataRange ) {
+        final Node complementNode =
+            new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Stream<GraphElement> remainingElements = createEdgeToDataRange( complementNode,
+            dataRange.getDataRange() );
+        return new Result( complementNode, remainingElements );
     }
 
     @Override
