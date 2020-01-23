@@ -74,8 +74,11 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataUnionOf node ) {
-        return TODO();
+    public Result visit( final @Nonnull OWLDataUnionOf dataRange ) {
+        final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
+            createEdgeToDataRange( unionNode, operand ) );
+        return new Result( unionNode, remainingElements );
     }
 
     @Override
