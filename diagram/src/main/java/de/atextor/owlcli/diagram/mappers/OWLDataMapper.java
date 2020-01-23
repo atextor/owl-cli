@@ -50,10 +50,10 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataOneOf classExpression ) {
+    public Result visit( final @Nonnull OWLDataOneOf dataRange ) {
         final Node restrictionNode =
             new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Stream<GraphElement> valueEdgesAndNodes = classExpression.values().flatMap( value -> {
+        final Stream<GraphElement> valueEdgesAndNodes = dataRange.values().flatMap( value -> {
             final Result valueResult = value.accept( mappingConfig.getOwlDataMapper() );
             final Edge vEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
                 valueResult.getNode().getId() );
@@ -65,8 +65,12 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataIntersectionOf node ) {
-        return TODO();
+    public Result visit( final @Nonnull OWLDataIntersectionOf dataRange ) {
+        final Node intersectionNode =
+            new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
+            createEdgeToDataRange( intersectionNode, operand ) );
+        return new Result( intersectionNode, remainingElements );
     }
 
     @Override
