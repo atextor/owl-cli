@@ -11,9 +11,11 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
+import org.semanticweb.owlapi.model.OWLLiteral;
 
 import java.util.List;
 import java.util.Set;
@@ -195,5 +197,22 @@ public class OWLDataMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLLiteral() {
+        final String ontology = """
+            :Dog a owl:Class .
+            :name a owl:DatatypeProperty .
+            :Bello a :Dog ;
+               :name "Bello" .
+            """;
+
+        final OWLDataPropertyAssertionAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_ASSERTION );
+        final OWLLiteral object = axiom.getObject();
+
+        final String literalId = "literalNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( literalId ) );
+
+        final Result result = mapper.visit( object );
+
+        assertThat( result.getNode() ).matches( isNodeWithId( literalId ) );
+        assertThat( result.getRemainingElements() ).isEmpty();
     }
 }
