@@ -48,7 +48,9 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
 
     @Override
     public Result visit( final @Nonnull IRI iri ) {
-        return TODO();
+        final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( iri );
+        final String label = iri.toString();
+        return Result.of( new NodeType.Literal( id, label ) );
     }
 
     @Override
