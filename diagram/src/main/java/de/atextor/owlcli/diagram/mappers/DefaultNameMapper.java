@@ -1,6 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import org.semanticweb.owlapi.model.HasIRI;
+import org.semanticweb.owlapi.model.IRI;
 
 class DefaultNameMapper implements NameMapper {
     private final MappingConfiguration mappingConfig;
@@ -9,8 +10,14 @@ class DefaultNameMapper implements NameMapper {
         this.mappingConfig = mappingConfig;
     }
 
+
     @Override
     public String getName( final HasIRI object ) {
-        return object.getIRI().getFragment();
+        return getName( object.getIRI() );
+    }
+
+    @Override
+    public String getName( final IRI object ) {
+        return object.getFragment();
     }
 }
