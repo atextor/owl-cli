@@ -1,8 +1,9 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.NodeType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
-import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
@@ -23,12 +24,6 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
 
     @Override
     public Result visit( final @Nonnull OWLAnnotation node ) {
-        return TODO();
-    }
-
-    @Override
-    public Result visit( final @Nonnull OWLAnnotationAssertionAxiom axiom ) {
-        return TODO();
     }
 
     @Override
