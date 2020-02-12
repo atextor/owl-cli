@@ -1,7 +1,9 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
@@ -12,6 +14,8 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 
 import javax.annotation.Nonnull;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
@@ -23,7 +27,13 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
     }
 
     @Override
-    public Result visit( final @Nonnull OWLAnnotation node ) {
+    public Result visit( final @Nonnull OWLAnnotation annotation ) {
+        final Result valueResult = annotation.getValue().accept( this );
+        final Result propertyResult = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyResult.getNode().getId(), valueResult.getNode
+                ().getId() );
+        return new Result( propertyResult.getNode(), Stream.of( Stream.of( valueResult.getNode(), edge ),
+                valueResult.getRemainingElements(), propertyResult.getRemainingElements() ).flatMap( Function.identity() ) );
     }
 
     @Override
