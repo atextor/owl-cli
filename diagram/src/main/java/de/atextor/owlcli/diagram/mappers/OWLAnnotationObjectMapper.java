@@ -11,11 +11,8 @@ import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
-import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 
 import javax.annotation.Nonnull;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
@@ -32,11 +29,6 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
         final Result propertyResult = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyResult.getNode().getId(), valueResult.getNode
                 ().getId() );
-    }
-
-    @Override
-    public Result visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
-        return TODO();
         return propertyResult.and( valueResult ).and( edge );
     }
 

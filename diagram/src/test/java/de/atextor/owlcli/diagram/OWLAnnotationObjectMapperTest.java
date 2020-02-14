@@ -50,14 +50,6 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLAnnotationAssertionAxiom() {
-    }
-
-    @Test
-    public void testOWLSubAnnotationPropertyOfAxiom() {
-    }
-
-    @Test
     public void testOWLAnnotationPropertyDomainAxiom() {
     }
 
