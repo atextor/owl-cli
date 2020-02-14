@@ -22,10 +22,10 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
     @Test
     public void testOWLAnnotation() {
         final String ontology = """
-                :comment a owl:AnnotationProperty .
-                :Dog a owl:Class ;
-                    :comment :Foo .
-                """;
+            :comment a owl:AnnotationProperty .
+            :Dog a owl:Class ;
+                :comment :Foo .
+            """;
 
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Result result = mapper.visit( axiom.getAnnotation() );
@@ -50,20 +50,12 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLAnnotationPropertyDomainAxiom() {
-    }
-
-    @Test
-    public void testOWLAnnotationPropertyRangeAxiom() {
-    }
-
-    @Test
     public void testIRI() {
         final String ontology = """
-                :comment a owl:AnnotationProperty .
-                :Dog a owl:Class ;
-                    :comment :Foo .
-                """;
+            :comment a owl:AnnotationProperty .
+            :Dog a owl:Class ;
+                :comment :Foo .
+            """;
 
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Result result = mapper.visit( axiom.getValue().asIRI().get() );
