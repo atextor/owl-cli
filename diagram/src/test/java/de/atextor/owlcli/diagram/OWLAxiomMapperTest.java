@@ -7,6 +7,7 @@ import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
 import org.junit.jupiter.api.Test;
+import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -19,6 +20,7 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
+import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
@@ -35,6 +37,7 @@ import uk.ac.manchester.cs.owl.owlapi.OWLSubObjectPropertyOfAxiomImpl;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -347,6 +350,23 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSubAnnotationPropertyOfAxiom() {
+        final String ontology = """
+            :foo a owl:AnnotationProperty .
+            :bar a owl:AnnotationProperty;
+                 rdfs:subPropertyOf :foo .
+            """;
+        final OWLSubAnnotationPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_ANNOTATION_PROPERTY_OF );
+        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        assertThat( result ).isNotEmpty();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "bar", "foo" ) );
     }
 
     @Test
