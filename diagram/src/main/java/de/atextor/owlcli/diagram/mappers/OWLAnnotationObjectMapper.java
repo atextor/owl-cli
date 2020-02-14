@@ -32,13 +32,12 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
         final Result propertyResult = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyResult.getNode().getId(), valueResult.getNode
                 ().getId() );
-        return new Result( propertyResult.getNode(), Stream.of( Stream.of( valueResult.getNode(), edge ),
-                valueResult.getRemainingElements(), propertyResult.getRemainingElements() ).flatMap( Function.identity() ) );
     }
 
     @Override
     public Result visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
         return TODO();
+        return propertyResult.and( valueResult ).and( edge );
     }
 
     @Override
