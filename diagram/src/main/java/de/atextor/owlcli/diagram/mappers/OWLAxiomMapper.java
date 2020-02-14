@@ -362,7 +362,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
-        return Stream.empty();
+        final Result superPropertyResult =
+            axiom.getSuperProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Result subPropertyResult =
+            axiom.getSubProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
+            superPropertyResult.getNode().getId() );
+        return subPropertyResult.and( superPropertyResult ).and( edge ).toStream();
     }
 
     @Override
