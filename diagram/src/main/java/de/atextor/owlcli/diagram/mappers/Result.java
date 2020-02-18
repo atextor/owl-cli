@@ -25,6 +25,10 @@ public class Result {
         return new Result( node, Stream.concat( Stream.of( element ), remainingElements ) );
     }
 
+    public Result and( final Stream<GraphElement> elements ) {
+        return new Result( node, Stream.concat( remainingElements, elements ) );
+    }
+
     public Stream<GraphElement> toStream() {
         return Stream.concat( Stream.of( node ), remainingElements );
     }
