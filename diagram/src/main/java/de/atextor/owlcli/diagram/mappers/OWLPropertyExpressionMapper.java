@@ -12,7 +12,6 @@ import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
 import javax.annotation.Nonnull;
-import java.util.stream.Stream;
 
 public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Result> {
     private final MappingConfiguration mappingConfig;
@@ -30,8 +29,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge propertyEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
             propertyVisitorResult.getNode().getId() );
-        return new Result( complementNode, Stream.concat( Stream.of( propertyEdge,
-            propertyVisitorResult.getNode() ), propertyVisitorResult.getRemainingElements() ) );
+        return Result.of( complementNode ).and( propertyVisitorResult ).and( propertyEdge );
     }
 
     @Override

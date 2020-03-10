@@ -107,11 +107,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
             .getId(), DecoratedEdge.DATA_RANGE );
         final Edge dEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), dNodeResult.getNode()
             .getId(), DecoratedEdge.CONCRETE_ROLE );
-        final Stream<GraphElement> remainingElements = Stream
-            .concat( uNodeResult.getRemainingElements(), dNodeResult.getRemainingElements() );
-
-        return new Result( restrictionNode, Stream
-            .concat( Stream.of( uEdge, uNodeResult.getNode(), dEdge, dNodeResult.getNode() ), remainingElements ) );
+        return Result.of( restrictionNode ).and( uNodeResult ).and( dNodeResult ).and( uEdge ).and( dEdge );
     }
 
     private Result createPropertyEdge( final Node restrictionNode, final OWLRestriction classExpression,
@@ -120,9 +116,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Result rNodeResult = property.accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), rNodeResult.getNode()
             .getId(), edgeDecoration );
-        final Stream<GraphElement> remainingElements = rNodeResult.getRemainingElements();
-        return new Result( restrictionNode, Stream
-            .concat( Stream.of( rEdge, rNodeResult.getNode() ), remainingElements ) );
+        return Result.of( restrictionNode ).and( rNodeResult ).and( rEdge );
     }
 
     @Override
@@ -148,10 +142,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Result oNodeResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
         final Edge oEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), oNodeResult.getNode()
             .getId(), DecoratedEdge.INDIVIDUAL );
-        final Stream<GraphElement> remainingElements = Stream
-            .concat( rNodeResult.getRemainingElements(), oNodeResult.getRemainingElements() );
-        return new Result( restrictionNode, Stream
-            .concat( Stream.of( oEdge, rNodeResult.getNode(), oNodeResult.getNode() ), remainingElements ) );
+        return Result.of( restrictionNode ).and( rNodeResult ).and( oNodeResult ).and( oEdge );
     }
 
     @Override
@@ -200,15 +191,12 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
     @Override
     public Result visit( final @Nonnull OWLObjectOneOf classExpression ) {
         final Node restrictionNode = new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Stream<GraphElement> individualEdgesAndNodes = classExpression.individuals().flatMap( individual -> {
+        return classExpression.individuals().map( individual -> {
             final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
             final Edge iEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), individualResult
                 .getNode().getId() );
-            final Stream<GraphElement> remainingElements = Stream
-                .concat( individualResult.getRemainingElements(), Stream.of( iEdge ) );
-            return Stream.concat( Stream.of( individualResult.getNode() ), remainingElements );
-        } );
-        return new Result( restrictionNode, individualEdgesAndNodes );
+            return individualResult.and( iEdge );
+        } ).reduce( Result.of( restrictionNode ), Result::and );
     }
 
     @Override
@@ -234,10 +222,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
         final Result vNodeResult = literal.accept( mappingConfig.getOwlDataMapper() );
         final Edge vEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), vNodeResult.getNode()
             .getId(), DecoratedEdge.LITERAL );
-        final Stream<GraphElement> remainingElements = Stream
-            .concat( uNodeResult.getRemainingElements(), vNodeResult.getRemainingElements() );
-        return new Result( restrictionNode, Stream
-            .concat( Stream.of( vEdge, uNodeResult.getNode(), vNodeResult.getNode() ), remainingElements ) );
+        return Result.of( restrictionNode ).and( uNodeResult ).and( vNodeResult ).and( vEdge );
     }
 
     @Override

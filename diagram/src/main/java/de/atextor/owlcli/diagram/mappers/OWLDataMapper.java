@@ -53,15 +53,12 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     public Result visit( final @Nonnull OWLDataOneOf dataRange ) {
         final Node restrictionNode =
             new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Stream<GraphElement> valueEdgesAndNodes = dataRange.values().flatMap( value -> {
+        return dataRange.values().map( value -> {
             final Result valueResult = value.accept( mappingConfig.getOwlDataMapper() );
             final Edge vEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
                 valueResult.getNode().getId() );
-            final Stream<GraphElement> remainingElements = Stream.concat( valueResult.getRemainingElements(),
-                Stream.of( vEdge ) );
-            return Stream.concat( Stream.of( valueResult.getNode() ), remainingElements );
-        } );
-        return new Result( restrictionNode, valueEdgesAndNodes );
+            return valueResult.and( vEdge );
+        } ).reduce( Result.of( restrictionNode ), Result::and );
     }
 
     @Override
