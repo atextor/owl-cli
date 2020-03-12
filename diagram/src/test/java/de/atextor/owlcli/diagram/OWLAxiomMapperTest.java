@@ -304,11 +304,11 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLDataPropertyAssertionAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_ASSERTION );
 
-        final String helperNodeId = "helper";
-        testIdentifierMapper.pushAnonId( new Node.Id( helperNodeId ) );
-
         final String literalNodeId = "hello";
         testIdentifierMapper.pushAnonId( new Node.Id( literalNodeId ) );
+
+        final String helperNodeId = "helper";
+        testIdentifierMapper.pushAnonId( new Node.Id( helperNodeId ) );
 
         final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
         assertThat( result ).isNotEmpty();
