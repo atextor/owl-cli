@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLClassExpression;
+import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
@@ -296,6 +297,34 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataPropertyAssertionAxiom() {
+        final String ontology = """
+            :foo a owl:DatatypeProperty .
+            :bar a owl:NamedIndividual .
+            :bar :foo "hello" .
+            """;
+        final OWLDataPropertyAssertionAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_ASSERTION );
+
+        final String helperNodeId = "helper";
+        testIdentifierMapper.pushAnonId( new Node.Id( helperNodeId ) );
+
+        final String literalNodeId = "hello";
+        testIdentifierMapper.pushAnonId( new Node.Id( literalNodeId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        assertThat( result ).isNotEmpty();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "hello" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "helper" ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "bar", "helper" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "helper", "hello" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "helper", "foo" ) );
     }
 
     @Test
@@ -352,7 +381,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     public void testOWLSubAnnotationPropertyOfAxiom() {
         final String ontology = """
             :foo a owl:AnnotationProperty .
-            :bar a owl:AnnotationProperty;
+            :bar a owl:AnnotationProperty ;
                  rdfs:subPropertyOf :foo .
             """;
         final OWLSubAnnotationPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_ANNOTATION_PROPERTY_OF );
