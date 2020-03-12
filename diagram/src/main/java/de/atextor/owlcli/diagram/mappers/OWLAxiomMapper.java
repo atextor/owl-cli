@@ -299,7 +299,21 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
-        return Stream.empty();
+        final Result subjectResult = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
+        final Result predicateResult = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Result objectResult = axiom.getObject().accept( mappingConfig.getOwlDataMapper() );
+        final Node helper = new NodeType.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
+
+        final Node.Id subjectId = subjectResult.getNode().getId();
+        final Node.Id predicateId = predicateResult.getNode().getId();
+        final Node.Id objectId = objectResult.getNode().getId();
+        final Node.Id helperId = helper.getId();
+        final Edge subjectToHelper = new PlainEdge( Edge.Type.NO_ARROW, subjectId, helperId );
+        final Edge helperToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, helperId, objectId );
+        final Edge helperToPredicate = new PlainEdge( Edge.Type.DASHED_ARROW, helperId, predicateId );
+
+        return subjectResult.and( predicateResult ).and( objectResult ).and( helper )
+            .and( subjectToHelper ).and( helperToObject ).and( helperToPredicate ).toStream();
     }
 
     @Override
