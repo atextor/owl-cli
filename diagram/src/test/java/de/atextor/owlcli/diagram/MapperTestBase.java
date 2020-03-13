@@ -10,6 +10,7 @@ import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.AxiomType;
+import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -37,21 +38,36 @@ public class MapperTestBase {
             .build();
     }
 
+    protected IRI iri( final String element ) {
+        return IRI.create( "http://test.de#" + element );
+    }
+
     protected OWLOntology createOntology( final String content ) {
-        final OWLOntologyManager m = OWLManager.createOWLOntologyManager();
-        final String ontologyContent = """
-            @prefix : <http://test.de/> .
+        final OWLOntologyManager ontologyManager = OWLManager.createOWLOntologyManager();
+
+        // Advanced heuristic to find out if Turtle or Functional Syntax
+        final String ontologyContent = content.contains( "." ) ? """
+            @prefix : <http://test.de#> .
             @prefix owl: <http://www.w3.org/2002/07/owl#> .
             @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
             @prefix xml: <http://www.w3.org/XML/1998/namespace> .
             @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
             @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-            """ + content;
+            """ + content : """
+            Prefix(:=<http://test.de#>)
+            Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+            Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+            Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+            Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+            Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+            Ontology(<http://test.de>
+            """ + content + """
+            )""";
         final OWLOntology ontology;
 
         try {
             final InputStream stream = new ByteArrayInputStream( ontologyContent.getBytes( StandardCharsets.UTF_8 ) );
-            ontology = m.loadOntologyFromOntologyDocument( stream );
+            ontology = ontologyManager.loadOntologyFromOntologyDocument( stream );
             return ontology;
         } catch ( final OWLOntologyCreationException e ) {
             fail( "Could not create ontology", e );
