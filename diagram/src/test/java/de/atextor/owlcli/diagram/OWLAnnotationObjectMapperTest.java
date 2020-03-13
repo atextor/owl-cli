@@ -42,7 +42,7 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
         final NodeType.Literal literal = (NodeType.Literal) theNode;
 
         assertThat( literal.getId().getId() ).isEqualTo( "Foo" );
-        assertThat( literal.getValue() ).isEqualTo( "http://test.de/Foo" );
+        assertThat( literal.getValue() ).isEqualTo( "http://test.de#Foo" );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
