@@ -10,32 +10,18 @@ import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLDataPropertyExpression;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
-import org.semanticweb.owlapi.model.OWLIndividual;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
-import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
-import uk.ac.manchester.cs.owl.owlapi.OWLClassImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLDataPropertyImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentClassesAxiomImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLEquivalentDataPropertiesAxiomImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLNamedIndividualImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyAssertionAxiomImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLObjectPropertyImpl;
-import uk.ac.manchester.cs.owl.owlapi.OWLSubObjectPropertyOfAxiomImpl;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -186,15 +172,13 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectPropertyAssertionAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#foo" );
-        final IRI barIri = IRI.create( "http://test.de#bar" );
-        final IRI propertyIri = IRI.create( "http://test.de#property" );
-
-        final OWLIndividual foo = new OWLNamedIndividualImpl( fooIri );
-        final OWLIndividual bar = new OWLNamedIndividualImpl( barIri );
-        final OWLObjectPropertyExpression property = new OWLObjectPropertyImpl( propertyIri );
-        final OWLObjectPropertyAssertionAxiom axiom = new OWLObjectPropertyAssertionAxiomImpl( foo,
-            property, bar, Collections.emptyList() );
+        final String ontology = """
+            :foo a owl:NamedIndividual .
+            :bar a owl:NamedIndividual .
+            :property a owl:ObjectProperty .
+            :foo :property :bar .
+            """;
+        final OWLObjectPropertyAssertionAxiom axiom = getAxiom( ontology, AxiomType.OBJECT_PROPERTY_ASSERTION );
 
         final String invisibleId = "invisibleNode";
         testIdentifierMapper.pushAnonId( new Node.Id( invisibleId ) );
@@ -227,12 +211,12 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSubObjectPropertyOfAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#foo" );
-        final IRI barIri = IRI.create( "http://test.de#bar" );
-        final OWLObjectPropertyExpression foo = new OWLObjectPropertyImpl( fooIri );
-        final OWLObjectPropertyExpression bar = new OWLObjectPropertyImpl( barIri );
-        final OWLSubObjectPropertyOfAxiom axiom = new OWLSubObjectPropertyOfAxiomImpl( foo, bar,
-            Collections.emptyList() );
+        final String ontology = """
+            :foo a owl:ObjectProperty .
+            :bar a owl:ObjectProperty .
+            :foo rdfs:subPropertyOf :bar .
+            """;
+        final OWLSubObjectPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_OBJECT_PROPERTY );
 
         final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
         assertThat( result ).hasSize( 3 );
@@ -267,20 +251,39 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLEquivalentDataPropertiesAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#foo" );
-        final IRI barIri = IRI.create( "http://test.de#bar" );
-        final IRI bazIri = IRI.create( "http://test.de#baz" );
-        final OWLDataPropertyExpression dataPropertyExpression1 = new OWLDataPropertyImpl( fooIri );
-        final OWLDataPropertyExpression dataPropertyExpression2 = new OWLDataPropertyImpl( barIri );
-        final OWLDataPropertyExpression dataPropertyExpression3 = new OWLDataPropertyImpl( bazIri );
-        final OWLEquivalentDataPropertiesAxiom axiom =
-            new OWLEquivalentDataPropertiesAxiomImpl( Arrays.asList( dataPropertyExpression1,
-                dataPropertyExpression2, dataPropertyExpression3 ), Collections.emptyList() );
+    public void testOWLEquivalentDataPropertiesAxiomNAry() {
+        // The axiom variant with >2 arguments can not be expressed in Turtle,
+        // therefore we use Functional Syntax here.
+        final String ontology = """
+            Declaration(DataProperty(:bar))
+            Declaration(DataProperty(:baz))
+            Declaration(DataProperty(:foo))
+            EquivalentDataProperties(:foo :bar :baz)
+            """;
+        final OWLEquivalentDataPropertiesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_DATA_PROPERTIES );
 
         final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
+    }
 
-        assertEquivalentResult( result, fooIri, barIri, bazIri );
+    @Test
+    public void testOWLEquivalentDataPropertiesAxiom() {
+        final String ontologyContent = """
+            :foo a owl:DatatypeProperty ;
+               owl:equivalentProperty :bar .
+            :bar a owl:DatatypeProperty ;
+               owl:equivalentProperty :baz .
+            :baz a owl:DatatypeProperty ;
+               owl:equivalentProperty :foo .
+            """;
+        final OWLOntology ontology = createOntology( ontologyContent );
+        final Set<GraphElement> result = ontology.axioms()
+            .filter( axiom -> axiom.isOfType( AxiomType.EQUIVALENT_DATA_PROPERTIES ) )
+            .map( axiom -> (OWLEquivalentDataPropertiesAxiom) axiom )
+            .flatMap( mapper::visit )
+            .collect( Collectors.toSet() );
+
+        assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
     }
 
     @Test
@@ -303,18 +306,39 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLEquivalentClassesAxiom() {
-        final IRI fooIri = IRI.create( "http://test.de#Foo" );
-        final IRI barIri = IRI.create( "http://test.de#Bar" );
-        final IRI bazIri = IRI.create( "http://test.de#Baz" );
-        final OWLClassExpression classExpression1 = new OWLClassImpl( fooIri );
-        final OWLClassExpression classExpression2 = new OWLClassImpl( barIri );
-        final OWLClassExpression classExpression3 = new OWLClassImpl( bazIri );
-        final OWLEquivalentClassesAxiom axiom = new OWLEquivalentClassesAxiomImpl( Arrays.asList( classExpression1,
-            classExpression2, classExpression3 ), Collections.emptyList() );
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+    public void testOWLEquivalentClassesAxiomNAry() {
+        // The axiom variant with >2 arguments can not be expressed in Turtle,
+        // therefore we use Functional Syntax here.
+        final String ontology = """
+            Declaration(Class(:bar))
+            Declaration(Class(:baz))
+            Declaration(Class(:foo))
+            EquivalentClasses(:foo :bar :baz)
+            """;
+        final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
 
-        assertEquivalentResult( result, fooIri, barIri, bazIri );
+        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
+    }
+
+    @Test
+    public void testOWLEquivalentClassesAxiom() {
+        final String ontologyContent = """
+            :foo a owl:Class ;
+               owl:equivalentClass :bar .
+            :bar a owl:Class ;
+               owl:equivalentClass :baz .
+            :baz a owl:Class ;
+               owl:equivalentClass :foo .
+            """;
+        final OWLOntology ontology = createOntology( ontologyContent );
+        final Set<GraphElement> result = ontology.axioms()
+            .filter( axiom -> axiom.isOfType( AxiomType.EQUIVALENT_CLASSES ) )
+            .map( axiom -> (OWLEquivalentClassesAxiom) axiom )
+            .flatMap( mapper::visit )
+            .collect( Collectors.toSet() );
+
+        assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
     }
 
     @Test
