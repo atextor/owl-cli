@@ -87,7 +87,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassResult.getNode().getId(),
             superClassResult.getNode().getId() );
 
-        return superClassResult.and( subClassResult ).and( edge ).toStream();
+        return superClassResult.and( subClassResult ).and( edge ).toUniqueStream();
     }
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
@@ -195,7 +195,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
             superPropertyResult.getNode().getId() );
 
-        return superPropertyResult.and( subPropertyResult ).and( edge ).toStream();
+        return superPropertyResult.and( subPropertyResult ).and( edge ).toUniqueStream();
     }
 
     @Override
@@ -275,7 +275,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualResult.getNode().getId(),
             classExpressionResult.getNode().getId() );
-        return individualResult.and( classExpressionResult ).and( edge ).toStream();
+        return individualResult.and( classExpressionResult ).and( edge ).toUniqueStream();
     }
 
     @Override
@@ -333,7 +333,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     public Stream<GraphElement> visit( final @Nonnull OWLDeclarationAxiom axiom ) {
         final OWLEntityVisitorEx<Result> mapper = mappingConfig.getOwlEntityMapper();
         final Result result = axiom.getEntity().accept( mapper );
-        return result.toStream();
+        return result.toUniqueStream();
     }
 
     @Override
@@ -355,7 +355,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
             axiom.getSubProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
             superPropertyResult.getNode().getId() );
-        return subPropertyResult.and( superPropertyResult ).and( edge ).toStream();
+        return subPropertyResult.and( superPropertyResult ).and( edge ).toUniqueStream();
     }
 
     @Override
