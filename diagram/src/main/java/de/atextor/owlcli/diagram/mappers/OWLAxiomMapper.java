@@ -136,7 +136,15 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
-        return Stream.empty();
+        final Result domainResult = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
+        final Result propertyResult = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Node domainNode = new NodeType.Domain( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Edge fromDomainNodeToDomain = new PlainEdge( Edge.Type.HOLLOW_ARROW, domainNode.getId(), domainResult
+            .getNode().getId() );
+        final Edge fromDomainNodeToProperty = new PlainEdge( Edge.Type.DEFAULT_ARROW, domainNode.getId(), propertyResult
+            .getNode().getId() );
+        return domainResult.and( propertyResult ).and( domainNode ).and( fromDomainNodeToDomain )
+            .and( fromDomainNodeToProperty ).toUniqueStream();
     }
 
     @Override
