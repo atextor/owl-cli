@@ -11,6 +11,7 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
@@ -108,6 +109,33 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataPropertyDomainAxiom() {
+        final String ontology = """
+            :foo a owl:Class .
+            :bar a owl:DatatypeProperty ;
+               rdfs:domain :foo .
+            """;
+        final OWLDataPropertyDomainAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_DOMAIN );
+
+        final String domainNode = "domainNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( domainNode ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "domainNode" ) );
+        assertThat( nodes ).anyMatch( isDomain() );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+
+        final Edge domainNodeToFoo = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "foo" ) ).findAny().get();
+        assertThat( domainNodeToFoo.getType() ).isEqualTo( Edge.Type.HOLLOW_ARROW );
+
+        final Edge domainNodeToBar = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "bar" ) ).findAny().get();
+        assertThat( domainNodeToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
     }
 
     @Test
