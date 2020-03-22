@@ -316,7 +316,15 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLSubDataPropertyOfAxiom axiom ) {
-        return TODO();
+        final OWLPropertyExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlPropertyExpressionMapper();
+
+        final Graph superPropertyGraph = axiom.getSuperProperty().accept( mapper );
+        final Graph subPropertyGraph = axiom.getSubProperty().accept( mapper );
+
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
+            superPropertyGraph.getNode().getId() );
+
+        return superPropertyGraph.and( subPropertyGraph ).and( edge );
     }
 
     @Override
