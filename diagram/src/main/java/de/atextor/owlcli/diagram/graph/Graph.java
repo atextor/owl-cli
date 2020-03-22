@@ -2,6 +2,7 @@ package de.atextor.owlcli.diagram.graph;
 
 import lombok.Value;
 
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ public class Graph {
         return Stream.concat( Stream.of( node ), otherElements );
     }
 
-    public Stream<GraphElement> toUniqueStream() {
-        return toStream().collect( Collectors.toSet() ).stream();
+    public Set<GraphElement> getElementSet() {
+        return toStream().collect( Collectors.toSet() );
     }
 }

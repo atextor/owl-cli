@@ -25,7 +25,6 @@ import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointUnionAxiom;
-import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
@@ -71,7 +70,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
+import static io.vavr.API.TODO;
+
+public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLAxiomMapper( final MappingConfiguration mappingConfig ) {
@@ -79,7 +80,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSubClassOfAxiom axiom ) {
+    public Graph visit( final @Nonnull OWLSubClassOfAxiom axiom ) {
         final OWLClassExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlClassExpressionMapper();
 
         final Graph superClassGraph = axiom.getSuperClass().accept( mapper );
@@ -88,11 +89,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode().getId(),
             superClassGraph.getNode().getId() );
 
-        return superClassGraph.and( subClassGraph ).and( edge ).toUniqueStream();
+        return superClassGraph.and( subClassGraph ).and( edge );
     }
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
-    visit( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode, final Edge.Type toThirdNodeEdgeType ) {
+    propertyStructure( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode,
+                       final Edge.Type toThirdNodeEdgeType ) {
 
         final Graph subjectGraph = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
@@ -115,28 +117,29 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom ) {
-        return visit( axiom, new NodeType.Complement( mappingConfig.getIdentifierMapper()
-            .getSyntheticId() ), Edge.Type.DEFAULT_ARROW );
+    public Graph visit( final @Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom ) {
+        final Node complement = new NodeType.Complement( mappingConfig.getIdentifierMapper()
+            .getSyntheticId() );
+        return Graph.of( complement ).and( propertyStructure( axiom, complement, Edge.Type.DEFAULT_ARROW ) );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLAsymmetricObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLAsymmetricObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLReflexiveObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLReflexiveObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
+    public Graph visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Node domainNode = new NodeType.Domain( mappingConfig.getIdentifierMapper().getSyntheticId() );
@@ -145,57 +148,58 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Edge fromDomainNodeToProperty = new PlainEdge( Edge.Type.DEFAULT_ARROW, domainNode.getId(), propertyGraph
             .getNode().getId() );
         return domainGraph.and( propertyGraph ).and( domainNode ).and( fromDomainNodeToDomain )
-            .and( fromDomainNodeToProperty ).toUniqueStream();
+            .and( fromDomainNodeToProperty );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyDomainAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLObjectPropertyDomainAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentObjectPropertiesAxiom axiom ) {
-        return visit( axiom, mappingConfig.getOwlObjectMapper() );
+    public Graph visit( final @Nonnull OWLEquivalentObjectPropertiesAxiom axiom ) {
+        return pairwiseEquivalent( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDifferentIndividualsAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDifferentIndividualsAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDisjointDataPropertiesAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDisjointDataPropertiesAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDisjointObjectPropertiesAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDisjointObjectPropertiesAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyRangeAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLObjectPropertyRangeAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLObjectPropertyAssertionAxiom axiom ) {
-        return visit( axiom, new NodeType.Invisible( mappingConfig.getIdentifierMapper()
-            .getSyntheticId() ), Edge.Type.NO_ARROW );
+    public Graph visit( final @Nonnull OWLObjectPropertyAssertionAxiom axiom ) {
+        final Node invisible = new NodeType.Invisible( mappingConfig.getIdentifierMapper()
+            .getSyntheticId() );
+        return Graph.of( invisible ).and( propertyStructure( axiom, invisible, Edge.Type.NO_ARROW ) );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSubObjectPropertyOfAxiom axiom ) {
+    public Graph visit( final @Nonnull OWLSubObjectPropertyOfAxiom axiom ) {
         final OWLPropertyExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlPropertyExpressionMapper();
 
         final Graph superPropertyGraph = axiom.getSuperProperty().accept( mapper );
@@ -204,27 +208,27 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
             superPropertyGraph.getNode().getId() );
 
-        return superPropertyGraph.and( subPropertyGraph ).and( edge ).toUniqueStream();
+        return superPropertyGraph.and( subPropertyGraph ).and( edge );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDisjointUnionAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDisjointUnionAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSymmetricObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLSymmetricObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyRangeAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDataPropertyRangeAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLFunctionalDataPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLFunctionalDataPropertyAxiom axiom ) {
+        return TODO();
     }
 
     /**
@@ -236,10 +240,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
      * @param <O>     The type of object the axiom describes
      * @param <A>     The axiom type
      * @param <V>     The type of visitor that handles the axiom type
-     * @return The visitor's result
+     * @return the set of graph elements that make up the equivalency
      */
     private <O extends OWLObject, A extends OWLNaryAxiom<O>, V extends OWLObjectVisitorEx<Graph>>
-    Stream<GraphElement> visit( final A axiom, final V visitor ) {
+    Graph pairwiseEquivalent( final A axiom, final V visitor ) {
 
         final Map<O, Graph> operands = axiom.operands().collect( Collectors.toMap( Function.identity(),
             object -> object.accept( visitor ) ) );
@@ -258,7 +262,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         } ).collect( Collectors.toSet() );
 
         // For each of the combinations, create a corresponding edge
-        final Stream<Edge> edges = combinations.stream().map( expressionsList -> {
+        final Stream<GraphElement> edges = combinations.stream().map( expressionsList -> {
             final Iterator<O> iterator = expressionsList.iterator();
             final Graph graph1 = operands.get( iterator.next() );
             final Graph graph2 = operands.get( iterator.next() );
@@ -266,16 +270,17 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
                 graph2.getNode().getId() );
         } );
 
-        return Stream.concat( operands.values().stream().flatMap( Graph::toStream ), edges );
+        final Node firstOperand = operands.values().iterator().next().getNode();
+        return Graph.of( firstOperand ).and( operands.values().stream().flatMap( Graph::toStream ) ).and( edges );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentDataPropertiesAxiom axiom ) {
-        return visit( axiom, mappingConfig.getOwlObjectMapper() );
+    public Graph visit( final @Nonnull OWLEquivalentDataPropertiesAxiom axiom ) {
+        return pairwiseEquivalent( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLClassAssertionAxiom axiom ) {
+    public Graph visit( final @Nonnull OWLClassAssertionAxiom axiom ) {
         final OWLIndividual individual = axiom.getIndividual();
         final OWLClassExpression classExpression = axiom.getClassExpression();
         final Graph individualGraph = individual.accept( mappingConfig.getOwlIndividualMapper() );
@@ -284,106 +289,105 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
         final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualGraph.getNode().getId(),
             classExpressionGraph.getNode().getId() );
-        return individualGraph.and( classExpressionGraph ).and( edge ).toUniqueStream();
+        return individualGraph.and( classExpressionGraph ).and( edge );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLEquivalentClassesAxiom axiom ) {
-        return visit( axiom, mappingConfig.getOwlObjectMapper() );
+    public Graph visit( final @Nonnull OWLEquivalentClassesAxiom axiom ) {
+        return pairwiseEquivalent( axiom, mappingConfig.getOwlObjectMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
-        return visit( axiom, new NodeType.Invisible( mappingConfig.getIdentifierMapper()
-            .getSyntheticId() ), Edge.Type.NO_ARROW );
+    public Graph visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
+        final Node invisible = new NodeType.Invisible( mappingConfig.getIdentifierMapper()
+            .getSyntheticId() );
+        return Graph.of( invisible ).and( propertyStructure( axiom, invisible, Edge.Type.NO_ARROW ) );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLTransitiveObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLTransitiveObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLIrreflexiveObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLIrreflexiveObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSubDataPropertyOfAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLSubDataPropertyOfAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSameIndividualAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLSameIndividualAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSubPropertyChainOfAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLSubPropertyChainOfAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLInverseObjectPropertiesAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLInverseObjectPropertiesAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLHasKeyAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLHasKeyAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDeclarationAxiom axiom ) {
-        final OWLEntityVisitorEx<Graph> mapper = mappingConfig.getOwlEntityMapper();
-        final Graph graph = axiom.getEntity().accept( mapper );
-        return graph.toUniqueStream();
+    public Graph visit( final @Nonnull OWLDeclarationAxiom axiom ) {
+        return axiom.getEntity().accept( mappingConfig.getOwlEntityMapper() );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLDatatypeDefinitionAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLDatatypeDefinitionAxiom axiom ) {
+        return TODO();
     }
 
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationAssertionAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLAnnotationAssertionAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
+    public Graph visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
         final Graph superPropertyGraph =
             axiom.getSuperProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph subPropertyGraph =
             axiom.getSubProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
             superPropertyGraph.getNode().getId() );
-        return subPropertyGraph.and( superPropertyGraph ).and( edge ).toUniqueStream();
+        return subPropertyGraph.and( superPropertyGraph ).and( edge );
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull OWLAnnotationPropertyRangeAxiom axiom ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull OWLAnnotationPropertyRangeAxiom axiom ) {
+        return TODO();
     }
 
     @Override
-    public Stream<GraphElement> visit( final @Nonnull SWRLRule node ) {
-        return Stream.empty();
+    public Graph visit( final @Nonnull SWRLRule node ) {
+        return TODO();
     }
 
     @Override
-    public <T> Stream<GraphElement> doDefault( final T object ) {
-        return Stream.empty();
+    public <T> Graph doDefault( final T object ) {
+        return TODO();
     }
 }

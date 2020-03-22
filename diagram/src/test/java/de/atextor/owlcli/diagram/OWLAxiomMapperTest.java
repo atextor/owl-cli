@@ -36,7 +36,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     @Test
     public void testOWLSubClassOfAxiom() {
         final OWLSubClassOfAxiom axiom = getAxiom( ":Foo rdfs:subClassOf :Bar ." );
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 3 );
 
         final List<Node> nodes = nodes( result );
@@ -71,7 +71,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final String complementId = "complementNode";
         testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
 
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 7 );
 
         final List<Node> nodes = nodes( result );
@@ -119,7 +119,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final String domainNode = "domainNode";
         testIdentifierMapper.pushAnonId( new Node.Id( domainNode ) );
 
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
@@ -154,7 +154,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLEquivalentObjectPropertiesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_OBJECT_PROPERTIES );
 
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
     }
 
@@ -172,7 +172,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Set<GraphElement> result = ontology.axioms()
             .filter( axiom -> axiom.isOfType( AxiomType.EQUIVALENT_OBJECT_PROPERTIES ) )
             .map( axiom -> (OWLEquivalentObjectPropertiesAxiom) axiom )
-            .flatMap( mapper::visit )
+            .flatMap( element -> mapper.visit( element ).toStream() )
             .collect( Collectors.toSet() );
 
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
@@ -211,7 +211,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final String invisibleId = "invisibleNode";
         testIdentifierMapper.pushAnonId( new Node.Id( invisibleId ) );
 
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 7 );
 
         final List<Node> nodes = nodes( result );
@@ -246,7 +246,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLSubObjectPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_OBJECT_PROPERTY );
 
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 3 );
 
         final List<Node> nodes = nodes( result );
@@ -290,7 +290,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLEquivalentDataPropertiesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_DATA_PROPERTIES );
 
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
     }
 
@@ -308,7 +308,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Set<GraphElement> result = ontology.axioms()
             .filter( axiom -> axiom.isOfType( AxiomType.EQUIVALENT_DATA_PROPERTIES ) )
             .map( axiom -> (OWLEquivalentDataPropertiesAxiom) axiom )
-            .flatMap( mapper::visit )
+            .flatMap( element -> mapper.visit( element ).toStream() )
             .collect( Collectors.toSet() );
 
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
@@ -317,7 +317,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     @Test
     public void testOWLClassAssertionAxiom() {
         final OWLClassAssertionAxiom axiom = getAxiom( ":Foo a owl:Thing ." );
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 3 );
 
         final List<Node> nodes = nodes( result );
@@ -345,7 +345,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLEquivalentClassesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_CLASSES );
 
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
     }
 
@@ -363,7 +363,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Set<GraphElement> result = ontology.axioms()
             .filter( axiom -> axiom.isOfType( AxiomType.EQUIVALENT_CLASSES ) )
             .map( axiom -> (OWLEquivalentClassesAxiom) axiom )
-            .flatMap( mapper::visit )
+            .flatMap( element -> mapper.visit( element ).toStream() )
             .collect( Collectors.toSet() );
 
         assertEquivalentResult( result, iri( "foo" ), iri( "bar" ), iri( "baz" ) );
@@ -384,7 +384,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final String helperNodeId = "helper";
         testIdentifierMapper.pushAnonId( new Node.Id( helperNodeId ) );
 
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).isNotEmpty();
 
         final List<Node> nodes = nodes( result );
@@ -436,7 +436,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     @Test
     public void testOWLDeclarationAxiom() {
         final OWLDeclarationAxiom axiom = getAxiom( ":Foo a owl:Class ." );
-        final List<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toList() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).hasSize( 1 );
 
         final Node theNode = nodes( result ).get( 0 );
@@ -459,7 +459,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
                  rdfs:subPropertyOf :foo .
             """;
         final OWLSubAnnotationPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_ANNOTATION_PROPERTY_OF );
-        final Set<GraphElement> result = mapper.visit( axiom ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
         assertThat( result ).isNotEmpty();
 
         final List<Node> nodes = nodes( result );

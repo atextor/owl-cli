@@ -1,7 +1,6 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
-import de.atextor.owlcli.diagram.graph.GraphElement;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
 import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
@@ -12,10 +11,9 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 public class DefaultMappingConfiguration implements MappingConfiguration {
-    private OWLAxiomVisitorEx<Stream<GraphElement>> owlAxiomMapper;
+    private OWLAxiomVisitorEx<Graph> owlAxiomMapper;
     private OWLClassExpressionVisitorEx<Graph> owlClassExpressionMapper;
     private OWLIndividualVisitorEx<Graph> owlIndividualMapper;
     private OWLPropertyExpressionVisitorEx<Graph> owlPropertyExpressionMapper;
@@ -30,7 +28,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     @Override
-    public OWLAxiomVisitorEx<Stream<GraphElement>> getOwlAxiomMapper() {
+    public OWLAxiomVisitorEx<Graph> getOwlAxiomMapper() {
         return owlAxiomMapper;
     }
 
@@ -79,7 +77,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         return nameMapper;
     }
 
-    private void setOwlAxiomMapper( final OWLAxiomVisitorEx<Stream<GraphElement>> owlAxiomMapper ) {
+    private void setOwlAxiomMapper( final OWLAxiomVisitorEx<Graph> owlAxiomMapper ) {
         this.owlAxiomMapper = owlAxiomMapper;
     }
 
@@ -124,7 +122,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     public static class Builder {
-        private Supplier<OWLAxiomVisitorEx<Stream<GraphElement>>> owlAxiomMapperSupplier = null;
+        private Supplier<OWLAxiomVisitorEx<Graph>> owlAxiomMapperSupplier = null;
         private Supplier<OWLClassExpressionVisitorEx<Graph>> owlClassExpressionMapperSupplier = null;
         private Supplier<OWLIndividualVisitorEx<Graph>> owlIndividualMapperSupplier = null;
         private Supplier<OWLPropertyExpressionVisitorEx<Graph>> owlPropertyExpressionMapperSupplier = null;
@@ -135,7 +133,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         private Supplier<IdentifierMapper> identifierMapperSupplier = null;
         private Supplier<NameMapper> nameMapperSupplier = null;
 
-        public Builder owlAxiomMapper( final Supplier<OWLAxiomVisitorEx<Stream<GraphElement>>> supplier ) {
+        public Builder owlAxiomMapper( final Supplier<OWLAxiomVisitorEx<Graph>> supplier ) {
             owlAxiomMapperSupplier = supplier;
             return this;
         }

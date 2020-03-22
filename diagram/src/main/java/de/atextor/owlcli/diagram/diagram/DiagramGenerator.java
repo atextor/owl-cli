@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram.diagram;
 
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import io.vavr.control.Either;
@@ -19,10 +20,11 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DiagramGenerator {
-    private final OWLAxiomVisitorEx<Stream<GraphElement>> visitor;
+    private final OWLAxiomVisitorEx<Graph> visitor;
     private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator;
 
     public DiagramGenerator( final Configuration configuration, final MappingConfiguration mappingConfig ) {
@@ -126,7 +128,10 @@ public class DiagramGenerator {
 
     public Try<Void> generate( final OWLOntology ontology, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
-        final Stream<GraphElement> graphElements = ontology.axioms().flatMap( axiom -> axiom.accept( visitor ) );
+        final Stream<GraphElement> graphElements = ontology.axioms()
+            .flatMap( axiom -> axiom.accept( visitor ).toStream() )
+            .collect( Collectors.toSet() )
+            .stream();
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( graphElements );
         final String graphvizGraph = graphvizDocument.apply( configuration );
 
