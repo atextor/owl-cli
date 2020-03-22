@@ -1,9 +1,9 @@
 package de.atextor.owlcli.diagram;
 
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLIndividualMapper;
-import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
@@ -29,11 +29,11 @@ public class OWLIndividualMapperTest extends MapperTestBase {
         final OWLIndividual individual = axiom.getIndividual();
         assertThat( individual.isAnonymous() ).isTrue();
 
-        final Result result = mapper.visit( individual.asOWLAnonymousIndividual() );
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Individual.class );
+        final Graph graph = mapper.visit( individual.asOWLAnonymousIndividual() );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Individual.class );
 
-        assertThat( ( (NodeType.Individual) result.getNode() ).getName() ).isEqualTo( "[]" );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( ( (NodeType.Individual) graph.getNode() ).getName() ).isEqualTo( "[]" );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 
     @Test
@@ -46,10 +46,10 @@ public class OWLIndividualMapperTest extends MapperTestBase {
         final OWLIndividual individual = axiom.getIndividual();
         assertThat( individual.isAnonymous() ).isFalse();
 
-        final Result result = mapper.visit( individual.asOWLNamedIndividual() );
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Individual.class );
+        final Graph graph = mapper.visit( individual.asOWLNamedIndividual() );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Individual.class );
 
-        assertThat( (NodeType.Individual) result.getNode() ).matches( isNodeWithId( "Max" ) );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( (NodeType.Individual) graph.getNode() ).matches( isNodeWithId( "Max" ) );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

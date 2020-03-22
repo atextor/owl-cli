@@ -3,6 +3,7 @@ package de.atextor.owlcli.diagram.mappers;
 import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
@@ -40,7 +41,7 @@ import org.semanticweb.owlapi.model.OWLRestriction;
 import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
-public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Result> {
+public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLClassExpressionMapper( final MappingConfiguration mappingConfig ) {
@@ -49,104 +50,104 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
 
     private Stream<GraphElement> createEdgeToClassExpression( final Node sourceNode,
                                                               final OWLClassExpression classExpression ) {
-        final Result diagramPartsForClassExpression = classExpression.accept( this );
+        final Graph diagramPartsForClassExpression = classExpression.accept( this );
         final Node targetNode = diagramPartsForClassExpression.getNode();
-        final Stream<GraphElement> remainingElements = diagramPartsForClassExpression.getRemainingElements();
+        final Stream<GraphElement> remainingElements = diagramPartsForClassExpression.getOtherElements();
         final Node.Id from = sourceNode.getId();
         final Node.Id to = targetNode.getId();
         final Edge operandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, from, to );
 
-        return Result.of( sourceNode ).and( targetNode ).and( operandEdge ).and( remainingElements ).toStream();
+        return Graph.of( sourceNode ).and( targetNode ).and( operandEdge ).and( remainingElements ).toStream();
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectIntersectionOf classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectIntersectionOf classExpression ) {
         final Node intersectionNode = new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( intersectionNode, operand ) );
-        return new Result( intersectionNode, remainingElements );
+        return new Graph( intersectionNode, remainingElements );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectUnionOf classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectUnionOf classExpression ) {
         final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( unionNode, operand ) );
-        return new Result( unionNode, remainingElements );
+        return new Graph( unionNode, remainingElements );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectComplementOf classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectComplementOf classExpression ) {
         final Node complementNode = new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = createEdgeToClassExpression( complementNode, classExpression
             .getOperand() );
-        return new Result( complementNode, remainingElements );
+        return new Graph( complementNode, remainingElements );
     }
 
-    private Result createPropertyAndObjectRangeEdges( final Node restrictionNode,
-                                                      final OWLQuantifiedObjectRestriction classExpression ) {
+    private Graph createPropertyAndObjectRangeEdges( final Node restrictionNode,
+                                                     final OWLQuantifiedObjectRestriction classExpression ) {
         final OWLClassExpression c = classExpression.getFiller();
         final OWLObjectPropertyExpression r = classExpression.getProperty();
-        final Result cNodeResult = c.accept( mappingConfig.getOwlClassExpressionMapper() );
-        final Result rNodeResult = r.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge cEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), cNodeResult.getNode()
+        final Graph cNodeGraph = c.accept( mappingConfig.getOwlClassExpressionMapper() );
+        final Graph rNodeGraph = r.accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge cEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), cNodeGraph.getNode()
             .getId(), DecoratedEdge.CLASS );
-        final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), rNodeResult.getNode()
+        final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), rNodeGraph.getNode()
             .getId(), DecoratedEdge.ABSTRACT_ROLE );
 
-        return Result.of( restrictionNode ).and( cEdge ).and( rEdge ).and( cNodeResult ).and( rNodeResult );
+        return Graph.of( restrictionNode ).and( cEdge ).and( rEdge ).and( cNodeGraph ).and( rNodeGraph );
     }
 
-    private Result createPropertyAndObjectRangeEdges( final Node restrictionNode,
-                                                      final OWLQuantifiedDataRestriction classExpression ) {
+    private Graph createPropertyAndObjectRangeEdges( final Node restrictionNode,
+                                                     final OWLQuantifiedDataRestriction classExpression ) {
         final OWLDataRange u = classExpression.getFiller();
         final OWLDataPropertyExpression d = classExpression.getProperty();
-        final Result uNodeResult = u.accept( mappingConfig.getOwlDataMapper() );
-        final Result dNodeResult = d.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge uEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), uNodeResult.getNode()
+        final Graph uNodeGraph = u.accept( mappingConfig.getOwlDataMapper() );
+        final Graph dNodeGraph = d.accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge uEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), uNodeGraph.getNode()
             .getId(), DecoratedEdge.DATA_RANGE );
-        final Edge dEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), dNodeResult.getNode()
+        final Edge dEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), dNodeGraph.getNode()
             .getId(), DecoratedEdge.CONCRETE_ROLE );
-        return Result.of( restrictionNode ).and( uNodeResult ).and( dNodeResult ).and( uEdge ).and( dEdge );
+        return Graph.of( restrictionNode ).and( uNodeGraph ).and( dNodeGraph ).and( uEdge ).and( dEdge );
     }
 
-    private Result createPropertyEdge( final Node restrictionNode, final OWLRestriction classExpression,
-                                       final Decoration edgeDecoration ) {
+    private Graph createPropertyEdge( final Node restrictionNode, final OWLRestriction classExpression,
+                                      final Decoration edgeDecoration ) {
         final OWLPropertyExpression property = classExpression.getProperty();
-        final Result rNodeResult = property.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), rNodeResult.getNode()
+        final Graph rNodeGraph = property.accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge rEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), rNodeGraph.getNode()
             .getId(), edgeDecoration );
-        return Result.of( restrictionNode ).and( rNodeResult ).and( rEdge );
+        return Graph.of( restrictionNode ).and( rNodeGraph ).and( rEdge );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectSomeValuesFrom classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectSomeValuesFrom classExpression ) {
         final Node restrictionNode = new NodeType.ExistentialRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectAllValuesFrom classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectAllValuesFrom classExpression ) {
         final Node restrictionNode = new NodeType.UniversalRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectHasValue classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectHasValue classExpression ) {
         final Node restrictionNode = new NodeType.ValueRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
-        final Result rNodeResult = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.ABSTRACT_ROLE );
+        final Graph rNodeGraph = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.ABSTRACT_ROLE );
         final OWLIndividual individual = classExpression.getFiller();
-        final Result oNodeResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
-        final Edge oEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), oNodeResult.getNode()
+        final Graph oNodeGraph = individual.accept( mappingConfig.getOwlIndividualMapper() );
+        final Edge oEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), oNodeGraph.getNode()
             .getId(), DecoratedEdge.INDIVIDUAL );
-        return Result.of( restrictionNode ).and( rNodeResult ).and( oNodeResult ).and( oEdge );
+        return Graph.of( restrictionNode ).and( rNodeGraph ).and( oNodeGraph ).and( oEdge );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectMinCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectMinCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
             final Node restrictionNode = new NodeType.AbstractQualifiedMinimalCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() );
@@ -159,7 +160,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectExactCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectExactCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
             return createPropertyAndObjectRangeEdges( new NodeType.AbstractQualifiedExactCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() ), classExpression );
@@ -171,7 +172,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectMaxCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectMaxCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
             return createPropertyAndObjectRangeEdges( new NodeType.AbstractQualifiedMaximalCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() ), classExpression );
@@ -183,73 +184,73 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Res
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectHasSelf classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectHasSelf classExpression ) {
         final Node restrictionNode = new NodeType.Self( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.ABSTRACT_ROLE );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectOneOf classExpression ) {
+    public Graph visit( final @Nonnull OWLObjectOneOf classExpression ) {
         final Node restrictionNode = new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return classExpression.individuals().map( individual -> {
-            final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
-            final Edge iEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), individualResult
+            final Graph individualGraph = individual.accept( mappingConfig.getOwlIndividualMapper() );
+            final Edge iEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), individualGraph
                 .getNode().getId() );
-            return individualResult.and( iEdge );
-        } ).reduce( Result.of( restrictionNode ), Result::and );
+            return individualGraph.and( iEdge );
+        } ).reduce( Graph.of( restrictionNode ), Graph::and );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataSomeValuesFrom classExpression ) {
+    public Graph visit( final @Nonnull OWLDataSomeValuesFrom classExpression ) {
         final Node restrictionNode = new NodeType.ExistentialRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataAllValuesFrom classExpression ) {
+    public Graph visit( final @Nonnull OWLDataAllValuesFrom classExpression ) {
         final Node restrictionNode = new NodeType.UniversalRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataHasValue classExpression ) {
+    public Graph visit( final @Nonnull OWLDataHasValue classExpression ) {
         final Node restrictionNode = new NodeType.ValueRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
-        final Result uNodeResult = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
+        final Graph uNodeGraph = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
         final OWLLiteral literal = classExpression.getFiller();
-        final Result vNodeResult = literal.accept( mappingConfig.getOwlDataMapper() );
-        final Edge vEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), vNodeResult.getNode()
+        final Graph vNodeGraph = literal.accept( mappingConfig.getOwlDataMapper() );
+        final Edge vEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), vNodeGraph.getNode()
             .getId(), DecoratedEdge.LITERAL );
-        return Result.of( restrictionNode ).and( uNodeResult ).and( vNodeResult ).and( vEdge );
+        return Graph.of( restrictionNode ).and( uNodeGraph ).and( vNodeGraph ).and( vEdge );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataMinCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLDataMinCardinality classExpression ) {
         final Node restrictionNode = new NodeType.ConcreteMinimalCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataExactCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLDataExactCardinality classExpression ) {
         final Node restrictionNode = new NodeType.ConcreteExactCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataMaxCardinality classExpression ) {
+    public Graph visit( final @Nonnull OWLDataMaxCardinality classExpression ) {
         final Node restrictionNode = new NodeType.ConcreteMaximalCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.CONCRETE_ROLE );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLClass classExpression ) {
+    public Graph visit( final @Nonnull OWLClass classExpression ) {
         final Node classNode = new NodeType.Class( mappingConfig.getIdentifierMapper()
             .getIdForIri( classExpression.getIRI() ), mappingConfig.getNameMapper().getName( classExpression ) );
-        return Result.of( classNode );
+        return Graph.of( classNode );
     }
 }

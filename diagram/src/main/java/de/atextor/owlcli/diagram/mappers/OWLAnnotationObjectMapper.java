@@ -1,6 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
@@ -12,7 +13,7 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
 
-public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Result> {
+public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLAnnotationObjectMapper( final MappingConfiguration mappingConfig ) {
@@ -20,28 +21,28 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<R
     }
 
     @Override
-    public Result visit( final @Nonnull OWLAnnotation annotation ) {
-        final Result valueResult = annotation.getValue().accept( this );
-        final Result propertyResult = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyResult.getNode().getId(), valueResult.getNode
+    public Graph visit( final @Nonnull OWLAnnotation annotation ) {
+        final Graph valueGraph = annotation.getValue().accept( this );
+        final Graph propertyGraph = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), valueGraph.getNode
             ().getId() );
-        return propertyResult.and( valueResult ).and( edge );
+        return propertyGraph.and( valueGraph ).and( edge );
     }
 
     @Override
-    public Result visit( final @Nonnull IRI iri ) {
+    public Graph visit( final @Nonnull IRI iri ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( iri );
         final String label = iri.toString();
-        return Result.of( new NodeType.Literal( id, label ) );
+        return Graph.of( new NodeType.Literal( id, label ) );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLAnonymousIndividual individual ) {
+    public Graph visit( final @Nonnull OWLAnonymousIndividual individual ) {
         return individual.accept( mappingConfig.getOwlIndividualMapper() );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLLiteral node ) {
+    public Graph visit( final @Nonnull OWLLiteral node ) {
         return node.accept( mappingConfig.getOwlDataMapper() );
     }
 }

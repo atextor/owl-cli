@@ -1,6 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
-public class OWLDataMapper implements OWLDataVisitorEx<Result> {
+public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLDataMapper( final MappingConfiguration mappingConfig ) {
@@ -30,9 +31,9 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
 
     private Stream<GraphElement> createEdgeToDataRange( final Node sourceNode,
                                                         final OWLDataRange classExpression ) {
-        final Result diagramPartsForDataRange = classExpression.accept( this );
+        final Graph diagramPartsForDataRange = classExpression.accept( this );
         final Node targetNode = diagramPartsForDataRange.getNode();
-        final Stream<GraphElement> remainingElements = diagramPartsForDataRange.getRemainingElements();
+        final Stream<GraphElement> remainingElements = diagramPartsForDataRange.getOtherElements();
         final Node.Id from = sourceNode.getId();
         final Node.Id to = targetNode.getId();
         final Edge operandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, from, to );
@@ -41,61 +42,61 @@ public class OWLDataMapper implements OWLDataVisitorEx<Result> {
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataComplementOf dataRange ) {
+    public Graph visit( final @Nonnull OWLDataComplementOf dataRange ) {
         final Node complementNode =
             new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = createEdgeToDataRange( complementNode,
             dataRange.getDataRange() );
-        return new Result( complementNode, remainingElements );
+        return new Graph( complementNode, remainingElements );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataOneOf dataRange ) {
+    public Graph visit( final @Nonnull OWLDataOneOf dataRange ) {
         final Node restrictionNode =
             new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return dataRange.values().map( value -> {
-            final Result valueResult = value.accept( mappingConfig.getOwlDataMapper() );
+            final Graph valueGraph = value.accept( mappingConfig.getOwlDataMapper() );
             final Edge vEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
-                valueResult.getNode().getId() );
-            return valueResult.and( vEdge );
-        } ).reduce( Result.of( restrictionNode ), Result::and );
+                valueGraph.getNode().getId() );
+            return valueGraph.and( vEdge );
+        } ).reduce( Graph.of( restrictionNode ), Graph::and );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataIntersectionOf dataRange ) {
+    public Graph visit( final @Nonnull OWLDataIntersectionOf dataRange ) {
         final Node intersectionNode =
             new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
             createEdgeToDataRange( intersectionNode, operand ) );
-        return new Result( intersectionNode, remainingElements );
+        return new Graph( intersectionNode, remainingElements );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataUnionOf dataRange ) {
+    public Graph visit( final @Nonnull OWLDataUnionOf dataRange ) {
         final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
             createEdgeToDataRange( unionNode, operand ) );
-        return new Result( unionNode, remainingElements );
+        return new Graph( unionNode, remainingElements );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDatatypeRestriction node ) {
+    public Graph visit( final @Nonnull OWLDatatypeRestriction node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final @Nonnull OWLFacetRestriction node ) {
+    public Graph visit( final @Nonnull OWLFacetRestriction node ) {
         return TODO();
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDatatype node ) {
+    public Graph visit( final @Nonnull OWLDatatype node ) {
         return node.accept( mappingConfig.getOwlEntityMapper() );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLLiteral node ) {
+    public Graph visit( final @Nonnull OWLLiteral node ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getSyntheticId();
-        return Result.of( new NodeType.Literal( id, node.getLiteral() ) );
+        return Graph.of( new NodeType.Literal( id, node.getLiteral() ) );
     }
 }

@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
@@ -15,13 +16,13 @@ import java.util.stream.Stream;
 
 public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLAxiomVisitorEx<Stream<GraphElement>> owlAxiomMapper;
-    private OWLClassExpressionVisitorEx<Result> owlClassExpressionMapper;
-    private OWLIndividualVisitorEx<Result> owlIndividualMapper;
-    private OWLPropertyExpressionVisitorEx<Result> owlPropertyExpressionMapper;
-    private OWLObjectVisitorEx<Result> owlObjectMapper;
-    private OWLDataVisitorEx<Result> owlDataMapper;
-    private OWLEntityVisitorEx<Result> owlEntityMapper;
-    private OWLAnnotationObjectVisitorEx<Result> owlAnnotationObjectMapper;
+    private OWLClassExpressionVisitorEx<Graph> owlClassExpressionMapper;
+    private OWLIndividualVisitorEx<Graph> owlIndividualMapper;
+    private OWLPropertyExpressionVisitorEx<Graph> owlPropertyExpressionMapper;
+    private OWLObjectVisitorEx<Graph> owlObjectMapper;
+    private OWLDataVisitorEx<Graph> owlDataMapper;
+    private OWLEntityVisitorEx<Graph> owlEntityMapper;
+    private OWLAnnotationObjectVisitorEx<Graph> owlAnnotationObjectMapper;
     private IdentifierMapper identifierMapper;
     private NameMapper nameMapper;
 
@@ -34,37 +35,37 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     @Override
-    public OWLClassExpressionVisitorEx<Result> getOwlClassExpressionMapper() {
+    public OWLClassExpressionVisitorEx<Graph> getOwlClassExpressionMapper() {
         return owlClassExpressionMapper;
     }
 
     @Override
-    public OWLIndividualVisitorEx<Result> getOwlIndividualMapper() {
+    public OWLIndividualVisitorEx<Graph> getOwlIndividualMapper() {
         return owlIndividualMapper;
     }
 
     @Override
-    public OWLPropertyExpressionVisitorEx<Result> getOwlPropertyExpressionMapper() {
+    public OWLPropertyExpressionVisitorEx<Graph> getOwlPropertyExpressionMapper() {
         return owlPropertyExpressionMapper;
     }
 
     @Override
-    public OWLObjectVisitorEx<Result> getOwlObjectMapper() {
+    public OWLObjectVisitorEx<Graph> getOwlObjectMapper() {
         return owlObjectMapper;
     }
 
     @Override
-    public OWLDataVisitorEx<Result> getOwlDataMapper() {
+    public OWLDataVisitorEx<Graph> getOwlDataMapper() {
         return owlDataMapper;
     }
 
     @Override
-    public OWLEntityVisitorEx<Result> getOwlEntityMapper() {
+    public OWLEntityVisitorEx<Graph> getOwlEntityMapper() {
         return owlEntityMapper;
     }
 
     @Override
-    public OWLAnnotationObjectVisitorEx<Result> getOwlAnnotationObjectMapper() {
+    public OWLAnnotationObjectVisitorEx<Graph> getOwlAnnotationObjectMapper() {
         return owlAnnotationObjectMapper;
     }
 
@@ -82,31 +83,31 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlAxiomMapper = owlAxiomMapper;
     }
 
-    private void setOwlClassExpressionMapper( final OWLClassExpressionVisitorEx<Result> owlClassExpressionMapper ) {
+    private void setOwlClassExpressionMapper( final OWLClassExpressionVisitorEx<Graph> owlClassExpressionMapper ) {
         this.owlClassExpressionMapper = owlClassExpressionMapper;
     }
 
-    private void setOwlIndividualMapper( final OWLIndividualVisitorEx<Result> owlIndividualMapper ) {
+    private void setOwlIndividualMapper( final OWLIndividualVisitorEx<Graph> owlIndividualMapper ) {
         this.owlIndividualMapper = owlIndividualMapper;
     }
 
-    private void setOwlPropertyExpressionMapper( final OWLPropertyExpressionVisitorEx<Result> owlPropertyExpressionMapper ) {
+    private void setOwlPropertyExpressionMapper( final OWLPropertyExpressionVisitorEx<Graph> owlPropertyExpressionMapper ) {
         this.owlPropertyExpressionMapper = owlPropertyExpressionMapper;
     }
 
-    private void setOwlObjectMapper( final OWLObjectVisitorEx<Result> owlObjectMapper ) {
+    private void setOwlObjectMapper( final OWLObjectVisitorEx<Graph> owlObjectMapper ) {
         this.owlObjectMapper = owlObjectMapper;
     }
 
-    private void setOwlDataMapper( final OWLDataVisitorEx<Result> owlDataMapper ) {
+    private void setOwlDataMapper( final OWLDataVisitorEx<Graph> owlDataMapper ) {
         this.owlDataMapper = owlDataMapper;
     }
 
-    private void setOwlEntityMapper( final OWLEntityVisitorEx<Result> owlEntityMapper ) {
+    private void setOwlEntityMapper( final OWLEntityVisitorEx<Graph> owlEntityMapper ) {
         this.owlEntityMapper = owlEntityMapper;
     }
 
-    private void setOwlAnnotationObjectMapper( final OWLAnnotationObjectVisitorEx<Result> owlAnnotationObjectMapper ) {
+    private void setOwlAnnotationObjectMapper( final OWLAnnotationObjectVisitorEx<Graph> owlAnnotationObjectMapper ) {
         this.owlAnnotationObjectMapper = owlAnnotationObjectMapper;
     }
 
@@ -124,13 +125,13 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
 
     public static class Builder {
         private Supplier<OWLAxiomVisitorEx<Stream<GraphElement>>> owlAxiomMapperSupplier = null;
-        private Supplier<OWLClassExpressionVisitorEx<Result>> owlClassExpressionMapperSupplier = null;
-        private Supplier<OWLIndividualVisitorEx<Result>> owlIndividualMapperSupplier = null;
-        private Supplier<OWLPropertyExpressionVisitorEx<Result>> owlPropertyExpressionMapperSupplier = null;
-        private Supplier<OWLObjectVisitorEx<Result>> owlObjectMapperSupplier = null;
-        private Supplier<OWLDataVisitorEx<Result>> owlDataMapperSupplier = null;
-        private Supplier<OWLEntityVisitorEx<Result>> owlEntityMapperSupplier = null;
-        private Supplier<OWLAnnotationObjectVisitorEx<Result>> owlAnnotationObjectMapperSupplier = null;
+        private Supplier<OWLClassExpressionVisitorEx<Graph>> owlClassExpressionMapperSupplier = null;
+        private Supplier<OWLIndividualVisitorEx<Graph>> owlIndividualMapperSupplier = null;
+        private Supplier<OWLPropertyExpressionVisitorEx<Graph>> owlPropertyExpressionMapperSupplier = null;
+        private Supplier<OWLObjectVisitorEx<Graph>> owlObjectMapperSupplier = null;
+        private Supplier<OWLDataVisitorEx<Graph>> owlDataMapperSupplier = null;
+        private Supplier<OWLEntityVisitorEx<Graph>> owlEntityMapperSupplier = null;
+        private Supplier<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapperSupplier = null;
         private Supplier<IdentifierMapper> identifierMapperSupplier = null;
         private Supplier<NameMapper> nameMapperSupplier = null;
 
@@ -139,37 +140,37 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             return this;
         }
 
-        public Builder owlClassExpressionMapper( final Supplier<OWLClassExpressionVisitorEx<Result>> supplier ) {
+        public Builder owlClassExpressionMapper( final Supplier<OWLClassExpressionVisitorEx<Graph>> supplier ) {
             owlClassExpressionMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlIndividualMapper( final Supplier<OWLIndividualVisitorEx<Result>> supplier ) {
+        public Builder owlIndividualMapper( final Supplier<OWLIndividualVisitorEx<Graph>> supplier ) {
             owlIndividualMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlPropertyExpressionMapper( final Supplier<OWLPropertyExpressionVisitorEx<Result>> supplier ) {
+        public Builder owlPropertyExpressionMapper( final Supplier<OWLPropertyExpressionVisitorEx<Graph>> supplier ) {
             owlPropertyExpressionMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlObjectMapper( final Supplier<OWLObjectVisitorEx<Result>> supplier ) {
+        public Builder owlObjectMapper( final Supplier<OWLObjectVisitorEx<Graph>> supplier ) {
             owlObjectMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlDataMapper( final Supplier<OWLDataVisitorEx<Result>> supplier ) {
+        public Builder owlDataMapper( final Supplier<OWLDataVisitorEx<Graph>> supplier ) {
             owlDataMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlEntityMapper( final Supplier<OWLEntityVisitorEx<Result>> supplier ) {
+        public Builder owlEntityMapper( final Supplier<OWLEntityVisitorEx<Graph>> supplier ) {
             owlEntityMapperSupplier = supplier;
             return this;
         }
 
-        public Builder owlAnnotationObjectMapper( final Supplier<OWLAnnotationObjectVisitorEx<Result>> supplier ) {
+        public Builder owlAnnotationObjectMapper( final Supplier<OWLAnnotationObjectVisitorEx<Graph>> supplier ) {
             owlAnnotationObjectMapperSupplier = supplier;
             return this;
         }

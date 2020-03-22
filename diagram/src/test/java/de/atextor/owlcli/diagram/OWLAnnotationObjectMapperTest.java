@@ -1,11 +1,11 @@
 package de.atextor.owlcli.diagram;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLAnnotationObjectMapper;
-import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
@@ -28,11 +28,11 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
             """;
 
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
-        final Result result = mapper.visit( axiom.getAnnotation() );
+        final Graph graph = mapper.visit( axiom.getAnnotation() );
 
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.AnnotationRole.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AnnotationRole.class );
 
-        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
@@ -46,7 +46,7 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( result.getNode().getId(), literal.getId() ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( graph.getNode().getId(), literal.getId() ) );
     }
 
     @Test
@@ -58,10 +58,10 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
             """;
 
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
-        final Result result = mapper.visit( axiom.getValue().asIRI().get() );
+        final Graph graph = mapper.visit( axiom.getValue().asIRI().get() );
 
-        assertThat( result.getNode() ).matches( isNodeWithId( "Foo" ) );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( graph.getNode() ).matches( isNodeWithId( "Foo" ) );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 
     @Test

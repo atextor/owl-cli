@@ -1,11 +1,11 @@
 package de.atextor.owlcli.diagram;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLDataMapper;
-import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
@@ -49,9 +49,9 @@ public class OWLDataMapperTest extends MapperTestBase {
         final String complementId = "complementNode";
         testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
 
-        final Result result = mapper.visit( owlDataOneOf );
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Complement.class );
-        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        final Graph graph = mapper.visit( owlDataOneOf );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Complement.class );
+        final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
@@ -88,10 +88,10 @@ public class OWLDataMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( "Bello" ) );
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
 
-        final Result result = mapper.visit( owlDataOneOf );
-        final Node restrictionNode = result.getNode();
+        final Graph graph = mapper.visit( owlDataOneOf );
+        final Node restrictionNode = graph.getNode();
         assertThat( restrictionNode ).isInstanceOf( NodeType.ClosedClass.class );
-        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
@@ -127,9 +127,9 @@ public class OWLDataMapperTest extends MapperTestBase {
         final String intersectionId = "intersectionNode";
         testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
-        final Result result = mapper.visit( intersection );
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Intersection.class );
-        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        final Graph graph = mapper.visit( intersection );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Intersection.class );
+        final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
@@ -166,9 +166,9 @@ public class OWLDataMapperTest extends MapperTestBase {
         final String intersectionId = "intersectionNode";
         testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
-        final Result result = mapper.visit( intersection );
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.Union.class );
-        final Set<GraphElement> remainingElements = result.getRemainingElements().collect( Collectors.toSet() );
+        final Graph graph = mapper.visit( intersection );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Union.class );
+        final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
         final List<Node> nodes = nodes( remainingElements );
@@ -210,9 +210,9 @@ public class OWLDataMapperTest extends MapperTestBase {
         final String literalId = "literalNode";
         testIdentifierMapper.pushAnonId( new Node.Id( literalId ) );
 
-        final Result result = mapper.visit( object );
+        final Graph graph = mapper.visit( object );
 
-        assertThat( result.getNode() ).matches( isNodeWithId( literalId ) );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( graph.getNode() ).matches( isNodeWithId( literalId ) );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

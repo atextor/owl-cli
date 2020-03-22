@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram.mappers;
 
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
@@ -15,19 +16,19 @@ import java.util.stream.Stream;
 public interface MappingConfiguration {
     OWLAxiomVisitorEx<Stream<GraphElement>> getOwlAxiomMapper();
 
-    OWLClassExpressionVisitorEx<Result> getOwlClassExpressionMapper();
+    OWLClassExpressionVisitorEx<Graph> getOwlClassExpressionMapper();
 
-    OWLIndividualVisitorEx<Result> getOwlIndividualMapper();
+    OWLIndividualVisitorEx<Graph> getOwlIndividualMapper();
 
-    OWLPropertyExpressionVisitorEx<Result> getOwlPropertyExpressionMapper();
+    OWLPropertyExpressionVisitorEx<Graph> getOwlPropertyExpressionMapper();
 
-    OWLObjectVisitorEx<Result> getOwlObjectMapper();
+    OWLObjectVisitorEx<Graph> getOwlObjectMapper();
 
-    OWLDataVisitorEx<Result> getOwlDataMapper();
+    OWLDataVisitorEx<Graph> getOwlDataMapper();
 
-    OWLEntityVisitorEx<Result> getOwlEntityMapper();
+    OWLEntityVisitorEx<Graph> getOwlEntityMapper();
 
-    OWLAnnotationObjectVisitorEx<Result> getOwlAnnotationObjectMapper();
+    OWLAnnotationObjectVisitorEx<Graph> getOwlAnnotationObjectMapper();
 
     IdentifierMapper getIdentifierMapper();
 

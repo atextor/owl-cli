@@ -1,6 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
@@ -13,7 +14,7 @@ import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
 import javax.annotation.Nonnull;
 
-public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Result> {
+public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLPropertyExpressionMapper( final MappingConfiguration mappingConfig ) {
@@ -21,38 +22,38 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectInverseOf property ) {
+    public Graph visit( final @Nonnull OWLObjectInverseOf property ) {
         final Node complementNode =
             new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
-        final Result propertyVisitorResult =
+        final Graph propertyVisitorGraph =
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge propertyEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
-            propertyVisitorResult.getNode().getId() );
-        return Result.of( complementNode ).and( propertyVisitorResult ).and( propertyEdge );
+            propertyVisitorGraph.getNode().getId() );
+        return Graph.of( complementNode ).and( propertyVisitorGraph ).and( propertyEdge );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLObjectProperty property ) {
+    public Graph visit( final @Nonnull OWLObjectProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AbstractRole( id, label );
-        return Result.of( node );
+        return Graph.of( node );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLDataProperty property ) {
+    public Graph visit( final @Nonnull OWLDataProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.ConcreteRole( id, label );
-        return Result.of( node );
+        return Graph.of( node );
     }
 
     @Override
-    public Result visit( final @Nonnull OWLAnnotationProperty property ) {
+    public Graph visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
         final Node node = new NodeType.AnnotationRole( id, label );
-        return Result.of( node );
+        return Graph.of( node );
     }
 }

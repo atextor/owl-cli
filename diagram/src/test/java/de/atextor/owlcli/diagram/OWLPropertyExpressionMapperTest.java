@@ -1,8 +1,8 @@
 package de.atextor.owlcli.diagram;
 
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.OWLPropertyExpressionMapper;
-import de.atextor.owlcli.diagram.mappers.Result;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
@@ -28,12 +28,12 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
         final OWLDeclarationAxiom axiom = getAxiom( ontology, AxiomType.DECLARATION );
         final OWLObjectProperty property = axiom.getEntity().asOWLObjectProperty();
 
-        final Result result = property.accept( mapper );
+        final Graph graph = property.accept( mapper );
 
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.AbstractRole.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AbstractRole.class );
 
-        assertThat( ( (NodeType.AbstractRole) result.getNode() ).getName() ).isEqualTo( "foo" );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( ( (NodeType.AbstractRole) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 
     @Test
@@ -44,12 +44,12 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
         final OWLDeclarationAxiom axiom = getAxiom( ontology, AxiomType.DECLARATION );
         final OWLDataProperty property = axiom.getEntity().asOWLDataProperty();
 
-        final Result result = property.accept( mapper );
+        final Graph graph = property.accept( mapper );
 
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.ConcreteRole.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.ConcreteRole.class );
 
-        assertThat( ( (NodeType.ConcreteRole) result.getNode() ).getName() ).isEqualTo( "foo" );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( ( (NodeType.ConcreteRole) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 
     @Test
@@ -60,11 +60,11 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
         final OWLDeclarationAxiom axiom = getAxiom( ontology, AxiomType.DECLARATION );
         final OWLAnnotationProperty property = axiom.getEntity().asOWLAnnotationProperty();
 
-        final Result result = property.accept( mapper );
+        final Graph graph = property.accept( mapper );
 
-        assertThat( result.getNode().getClass() ).isEqualTo( NodeType.AnnotationRole.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AnnotationRole.class );
 
-        assertThat( ( (NodeType.AnnotationRole) result.getNode() ).getName() ).isEqualTo( "foo" );
-        assertThat( result.getRemainingElements() ).isEmpty();
+        assertThat( ( (NodeType.AnnotationRole) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

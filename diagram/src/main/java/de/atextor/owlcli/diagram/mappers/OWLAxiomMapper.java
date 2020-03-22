@@ -2,6 +2,7 @@ package de.atextor.owlcli.diagram.mappers;
 
 import com.google.common.collect.Sets;
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
@@ -79,34 +80,34 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLSubClassOfAxiom axiom ) {
-        final OWLClassExpressionVisitorEx<Result> mapper = mappingConfig.getOwlClassExpressionMapper();
+        final OWLClassExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlClassExpressionMapper();
 
-        final Result superClassResult = axiom.getSuperClass().accept( mapper );
-        final Result subClassResult = axiom.getSubClass().accept( mapper );
+        final Graph superClassGraph = axiom.getSuperClass().accept( mapper );
+        final Graph subClassGraph = axiom.getSubClass().accept( mapper );
 
-        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassResult.getNode().getId(),
-            superClassResult.getNode().getId() );
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode().getId(),
+            superClassGraph.getNode().getId() );
 
-        return superClassResult.and( subClassResult ).and( edge ).toUniqueStream();
+        return superClassGraph.and( subClassGraph ).and( edge ).toUniqueStream();
     }
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
     visit( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode, final Edge.Type toThirdNodeEdgeType ) {
 
-        final Result subjectResult = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
-        final Result propertyResult = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Result objectResult = axiom.getObject().accept( mappingConfig.getOwlObjectMapper() );
+        final Graph subjectGraph = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
+        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Graph objectGraph = axiom.getObject().accept( mappingConfig.getOwlObjectMapper() );
 
-        final Edge subectToThirdNode = new PlainEdge( toThirdNodeEdgeType, subjectResult.getNode().getId(),
+        final Edge subectToThirdNode = new PlainEdge( toThirdNodeEdgeType, subjectGraph.getNode().getId(),
             thirdNode.getId() );
         final Edge thirdNodeToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
-            objectResult.getNode().getId() );
+            objectGraph.getNode().getId() );
         final Edge thirdNodeToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, thirdNode.getId(),
-            propertyResult.getNode().getId() );
+            propertyGraph.getNode().getId() );
 
-        return subjectResult
-            .and( propertyResult )
-            .and( objectResult )
+        return subjectGraph
+            .and( propertyGraph )
+            .and( objectGraph )
             .and( thirdNode )
             .and( subectToThirdNode )
             .and( thirdNodeToObject )
@@ -136,14 +137,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
-        final Result domainResult = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
-        final Result propertyResult = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
+        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Node domainNode = new NodeType.Domain( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Edge fromDomainNodeToDomain = new PlainEdge( Edge.Type.HOLLOW_ARROW, domainNode.getId(), domainResult
+        final Edge fromDomainNodeToDomain = new PlainEdge( Edge.Type.HOLLOW_ARROW, domainNode.getId(), domainGraph
             .getNode().getId() );
-        final Edge fromDomainNodeToProperty = new PlainEdge( Edge.Type.DEFAULT_ARROW, domainNode.getId(), propertyResult
+        final Edge fromDomainNodeToProperty = new PlainEdge( Edge.Type.DEFAULT_ARROW, domainNode.getId(), propertyGraph
             .getNode().getId() );
-        return domainResult.and( propertyResult ).and( domainNode ).and( fromDomainNodeToDomain )
+        return domainGraph.and( propertyGraph ).and( domainNode ).and( fromDomainNodeToDomain )
             .and( fromDomainNodeToProperty ).toUniqueStream();
     }
 
@@ -195,15 +196,15 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLSubObjectPropertyOfAxiom axiom ) {
-        final OWLPropertyExpressionVisitorEx<Result> mapper = mappingConfig.getOwlPropertyExpressionMapper();
+        final OWLPropertyExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlPropertyExpressionMapper();
 
-        final Result superPropertyResult = axiom.getSuperProperty().accept( mapper );
-        final Result subPropertyResult = axiom.getSubProperty().accept( mapper );
+        final Graph superPropertyGraph = axiom.getSuperProperty().accept( mapper );
+        final Graph subPropertyGraph = axiom.getSubProperty().accept( mapper );
 
-        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
-            superPropertyResult.getNode().getId() );
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
+            superPropertyGraph.getNode().getId() );
 
-        return superPropertyResult.and( subPropertyResult ).and( edge ).toUniqueStream();
+        return superPropertyGraph.and( subPropertyGraph ).and( edge ).toUniqueStream();
     }
 
     @Override
@@ -237,10 +238,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
      * @param <V>     The type of visitor that handles the axiom type
      * @return The visitor's result
      */
-    private <O extends OWLObject, A extends OWLNaryAxiom<O>, V extends OWLObjectVisitorEx<Result>>
+    private <O extends OWLObject, A extends OWLNaryAxiom<O>, V extends OWLObjectVisitorEx<Graph>>
     Stream<GraphElement> visit( final A axiom, final V visitor ) {
 
-        final Map<O, Result> operands = axiom.operands().collect( Collectors.toMap( Function.identity(),
+        final Map<O, Graph> operands = axiom.operands().collect( Collectors.toMap( Function.identity(),
             object -> object.accept( visitor ) ) );
 
         // Create all combinations of operands, but (1) keep every combination only once,
@@ -259,13 +260,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
         // For each of the combinations, create a corresponding edge
         final Stream<Edge> edges = combinations.stream().map( expressionsList -> {
             final Iterator<O> iterator = expressionsList.iterator();
-            final Result result1 = operands.get( iterator.next() );
-            final Result result2 = operands.get( iterator.next() );
-            return new PlainEdge( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, result1.getNode().getId(),
-                result2.getNode().getId() );
+            final Graph graph1 = operands.get( iterator.next() );
+            final Graph graph2 = operands.get( iterator.next() );
+            return new PlainEdge( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, graph1.getNode().getId(),
+                graph2.getNode().getId() );
         } );
 
-        return Stream.concat( operands.values().stream().flatMap( Result::toStream ), edges );
+        return Stream.concat( operands.values().stream().flatMap( Graph::toStream ), edges );
     }
 
     @Override
@@ -277,13 +278,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
     public Stream<GraphElement> visit( final @Nonnull OWLClassAssertionAxiom axiom ) {
         final OWLIndividual individual = axiom.getIndividual();
         final OWLClassExpression classExpression = axiom.getClassExpression();
-        final Result individualResult = individual.accept( mappingConfig.getOwlIndividualMapper() );
-        final Result classExpressionResult =
+        final Graph individualGraph = individual.accept( mappingConfig.getOwlIndividualMapper() );
+        final Graph classExpressionGraph =
             classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
 
-        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualResult.getNode().getId(),
-            classExpressionResult.getNode().getId() );
-        return individualResult.and( classExpressionResult ).and( edge ).toUniqueStream();
+        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualGraph.getNode().getId(),
+            classExpressionGraph.getNode().getId() );
+        return individualGraph.and( classExpressionGraph ).and( edge ).toUniqueStream();
     }
 
     @Override
@@ -339,9 +340,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLDeclarationAxiom axiom ) {
-        final OWLEntityVisitorEx<Result> mapper = mappingConfig.getOwlEntityMapper();
-        final Result result = axiom.getEntity().accept( mapper );
-        return result.toUniqueStream();
+        final OWLEntityVisitorEx<Graph> mapper = mappingConfig.getOwlEntityMapper();
+        final Graph graph = axiom.getEntity().accept( mapper );
+        return graph.toUniqueStream();
     }
 
     @Override
@@ -357,13 +358,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Stream<GraphElement>> {
 
     @Override
     public Stream<GraphElement> visit( final @Nonnull OWLSubAnnotationPropertyOfAxiom axiom ) {
-        final Result superPropertyResult =
+        final Graph superPropertyGraph =
             axiom.getSuperProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Result subPropertyResult =
+        final Graph subPropertyGraph =
             axiom.getSubProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyResult.getNode().getId(),
-            superPropertyResult.getNode().getId() );
-        return subPropertyResult.and( superPropertyResult ).and( edge ).toUniqueStream();
+        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
+            superPropertyGraph.getNode().getId() );
+        return subPropertyGraph.and( superPropertyGraph ).and( edge ).toUniqueStream();
     }
 
     @Override
