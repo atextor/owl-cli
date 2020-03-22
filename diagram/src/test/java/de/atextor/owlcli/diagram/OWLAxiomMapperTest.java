@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 
 import java.util.List;
@@ -411,6 +412,26 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSubDataPropertyOfAxiom() {
+        final String ontology = """
+            :foo a owl:DatatypeProperty .
+            :bar a owl:DatatypeProperty .
+            :foo rdfs:subPropertyOf :bar .
+            """;
+        final OWLSubDataPropertyOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_DATA_PROPERTY );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        final Edge theEdge = edges.get( 0 );
+        assertThat( theEdge ).matches( isEdgeWithFromAndTo( "foo", "bar" ) );
+        assertThat( theEdge.getType() ).isEqualTo( Edge.Type.HOLLOW_ARROW );
     }
 
     @Test
