@@ -18,6 +18,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
@@ -141,6 +142,33 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectPropertyDomainAxiom() {
+        final String ontology = """
+            :foo a owl:Class .
+            :bar a owl:ObjectProperty ;
+               rdfs:domain :foo .
+            """;
+        final OWLObjectPropertyDomainAxiom axiom = getAxiom( ontology, AxiomType.OBJECT_PROPERTY_DOMAIN );
+
+        final String domainNode = "domainNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( domainNode ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "domainNode" ) );
+        assertThat( nodes ).anyMatch( isDomain() );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+
+        final Edge domainNodeToFoo = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "foo" ) ).findAny().get();
+        assertThat( domainNodeToFoo.getType() ).isEqualTo( Edge.Type.HOLLOW_ARROW );
+
+        final Edge domainNodeToBar = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "bar" ) ).findAny().get();
+        assertThat( domainNodeToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
     }
 
     @Test
