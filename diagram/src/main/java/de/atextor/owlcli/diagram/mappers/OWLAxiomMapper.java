@@ -45,6 +45,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
+import org.semanticweb.owlapi.model.OWLPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
@@ -139,8 +140,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         return TODO();
     }
 
-    @Override
-    public Graph visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
+    private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Node domainNode = new NodeType.Domain( mappingConfig.getIdentifierMapper().getSyntheticId() );
@@ -153,8 +153,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     @Override
+    public Graph visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
+        return propertyDomain( axiom );
+    }
+
+    @Override
     public Graph visit( final @Nonnull OWLObjectPropertyDomainAxiom axiom ) {
-        return TODO();
+        return propertyDomain( axiom );
     }
 
     @Override
