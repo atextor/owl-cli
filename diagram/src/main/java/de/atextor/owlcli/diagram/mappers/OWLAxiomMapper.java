@@ -69,6 +69,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import static io.vavr.API.TODO;
 
@@ -270,8 +271,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
                 graph2.getNode().getId() );
         } );
 
-        final Node firstOperand = operands.values().iterator().next().getNode();
-        return Graph.of( firstOperand ).and( operands.values().stream().flatMap( Graph::toStream ) ).and( edges );
+        final Iterator<Graph> operandsIterator = operands.values().iterator();
+        final Node firstOperand = operandsIterator.next().getNode();
+        final Iterable<Graph> iterable = () -> operandsIterator;
+        final Stream<Graph> remaining = StreamSupport.stream( iterable.spliterator(), false );
+
+        return Graph.of( firstOperand ).and( remaining.flatMap( Graph::toStream ) ).and( edges );
     }
 
     @Override

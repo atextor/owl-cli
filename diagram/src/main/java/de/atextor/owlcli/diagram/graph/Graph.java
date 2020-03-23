@@ -16,8 +16,7 @@ public class Graph {
     }
 
     public Graph and( final Graph other ) {
-        return new Graph( node, Stream.concat( otherElements,
-            Stream.concat( Stream.of( other.getNode() ), other.getOtherElements() ) ) );
+        return new Graph( node, Stream.concat( otherElements, other.toStream() ) );
     }
 
     public Graph and( final GraphElement element ) {
