@@ -97,12 +97,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public String visit( final Decoration.AbstractRoleSymbol abstractRoleSymbol ) {
+        public String visit( final Decoration.ObjectSymbol objectSymbol ) {
             return generateImageLabel( Resource.EDGE_R );
         }
 
         @Override
-        public String visit( final Decoration.ConcreteRoleSymbol concreteRoleSymbol ) {
+        public String visit( final Decoration.DataSymbol dataSymbol ) {
             return generateImageLabel( Resource.EDGE_U );
         }
 
@@ -177,18 +177,18 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractRole abstractRole ) {
-            return generateNamedNode( abstractRole, Resource.OWL_OBJECT_PROPERTY );
+        public GraphvizDocument visit( final NodeType.DataProperty dataProperty ) {
+            return generateNamedNode( dataProperty, Resource.OWL_OBJECT_PROPERTY );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ConcreteRole concreteRole ) {
-            return generateNamedNode( concreteRole, Resource.OWL_DATA_PROPERTY );
+        public GraphvizDocument visit( final NodeType.ObjectProperty objectProperty ) {
+            return generateNamedNode( objectProperty, Resource.OWL_DATA_PROPERTY );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AnnotationRole annotationRole ) {
-            return generateNamedNode( annotationRole, Resource.OWL_ANNOTATION_PROPERTY );
+        public GraphvizDocument visit( final NodeType.AnnotationProperty annotationProperty ) {
+            return generateNamedNode( annotationProperty, Resource.OWL_ANNOTATION_PROPERTY );
         }
 
         @Override
@@ -257,48 +257,48 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractMinimalCardinality abstractMinimalCardinality ) {
-            return generateCardinalityNode( abstractMinimalCardinality, Resource.GET, Resource.R );
+        public GraphvizDocument visit( final NodeType.ObjectMinimalCardinality objectMinimalCardinality ) {
+            return generateCardinalityNode( objectMinimalCardinality, Resource.GET, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractQualifiedMinimalCardinality abstractQualifiedMinimalCardinality ) {
-            return generateCardinalityNode( abstractQualifiedMinimalCardinality, Resource.GET, Resource.R_C );
+        public GraphvizDocument visit( final NodeType.ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
+            return generateCardinalityNode( objectQualifiedMinimalCardinality, Resource.GET, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractMaximalCardinality abstractMaximalCardinality ) {
-            return generateCardinalityNode( abstractMaximalCardinality, Resource.LET, Resource.R );
+        public GraphvizDocument visit( final NodeType.ObjectMaximalCardinality objectMaximalCardinality ) {
+            return generateCardinalityNode( objectMaximalCardinality, Resource.LET, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractQualifiedMaximalCardinality abstractQualifiedMaximalCardinality ) {
-            return generateCardinalityNode( abstractQualifiedMaximalCardinality, Resource.LET, Resource.R_C );
+        public GraphvizDocument visit( final NodeType.ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
+            return generateCardinalityNode( objectQualifiedMaximalCardinality, Resource.LET, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractExactCardinality abstractExactCardinality ) {
-            return generateCardinalityNode( abstractExactCardinality, Resource.EQ, Resource.R );
+        public GraphvizDocument visit( final NodeType.ObjectExactCardinality objectExactCardinality ) {
+            return generateCardinalityNode( objectExactCardinality, Resource.EQ, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AbstractQualifiedExactCardinality abstractQualifiedExactCardinality ) {
-            return generateCardinalityNode( abstractQualifiedExactCardinality, Resource.EQ, Resource.R_C );
+        public GraphvizDocument visit( final NodeType.ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
+            return generateCardinalityNode( objectQualifiedExactCardinality, Resource.EQ, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ConcreteMinimalCardinality concreteMinimalCardinality ) {
-            return generateCardinalityNode( concreteMinimalCardinality, Resource.GET, Resource.U );
+        public GraphvizDocument visit( final NodeType.DataMinimalCardinality dataMinimalCardinality ) {
+            return generateCardinalityNode( dataMinimalCardinality, Resource.GET, Resource.U );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ConcreteMaximalCardinality concreteMaximalCardinality ) {
-            return generateCardinalityNode( concreteMaximalCardinality, Resource.LET, Resource.U );
+        public GraphvizDocument visit( final NodeType.DataMaximalCardinality dataMaximalCardinality ) {
+            return generateCardinalityNode( dataMaximalCardinality, Resource.LET, Resource.U );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ConcreteExactCardinality concreteExactCardinality ) {
-            return generateCardinalityNode( concreteExactCardinality, Resource.EQ, Resource.U );
+        public GraphvizDocument visit( final NodeType.DataExactCardinality dataExactCardinality ) {
+            return generateCardinalityNode( dataExactCardinality, Resource.EQ, Resource.U );
         }
 
         @Override

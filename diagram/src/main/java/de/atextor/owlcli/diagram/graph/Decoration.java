@@ -9,9 +9,9 @@ public abstract class Decoration {
 
         T visit( final ClassSymbol classSymbol );
 
-        T visit( final AbstractRoleSymbol abstractRoleSymbol );
+        T visit( final ObjectSymbol objectSymbol );
 
-        T visit( final ConcreteRoleSymbol concreteRoleSymbol );
+        T visit( final DataSymbol dataSymbol );
 
         T visit( final DataRangeSymbol dataRangeSymbol );
 
@@ -45,7 +45,7 @@ public abstract class Decoration {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractRoleSymbol extends Decoration {
+    public static final class ObjectSymbol extends Decoration {
         @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );
@@ -54,7 +54,7 @@ public abstract class Decoration {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ConcreteRoleSymbol extends Decoration {
+    public static final class DataSymbol extends Decoration {
         @Override
         public <T> T accept( final Visitor<T> visitor ) {
             return visitor.visit( this );

@@ -170,7 +170,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "Dog", DecoratedEdge.CLASS ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -205,7 +205,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "Dog", DecoratedEdge.CLASS ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -242,7 +242,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "baz",
             DecoratedEdge.INDIVIDUAL ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "bar",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -264,7 +264,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.ObjectMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -272,12 +272,12 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
 
-        assertThat( ( (NodeType.AbstractMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (NodeType.ObjectMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -302,7 +302,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.ObjectQualifiedMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -311,13 +311,13 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (NodeType.AbstractQualifiedMinimalCardinality) restrictionNode ).getCardinality() )
+        assertThat( ( (NodeType.ObjectQualifiedMinimalCardinality) restrictionNode ).getCardinality() )
             .isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "Dog",
             DecoratedEdge.CLASS ) );
     }
@@ -344,7 +344,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( cardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedExactCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.ObjectQualifiedExactCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -353,12 +353,12 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (NodeType.AbstractQualifiedExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (NodeType.ObjectQualifiedExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "Dog",
             DecoratedEdge.CLASS ) );
     }
@@ -385,7 +385,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( maxCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.AbstractQualifiedMaximalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.ObjectQualifiedMaximalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -394,13 +394,13 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (NodeType.AbstractQualifiedMaximalCardinality) restrictionNode ).getCardinality() )
+        assertThat( ( (NodeType.ObjectQualifiedMaximalCardinality) restrictionNode ).getCardinality() )
             .isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "Dog",
             DecoratedEdge.CLASS ) );
     }
@@ -437,7 +437,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasDog",
-            DecoratedEdge.ABSTRACT_ROLE ) );
+            DecoratedEdge.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -503,7 +503,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "name",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "string",
             DecoratedEdge.DATA_RANGE ) );
     }
@@ -538,7 +538,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "name",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "string",
             DecoratedEdge.DATA_RANGE ) );
     }
@@ -577,7 +577,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "baz",
             DecoratedEdge.LITERAL ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNode, "bar",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
     }
 
     @Test
@@ -599,7 +599,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.ConcreteMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.DataMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -607,12 +607,12 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (NodeType.ConcreteMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (NodeType.DataMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasName",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
     }
 
     @Test
@@ -636,7 +636,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( cardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.ConcreteExactCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.DataExactCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -644,12 +644,12 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (NodeType.ConcreteExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (NodeType.DataExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasName",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
     }
 
     @Test
@@ -671,7 +671,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.ConcreteMaximalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( NodeType.DataMaximalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -679,12 +679,12 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (NodeType.ConcreteMaximalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (NodeType.DataMaximalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndDecoration( restrictionNodeId, "hasName",
-            DecoratedEdge.CONCRETE_ROLE ) );
+            DecoratedEdge.DATA_PROPERTY ) );
     }
 
     @Test

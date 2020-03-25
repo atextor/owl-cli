@@ -15,11 +15,11 @@ public abstract class NodeType implements Node {
     public interface Visitor<T> {
         T visit( Class class_ );
 
-        T visit( AbstractRole abstractRole );
+        T visit( DataProperty dataProperty );
 
-        T visit( ConcreteRole concreteRole );
+        T visit( ObjectProperty objectProperty );
 
-        T visit( AnnotationRole annotationRole );
+        T visit( AnnotationProperty annotationProperty );
 
         T visit( Individual individual );
 
@@ -47,23 +47,23 @@ public abstract class NodeType implements Node {
 
         T visit( Self self );
 
-        T visit( AbstractMinimalCardinality abstractMinimalCardinality );
+        T visit( ObjectMinimalCardinality objectMinimalCardinality );
 
-        T visit( AbstractQualifiedMinimalCardinality abstractQualifiedMinimalCardinality );
+        T visit( ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality );
 
-        T visit( AbstractMaximalCardinality abstractMaximalCardinality );
+        T visit( ObjectMaximalCardinality objectMaximalCardinality );
 
-        T visit( AbstractQualifiedMaximalCardinality abstractQualifiedMaximalCardinality );
+        T visit( ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality );
 
-        T visit( AbstractExactCardinality abstractExactCardinality );
+        T visit( ObjectExactCardinality objectExactCardinality );
 
-        T visit( AbstractQualifiedExactCardinality abstractQualifiedExactCardinality );
+        T visit( ObjectQualifiedExactCardinality objectQualifiedExactCardinality );
 
-        T visit( ConcreteMinimalCardinality concreteMinimalCardinality );
+        T visit( DataMinimalCardinality dataMinimalCardinality );
 
-        T visit( ConcreteMaximalCardinality concreteMaximalCardinality );
+        T visit( DataMaximalCardinality dataMaximalCardinality );
 
-        T visit( ConcreteExactCardinality concreteExactCardinality );
+        T visit( DataExactCardinality dataExactCardinality );
 
         T visit( Invisible invisible );
     }
@@ -81,17 +81,17 @@ public abstract class NodeType implements Node {
         }
 
         @Override
-        public T visit( final AbstractRole abstractRole ) {
+        public T visit( final DataProperty dataProperty ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final ConcreteRole concreteRole ) {
+        public T visit( final ObjectProperty objectProperty ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AnnotationRole annotationRole ) {
+        public T visit( final AnnotationProperty annotationProperty ) {
             return defaultValue;
         }
 
@@ -161,47 +161,47 @@ public abstract class NodeType implements Node {
         }
 
         @Override
-        public T visit( final AbstractMinimalCardinality abstractMinimalCardinality ) {
+        public T visit( final ObjectMinimalCardinality objectMinimalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AbstractQualifiedMinimalCardinality abstractQualifiedMinimalCardinality ) {
+        public T visit( final ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AbstractMaximalCardinality abstractMaximalCardinality ) {
+        public T visit( final ObjectMaximalCardinality objectMaximalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AbstractQualifiedMaximalCardinality abstractQualifiedMaximalCardinality ) {
+        public T visit( final ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AbstractExactCardinality abstractExactCardinality ) {
+        public T visit( final ObjectExactCardinality objectExactCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final AbstractQualifiedExactCardinality abstractQualifiedExactCardinality ) {
+        public T visit( final ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final ConcreteMinimalCardinality concreteMinimalCardinality ) {
+        public T visit( final DataMinimalCardinality dataMinimalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final ConcreteMaximalCardinality concreteMaximalCardinality ) {
+        public T visit( final DataMaximalCardinality dataMaximalCardinality ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final ConcreteExactCardinality concreteExactCardinality ) {
+        public T visit( final DataExactCardinality dataExactCardinality ) {
             return defaultValue;
         }
 
@@ -239,7 +239,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractRole extends NodeType implements NamedNode {
+    public static final class DataProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -251,7 +251,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ConcreteRole extends NodeType implements NamedNode {
+    public static final class ObjectProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -263,7 +263,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AnnotationRole extends NodeType implements NamedNode {
+    public static final class AnnotationProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -422,7 +422,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractMinimalCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -434,7 +434,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractQualifiedMinimalCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectQualifiedMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -446,7 +446,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractMaximalCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -458,7 +458,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractQualifiedMaximalCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectQualifiedMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -470,7 +470,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractExactCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -482,7 +482,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AbstractQualifiedExactCardinality extends NodeType implements CardinalityNode {
+    public static final class ObjectQualifiedExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -494,7 +494,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ConcreteMinimalCardinality extends NodeType implements CardinalityNode {
+    public static final class DataMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -506,7 +506,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ConcreteMaximalCardinality extends NodeType implements CardinalityNode {
+    public static final class DataMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -518,7 +518,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ConcreteExactCardinality extends NodeType implements CardinalityNode {
+    public static final class DataExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 

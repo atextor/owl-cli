@@ -30,7 +30,7 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Graph graph = mapper.visit( axiom.getAnnotation() );
 
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AnnotationRole.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AnnotationProperty.class );
 
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();

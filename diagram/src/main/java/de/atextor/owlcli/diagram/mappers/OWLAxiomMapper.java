@@ -242,7 +242,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
      * @param <O>     The type of object the axiom describes
      * @param <A>     The axiom type
      * @param <V>     The type of visitor that handles the axiom type
-     * @return the set of graph elements that make up the equivalency
+     * @return the graph representing the equivalency
      */
     private <O extends OWLObject, A extends OWLNaryAxiom<O>, V extends OWLObjectVisitorEx<Graph>>
     Graph pairwiseEquivalent( final A axiom, final V visitor ) {
