@@ -222,7 +222,11 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDataPropertyRangeAxiom axiom ) {
-        return TODO();
+        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlDataMapper() );
+        final Edge rangeEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), rangeGraph
+            .getNode().getId(), DecoratedEdge.RANGE );
+        return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 
     @Override
