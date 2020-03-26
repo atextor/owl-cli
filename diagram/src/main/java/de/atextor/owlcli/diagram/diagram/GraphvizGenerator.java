@@ -237,11 +237,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Domain domain ) {
-            return generateAnonymousNode( domain.getId(), Resource.OWL_DOMAIN );
-        }
-
-        @Override
         public GraphvizDocument visit( final NodeType.Range range ) {
             return generateAnonymousNode( range.getId(), Resource.OWL_ALLVALUES );
         }

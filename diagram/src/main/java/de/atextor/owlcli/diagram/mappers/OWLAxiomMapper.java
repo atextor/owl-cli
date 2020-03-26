@@ -1,6 +1,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import com.google.common.collect.Sets;
+import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
@@ -143,13 +144,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Node domainNode = new NodeType.Domain( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Edge fromDomainNodeToDomain = new PlainEdge( Edge.Type.HOLLOW_ARROW, domainNode.getId(), domainGraph
-            .getNode().getId() );
-        final Edge fromDomainNodeToProperty = new PlainEdge( Edge.Type.DEFAULT_ARROW, domainNode.getId(), propertyGraph
-            .getNode().getId() );
-        return domainGraph.and( propertyGraph ).and( domainNode ).and( fromDomainNodeToDomain )
-            .and( fromDomainNodeToProperty );
+        final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), domainGraph
+            .getNode().getId(), DecoratedEdge.DOMAIN );
+        return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
     @Override

@@ -10,6 +10,7 @@ public class DecoratedEdge implements Edge {
     public static final Decoration DATA_RANGE = new Decoration.DataRangeSymbol();
     public static final Decoration INDIVIDUAL = new Decoration.IndividualSymbol();
     public static final Decoration LITERAL = new Decoration.LiteralSymbol();
+    public static final Decoration DOMAIN = new Decoration.Label( "domain" );
 
     Edge.Type type;
     Node.Id from;
