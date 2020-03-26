@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram;
 
+import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
@@ -118,26 +119,20 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLDataPropertyDomainAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_DOMAIN );
 
-        final String domainNode = "domainNode";
-        testIdentifierMapper.pushAnonId( new Node.Id( domainNode ) );
-
         final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
 
         final List<Node> nodes = nodes( result );
-        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "domainNode" ) );
-        assertThat( nodes ).anyMatch( isDomain() );
 
         final List<Edge> edges = edges( result );
-        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).hasSize( 1 );
 
-        final Edge domainNodeToFoo = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "foo" ) ).findAny().get();
-        assertThat( domainNodeToFoo.getType() ).isEqualTo( Edge.Type.HOLLOW_ARROW );
-
-        final Edge domainNodeToBar = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "bar" ) ).findAny().get();
-        assertThat( domainNodeToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        final Edge propertyToDomain = edges.iterator().next();
+        assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( propertyToDomain.getClass() ).isEqualTo( DecoratedEdge.class );
+        assertThat( ( (DecoratedEdge) propertyToDomain ).getDecoration() ).isEqualTo( DecoratedEdge.DOMAIN );
     }
 
     @Test
@@ -149,26 +144,20 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             """;
         final OWLObjectPropertyDomainAxiom axiom = getAxiom( ontology, AxiomType.OBJECT_PROPERTY_DOMAIN );
 
-        final String domainNode = "domainNode";
-        testIdentifierMapper.pushAnonId( new Node.Id( domainNode ) );
-
         final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
 
         final List<Node> nodes = nodes( result );
-        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "domainNode" ) );
-        assertThat( nodes ).anyMatch( isDomain() );
 
         final List<Edge> edges = edges( result );
-        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).hasSize( 1 );
 
-        final Edge domainNodeToFoo = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "foo" ) ).findAny().get();
-        assertThat( domainNodeToFoo.getType() ).isEqualTo( Edge.Type.HOLLOW_ARROW );
-
-        final Edge domainNodeToBar = edges.stream().filter( isEdgeWithFromAndTo( domainNode, "bar" ) ).findAny().get();
-        assertThat( domainNodeToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        final Edge propertyToDomain = edges.iterator().next();
+        assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( propertyToDomain.getClass() ).isEqualTo( DecoratedEdge.class );
+        assertThat( ( (DecoratedEdge) propertyToDomain ).getDecoration() ).isEqualTo( DecoratedEdge.DOMAIN );
     }
 
     @Test

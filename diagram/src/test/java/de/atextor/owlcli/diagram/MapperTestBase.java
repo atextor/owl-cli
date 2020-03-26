@@ -139,20 +139,6 @@ public class MapperTestBase {
         } );
     }
 
-    protected Predicate<Node> isDomain() {
-        return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
-            @Override
-            public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( new NodeType.VisitorAdapter<>( false ) {
-                    @Override
-                    public Boolean visit( final NodeType.Domain complement ) {
-                        return true;
-                    }
-                } );
-            }
-        } );
-    }
-
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
         return isNodeWithId( targetId.getId() );
     }
