@@ -21,6 +21,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
@@ -215,6 +216,27 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectPropertyRangeAxiom() {
+        final String ontology = """
+            :foo a owl:Class .
+            :bar a owl:ObjectProperty ;
+               rdfs:range :foo .
+            """;
+        final OWLObjectPropertyRangeAxiom axiom = getAxiom( ontology, AxiomType.OBJECT_PROPERTY_RANGE );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        final Edge propertyToRange = edges.iterator().next();
+        assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( propertyToRange.getClass() ).isEqualTo( DecoratedEdge.class );
+        assertThat( ( (DecoratedEdge) propertyToRange ).getDecoration() ).isEqualTo( DecoratedEdge.RANGE );
     }
 
     @Test
