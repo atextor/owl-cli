@@ -37,6 +37,8 @@ public abstract class NodeType implements Node {
 
         T visit( Union union );
 
+        T visit( Disjointness disjointness );
+
         T visit( ClosedClass closedClass );
 
         T visit( Complement complement );
@@ -128,6 +130,11 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final Union union ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Disjointness disjointness ) {
             return defaultValue;
         }
 
@@ -343,6 +350,17 @@ public abstract class NodeType implements Node {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class Union extends NodeType {
+        Id id;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static final class Disjointness extends NodeType {
         Id id;
 
         @Override
