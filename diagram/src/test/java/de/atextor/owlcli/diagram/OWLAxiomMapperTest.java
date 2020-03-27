@@ -13,6 +13,7 @@ import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
@@ -290,6 +291,26 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDataPropertyRangeAxiom() {
+        final String ontology = """
+            :foo a owl:DatatypeProperty ;
+               rdfs:range xsd:string .
+            """;
+        final OWLDataPropertyRangeAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_RANGE );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "string" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        final Edge propertyToRange = edges.iterator().next();
+        assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( propertyToRange.getClass() ).isEqualTo( DecoratedEdge.class );
+        assertThat( ( (DecoratedEdge) propertyToRange ).getDecoration() ).isEqualTo( DecoratedEdge.RANGE );
     }
 
     @Test
