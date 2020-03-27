@@ -140,7 +140,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
-        return TODO();
+        final OWLClassExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlClassExpressionMapper();
+        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        return axiom.operands().map( operand -> {
+            final Graph operandGraph = operand.accept( mapper );
+            final Edge disjointnessToOperandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, disjointness.getId(),
+                operandGraph.getNode().getId() );
+            return operandGraph.and( disjointnessToOperandEdge );
+        } ).reduce( Graph.of( disjointness ), Graph::and );
     }
 
     private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
