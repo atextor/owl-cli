@@ -49,6 +49,8 @@ import org.semanticweb.owlapi.model.OWLPropertyAssertionObject;
 import org.semanticweb.owlapi.model.OWLPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLPropertyExpression;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
+import org.semanticweb.owlapi.model.OWLPropertyRange;
+import org.semanticweb.owlapi.model.OWLPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
@@ -149,6 +151,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
+    private <P extends OWLPropertyExpression, R extends OWLPropertyRange, A extends OWLPropertyRangeAxiom<P, R>> Graph propertyRange( final A axiom ) {
+        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
+        final Edge rangeEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), rangeGraph
+            .getNode().getId(), DecoratedEdge.RANGE );
+        return propertyGraph.and( rangeGraph ).and( rangeEdge );
+    }
+
     @Override
     public Graph visit( final @Nonnull OWLDataPropertyDomainAxiom axiom ) {
         return propertyDomain( axiom );
@@ -186,7 +196,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLObjectPropertyRangeAxiom axiom ) {
-        return TODO();
+        return propertyRange( axiom );
     }
 
     @Override
@@ -222,11 +232,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDataPropertyRangeAxiom axiom ) {
-        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlDataMapper() );
-        final Edge rangeEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), rangeGraph
-            .getNode().getId(), DecoratedEdge.RANGE );
-        return propertyGraph.and( rangeGraph ).and( rangeEdge );
+        return propertyRange( axiom );
     }
 
     @Override

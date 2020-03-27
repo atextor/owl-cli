@@ -10,6 +10,7 @@ import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
@@ -154,5 +155,10 @@ public class OWLObjectMapper implements OWLObjectVisitorEx<Graph> {
     @Override
     public Graph visit( final OWLLiteral literal ) {
         return mappingConfig.getOwlDataMapper().visit( literal );
+    }
+
+    @Override
+    public Graph visit( final OWLDatatype datatype ) {
+        return mappingConfig.getOwlDataMapper().visit( datatype );
     }
 }
