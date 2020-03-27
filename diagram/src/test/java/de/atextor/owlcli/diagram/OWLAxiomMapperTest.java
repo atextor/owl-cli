@@ -15,6 +15,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
@@ -110,6 +111,28 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDisjointClassesAxiom() {
+        final String ontology = """
+            :foo a owl:Class .
+            :bar a owl:Class ;
+               owl:disjointWith :foo .
+            """;
+
+        final OWLDisjointClassesAxiom axiom = getAxiom( ontology, AxiomType.DISJOINT_CLASSES );
+
+        final String disjointnessNodeId = "disjointness";
+        testIdentifierMapper.pushAnonId( new Node.Id( disjointnessNodeId ) );
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( disjointnessNodeId ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( disjointnessNodeId, "foo" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( disjointnessNodeId, "bar" ) );
     }
 
     @Test
