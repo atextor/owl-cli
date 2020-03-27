@@ -39,8 +39,6 @@ public abstract class NodeType implements Node {
 
         T visit( ClosedClass closedClass );
 
-        T visit( Range range );
-
         T visit( Complement complement );
 
         T visit( Self self );
@@ -135,11 +133,6 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final ClosedClass closedClass ) {
-            return defaultValue;
-        }
-
-        @Override
-        public T visit( final Range range ) {
             return defaultValue;
         }
 
@@ -361,17 +354,6 @@ public abstract class NodeType implements Node {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class ClosedClass extends NodeType {
-        Id id;
-
-        @Override
-        public <T> T accept( final NodeType.Visitor<T> visitor ) {
-            return visitor.visit( this );
-        }
-    }
-
-    @Value
-    @EqualsAndHashCode( callSuper = true )
-    public static final class Range extends NodeType {
         Id id;
 
         @Override

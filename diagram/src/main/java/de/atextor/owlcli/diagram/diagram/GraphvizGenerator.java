@@ -237,11 +237,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Range range ) {
-            return generateAnonymousNode( range.getId(), Resource.OWL_ALLVALUES );
-        }
-
-        @Override
         public GraphvizDocument visit( final NodeType.Complement complement ) {
             return generateAnonymousNode( complement.getId(), Resource.OWL_COMPLEMENT );
         }
