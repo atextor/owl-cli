@@ -19,6 +19,7 @@ import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
@@ -223,6 +224,47 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLNegativeDataPropertyAssertionAxiom() {
+        final String ontology = """
+            :foo a owl:NamedIndividual .
+            :property a owl:ObjectProperty .
+            [
+               a owl:NegativePropertyAssertion ;
+               owl:sourceIndividual :foo ;
+               owl:assertionProperty :property ;
+               owl:targetValue "Fido" ;
+            ] .
+            """;
+        final OWLNegativeDataPropertyAssertionAxiom axiom = getAxiom( ontology,
+            AxiomType.NEGATIVE_DATA_PROPERTY_ASSERTION );
+
+        final String valueNodeId = "Fido";
+        testIdentifierMapper.pushAnonId( new Node.Id( valueNodeId ) );
+
+        final String complementId = "complementNode";
+        testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 7 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "property" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( valueNodeId ) );
+        assertThat( nodes ).anyMatch( isComplement() );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+
+        final Edge fooToComplement =
+            edges.stream().filter( isEdgeWithFromAndTo( "foo", complementId ) ).findAny().get();
+        final Edge complementToValue =
+            edges.stream().filter( isEdgeWithFromAndTo( complementId, valueNodeId ) ).findAny().get();
+        final Edge complementToProp =
+            edges.stream().filter( isEdgeWithFromAndTo( complementId, "property" ) ).findAny().get();
+        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( complementToValue.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( complementToProp.getType() ).isEqualTo( Edge.Type.DASHED_ARROW );
     }
 
     @Test
