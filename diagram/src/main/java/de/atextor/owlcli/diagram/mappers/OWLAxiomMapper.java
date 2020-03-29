@@ -8,6 +8,7 @@ import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
+import org.semanticweb.owlapi.model.HasOperands;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyRangeAxiom;
@@ -140,14 +141,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
-        final OWLClassExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlClassExpressionMapper();
         final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        return axiom.operands().map( operand -> {
-            final Graph operandGraph = operand.accept( mapper );
-            final Edge disjointnessToOperandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, disjointness.getId(),
-                operandGraph.getNode().getId() );
-            return operandGraph.and( disjointnessToOperandEdge );
-        } ).reduce( Graph.of( disjointness ), Graph::and );
+        return classExpressionStructure( axiom, disjointness );
     }
 
     private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
@@ -229,9 +224,20 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         return subProperties( superPropertyGraph, subPropertyGraph );
     }
 
+    private Graph classExpressionStructure( final HasOperands<OWLClassExpression> axiom, final Node toNode ) {
+        final OWLClassExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlClassExpressionMapper();
+        return axiom.operands().map( operand -> {
+            final Graph operandGraph = operand.accept( mapper );
+            final Edge disjointnessToOperandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, toNode.getId(),
+                operandGraph.getNode().getId() );
+            return operandGraph.and( disjointnessToOperandEdge );
+        } ).reduce( Graph.of( toNode ), Graph::and );
+    }
+
     @Override
     public Graph visit( final @Nonnull OWLDisjointUnionAxiom axiom ) {
-        return TODO();
+        return classExpressionStructure( axiom, new NodeType.DisjointUnion( mappingConfig.getIdentifierMapper()
+            .getSyntheticId() ) );
     }
 
     @Override
