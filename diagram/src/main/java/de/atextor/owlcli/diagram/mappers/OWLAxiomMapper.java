@@ -183,7 +183,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
-        return TODO();
+        final Node complement = new NodeType.Complement( mappingConfig.getIdentifierMapper()
+            .getSyntheticId() );
+        return Graph.of( complement ).and( propertyStructure( axiom, complement, Edge.Type.DEFAULT_ARROW ) );
     }
 
     @Override
