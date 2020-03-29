@@ -237,6 +237,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
+        public GraphvizDocument visit( final NodeType.DisjointUnion disjointUnion ) {
+            return generateAnonymousNode( disjointUnion.getId(), Resource.OWL_DISJOINT_UNION );
+        }
+
+        @Override
         public GraphvizDocument visit( final NodeType.ClosedClass closedClass ) {
             return generateAnonymousNode( closedClass.getId(), Resource.OWL_CLOSEDCLASS );
         }
