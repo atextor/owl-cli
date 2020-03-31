@@ -1,5 +1,7 @@
 package de.atextor.owlcli.diagram.graph;
 
+import java.util.stream.Stream;
+
 public interface GraphElement {
     interface Visitor<T> {
         T visit( PlainEdge edge );
@@ -38,6 +40,18 @@ public interface GraphElement {
 
     default boolean isNode() {
         return false;
+    }
+
+    default <T extends GraphElement> boolean is( final Class<T> class_ ) {
+        return getClass().isAssignableFrom( class_ );
+    }
+
+    default <T extends GraphElement> T as( final Class<T> class_ ) {
+        return class_.cast( this );
+    }
+
+    default <T extends GraphElement> Stream<T> view( final Class<T> class_ ) {
+        return is( class_ ) ? Stream.of( as( class_ ) ) : Stream.empty();
     }
 
     default Node asNode() {
