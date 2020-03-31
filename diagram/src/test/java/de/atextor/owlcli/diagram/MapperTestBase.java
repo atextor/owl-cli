@@ -111,33 +111,9 @@ public class MapperTestBase {
         return node -> node.getId().getId().equals( targetId );
     }
 
-    protected Predicate<Node> isInvisible() {
-        return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
-            @Override
-            public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( new NodeType.VisitorAdapter<>( false ) {
-                    @Override
-                    public Boolean visit( final NodeType.Invisible invisible ) {
-                        return true;
-                    }
-                } );
-            }
-        } );
-    }
+    protected final Predicate<Node> isInvisible = node -> node.is( NodeType.Invisible.class );
 
-    protected Predicate<Node> isComplement() {
-        return node -> node.accept( new GraphElement.VisitorAdapter<Boolean>( false ) {
-            @Override
-            public Boolean visit( final NodeType nodeType ) {
-                return nodeType.accept( new NodeType.VisitorAdapter<>( false ) {
-                    @Override
-                    public Boolean visit( final NodeType.Complement complement ) {
-                        return true;
-                    }
-                } );
-            }
-        } );
-    }
+    protected final Predicate<Node> isComplement = node -> node.is( NodeType.Complement.class );
 
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
         return isNodeWithId( targetId.getId() );

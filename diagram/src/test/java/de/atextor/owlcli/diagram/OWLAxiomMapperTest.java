@@ -86,7 +86,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "property" ) );
-        assertThat( nodes ).anyMatch( isComplement() );
+        assertThat( nodes ).anyMatch( isComplement );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 3 );
@@ -251,7 +251,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "property" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( valueNodeId ) );
-        assertThat( nodes ).anyMatch( isComplement() );
+        assertThat( nodes ).anyMatch( isComplement );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 3 );
@@ -325,7 +325,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "property" ) );
-        assertThat( nodes ).anyMatch( isInvisible() );
+        assertThat( nodes ).anyMatch( isInvisible );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 3 );
