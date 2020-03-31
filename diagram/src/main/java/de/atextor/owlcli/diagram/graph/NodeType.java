@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
+import org.semanticweb.owlapi.model.IRI;
 
 @ToString
 @EqualsAndHashCode
@@ -66,6 +67,8 @@ public abstract class NodeType implements Node {
         T visit( DataExactCardinality dataExactCardinality );
 
         T visit( Invisible invisible );
+
+        T visit( IRIReference iriReference );
     }
 
     public static class VisitorAdapter<T> implements Visitor<T> {
@@ -207,6 +210,11 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final Invisible invisible ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final IRIReference iriReference ) {
             return defaultValue;
         }
     }
@@ -532,6 +540,18 @@ public abstract class NodeType implements Node {
     @EqualsAndHashCode( callSuper = true )
     public static final class Invisible extends NodeType implements InvisibleNode {
         Id id;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static final class IRIReference extends NodeType implements InvisibleNode {
+        Id id;
+        IRI iri;
 
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {

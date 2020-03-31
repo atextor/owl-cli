@@ -306,6 +306,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return generateInvisibleNode( invisible.getId() );
         }
 
+        @Override
+        public GraphvizDocument visit( final NodeType.IRIReference iriReference ) {
+            return generateLiteralNode( iriReference.getId(), iriReference.getIri().toString() );
+        }
+
         private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( namedNodeTemplate.apply(
                 Map.of( "nodeId", node.getId().getId(),
