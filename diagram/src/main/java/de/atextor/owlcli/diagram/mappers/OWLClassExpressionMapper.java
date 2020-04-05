@@ -57,7 +57,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
         final Node.Id to = targetNode.getId();
         final Edge operandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, from, to );
 
-        return new Graph( sourceNode, remainingElements ).and( targetNode ).and( operandEdge ).toStream();
+        return Graph.of( sourceNode, remainingElements ).and( targetNode ).and( operandEdge ).toStream();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
         final Node intersectionNode = new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( intersectionNode, operand ) );
-        return new Graph( intersectionNode, remainingElements );
+        return Graph.of( intersectionNode, remainingElements );
     }
 
     @Override
@@ -73,7 +73,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
         final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( unionNode, operand ) );
-        return new Graph( unionNode, remainingElements );
+        return Graph.of( unionNode, remainingElements );
     }
 
     @Override
@@ -81,7 +81,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
         final Node complementNode = new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = createEdgeToClassExpression( complementNode, classExpression
             .getOperand() );
-        return new Graph( complementNode, remainingElements );
+        return Graph.of( complementNode, remainingElements );
     }
 
     private Graph createPropertyAndObjectRangeEdges( final Node restrictionNode,

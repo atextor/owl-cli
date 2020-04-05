@@ -1,15 +1,24 @@
 package de.atextor.owlcli.diagram.graph;
 
-import lombok.Value;
+import lombok.Getter;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Value
+@Getter
 public class Graph {
     Node node;
     Stream<GraphElement> otherElements;
+
+    protected Graph( final Node node, final Stream<GraphElement> otherElements ) {
+        this.node = node;
+        this.otherElements = otherElements;
+    }
+
+    public static Graph of( final Node node, final Stream<GraphElement> otherElements ) {
+        return new Graph( node, otherElements );
+    }
 
     public static Graph of( final Node node ) {
         return new Graph( node, Stream.empty() );

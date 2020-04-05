@@ -47,7 +47,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
             new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = createEdgeToDataRange( complementNode,
             dataRange.getDataRange() );
-        return new Graph( complementNode, remainingElements );
+        return Graph.of( complementNode, remainingElements );
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
             new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
             createEdgeToDataRange( intersectionNode, operand ) );
-        return new Graph( intersectionNode, remainingElements );
+        return Graph.of( intersectionNode, remainingElements );
     }
 
     @Override
@@ -76,7 +76,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
         final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = dataRange.operands().flatMap( operand ->
             createEdgeToDataRange( unionNode, operand ) );
-        return new Graph( unionNode, remainingElements );
+        return Graph.of( unionNode, remainingElements );
     }
 
     @Override
