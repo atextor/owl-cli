@@ -84,8 +84,8 @@ public class OWLDataMapperTest extends MapperTestBase {
 
         final OWLDataOneOf owlDataOneOf = (OWLDataOneOf) someValuesFrom.getFiller();
         final String restrictionNodeId = "restrictionNode";
-        testIdentifierMapper.pushAnonId( new Node.Id( "Fido" ) );
-        testIdentifierMapper.pushAnonId( new Node.Id( "Bello" ) );
+        testIdentifierMapper.pushAnonId( new Node.Id( "Fido", iri( "Fido" ) ) );
+        testIdentifierMapper.pushAnonId( new Node.Id( "Bello", iri( "Bello" ) ) );
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNodeId ) );
 
         final Graph graph = mapper.visit( owlDataOneOf );

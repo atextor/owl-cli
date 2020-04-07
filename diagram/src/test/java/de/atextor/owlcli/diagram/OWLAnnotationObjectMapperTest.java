@@ -27,6 +27,9 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
                 :comment :Foo .
             """;
 
+        final String fooId = "Foo";
+        testIdentifierMapper.pushAnonId( new Node.Id( fooId ) );
+
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Graph graph = mapper.visit( axiom.getAnnotation() );
 
@@ -38,15 +41,13 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( remainingElements );
         assertThat( nodes ).hasSize( 1 );
         final Node theNode = nodes.get( 0 );
-        assertThat( theNode.getClass() ).isEqualTo( NodeType.Literal.class );
-        final NodeType.Literal literal = (NodeType.Literal) theNode;
-
-        assertThat( literal.getId().getId() ).isEqualTo( "Foo" );
-        assertThat( literal.getValue() ).isEqualTo( "http://test.de#Foo" );
+        assertThat( theNode.is( NodeType.IRIReference.class ) ).isTrue();
+        final NodeType.IRIReference reference = theNode.as( NodeType.IRIReference.class );
+        assertThat( reference.getIri().toString() ).isEqualTo( iri( "Foo" ).toString() );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( graph.getNode().getId(), literal.getId() ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( graph.getNode().getId(), reference.getId() ) );
     }
 
     @Test
@@ -57,10 +58,13 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
                 :comment :Foo .
             """;
 
+        final String fooId = "Foo";
+        testIdentifierMapper.pushAnonId( new Node.Id( fooId ) );
+
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Graph graph = mapper.visit( axiom.getValue().asIRI().get() );
 
-        assertThat( graph.getNode() ).matches( isNodeWithId( "Foo" ) );
+        assertThat( graph.getNode() ).matches( isNodeWithId( fooId ) );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 

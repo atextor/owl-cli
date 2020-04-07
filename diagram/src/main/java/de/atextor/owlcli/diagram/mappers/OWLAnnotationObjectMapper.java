@@ -31,9 +31,8 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<G
 
     @Override
     public Graph visit( final @Nonnull IRI iri ) {
-        final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( iri );
-        final String label = iri.toString();
-        return Graph.of( new NodeType.Literal( id, label ) );
+        final Node.Id id = mappingConfig.getIdentifierMapper().getSyntheticId();
+        return Graph.of( new NodeType.IRIReference( id, iri ) );
     }
 
     @Override

@@ -558,7 +558,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final OWLDataHasValue hasValue = (OWLDataHasValue) axiom.getOperandsAsList().get( 1 );
 
         final String restrictionNode = "restrictionNode";
-        testIdentifierMapper.pushAnonId( new Node.Id( "baz" ) );
+        testIdentifierMapper.pushAnonId( new Node.Id( "baz", iri( "baz" ) ) );
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( hasValue );

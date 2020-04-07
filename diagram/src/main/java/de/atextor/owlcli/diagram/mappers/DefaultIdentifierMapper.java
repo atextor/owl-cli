@@ -14,7 +14,7 @@ public class DefaultIdentifierMapper implements IdentifierMapper {
 
     @Override
     public Node.Id getIdForIri( final IRI iri ) {
-        return new Node.Id( iri.getFragment() );
+        return new Node.Id( iri.getFragment(), iri );
     }
 
     @Override
