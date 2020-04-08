@@ -619,10 +619,6 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLAnnotationPropertyDomainAxiom() {
-    }
-
-    @Test
     public void testOWLAnnotationPropertyRangeAxiom() {
     }
 

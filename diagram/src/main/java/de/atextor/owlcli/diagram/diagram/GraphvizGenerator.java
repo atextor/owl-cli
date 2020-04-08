@@ -11,7 +11,6 @@ import de.atextor.owlcli.diagram.graph.PlainEdge;
 
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
@@ -59,9 +58,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     }
 
     @Override
-    public GraphvizDocument apply( final Stream<GraphElement> graph ) {
-        return graph.collect( Collectors.toSet() )
-            .stream()
+    public GraphvizDocument apply( final Stream<GraphElement> graphElements ) {
+        return graphElements
             .map( graphElement -> graphElement.accept( graphVisitor ) )
             .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
     }
