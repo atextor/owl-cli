@@ -9,6 +9,16 @@ public class PlainEdge implements Edge {
     Node.Id to;
 
     @Override
+    public Edge setFrom( final Node.Id newFromId ) {
+        return new PlainEdge( type, newFromId, to );
+    }
+
+    @Override
+    public Edge setTo( final Node.Id newToId ) {
+        return new PlainEdge( type, from, newToId );
+    }
+
+    @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
     }

@@ -16,6 +16,10 @@ public interface Edge extends GraphElement {
 
     Edge.Type getType();
 
+    Edge setFrom( Node.Id newFromId );
+
+    Edge setTo( Node.Id newToId );
+
     @Override
     default boolean isEdge() {
         return true;

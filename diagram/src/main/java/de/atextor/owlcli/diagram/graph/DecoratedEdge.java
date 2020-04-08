@@ -19,6 +19,16 @@ public class DecoratedEdge implements Edge {
     Decoration decoration;
 
     @Override
+    public Edge setFrom( final Node.Id newFromId ) {
+        return new DecoratedEdge( type, newFromId, to, decoration );
+    }
+
+    @Override
+    public Edge setTo( final Node.Id newToId ) {
+        return new DecoratedEdge( type, from, newToId, decoration );
+    }
+
+    @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
     }
