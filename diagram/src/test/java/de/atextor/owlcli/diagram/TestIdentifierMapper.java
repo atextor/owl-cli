@@ -7,11 +7,11 @@ import org.semanticweb.owlapi.model.IRI;
 import java.util.Stack;
 
 public class TestIdentifierMapper implements IdentifierMapper {
-    private Stack<Node.Id> preconfiguredAnonIds = new Stack<>();
+    private final Stack<Node.Id> preconfiguredAnonIds = new Stack<>();
 
     @Override
     public Node.Id getIdForIri( final IRI iri ) {
-        return new Node.Id( iri.getFragment() );
+        return new Node.Id( iri.getFragment(), iri );
     }
 
     void pushAnonId( final Node.Id id ) {
