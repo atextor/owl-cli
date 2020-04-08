@@ -43,7 +43,7 @@ public interface GraphElement {
     }
 
     default <T extends GraphElement> boolean is( final Class<T> class_ ) {
-        return getClass().isAssignableFrom( class_ );
+        return class_.isAssignableFrom( getClass() );
     }
 
     default <T extends GraphElement> T as( final Class<T> class_ ) {
