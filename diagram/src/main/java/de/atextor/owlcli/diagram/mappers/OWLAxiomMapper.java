@@ -409,7 +409,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
-        return TODO();
+        final NodeType.IRIReference iriReference = new NodeType.IRIReference(
+            mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
+        final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
+        final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
+            iriReference.getId(), DecoratedEdge.DOMAIN );
+        return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
     @Override
