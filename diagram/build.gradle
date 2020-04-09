@@ -1,20 +1,20 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'io.franzbecker.gradle-lombok' version '3.1.0'
+    id 'io.franzbecker.gradle-lombok' version '3.3.0'
     id 'com.adarshr.test-logger'
 }
 
 dependencies {
-    implementation 'com.google.guava:guava:28.1-jre'
-    implementation 'net.sourceforge.owlapi:owlapi-distribution:5.1.11'
+    implementation 'com.google.guava:guava:28.2-jre'
+    implementation 'net.sourceforge.owlapi:owlapi-distribution:5.1.13'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
     implementation 'io.vavr:vavr:0.10.0'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.1'
-    testImplementation 'org.assertj:assertj-core:3.13.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.1'
+    testImplementation 'org.assertj:assertj-core:3.15.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.1'
 }
 
 compileJava {
