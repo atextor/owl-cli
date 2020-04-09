@@ -22,6 +22,11 @@ public interface Node extends GraphElement {
             this.id = id;
             iri = Optional.empty();
         }
+
+        @Override
+        public String toString() {
+            return "Id{" + "id='" + id + '\'' + ", iri=" + iri.map( IRI::toString ).orElse( "" ) + '}';
+        }
     }
 
     Id getId();
