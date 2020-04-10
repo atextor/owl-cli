@@ -1,5 +1,7 @@
 package de.atextor.owlcli;
 
+import com.beust.jcommander.DefaultUsageFormatter;
+import com.beust.jcommander.IUsageFormatter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
@@ -35,12 +37,6 @@ public class App extends CommandBase<App.Arguments> {
         }
     }
 
-    private String getHelp() {
-        final StringBuilder builder = new StringBuilder();
-        jCommander.usage( builder );
-        return builder.toString().replace( "<main class>", "owl" );
-    }
-
     @Override
     Arguments getArguments() {
         return new Arguments();
@@ -54,7 +50,7 @@ public class App extends CommandBase<App.Arguments> {
     @Override
     public void accept( final Arguments arguments ) {
         if ( arguments.help ) {
-            System.out.println( getHelp() );
+            jCommander.usage();
             System.exit( 0 );
         }
     }
@@ -69,12 +65,14 @@ public class App extends CommandBase<App.Arguments> {
             .addObject( arguments )
             .addCommand( diagramCommand.getCommandName(), diagramArguments )
             .build();
+        final IUsageFormatter usageFormatter = new CustomUsageFormatter( jCommander );
+        jCommander.setUsageFormatter( usageFormatter );
 
         final App app = new App();
         app.setjCommander( jCommander );
 
         if ( args.length == 0 ) {
-            System.out.println( app.getHelp() );
+            jCommander.usage();
             System.exit( 0 );
         }
 
@@ -86,7 +84,20 @@ public class App extends CommandBase<App.Arguments> {
             System.exit( 0 );
         }
 
-        System.out.println( app.getHelp() );
+        jCommander.usage();
         System.exit( 0 );
+    }
+
+    private static class CustomUsageFormatter extends DefaultUsageFormatter {
+        public CustomUsageFormatter( final JCommander commander ) {
+            super( commander );
+        }
+
+        @Override
+        public void usage( final StringBuilder out, final String indent ) {
+            final StringBuilder builder = new StringBuilder();
+            super.usage( builder, indent );
+            out.append( builder.toString().replace( "<main class>", "owl" ) );
+        }
     }
 }
