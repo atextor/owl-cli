@@ -43,8 +43,7 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
 defaultTasks 'test', 'shadowJar'
 
 def isNonStable = { String version ->
-  def unstableKeyword = ['ALPHA', 'BETA', 'RC'].any { it -> version.toUpperCase().contains(it) }
-  return unstableKeyword
+  return ['ALPHA', 'BETA', 'RC', 'M'].any { it -> version.toUpperCase().contains(it) }
 }
 
 dependencyUpdates {
