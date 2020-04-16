@@ -28,6 +28,9 @@ public class OWLOntologyMapperTest extends MapperTestBase {
                rdfs:domain :foo .
             """;
 
+        final Node.Id newClassNodeId = new Node.Id( "classNode", iri( "foo" ) );
+        testIdentifierMapper.pushAnonId( newClassNodeId );
+
         final String iriReferenceId = "iriReference";
         testIdentifierMapper.pushAnonId( new Node.Id( iriReferenceId ) );
 
@@ -35,7 +38,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
-        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( newClassNodeId ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
