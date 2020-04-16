@@ -12,6 +12,10 @@ public class DefaultIdentifierMapper implements IdentifierMapper {
         this.mappingConfig = mappingConfig;
     }
 
+    private String getRandomIdString() {
+        return "_" + UUID.randomUUID().toString().replace( "-", "" );
+    }
+
     @Override
     public Node.Id getIdForIri( final IRI iri ) {
         return new Node.Id( iri.getFragment(), iri );
@@ -19,6 +23,11 @@ public class DefaultIdentifierMapper implements IdentifierMapper {
 
     @Override
     public Node.Id getSyntheticId() {
-        return new Node.Id( "_" + UUID.randomUUID().toString().replace( "-", "" ) );
+        return new Node.Id( getRandomIdString() );
+    }
+
+    @Override
+    public Node.Id getSyntheticIdForIri( final IRI iri ) {
+        return new Node.Id( getRandomIdString(), iri );
     }
 }

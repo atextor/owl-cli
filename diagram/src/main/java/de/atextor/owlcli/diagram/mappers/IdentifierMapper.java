@@ -7,4 +7,6 @@ public interface IdentifierMapper {
     Node.Id getIdForIri( final IRI iri );
 
     Node.Id getSyntheticId();
+
+    Node.Id getSyntheticIdForIri( final IRI iri );
 }
