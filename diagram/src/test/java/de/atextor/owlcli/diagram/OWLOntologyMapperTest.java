@@ -23,10 +23,10 @@ public class OWLOntologyMapperTest extends MapperTestBase {
     @Test
     public void testOWLAnnotationPropertyDomainAxiom() {
         final String ontology = """
-            :foo a owl:Class .
-            :bar a owl:AnnotationProperty ;
-               rdfs:domain :foo .
-            """;
+                :foo a owl:Class .
+                :bar a owl:AnnotationProperty ;
+                   rdfs:domain :foo .
+                """;
 
         final Node.Id newClassNodeId = new Node.Id( "classNode", iri( "foo" ) );
         testIdentifierMapper.pushAnonId( newClassNodeId );
@@ -53,27 +53,18 @@ public class OWLOntologyMapperTest extends MapperTestBase {
     @Test
     public void testOWLAnnotationPropertyDomainAxiomWithPunning() {
         final String ontology = """
-            :foo a owl:Class .
-            :foo a owl:NamedIndividual .
-            :bar a owl:AnnotationProperty ;
-               rdfs:domain :foo .
-            """;
-
-        final Node.Id newIndividualId = new Node.Id( "individualNode", iri( "foo" ) );
-        testIdentifierMapper.pushAnonId( newIndividualId );
-
-        final Node.Id newClassNodeId = new Node.Id( "classNode", iri( "foo" ) );
-        testIdentifierMapper.pushAnonId( newClassNodeId );
-
-        final String iriReferenceId = "iriReference";
-        testIdentifierMapper.pushAnonId( new Node.Id( iriReferenceId ) );
+                :foo a owl:Class .
+                :foo a owl:NamedIndividual .
+                :bar a owl:AnnotationProperty ;
+                   rdfs:domain :foo .
+                """;
 
         final Set<GraphElement> result = mapper.apply( createOntology( ontology ) ).collect( Collectors.toSet() );
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
-        assertThat( nodes ).anyMatch( isNodeWithId( newClassNodeId ).and( node -> node.is( NodeType.Class.class ) ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( newIndividualId ).and( node -> node.is( NodeType.Individual.class ) ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Individual.class ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
@@ -81,11 +72,21 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final Predicate<Edge> hasDefaultArrow = edge -> edge.getType().equals( Edge.Type.DEFAULT_ARROW );
         final Predicate<Edge> hasDomainDecoration = edge -> edge.view( DecoratedEdge.class )
-            .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.DOMAIN ) )
-            .findFirst()
-            .orElse( false );
+                .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.DOMAIN ) )
+                .findFirst()
+                .orElse( false );
+        final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
 
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "bar", "classNode" ).and( hasDefaultArrow ).and( hasDomainDecoration ) );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "bar", "individualNode" ).and( hasDefaultArrow ).and( hasDomainDecoration ) );
+        assertThat( edges ).anyMatch( hasDefaultArrow
+                .and( hasDomainDecoration )
+                .and( hasFromBar )
+                .and( edge -> nodes.stream().anyMatch( node ->
+                        node.is( NodeType.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
+
+        assertThat( edges ).anyMatch( hasDefaultArrow
+                .and( hasDomainDecoration )
+                .and( hasFromBar )
+                .and( edge -> nodes.stream().anyMatch( node ->
+                        node.is( NodeType.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }
 }
