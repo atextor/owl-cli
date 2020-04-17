@@ -185,13 +185,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDifferentIndividualsAxiom axiom ) {
-        final Node disjointness = new NodeType.Inequality( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        return linkNodeToMultipleOthers( axiom, disjointness );
+        final Node inequality = new NodeType.Inequality( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        return linkNodeToMultipleOthers( axiom, inequality );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointDataPropertiesAxiom axiom ) {
-        return TODO();
+        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        return linkNodeToMultipleOthers( axiom, disjointness );
     }
 
     @Override
