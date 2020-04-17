@@ -26,6 +26,7 @@ enum Resource {
     GET,
     LET,
     EQ,
+    NEQ,
     R,
     R_C,
     U;
