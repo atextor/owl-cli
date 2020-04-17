@@ -4,6 +4,7 @@ import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
@@ -15,6 +16,7 @@ import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
@@ -269,6 +271,31 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDifferentIndividualsAxiom() {
+        final String ontology = """
+            :foo a owl:NamedIndividual .
+            :bar a owl:NamedIndividual .
+            [
+               a owl:AllDifferent ;
+               owl:distinctMembers ( :foo :bar )
+            ] .
+            """;
+        final OWLDifferentIndividualsAxiom axiom = getAxiom( ontology, AxiomType.DIFFERENT_INDIVIDUALS );
+
+        final String inequalityId = "inequality";
+        testIdentifierMapper.pushAnonId( new Node.Id( inequalityId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Inequality.class ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( inequalityId, "foo" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( inequalityId, "bar" ) );
     }
 
     @Test
