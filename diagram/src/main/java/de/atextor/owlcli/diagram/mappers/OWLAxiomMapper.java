@@ -197,7 +197,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointObjectPropertiesAxiom axiom ) {
-        return TODO();
+        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        return linkNodeToMultipleOthers( axiom, disjointness );
     }
 
     @Override
