@@ -29,6 +29,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
@@ -638,6 +639,28 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSameIndividualAxiom() {
+        final String ontology = """
+            :foo a owl:NamedIndividual .
+            :bar a owl:NamedIndividual ;
+               owl:sameAs :foo .
+            """;
+        final OWLSameIndividualAxiom axiom = getAxiom( ontology, AxiomType.SAME_INDIVIDUAL );
+
+        final String equalityId = "equality";
+        testIdentifierMapper.pushAnonId( new Node.Id( equalityId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Equality.class ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( equalityId, "foo" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( equalityId, "bar" ) );
     }
 
     @Test
