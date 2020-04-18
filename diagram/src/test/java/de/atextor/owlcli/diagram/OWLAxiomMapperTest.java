@@ -23,6 +23,7 @@ import org.semanticweb.owlapi.model.OWLDisjointObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -669,6 +670,28 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLInverseObjectPropertiesAxiom() {
+        final String ontology = """
+            :foo a owl:ObjectProperty .
+            :bar a owl:ObjectProperty ;
+               owl:inverseOf :foo .
+            """;
+        final OWLInverseObjectPropertiesAxiom axiom = getAxiom( ontology, AxiomType.INVERSE_OBJECT_PROPERTIES );
+
+        final String inverseId = "inverse";
+        testIdentifierMapper.pushAnonId( new Node.Id( inverseId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Inverse.class ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( inverseId, "foo" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( inverseId, "bar" ) );
     }
 
     @Test
