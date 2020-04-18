@@ -44,6 +44,8 @@ public abstract class NodeType implements Node {
 
         T visit( Equality inequality );
 
+        T visit( Inverse inverse );
+
         T visit( Inequality inequality );
 
         T visit( ClosedClass closedClass );
@@ -129,6 +131,11 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final UniversalRestriction universalRestriction ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final Inverse inverse ) {
             return defaultValue;
         }
 
@@ -412,6 +419,17 @@ public abstract class NodeType implements Node {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static final class Equality extends NodeType {
+        Id id;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static final class Inverse extends NodeType {
         Id id;
 
         @Override

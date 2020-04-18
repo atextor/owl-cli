@@ -245,6 +245,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
+        public GraphvizDocument visit( final NodeType.Inverse inverse ) {
+            return generateAnonymousNode( inverse.getId(), Resource.OWL_INVERSE );
+        }
+
+        @Override
         public GraphvizDocument visit( final NodeType.Inequality inequality ) {
             return generateAnonymousNode( inequality.getId(), Resource.NEQ );
         }
