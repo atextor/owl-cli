@@ -367,7 +367,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLSameIndividualAxiom axiom ) {
-        return TODO();
+        final Node equality = new NodeType.Equality( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        return linkNodeToMultipleOthers( axiom, equality );
     }
 
     @Override
