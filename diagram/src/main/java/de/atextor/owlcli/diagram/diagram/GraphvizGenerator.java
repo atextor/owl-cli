@@ -240,6 +240,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
+        public GraphvizDocument visit( final NodeType.Equality equality ) {
+            return generateAnonymousNode( equality.getId(), Resource.EQ );
+        }
+
+        @Override
         public GraphvizDocument visit( final NodeType.Inequality inequality ) {
             return generateAnonymousNode( inequality.getId(), Resource.NEQ );
         }
