@@ -1,10 +1,8 @@
 package de.atextor.owlcli.diagram.mappers;
 
-import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
@@ -24,11 +22,7 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<G
 
     @Override
     public Graph visit( final @Nonnull OWLAnnotation annotation ) {
-        final Graph valueGraph = annotation.getValue().accept( this );
-        final Graph propertyGraph = annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), valueGraph.getNode
-            ().getId() );
-        return propertyGraph.and( valueGraph ).and( edge );
+        return annotation.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
     }
 
     @Override
