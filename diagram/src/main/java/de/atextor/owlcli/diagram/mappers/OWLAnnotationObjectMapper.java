@@ -8,12 +8,14 @@ import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
 
-public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Graph> {
+public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Graph>,
+    OWLAnnotationSubjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
     public OWLAnnotationObjectMapper( final MappingConfiguration mappingConfig ) {

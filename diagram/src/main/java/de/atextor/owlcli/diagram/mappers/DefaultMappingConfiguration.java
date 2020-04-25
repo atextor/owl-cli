@@ -2,6 +2,7 @@ package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
 import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLDataVisitorEx;
@@ -21,6 +22,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLDataVisitorEx<Graph> owlDataMapper;
     private OWLEntityVisitorEx<Graph> owlEntityMapper;
     private OWLAnnotationObjectVisitorEx<Graph> owlAnnotationObjectMapper;
+    private OWLAnnotationSubjectVisitorEx<Graph> owlAnnotationSubjectMapper;
     private IdentifierMapper identifierMapper;
     private NameMapper nameMapper;
 
@@ -68,6 +70,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     @Override
+    public OWLAnnotationSubjectVisitorEx<Graph> getOwlAnnotationSubjectMapper() {
+        return owlAnnotationSubjectMapper;
+    }
+
+    @Override
     public IdentifierMapper getIdentifierMapper() {
         return identifierMapper;
     }
@@ -109,6 +116,10 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlAnnotationObjectMapper = owlAnnotationObjectMapper;
     }
 
+    private void setOwlAnnotationSubjectMapper( final OWLAnnotationSubjectVisitorEx<Graph> owlAnnotationSubjectMapper ) {
+        this.owlAnnotationSubjectMapper = owlAnnotationSubjectMapper;
+    }
+
     private void setIdentifierMapper( final IdentifierMapper identifierMapper ) {
         this.identifierMapper = identifierMapper;
     }
@@ -130,6 +141,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         private Supplier<OWLDataVisitorEx<Graph>> owlDataMapperSupplier = null;
         private Supplier<OWLEntityVisitorEx<Graph>> owlEntityMapperSupplier = null;
         private Supplier<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapperSupplier = null;
+        private Supplier<OWLAnnotationSubjectVisitorEx<Graph>> owlAnnotationSubjectMapperSupplier = null;
         private Supplier<IdentifierMapper> identifierMapperSupplier = null;
         private Supplier<NameMapper> nameMapperSupplier = null;
 
@@ -173,6 +185,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             return this;
         }
 
+        public Builder owlAnnotationSubjectMapper( final Supplier<OWLAnnotationSubjectVisitorEx<Graph>> supplier ) {
+            owlAnnotationSubjectMapperSupplier = supplier;
+            return this;
+        }
+
         public Builder identifierMapper( final Supplier<IdentifierMapper> supplier ) {
             identifierMapperSupplier = supplier;
             return this;
@@ -210,6 +227,9 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             if ( owlAnnotationObjectMapperSupplier == null ) {
                 owlAnnotationObjectMapper( () -> new OWLAnnotationObjectMapper( mappingConfig ) );
             }
+            if ( owlAnnotationSubjectMapperSupplier == null ) {
+                owlAnnotationSubjectMapper( () -> new OWLAnnotationObjectMapper( mappingConfig ) );
+            }
             if ( identifierMapperSupplier == null ) {
                 identifierMapper( () -> new DefaultIdentifierMapper( mappingConfig ) );
             }
@@ -225,6 +245,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             mappingConfig.setOwlDataMapper( owlDataMapperSupplier.get() );
             mappingConfig.setOwlEntityMapper( owlEntityMapperSupplier.get() );
             mappingConfig.setOwlAnnotationObjectMapper( owlAnnotationObjectMapperSupplier.get() );
+            mappingConfig.setOwlAnnotationSubjectMapper( owlAnnotationSubjectMapperSupplier.get() );
             mappingConfig.setIdentifierMapper( identifierMapperSupplier.get() );
             mappingConfig.setNameMapper( nameMapperSupplier.get() );
 

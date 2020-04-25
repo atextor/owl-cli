@@ -2,6 +2,7 @@ package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
 import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLDataVisitorEx;
@@ -26,6 +27,8 @@ public interface MappingConfiguration {
     OWLEntityVisitorEx<Graph> getOwlEntityMapper();
 
     OWLAnnotationObjectVisitorEx<Graph> getOwlAnnotationObjectMapper();
+
+    OWLAnnotationSubjectVisitorEx<Graph> getOwlAnnotationSubjectMapper();
 
     IdentifierMapper getIdentifierMapper();
 
