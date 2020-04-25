@@ -126,7 +126,7 @@ public class DiagramGenerator {
 
     public Try<Void> generate( final OWLOntology ontology, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
-        final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology );
+        final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology ).stream();
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( ontologyGraphRepresenation );
         final String graphvizGraph = graphvizDocument.apply( configuration );
 

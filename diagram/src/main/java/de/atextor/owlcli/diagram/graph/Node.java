@@ -40,4 +40,6 @@ public interface Node extends GraphElement {
     default Node asNode() {
         return this;
     }
+
+    Node clone( Id newId );
 }

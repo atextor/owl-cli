@@ -264,6 +264,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Class( newId, name );
+        }
     }
 
     @Value
@@ -275,6 +280,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new DataProperty( newId, name );
         }
     }
 
@@ -288,6 +298,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectProperty( newId, name );
+        }
     }
 
     @Value
@@ -299,6 +314,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new AnnotationProperty( newId, name );
         }
     }
 
@@ -312,6 +332,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Individual( newId, name );
+        }
     }
 
     @Value
@@ -323,6 +348,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Datatype( newId, name );
         }
     }
 
@@ -336,6 +366,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Literal( newId, value );
+        }
     }
 
 
@@ -348,6 +383,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ExistentialRestriction( newId );
+        }
     }
 
     @Value
@@ -358,6 +398,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ValueRestriction( newId );
         }
     }
 
@@ -370,6 +415,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new UniversalRestriction( newId );
+        }
     }
 
     @Value
@@ -380,6 +430,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Intersection( newId );
         }
     }
 
@@ -392,6 +447,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Union( newId );
+        }
     }
 
     @Value
@@ -402,6 +462,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Disjointness( newId );
         }
     }
 
@@ -414,6 +479,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new DisjointUnion( newId );
+        }
     }
 
     @Value
@@ -424,6 +494,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Equality( newId );
         }
     }
 
@@ -436,6 +511,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Inverse( newId );
+        }
     }
 
     @Value
@@ -446,6 +526,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Inequality( newId );
         }
     }
 
@@ -458,6 +543,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ClosedClass( newId );
+        }
     }
 
     @Value
@@ -469,6 +559,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Complement( newId );
+        }
     }
 
     @Value
@@ -479,6 +574,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Self( newId );
         }
     }
 
@@ -492,6 +592,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectMinimalCardinality( newId, cardinality );
+        }
     }
 
     @Value
@@ -503,6 +608,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectQualifiedMinimalCardinality( newId, cardinality );
         }
     }
 
@@ -516,6 +626,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectMaximalCardinality( newId, cardinality );
+        }
     }
 
     @Value
@@ -527,6 +642,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectQualifiedMaximalCardinality( newId, cardinality );
         }
     }
 
@@ -540,6 +660,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectExactCardinality( newId, cardinality );
+        }
     }
 
     @Value
@@ -551,6 +676,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new ObjectQualifiedExactCardinality( newId, cardinality );
         }
     }
 
@@ -564,6 +694,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new DataMinimalCardinality( newId, cardinality );
+        }
     }
 
     @Value
@@ -575,6 +710,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new DataMaximalCardinality( newId, cardinality );
         }
     }
 
@@ -588,6 +728,11 @@ public abstract class NodeType implements Node {
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
         }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new DataExactCardinality( newId, cardinality );
+        }
     }
 
     @Value
@@ -598,6 +743,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Invisible( newId );
         }
     }
 
@@ -610,6 +760,11 @@ public abstract class NodeType implements Node {
         @Override
         public <T> T accept( final NodeType.Visitor<T> visitor ) {
             return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new IRIReference( newId, iri );
         }
     }
 
