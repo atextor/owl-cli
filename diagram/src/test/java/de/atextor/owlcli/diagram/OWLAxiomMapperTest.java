@@ -103,7 +103,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             edges.stream().filter( isEdgeWithFromAndTo( complementId, "bar" ) ).findAny().get();
         final Edge complementToProp =
             edges.stream().filter( isEdgeWithFromAndTo( complementId, "property" ) ).findAny().get();
-        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.NO_ARROW );
         assertThat( complementToBar.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( complementToProp.getType() ).isEqualTo( Edge.Type.DASHED_ARROW );
     }
@@ -268,7 +268,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             edges.stream().filter( isEdgeWithFromAndTo( complementId, valueNodeId ) ).findAny().get();
         final Edge complementToProp =
             edges.stream().filter( isEdgeWithFromAndTo( complementId, "property" ) ).findAny().get();
-        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
+        assertThat( fooToComplement.getType() ).isEqualTo( Edge.Type.NO_ARROW );
         assertThat( complementToValue.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( complementToProp.getType() ).isEqualTo( Edge.Type.DASHED_ARROW );
     }
