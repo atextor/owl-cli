@@ -31,6 +31,19 @@ public class MapperTestBase {
     protected TestIdentifierMapper testIdentifierMapper = new TestIdentifierMapper();
     protected TestNameMapper testNameMapper = new TestNameMapper();
 
+    protected final Predicate<Edge> hasDefaultArrow = edge -> edge.getType().equals( Edge.Type.DEFAULT_ARROW );
+    protected final Predicate<Edge> hasDashedArrow = edge -> edge.getType().equals( Edge.Type.DASHED_ARROW );
+    protected final Predicate<Edge> hasNoArrow = edge -> edge.getType().equals( Edge.Type.NO_ARROW );
+    final Predicate<Edge> hasDomainDecoration = edge -> edge.view( DecoratedEdge.class )
+        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.DOMAIN ) )
+        .findFirst()
+        .orElse( false );
+    final Predicate<Edge> hasRangeDecoration = edge -> edge.view( DecoratedEdge.class )
+        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.RANGE ) )
+        .findFirst()
+        .orElse( false );
+    final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
+
     protected MappingConfiguration createTestMappingConfiguration() {
         return DefaultMappingConfiguration.builder()
             .identifierMapper( () -> testIdentifierMapper )
@@ -133,5 +146,13 @@ public class MapperTestBase {
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {
         return isEdgeWithFromAndTo( fromId.getId(), toId.getId() );
+    }
+
+    protected Predicate<Edge> isEdgeWithFrom( final String iri ) {
+        return edge -> edge.getFrom().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
+    }
+
+    protected Predicate<Edge> isEdgeWithTo( final String iri ) {
+        return edge -> edge.getTo().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
     }
 }

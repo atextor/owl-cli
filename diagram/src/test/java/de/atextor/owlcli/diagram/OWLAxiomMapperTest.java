@@ -713,10 +713,6 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testOWLAnnotationAssertionAxiom() {
-    }
-
-    @Test
     public void testOWLSubAnnotationPropertyOfAxiom() {
         final String ontology = """
             :foo a owl:AnnotationProperty .

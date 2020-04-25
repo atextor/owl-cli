@@ -5,19 +5,18 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLOntologyMapperTest extends MapperTestBase {
-    private final MappingConfiguration mappingConfiguration = createTestMappingConfiguration();
+    private final MappingConfiguration mappingConfiguration = DefaultMappingConfiguration.builder().build();
     private final OWLOntologyMapper mapper = new OWLOntologyMapper( mappingConfiguration );
 
     @Test
@@ -28,7 +27,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
                rdfs:domain :foo .
             """;
 
-        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
@@ -55,7 +54,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
                rdfs:domain :foo .
             """;
 
-        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
@@ -65,13 +64,6 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
-
-        final Predicate<Edge> hasDefaultArrow = edge -> edge.getType().equals( Edge.Type.DEFAULT_ARROW );
-        final Predicate<Edge> hasDomainDecoration = edge -> edge.view( DecoratedEdge.class )
-            .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.DOMAIN ) )
-            .findFirst()
-            .orElse( false );
-        final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
 
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
@@ -90,7 +82,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
                rdfs:range :foo .
             """;
 
-        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
@@ -117,7 +109,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
                rdfs:range :foo .
             """;
 
-        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) ).collect( Collectors.toSet() );
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
@@ -128,13 +120,6 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
 
-        final Predicate<Edge> hasDefaultArrow = edge -> edge.getType().equals( Edge.Type.DEFAULT_ARROW );
-        final Predicate<Edge> hasRangeDecoration = edge -> edge.view( DecoratedEdge.class )
-            .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.RANGE ) )
-            .findFirst()
-            .orElse( false );
-        final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
-
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
                 node.is( NodeType.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
@@ -143,4 +128,30 @@ public class OWLOntologyMapperTest extends MapperTestBase {
             nodes.stream().anyMatch( node ->
                 node.is( NodeType.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }
+
+    @Test
+    public void testOWLAnnotationAssertionAxiom() {
+        final String ontology = """
+            :foo a owl:AnnotationProperty .
+            :Baz a owl:Class .
+            :bar a owl:NamedIndividual ;
+               :foo :Baz .
+            """;
+
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
+        assertThat( result ).isNotEmpty();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Individual.class ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+        assertThat( edges ).anyMatch( hasNoArrow.and( isEdgeWithFrom( "bar" ) ) );
+        assertThat( edges ).anyMatch( hasDashedArrow.and( isEdgeWithTo( "foo" ) ) );
+        assertThat( edges ).anyMatch( hasDefaultArrow.and( isEdgeWithTo( "Baz" ) ) );
+    }
+
 }
