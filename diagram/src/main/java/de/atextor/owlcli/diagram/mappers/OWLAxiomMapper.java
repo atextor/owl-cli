@@ -242,7 +242,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLSymmetricObjectPropertyAxiom axiom ) {
-        return TODO();
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.SYMMETRIC );
     }
 
     @Override
