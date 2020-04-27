@@ -342,7 +342,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLTransitiveObjectPropertyAxiom axiom ) {
-        return TODO();
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.TRANSITIVE );
     }
 
     @Override
