@@ -1,5 +1,6 @@
 package de.atextor.owlcli.diagram.diagram;
 
+import com.google.common.collect.Ordering;
 import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
@@ -9,6 +10,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -65,9 +67,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     }
 
     static class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
-        Configuration.Format format;
-        String resourceDirectoryName;
-
         private final Template imageLabelTemplate = new Template( """
             label=<
               <table border="0">
@@ -78,6 +77,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 </tr>
               </table> >
             """ );
+        Configuration.Format format;
+        String resourceDirectoryName;
 
         GraphvizDecorationVisitor( final Configuration.Format format, final String resourceDirectoryName ) {
             this.format = format;
@@ -128,9 +129,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     }
 
     static class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
-        Configuration.Format format;
-        String resourceDirectoryname;
-
         final Template namedNodeTemplate = new Template( """
             ${nodeId} [label=<
               <table border="0">
@@ -139,7 +137,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                   <td>${nodeName}</td>
                 </tr>
               </table> >]""" );
-
         final Template anonymousNodeTemplate = new Template( """
             ${nodeId} [label=<
               <table border="0">
@@ -147,7 +144,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                   <td border="0" fixedsize="true" width="24" height="24"><img src="${directory}/${resource}" scale="true" /></td>
                 </tr>
               </table> >]""" );
-
         final Template cardinalityNodeTemplate = new Template( """
             ${nodeId} [label=<
               <table border="0">
@@ -157,12 +153,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                   <td><img src="${directory}/${postfixResource}" /></td>
                 </tr>
               </table> >]""" );
-
         final Template literalNodeTemplate = new Template( """
             ${nodeId} [label="${value}"] """ );
-
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
+        Configuration.Format format;
+        String resourceDirectoryname;
 
         GraphvizNodeTypeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
             this.format = format;
@@ -322,6 +318,24 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         @Override
         public GraphvizDocument visit( final NodeType.IRIReference iriReference ) {
             return generateLiteralNode( iriReference.getId(), iriReference.getIri().toString() );
+        }
+
+        @Override
+        public GraphvizDocument visit( final NodeType.PropertyMarker propertyMarker ) {
+            final Ordering<NodeType.PropertyMarker.Kind> markerOrder = Ordering.explicit( List.of(
+                NodeType.PropertyMarker.Kind.FUNCTIONAL,
+                NodeType.PropertyMarker.Kind.INVERSE_FUNCTIONAL,
+                NodeType.PropertyMarker.Kind.TRANSITIVE,
+                NodeType.PropertyMarker.Kind.SYMMETRIC,
+                NodeType.PropertyMarker.Kind.ASYMMETRIC,
+                NodeType.PropertyMarker.Kind.REFLEXIVE,
+                NodeType.PropertyMarker.Kind.IRREFLEXIVE ) );
+
+            final String value = propertyMarker.getKind().stream()
+                .sorted( markerOrder )
+                .map( kind -> kind.toString().toLowerCase().replace( "_", " " ) )
+                .reduce( "", ( s1, s2 ) -> String.format( "%s\\n%s", s1, s2 ) );
+            return generateLiteralNode( propertyMarker.getId(), value );
         }
 
         private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {

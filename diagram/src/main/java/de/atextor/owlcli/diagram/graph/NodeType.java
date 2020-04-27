@@ -8,6 +8,8 @@ import lombok.Value;
 import lombok.experimental.FieldDefaults;
 import org.semanticweb.owlapi.model.IRI;
 
+import java.util.Set;
+
 @ToString
 @EqualsAndHashCode
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
@@ -75,6 +77,8 @@ public abstract class NodeType implements Node {
         T visit( Invisible invisible );
 
         T visit( IRIReference iriReference );
+
+        T visit( PropertyMarker propertyMarker );
     }
 
     public static class VisitorAdapter<T> implements Visitor<T> {
@@ -236,6 +240,11 @@ public abstract class NodeType implements Node {
 
         @Override
         public T visit( final IRIReference iriReference ) {
+            return defaultValue;
+        }
+
+        @Override
+        public T visit( final PropertyMarker propertyMarker ) {
             return defaultValue;
         }
     }
@@ -765,6 +774,33 @@ public abstract class NodeType implements Node {
         @Override
         public Node clone( final Id newId ) {
             return new IRIReference( newId, iri );
+        }
+    }
+
+    @Value
+    @EqualsAndHashCode( callSuper = true )
+    public static class PropertyMarker extends NodeType {
+        public enum Kind {
+            FUNCTIONAL,
+            INVERSE_FUNCTIONAL,
+            TRANSITIVE,
+            SYMMETRIC,
+            ASYMMETRIC,
+            REFLEXIVE,
+            IRREFLEXIVE
+        }
+
+        Id id;
+        Set<Kind> kind;
+
+        @Override
+        public <T> T accept( final NodeType.Visitor<T> visitor ) {
+            return visitor.visit( this );
+        }
+
+        @Override
+        public Node clone( final Id newId ) {
+            return new Invisible( newId );
         }
     }
 
