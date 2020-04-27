@@ -256,7 +256,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Class extends NodeType implements NamedNode {
+    public static class Class extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -273,7 +273,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class DataProperty extends NodeType implements NamedNode {
+    public static class DataProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -290,7 +290,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectProperty extends NodeType implements NamedNode {
+    public static class ObjectProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -307,7 +307,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class AnnotationProperty extends NodeType implements NamedNode {
+    public static class AnnotationProperty extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -324,7 +324,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Individual extends NodeType implements NamedNode {
+    public static class Individual extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -341,7 +341,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Datatype extends NodeType implements NamedNode {
+    public static class Datatype extends NodeType implements NamedNode {
         Id id;
         String name;
 
@@ -358,7 +358,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Literal extends NodeType {
+    public static class Literal extends NodeType {
         Id id;
         String value;
 
@@ -376,7 +376,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ExistentialRestriction extends NodeType {
+    public static class ExistentialRestriction extends NodeType {
         Id id;
 
         @Override
@@ -392,7 +392,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ValueRestriction extends NodeType {
+    public static class ValueRestriction extends NodeType {
         Id id;
 
         @Override
@@ -408,7 +408,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class UniversalRestriction extends NodeType {
+    public static class UniversalRestriction extends NodeType {
         Id id;
 
         @Override
@@ -424,7 +424,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Intersection extends NodeType {
+    public static class Intersection extends NodeType {
         Id id;
 
         @Override
@@ -440,7 +440,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Union extends NodeType {
+    public static class Union extends NodeType {
         Id id;
 
         @Override
@@ -456,7 +456,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Disjointness extends NodeType {
+    public static class Disjointness extends NodeType {
         Id id;
 
         @Override
@@ -472,7 +472,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class DisjointUnion extends NodeType {
+    public static class DisjointUnion extends NodeType {
         Id id;
 
         @Override
@@ -488,7 +488,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Equality extends NodeType {
+    public static class Equality extends NodeType {
         Id id;
 
         @Override
@@ -504,7 +504,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Inverse extends NodeType {
+    public static class Inverse extends NodeType {
         Id id;
 
         @Override
@@ -520,7 +520,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Inequality extends NodeType {
+    public static class Inequality extends NodeType {
         Id id;
 
         @Override
@@ -536,7 +536,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ClosedClass extends NodeType {
+    public static class ClosedClass extends NodeType {
         Id id;
 
         @Override
@@ -552,7 +552,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Complement extends NodeType {
+    public static class Complement extends NodeType {
         Id id;
 
         @Override
@@ -568,7 +568,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Self extends NodeType {
+    public static class Self extends NodeType {
         Id id;
 
         @Override
@@ -584,7 +584,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectMinimalCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -601,7 +601,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectQualifiedMinimalCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectQualifiedMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -618,7 +618,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectMaximalCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -635,7 +635,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectQualifiedMaximalCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectQualifiedMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -652,7 +652,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectExactCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -669,7 +669,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class ObjectQualifiedExactCardinality extends NodeType implements CardinalityNode {
+    public static class ObjectQualifiedExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -686,7 +686,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class DataMinimalCardinality extends NodeType implements CardinalityNode {
+    public static class DataMinimalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -703,7 +703,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class DataMaximalCardinality extends NodeType implements CardinalityNode {
+    public static class DataMaximalCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -720,7 +720,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class DataExactCardinality extends NodeType implements CardinalityNode {
+    public static class DataExactCardinality extends NodeType implements CardinalityNode {
         Id id;
         int cardinality;
 
@@ -737,7 +737,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class Invisible extends NodeType implements InvisibleNode {
+    public static class Invisible extends NodeType implements InvisibleNode {
         Id id;
 
         @Override
@@ -753,7 +753,7 @@ public abstract class NodeType implements Node {
 
     @Value
     @EqualsAndHashCode( callSuper = true )
-    public static final class IRIReference extends NodeType implements InvisibleNode {
+    public static class IRIReference extends NodeType implements InvisibleNode {
         Id id;
         IRI iri;
 
