@@ -11,6 +11,7 @@ import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAsymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
@@ -115,6 +116,25 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLAsymmetricObjectPropertyAxiom() {
+        final String ontology = """
+            :foo a owl:ObjectProperty, owl:AsymmetricProperty .
+            """;
+        final OWLAsymmetricObjectPropertyAxiom axiom = getAxiom( ontology, AxiomType.ASYMMETRIC_OBJECT_PROPERTY );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.ASYMMETRIC ) ).findFirst()
+            .orElse( false ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        assertThat( edges ).anyMatch( isEdgeWithFrom( "foo" ).and( hasDashedArrow ) );
     }
 
     @Test
