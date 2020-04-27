@@ -34,6 +34,7 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyRangeAxiom;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLReflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLSameIndividualAxiom;
 import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
@@ -139,6 +140,25 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLReflexiveObjectPropertyAxiom() {
+        final String ontology = """
+            :foo a owl:ObjectProperty, owl:ReflexiveProperty .
+            """;
+        final OWLReflexiveObjectPropertyAxiom axiom = getAxiom( ontology, AxiomType.REFLEXIVE_OBJECT_PROPERTY );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.REFLEXIVE ) ).findFirst()
+            .orElse( false ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        assertThat( edges ).anyMatch( isEdgeWithFrom( "foo" ).and( hasDashedArrow ) );
     }
 
     @Test
