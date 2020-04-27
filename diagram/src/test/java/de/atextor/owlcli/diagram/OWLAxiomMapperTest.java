@@ -38,6 +38,7 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 
 import java.util.List;
@@ -472,6 +473,25 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSymmetricObjectPropertyAxiom() {
+        final String ontology = """
+            :foo a owl:ObjectProperty, owl:SymmetricProperty .
+            """;
+        final OWLSymmetricObjectPropertyAxiom axiom = getAxiom( ontology, AxiomType.SYMMETRIC_OBJECT_PROPERTY );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.SYMMETRIC ) ).findFirst()
+            .orElse( false ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        assertThat( edges ).anyMatch( isEdgeWithFrom( "foo" ).and( hasDashedArrow ) );
     }
 
     @Test
