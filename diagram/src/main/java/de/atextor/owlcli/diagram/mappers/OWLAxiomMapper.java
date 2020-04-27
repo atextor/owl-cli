@@ -212,7 +212,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
-        return TODO();
+        final Node marker = new NodeType.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
+            Set.of( NodeType.PropertyMarker.Kind.FUNCTIONAL ) );
+        final Node propertyNode =
+            axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
+        final Edge edge = new PlainEdge( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
+        return Graph.of( marker ).and( propertyNode ).and( edge );
     }
 
     @Override
