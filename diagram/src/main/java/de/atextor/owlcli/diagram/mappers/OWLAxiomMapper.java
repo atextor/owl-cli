@@ -212,12 +212,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
-        final Node marker = new NodeType.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
-            Set.of( NodeType.PropertyMarker.Kind.FUNCTIONAL ) );
-        final Node propertyNode =
-            axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
-        final Edge edge = new PlainEdge( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
-        return Graph.of( marker ).and( propertyNode ).and( edge );
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.FUNCTIONAL );
     }
 
     @Override
@@ -255,9 +250,18 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         return propertyRange( axiom );
     }
 
+    private Graph propertyMarker( final OWLPropertyExpression propertyExpression,
+                                  final NodeType.PropertyMarker.Kind markerKind ) {
+        final Node marker = new NodeType.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
+            Set.of( markerKind ) );
+        final Node propertyNode = propertyExpression.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
+        final Edge edge = new PlainEdge( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
+        return Graph.of( marker ).and( propertyNode ).and( edge );
+    }
+
     @Override
     public Graph visit( final @Nonnull OWLFunctionalDataPropertyAxiom axiom ) {
-        return TODO();
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.FUNCTIONAL );
     }
 
     /**
