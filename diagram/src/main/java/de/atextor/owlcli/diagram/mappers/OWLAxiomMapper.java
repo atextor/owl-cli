@@ -130,7 +130,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAsymmetricObjectPropertyAxiom axiom ) {
-        return TODO();
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.ASYMMETRIC );
     }
 
     @Override
