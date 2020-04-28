@@ -28,6 +28,7 @@ import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
+import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLNegativeObjectPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLObjectPropertyAssertionAxiom;
@@ -729,6 +730,25 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLIrreflexiveObjectPropertyAxiom() {
+        final String ontology = """
+            :foo a owl:ObjectProperty, owl:IrreflexiveProperty .
+            """;
+        final OWLIrreflexiveObjectPropertyAxiom axiom = getAxiom( ontology, AxiomType.IRREFLEXIVE_OBJECT_PROPERTY );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.IRREFLEXIVE ) ).findFirst()
+            .orElse( false ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        assertThat( edges ).anyMatch( isEdgeWithFrom( "foo" ).and( hasDashedArrow ) );
     }
 
     @Test
