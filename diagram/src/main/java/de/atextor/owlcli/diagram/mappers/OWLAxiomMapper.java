@@ -347,7 +347,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLIrreflexiveObjectPropertyAxiom axiom ) {
-        return TODO();
+        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.IRREFLEXIVE );
     }
 
     private Graph subProperties( final Graph superPropertyGraph, final Graph subPropertyGraph ) {
