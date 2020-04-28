@@ -44,7 +44,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLObjectProperty property ) {
         final Node node =
-            new NodeType.DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            new NodeType.ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
@@ -52,7 +52,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLDataProperty property ) {
         final Node node =
-            new NodeType.ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            new NodeType.DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
