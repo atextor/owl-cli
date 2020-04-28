@@ -154,4 +154,31 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         assertThat( edges ).anyMatch( hasDefaultArrow.and( isEdgeWithTo( "Baz" ) ) );
     }
 
+    @Test
+    public void testMultipleObjectPropertyCharacteristics() {
+        final String ontology = """
+            :foo a owl:ObjectProperty,
+                   owl:FunctionalProperty,
+                   owl:TransitiveProperty,
+                   owl:IrreflexiveProperty .
+            """;
+
+        final Set<GraphElement> result = mapper.apply( createOntology( ontology ) );
+        assertThat( result ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.FUNCTIONAL ) &&
+                propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.TRANSITIVE ) &&
+                propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.IRREFLEXIVE )
+        ).findFirst().orElse( false ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 1 );
+
+        assertThat( edges ).anyMatch( isEdgeWithFrom( "foo" ).and( hasDashedArrow ) );
+    }
+
 }
