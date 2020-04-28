@@ -3,6 +3,7 @@ package de.atextor.owlcli.diagram.mappers;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.transformer.IriReferenceResolver;
+import de.atextor.owlcli.diagram.graph.transformer.PropertyMarkerMerger;
 import de.atextor.owlcli.diagram.graph.transformer.PunningRemover;
 import org.semanticweb.owlapi.model.OWLOntology;
 
@@ -19,7 +20,8 @@ public class OWLOntologyMapper implements Function<OWLOntology, Set<GraphElement
         this.mappingConfiguration = mappingConfiguration;
         transformers = List.of(
             new PunningRemover( mappingConfiguration ),
-            new IriReferenceResolver( mappingConfiguration )
+            new IriReferenceResolver( mappingConfiguration ),
+            new PropertyMarkerMerger( mappingConfiguration )
         );
     }
 
