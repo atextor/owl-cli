@@ -1,12 +1,10 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import com.google.common.collect.Sets;
-import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.HasOperands;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLAnnotationPropertyDomainAxiom;
@@ -91,7 +89,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph superClassGraph = axiom.getSuperClass().accept( mapper );
         final Graph subClassGraph = axiom.getSubClass().accept( mapper );
 
-        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode().getId(),
+        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode().getId(),
             superClassGraph.getNode().getId() );
 
         return superClassGraph.and( subClassGraph ).and( edge );
@@ -104,11 +102,11 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph objectGraph = axiom.getObject().accept( mappingConfig.getOwlObjectMapper() );
 
-        final Edge subjectToThirdNode = new PlainEdge( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
+        final Edge subjectToThirdNode = new Edge.Plain( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
             thirdNode.getId() );
-        final Edge thirdNodeToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
+        final Edge thirdNodeToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
             objectGraph.getNode().getId() );
-        final Edge thirdNodeToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, thirdNode.getId(),
+        final Edge thirdNodeToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, thirdNode.getId(),
             propertyGraph.getNode().getId() );
 
         return subjectGraph
@@ -146,16 +144,18 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), domainGraph
-            .getNode().getId(), DecoratedEdge.DOMAIN );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
+            .getId(), domainGraph
+            .getNode().getId(), Edge.Decorated.DOMAIN );
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
     private <P extends OWLPropertyExpression, R extends OWLPropertyRange, A extends OWLPropertyRangeAxiom<P, R>> Graph propertyRange( final A axiom ) {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
-        final Edge rangeEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(), rangeGraph
-            .getNode().getId(), DecoratedEdge.RANGE );
+        final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
+            .getId(), rangeGraph
+            .getNode().getId(), Edge.Decorated.RANGE );
         return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 
@@ -227,7 +227,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
                                                                   final Node fromNode ) {
         return axiom.operands().map( operand -> {
             final Graph operandGraph = operand.accept( mappingConfig.getOwlObjectMapper() );
-            final Edge fromNodeToOperandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, fromNode.getId(),
+            final Edge fromNodeToOperandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, fromNode.getId(),
                 operandGraph.getNode().getId() );
             return operandGraph.and( fromNodeToOperandEdge );
         } ).reduce( Graph.of( fromNode ), Graph::and );
@@ -254,7 +254,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node marker = new Node.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
             Set.of( markerKind ) );
         final Node propertyNode = propertyExpression.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
-        final Edge edge = new PlainEdge( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
         return Graph.of( marker ).and( propertyNode ).and( edge );
     }
 
@@ -298,7 +298,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             final Iterator<O> iterator = expressionsList.iterator();
             final Graph graph1 = operands.get( iterator.next() );
             final Graph graph2 = operands.get( iterator.next() );
-            return new PlainEdge( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, graph1.getNode().getId(),
+            return new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, graph1.getNode().getId(),
                 graph2.getNode().getId() );
         } );
 
@@ -323,7 +323,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph classExpressionGraph =
             classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
 
-        final Edge edge = new PlainEdge( Edge.Type.DEFAULT_ARROW, individualGraph.getNode().getId(),
+        final Edge edge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, individualGraph.getNode().getId(),
             classExpressionGraph.getNode().getId() );
         return individualGraph.and( classExpressionGraph ).and( edge );
     }
@@ -350,7 +350,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private Graph subProperties( final Graph superPropertyGraph, final Graph subPropertyGraph ) {
-        final Edge edge = new PlainEdge( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
+        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
             superPropertyGraph.getNode().getId() );
         return superPropertyGraph.and( subPropertyGraph ).and( edge );
     }
@@ -390,13 +390,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             .getSyntheticId(), value );
 
         final Graph chainGraph = chainLinks.stream().map( chainLink -> {
-            final Edge fromPropertyChainToChainLink = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyChain.getId(),
+            final Edge fromPropertyChainToChainLink = new Edge.Plain( Edge.Type.DEFAULT_ARROW, propertyChain
+                .getId(),
                 chainLink.getId() );
             return Graph.of( chainLink ).and( fromPropertyChainToChainLink );
         } ).reduce( Graph.of( propertyChain ), Graph::and );
 
         final Node property = axiom.getSuperProperty().accept( mapper ).getNode();
-        final Edge propertyToPropertyChain = new PlainEdge( Edge.Type.HOLLOW_ARROW, property.getId(), propertyChain
+        final Edge propertyToPropertyChain = new Edge.Plain( Edge.Type.HOLLOW_ARROW, property.getId(), propertyChain
             .getId() );
         return Graph.of( property ).and( propertyToPropertyChain ).and( chainGraph );
     }
@@ -431,11 +432,11 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
 
-        final Edge subjectToInvisible = new PlainEdge( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
+        final Edge subjectToInvisible = new Edge.Plain( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
             invisible.getId() );
-        final Edge invisibleToObject = new PlainEdge( Edge.Type.DEFAULT_ARROW, invisible.getId(),
+        final Edge invisibleToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, invisible.getId(),
             objectGraph.getNode().getId() );
-        final Edge invisibleToProperty = new PlainEdge( Edge.Type.DASHED_ARROW, invisible.getId(),
+        final Edge invisibleToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, invisible.getId(),
             propertyGraph.getNode().getId() );
 
         return subjectGraph
@@ -460,8 +461,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node.IRIReference iriReference = new Node.IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), DecoratedEdge.DOMAIN );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
+            iriReference.getId(), Edge.Decorated.DOMAIN );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
@@ -470,8 +471,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node.IRIReference iriReference = new Node.IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getRange() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), DecoratedEdge.RANGE );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
+            iriReference.getId(), Edge.Decorated.RANGE );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 

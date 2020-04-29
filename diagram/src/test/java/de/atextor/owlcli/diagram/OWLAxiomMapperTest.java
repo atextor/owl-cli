@@ -1,9 +1,7 @@
 package de.atextor.owlcli.diagram;
 
-import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
-import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
@@ -210,8 +208,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
         final Edge propertyToDomain = edges.iterator().next();
         assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
-        assertThat( propertyToDomain.getClass() ).isEqualTo( DecoratedEdge.class );
-        assertThat( ( (DecoratedEdge) propertyToDomain ).getDecoration() ).isEqualTo( DecoratedEdge.DOMAIN );
+        assertThat( propertyToDomain.getClass() ).isEqualTo( Edge.Decorated.class );
+        assertThat( ( (Edge.Decorated) propertyToDomain ).getDecoration() ).isEqualTo( Edge.Decorated.DOMAIN );
     }
 
     @Test
@@ -235,8 +233,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
         final Edge propertyToDomain = edges.iterator().next();
         assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
-        assertThat( propertyToDomain.getClass() ).isEqualTo( DecoratedEdge.class );
-        assertThat( ( (DecoratedEdge) propertyToDomain ).getDecoration() ).isEqualTo( DecoratedEdge.DOMAIN );
+        assertThat( propertyToDomain.getClass() ).isEqualTo( Edge.Decorated.class );
+        assertThat( ( (Edge.Decorated) propertyToDomain ).getDecoration() ).isEqualTo( Edge.Decorated.DOMAIN );
     }
 
     @Test
@@ -422,8 +420,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
         final Edge propertyToRange = edges.iterator().next();
         assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
-        assertThat( propertyToRange.getClass() ).isEqualTo( DecoratedEdge.class );
-        assertThat( ( (DecoratedEdge) propertyToRange ).getDecoration() ).isEqualTo( DecoratedEdge.RANGE );
+        assertThat( propertyToRange.getClass() ).isEqualTo( Edge.Decorated.class );
+        assertThat( ( (Edge.Decorated) propertyToRange ).getDecoration() ).isEqualTo( Edge.Decorated.RANGE );
     }
 
     @Test
@@ -556,8 +554,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
         final Edge propertyToRange = edges.iterator().next();
         assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
-        assertThat( propertyToRange.getClass() ).isEqualTo( DecoratedEdge.class );
-        assertThat( ( (DecoratedEdge) propertyToRange ).getDecoration() ).isEqualTo( DecoratedEdge.RANGE );
+        assertThat( propertyToRange.getClass() ).isEqualTo( Edge.Decorated.class );
+        assertThat( ( (Edge.Decorated) propertyToRange ).getDecoration() ).isEqualTo( Edge.Decorated.RANGE );
     }
 
     @Test

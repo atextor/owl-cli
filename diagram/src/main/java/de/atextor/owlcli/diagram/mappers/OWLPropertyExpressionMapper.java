@@ -3,7 +3,6 @@ package de.atextor.owlcli.diagram.mappers;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
@@ -27,7 +26,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
         final Graph propertyVisitorGraph =
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge propertyEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
+        final Edge propertyEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
             propertyVisitorGraph.getNode().getId() );
         return Graph.of( complementNode ).and( propertyVisitorGraph ).and( propertyEdge );
     }

@@ -4,9 +4,9 @@ import java.util.stream.Stream;
 
 public interface GraphElement {
     interface Visitor<T> {
-        T visit( PlainEdge edge );
+        T visit( Edge.Plain edge );
 
-        T visit( DecoratedEdge decoratedEdge );
+        T visit( Edge.Decorated decoratedEdge );
 
         T visit( Node nodeType );
     }
@@ -19,12 +19,12 @@ public interface GraphElement {
         }
 
         @Override
-        public T visit( final PlainEdge edge ) {
+        public T visit( final Edge.Plain edge ) {
             return defaultValue;
         }
 
         @Override
-        public T visit( final DecoratedEdge decoratedEdge ) {
+        public T visit( final Edge.Decorated decoratedEdge ) {
             return defaultValue;
         }
 

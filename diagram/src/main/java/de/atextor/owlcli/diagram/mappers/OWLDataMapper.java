@@ -4,7 +4,6 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
@@ -35,7 +34,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
         final Stream<GraphElement> remainingElements = diagramPartsForDataRange.getOtherElements();
         final Node.Id from = sourceNode.getId();
         final Node.Id to = targetNode.getId();
-        final Edge operandEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, from, to );
+        final Edge operandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, from, to );
 
         return Stream.concat( Stream.of( sourceNode, targetNode, operandEdge ), remainingElements );
     }
@@ -55,7 +54,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
             new Node.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return dataRange.values().map( value -> {
             final Graph valueGraph = value.accept( mappingConfig.getOwlDataMapper() );
-            final Edge vEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
+            final Edge vEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
                 valueGraph.getNode().getId() );
             return valueGraph.and( vEdge );
         } ).reduce( Graph.of( restrictionNode ), Graph::and );

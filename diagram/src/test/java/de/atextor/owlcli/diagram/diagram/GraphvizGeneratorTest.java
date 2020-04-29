@@ -3,8 +3,6 @@ package de.atextor.owlcli.diagram.diagram;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -38,7 +36,7 @@ public class GraphvizGeneratorTest {
     @Test
     void testEdgeTypes() {
         final BiConsumer<Edge.Type, String> checkType = ( edgeType, needle ) -> {
-            final Stream<GraphElement> elements = Stream.of( new PlainEdge( edgeType, from1, to1 ) );
+            final Stream<GraphElement> elements = Stream.of( new Edge.Plain( edgeType, from1, to1 ) );
             final GraphvizDocument result = generator.apply( elements );
             assertThat( result.getNodeStatements() ).isEmpty();
             assertThat( result.getEdgeStatements() ).anyMatch( contains( needle ) );

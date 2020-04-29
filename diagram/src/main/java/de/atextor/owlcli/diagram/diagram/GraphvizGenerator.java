@@ -1,13 +1,11 @@
 package de.atextor.owlcli.diagram.diagram;
 
 import com.google.common.collect.Ordering;
-import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.PlainEdge;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +22,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz =
             new GraphvizNodeVisitor( configuration.format, configuration.resourceDirectoryName );
 
-        final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
+        final Function<Edge.Decorated, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
@@ -32,7 +30,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     edgeStyle ) ) );
         };
 
-        final Function<PlainEdge, GraphvizDocument> plainEdgeToGraphviz = edge -> {
+        final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [%s]", edge.getFrom().getId(), edge.getTo().getId(), edgeStyle ) ) );

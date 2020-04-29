@@ -1,6 +1,5 @@
 package de.atextor.owlcli.diagram;
 
-import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
@@ -34,12 +33,12 @@ public class MapperTestBase {
     protected final Predicate<Edge> hasHollowArrow = edge -> edge.getType().equals( Edge.Type.HOLLOW_ARROW );
     protected final Predicate<Edge> hasDashedArrow = edge -> edge.getType().equals( Edge.Type.DASHED_ARROW );
     protected final Predicate<Edge> hasNoArrow = edge -> edge.getType().equals( Edge.Type.NO_ARROW );
-    final Predicate<Edge> hasDomainDecoration = edge -> edge.view( DecoratedEdge.class )
-        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.DOMAIN ) )
+    final Predicate<Edge> hasDomainDecoration = edge -> edge.view( Edge.Decorated.class )
+        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( Edge.Decorated.DOMAIN ) )
         .findFirst()
         .orElse( false );
-    final Predicate<Edge> hasRangeDecoration = edge -> edge.view( DecoratedEdge.class )
-        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( DecoratedEdge.RANGE ) )
+    final Predicate<Edge> hasRangeDecoration = edge -> edge.view( Edge.Decorated.class )
+        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( Edge.Decorated.RANGE ) )
         .findFirst()
         .orElse( false );
     final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
@@ -141,7 +140,7 @@ public class MapperTestBase {
                                                                 final Decoration decoration ) {
         return edge -> edge.getFrom().getId().equals( fromId )
             && edge.getTo().getId().equals( toId )
-            && ( (DecoratedEdge) edge ).getDecoration().equals( decoration );
+            && ( (Edge.Decorated) edge ).getDecoration().equals( decoration );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {
