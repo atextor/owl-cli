@@ -1,0 +1,6 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:bar a owl:DatatypeProperty .
+:Baz a owl:NamedIndividual ;
+    :bar "Hello" .
