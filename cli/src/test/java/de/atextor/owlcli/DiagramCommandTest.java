@@ -3,6 +3,8 @@ package de.atextor.owlcli;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.util.Files;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +55,9 @@ public class DiagramCommandTest {
         assertThat( result.getStdErr() ).contains( "Error: " );
     }
 
-    protected void testDiagramGeneration( final String testFileName ) throws IOException {
+    @ParameterizedTest
+    @ArgumentsSource( ResourceArgumentsProvider.class )
+    public void testDiagramGeneration( final String testFileName ) throws IOException {
         final File tempDir = Files.newTemporaryFolder();
         assertThat( tempDir ).isEmptyDirectory();
 
@@ -87,10 +91,5 @@ public class DiagramCommandTest {
         } finally {
             FileUtils.deleteDirectory( tempDir );
         }
-    }
-
-    @Test
-    public void testClassAssertion() throws IOException {
-        testDiagramGeneration( "test-class-assertion" );
     }
 }
