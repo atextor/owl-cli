@@ -41,6 +41,7 @@ import org.semanticweb.owlapi.model.OWLSubAnnotationPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubClassOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubDataPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
+import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
 
@@ -827,6 +828,32 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLSubPropertyChainOfAxiom() {
+        final String ontology = """
+            :bar a owl:ObjectProperty .
+            :baz a owl:ObjectProperty .
+            :foo a owl:ObjectProperty ;
+               owl:propertyChainAxiom ( :bar :baz ) .
+            """;
+        final OWLSubPropertyChainOfAxiom axiom = getAxiom( ontology, AxiomType.SUB_PROPERTY_CHAIN_OF );
+
+        final String chainId = "chainId";
+        testIdentifierMapper.pushAnonId( new Node.Id( chainId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "baz" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( NodeType.PropertyChain.class )
+            && node.getId().getId().equals( chainId ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "foo", chainId ).and( hasHollowArrow ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( chainId, "bar" ).and( hasDefaultArrow ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( chainId, "baz" ).and( hasDefaultArrow ) );
     }
 
     @Test

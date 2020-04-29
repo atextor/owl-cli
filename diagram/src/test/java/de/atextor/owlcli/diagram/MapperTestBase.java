@@ -32,6 +32,7 @@ public class MapperTestBase {
     protected TestNameMapper testNameMapper = new TestNameMapper();
 
     protected final Predicate<Edge> hasDefaultArrow = edge -> edge.getType().equals( Edge.Type.DEFAULT_ARROW );
+    protected final Predicate<Edge> hasHollowArrow = edge -> edge.getType().equals( Edge.Type.HOLLOW_ARROW );
     protected final Predicate<Edge> hasDashedArrow = edge -> edge.getType().equals( Edge.Type.DASHED_ARROW );
     protected final Predicate<Edge> hasNoArrow = edge -> edge.getType().equals( Edge.Type.NO_ARROW );
     final Predicate<Edge> hasDomainDecoration = edge -> edge.view( DecoratedEdge.class )
