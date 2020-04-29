@@ -196,6 +196,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
+        public GraphvizDocument visit( final NodeType.PropertyChain propertyChain ) {
+            return generateLiteralNode( propertyChain.getId(), propertyChain.getValue() );
+        }
+
+        @Override
         public GraphvizDocument visit( final NodeType.Datatype datatype ) {
             return generateNamedNode( datatype, Resource.OWL_DATATYPE );
         }

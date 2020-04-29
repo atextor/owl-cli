@@ -120,6 +120,11 @@ public class GraphvizGeneratorTest {
     }
 
     @Test
+    void testNodeTypePropertyChain() {
+        testValueNode( new NodeType.PropertyChain( from1, value1 ) );
+    }
+
+    @Test
     void testNodeTypeDatatype() {
         testNamedNode( new NodeType.Datatype( from1, name1 ) );
     }
