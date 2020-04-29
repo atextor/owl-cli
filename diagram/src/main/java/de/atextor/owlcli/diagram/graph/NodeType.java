@@ -392,6 +392,8 @@ public abstract class NodeType implements Node {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static class PropertyChain extends NodeType {
+        public static final String OPERATOR_SYMBOL = "o";
+
         Id id;
         String value;
 

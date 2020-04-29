@@ -378,7 +378,28 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLSubPropertyChainOfAxiom axiom ) {
-        return TODO();
+        final OWLPropertyExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlPropertyExpressionMapper();
+
+        final Set<Node> chainLinks = axiom.getPropertyChain().stream()
+            .map( expression -> expression.accept( mapper ).getNode() )
+            .collect( Collectors.toSet() );
+        final String value = chainLinks.stream()
+            .flatMap( node -> node.getId().getIri().stream() )
+            .map( iri -> mappingConfig.getNameMapper().getName( iri ) )
+            .collect( Collectors.joining( NodeType.PropertyChain.OPERATOR_SYMBOL ) );
+        final Node propertyChain = new NodeType.PropertyChain( mappingConfig.getIdentifierMapper()
+            .getSyntheticId(), value );
+
+        final Graph chainGraph = chainLinks.stream().map( chainLink -> {
+            final Edge fromPropertyChainToChainLink = new PlainEdge( Edge.Type.DEFAULT_ARROW, propertyChain.getId(),
+                chainLink.getId() );
+            return Graph.of( chainLink ).and( fromPropertyChainToChainLink );
+        } ).reduce( Graph.of( propertyChain ), Graph::and );
+
+        final Node property = axiom.getSuperProperty().accept( mapper ).getNode();
+        final Edge propertyToPropertyChain = new PlainEdge( Edge.Type.HOLLOW_ARROW, property.getId(), propertyChain
+            .getId() );
+        return Graph.of( property ).and( propertyToPropertyChain ).and( chainGraph );
     }
 
     @Override
