@@ -7,7 +7,6 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 
 import java.util.List;
@@ -22,8 +21,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     GraphvizGenerator( final Configuration configuration ) {
         decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format,
             configuration.resourceDirectoryName );
-        final NodeType.Visitor<GraphvizDocument> nodeTypeToGraphviz =
-            new GraphvizNodeTypeVisitor( configuration.format, configuration.resourceDirectoryName );
+        final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz =
+            new GraphvizNodeVisitor( configuration.format, configuration.resourceDirectoryName );
 
         final Function<DecoratedEdge, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
@@ -128,7 +127,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
     }
 
-    static class GraphvizNodeTypeVisitor implements NodeType.Visitor<GraphvizDocument> {
+    static class GraphvizNodeVisitor implements Node.Visitor<GraphvizDocument> {
         final Template namedNodeTemplate = new Template( """
             ${nodeId} [label=<
               <table border="0">
@@ -160,181 +159,181 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         Configuration.Format format;
         String resourceDirectoryname;
 
-        GraphvizNodeTypeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
+        GraphvizNodeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
             this.format = format;
             this.resourceDirectoryname = resourceDirectoryname;
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Class class_ ) {
+        public GraphvizDocument visit( final Node.Class class_ ) {
             return generateNamedNode( class_, Resource.OWL_CLASS );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.DataProperty dataProperty ) {
+        public GraphvizDocument visit( final Node.DataProperty dataProperty ) {
             return generateNamedNode( dataProperty, Resource.OWL_DATA_PROPERTY );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectProperty objectProperty ) {
+        public GraphvizDocument visit( final Node.ObjectProperty objectProperty ) {
             return generateNamedNode( objectProperty, Resource.OWL_OBJECT_PROPERTY );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.AnnotationProperty annotationProperty ) {
+        public GraphvizDocument visit( final Node.AnnotationProperty annotationProperty ) {
             return generateNamedNode( annotationProperty, Resource.OWL_ANNOTATION_PROPERTY );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Individual individual ) {
+        public GraphvizDocument visit( final Node.Individual individual ) {
             return generateNamedNode( individual, Resource.OWL_INDIVIDUAL );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Literal literal ) {
+        public GraphvizDocument visit( final Node.Literal literal ) {
             return generateLiteralNode( literal.getId(), literal.getValue() );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.PropertyChain propertyChain ) {
+        public GraphvizDocument visit( final Node.PropertyChain propertyChain ) {
             return generateLiteralNode( propertyChain.getId(), propertyChain.getValue() );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Datatype datatype ) {
+        public GraphvizDocument visit( final Node.Datatype datatype ) {
             return generateNamedNode( datatype, Resource.OWL_DATATYPE );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ExistentialRestriction existentialRestriction ) {
+        public GraphvizDocument visit( final Node.ExistentialRestriction existentialRestriction ) {
             return generateAnonymousNode( existentialRestriction.getId(), Resource.OWL_SOMEVALUES );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ValueRestriction valueRestriction ) {
+        public GraphvizDocument visit( final Node.ValueRestriction valueRestriction ) {
             return generateAnonymousNode( valueRestriction.getId(), Resource.OWL_HASVALUE );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.UniversalRestriction universalRestriction ) {
+        public GraphvizDocument visit( final Node.UniversalRestriction universalRestriction ) {
             return generateAnonymousNode( universalRestriction.getId(), Resource.OWL_ALLVALUES );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Intersection intersection ) {
+        public GraphvizDocument visit( final Node.Intersection intersection ) {
             return generateAnonymousNode( intersection.getId(), Resource.OWL_INTERSECTION );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Union union ) {
+        public GraphvizDocument visit( final Node.Union union ) {
             return generateAnonymousNode( union.getId(), Resource.OWL_UNION );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Disjointness disjointness ) {
+        public GraphvizDocument visit( final Node.Disjointness disjointness ) {
             return generateAnonymousNode( disjointness.getId(), Resource.OWL_DISJOINTNESS );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.DisjointUnion disjointUnion ) {
+        public GraphvizDocument visit( final Node.DisjointUnion disjointUnion ) {
             return generateAnonymousNode( disjointUnion.getId(), Resource.OWL_DISJOINT_UNION );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Equality equality ) {
+        public GraphvizDocument visit( final Node.Equality equality ) {
             return generateAnonymousNode( equality.getId(), Resource.EQ );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Inverse inverse ) {
+        public GraphvizDocument visit( final Node.Inverse inverse ) {
             return generateAnonymousNode( inverse.getId(), Resource.OWL_INVERSE );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Inequality inequality ) {
+        public GraphvizDocument visit( final Node.Inequality inequality ) {
             return generateAnonymousNode( inequality.getId(), Resource.NEQ );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ClosedClass closedClass ) {
+        public GraphvizDocument visit( final Node.ClosedClass closedClass ) {
             return generateAnonymousNode( closedClass.getId(), Resource.OWL_CLOSEDCLASS );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Complement complement ) {
+        public GraphvizDocument visit( final Node.Complement complement ) {
             return generateAnonymousNode( complement.getId(), Resource.OWL_COMPLEMENT );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Self self ) {
+        public GraphvizDocument visit( final Node.Self self ) {
             return generateAnonymousNode( self.getId(), Resource.OWL_SELF );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectMinimalCardinality objectMinimalCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectMinimalCardinality objectMinimalCardinality ) {
             return generateCardinalityNode( objectMinimalCardinality, Resource.GET, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
             return generateCardinalityNode( objectQualifiedMinimalCardinality, Resource.GET, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectMaximalCardinality objectMaximalCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectMaximalCardinality objectMaximalCardinality ) {
             return generateCardinalityNode( objectMaximalCardinality, Resource.LET, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
             return generateCardinalityNode( objectQualifiedMaximalCardinality, Resource.LET, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectExactCardinality objectExactCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectExactCardinality objectExactCardinality ) {
             return generateCardinalityNode( objectExactCardinality, Resource.EQ, Resource.R );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
+        public GraphvizDocument visit( final Node.ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
             return generateCardinalityNode( objectQualifiedExactCardinality, Resource.EQ, Resource.R_C );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.DataMinimalCardinality dataMinimalCardinality ) {
+        public GraphvizDocument visit( final Node.DataMinimalCardinality dataMinimalCardinality ) {
             return generateCardinalityNode( dataMinimalCardinality, Resource.GET, Resource.U );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.DataMaximalCardinality dataMaximalCardinality ) {
+        public GraphvizDocument visit( final Node.DataMaximalCardinality dataMaximalCardinality ) {
             return generateCardinalityNode( dataMaximalCardinality, Resource.LET, Resource.U );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.DataExactCardinality dataExactCardinality ) {
+        public GraphvizDocument visit( final Node.DataExactCardinality dataExactCardinality ) {
             return generateCardinalityNode( dataExactCardinality, Resource.EQ, Resource.U );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.Invisible invisible ) {
+        public GraphvizDocument visit( final Node.Invisible invisible ) {
             return generateInvisibleNode( invisible.getId() );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.IRIReference iriReference ) {
+        public GraphvizDocument visit( final Node.IRIReference iriReference ) {
             return generateLiteralNode( iriReference.getId(), iriReference.getIri().toString() );
         }
 
         @Override
-        public GraphvizDocument visit( final NodeType.PropertyMarker propertyMarker ) {
-            final Ordering<NodeType.PropertyMarker.Kind> markerOrder = Ordering.explicit( List.of(
-                NodeType.PropertyMarker.Kind.FUNCTIONAL,
-                NodeType.PropertyMarker.Kind.INVERSE_FUNCTIONAL,
-                NodeType.PropertyMarker.Kind.TRANSITIVE,
-                NodeType.PropertyMarker.Kind.SYMMETRIC,
-                NodeType.PropertyMarker.Kind.ASYMMETRIC,
-                NodeType.PropertyMarker.Kind.REFLEXIVE,
-                NodeType.PropertyMarker.Kind.IRREFLEXIVE ) );
+        public GraphvizDocument visit( final Node.PropertyMarker propertyMarker ) {
+            final Ordering<Node.PropertyMarker.Kind> markerOrder = Ordering.explicit( List.of(
+                Node.PropertyMarker.Kind.FUNCTIONAL,
+                Node.PropertyMarker.Kind.INVERSE_FUNCTIONAL,
+                Node.PropertyMarker.Kind.TRANSITIVE,
+                Node.PropertyMarker.Kind.SYMMETRIC,
+                Node.PropertyMarker.Kind.ASYMMETRIC,
+                Node.PropertyMarker.Kind.REFLEXIVE,
+                Node.PropertyMarker.Kind.IRREFLEXIVE ) );
 
             final String value = propertyMarker.getKind().stream()
                 .sorted( markerOrder )
@@ -343,7 +342,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return generateLiteralNode( propertyMarker.getId(), value );
         }
 
-        private GraphvizDocument generateNamedNode( final NodeType.NamedNode node, final Resource symbol ) {
+        private GraphvizDocument generateNamedNode( final Node.NamedNode node, final Resource symbol ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( namedNodeTemplate.apply(
                 Map.of( "nodeId", node.getId().getId(),
                     "directory", resourceDirectoryname,
@@ -358,7 +357,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "resource", symbol.getResourceName( format ) ) ) ) );
         }
 
-        private GraphvizDocument generateCardinalityNode( final NodeType.CardinalityNode node,
+        private GraphvizDocument generateCardinalityNode( final Node.CardinalityNode node,
                                                           final Resource symbolPrefix,
                                                           final Resource symbolPostfix ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( cardinalityNodeTemplate.apply(

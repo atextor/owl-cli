@@ -1,7 +1,7 @@
 package de.atextor.owlcli.diagram;
 
 import de.atextor.owlcli.diagram.graph.Graph;
-import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.OWLPropertyExpressionMapper;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -30,9 +30,9 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = property.accept( mapper );
 
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.ObjectProperty.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.ObjectProperty.class );
 
-        assertThat( ( (NodeType.ObjectProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( ( (Node.ObjectProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 
@@ -46,9 +46,9 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = property.accept( mapper );
 
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.DataProperty.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.DataProperty.class );
 
-        assertThat( ( (NodeType.DataProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( ( (Node.DataProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 
@@ -62,9 +62,9 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = property.accept( mapper );
 
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.AnnotationProperty.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.AnnotationProperty.class );
 
-        assertThat( ( (NodeType.AnnotationProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
+        assertThat( ( (Node.AnnotationProperty) graph.getNode() ).getName() ).isEqualTo( "foo" );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

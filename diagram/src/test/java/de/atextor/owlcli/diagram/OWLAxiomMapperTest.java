@@ -4,7 +4,7 @@ import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
@@ -130,8 +130,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.ASYMMETRIC ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.ASYMMETRIC ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -153,8 +153,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.REFLEXIVE ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.REFLEXIVE ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -341,7 +341,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 3 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Inequality.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Inequality.class ) );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
@@ -474,8 +474,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.FUNCTIONAL ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.FUNCTIONAL ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -526,8 +526,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.SYMMETRIC ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.SYMMETRIC ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -573,8 +573,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.FUNCTIONAL ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.FUNCTIONAL ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -719,8 +719,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.TRANSITIVE ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.TRANSITIVE ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -742,8 +742,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.IRREFLEXIVE ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.IRREFLEXIVE ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -790,8 +790,8 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.INVERSE_FUNCTIONAL ) ).findFirst()
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.INVERSE_FUNCTIONAL ) ).findFirst()
             .orElse( false ) );
 
         final List<Edge> edges = edges( result );
@@ -818,7 +818,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 3 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Equality.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Equality.class ) );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
@@ -846,7 +846,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "baz" ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.PropertyChain.class )
+        assertThat( nodes ).anyMatch( node -> node.is( Node.PropertyChain.class )
             && node.getId().getId().equals( chainId ) );
 
         final List<Edge> edges = edges( result );
@@ -874,7 +874,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 3 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Inverse.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Inverse.class ) );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );

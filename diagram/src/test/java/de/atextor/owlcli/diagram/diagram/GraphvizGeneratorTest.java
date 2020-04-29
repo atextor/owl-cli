@@ -3,7 +3,7 @@ package de.atextor.owlcli.diagram.diagram;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
@@ -59,7 +59,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getNodeStatements() ).anyMatch( contains( from1.getId() ) );
     }
 
-    private void testNamedNode( final NodeType.NamedNode node ) {
+    private void testNamedNode( final Node.NamedNode node ) {
         final Stream<GraphElement> elements = Stream.of( node );
         final GraphvizDocument result = generator.apply( elements );
         assertThat( result.getEdgeStatements() ).isEmpty();
@@ -69,7 +69,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getNodeStatements() ).anyMatch( contains( name1 ) );
     }
 
-    private void testCardinalityNode( final NodeType.CardinalityNode node ) {
+    private void testCardinalityNode( final Node.CardinalityNode node ) {
         final Stream<GraphElement> elements = Stream.of( node );
         final GraphvizDocument result = generator.apply( elements );
         assertThat( result.getEdgeStatements() ).isEmpty();
@@ -91,147 +91,146 @@ public class GraphvizGeneratorTest {
 
     @Test
     void testNodeelementsTypeClass() {
-        testNamedNode( new NodeType.Class( from1, name1 ) );
+        testNamedNode( new Node.Class( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeDataProperty() {
-        testNamedNode( new NodeType.DataProperty( from1, name1 ) );
+    void testNodeDataProperty() {
+        testNamedNode( new Node.DataProperty( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeObjectProperty() {
-        testNamedNode( new NodeType.ObjectProperty( from1, name1 ) );
+    void testNodeObjectProperty() {
+        testNamedNode( new Node.ObjectProperty( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeAnnotationProperty() {
-        testNamedNode( new NodeType.AnnotationProperty( from1, name1 ) );
+    void testNodeAnnotationProperty() {
+        testNamedNode( new Node.AnnotationProperty( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeIndividual() {
-        testNamedNode( new NodeType.Individual( from1, name1 ) );
+    void testNodeIndividual() {
+        testNamedNode( new Node.Individual( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeLiteral() {
-        testValueNode( new NodeType.Literal( from1, value1 ) );
+    void testNodeLiteral() {
+        testValueNode( new Node.Literal( from1, value1 ) );
     }
 
     @Test
-    void testNodeTypePropertyChain() {
-        testValueNode( new NodeType.PropertyChain( from1, value1 ) );
+    void testNodePropertyChain() {
+        testValueNode( new Node.PropertyChain( from1, value1 ) );
     }
 
     @Test
-    void testNodeTypeDatatype() {
-        testNamedNode( new NodeType.Datatype( from1, name1 ) );
+    void testNodeDatatype() {
+        testNamedNode( new Node.Datatype( from1, name1 ) );
     }
 
     @Test
-    void testNodeTypeExistentialRestriction() {
-        testNodeWithId( new NodeType.ExistentialRestriction( from1 ) );
+    void testNodeExistentialRestriction() {
+        testNodeWithId( new Node.ExistentialRestriction( from1 ) );
     }
 
     @Test
-    void testNodeTypeValueRestriction() {
-        testNodeWithId( new NodeType.ValueRestriction( from1 ) );
+    void testNodeValueRestriction() {
+        testNodeWithId( new Node.ValueRestriction( from1 ) );
     }
 
     @Test
-    void testNodeTypeUniversalRestriction() {
-        testNodeWithId( new NodeType.UniversalRestriction( from1 ) );
+    void testNodeUniversalRestriction() {
+        testNodeWithId( new Node.UniversalRestriction( from1 ) );
     }
 
     @Test
-    void testNodeTypeIntersection() {
-        testNodeWithId( new NodeType.Intersection( from1 ) );
+    void testNodeIntersection() {
+        testNodeWithId( new Node.Intersection( from1 ) );
     }
 
     @Test
-    void testNodeTypeUnion() {
-        testNodeWithId( new NodeType.Union( from1 ) );
+    void testNodeUnion() {
+        testNodeWithId( new Node.Union( from1 ) );
     }
 
     @Test
-    void testNodeTypeDisjointness() {
-        testNodeWithId( new NodeType.Disjointness( from1 ) );
+    void testNodeDisjointness() {
+        testNodeWithId( new Node.Disjointness( from1 ) );
     }
 
     @Test
-    void testNodeTypeDisjointUnion() {
-        testNodeWithId( new NodeType.DisjointUnion( from1 ) );
+    void testNodeDisjointUnion() {
+        testNodeWithId( new Node.DisjointUnion( from1 ) );
     }
 
     @Test
-    void testNodeTypeClosedClass() {
-        testNodeWithId( new NodeType.ClosedClass( from1 ) );
+    void testNodeClosedClass() {
+        testNodeWithId( new Node.ClosedClass( from1 ) );
     }
 
     @Test
-    void testNodeTypeComplement() {
-        testNodeWithId( new NodeType.Complement( from1 ) );
+    void testNodeComplement() {
+        testNodeWithId( new Node.Complement( from1 ) );
     }
 
     @Test
-    void testNodeTypeSelf() {
-        testNodeWithId( new NodeType.Self( from1 ) );
+    void testNodeSelf() {
+        testNodeWithId( new Node.Self( from1 ) );
     }
 
     @Test
-    void testNodeTypeObjectMinimalCardinality() {
-        testCardinalityNode( new NodeType.ObjectMinimalCardinality( from1, cardinality1 ) );
+    void testNodeObjectMinimalCardinality() {
+        testCardinalityNode( new Node.ObjectMinimalCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeObjectQualifiedMinimalCardinality() {
-        testCardinalityNode( new NodeType.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
+    void testNodeObjectQualifiedMinimalCardinality() {
+        testCardinalityNode( new Node.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeObjectMaximalCardinality() {
-        testCardinalityNode( new NodeType.ObjectMaximalCardinality( from1, cardinality1 ) );
+    void testNodeObjectMaximalCardinality() {
+        testCardinalityNode( new Node.ObjectMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeObjectQualifiedMaximalCardinality() {
-        testCardinalityNode( new NodeType.ObjectQualifiedMaximalCardinality( from1, cardinality1 ) );
+    void testNodeObjectQualifiedMaximalCardinality() {
+        testCardinalityNode( new Node.ObjectQualifiedMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeObjectExactCardinality() {
-        testCardinalityNode( new NodeType.ObjectExactCardinality( from1, cardinality1 ) );
+    void testNodeObjectExactCardinality() {
+        testCardinalityNode( new Node.ObjectExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeObjectQualifiedExactCardinality() {
-        testCardinalityNode( new NodeType.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
+    void testNodeObjectQualifiedExactCardinality() {
+        testCardinalityNode( new Node.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeDataMinimalCardinality() {
-        testCardinalityNode( new NodeType.DataMinimalCardinality( from1, cardinality1 ) );
+    void testNodeDataMinimalCardinality() {
+        testCardinalityNode( new Node.DataMinimalCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeDataMaximalCardinality() {
-        testCardinalityNode( new NodeType.DataMaximalCardinality( from1, cardinality1 ) );
+    void testNodeDataMaximalCardinality() {
+        testCardinalityNode( new Node.DataMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeDataExactCardinality() {
-        testCardinalityNode( new NodeType.DataExactCardinality( from1, cardinality1 ) );
+    void testNodeDataExactCardinality() {
+        testCardinalityNode( new Node.DataExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
-    void testNodeTypeInvisible() {
-        testNodeWithId( new NodeType.Invisible( from1 ) );
+    void testNodeInvisible() {
+        testNodeWithId( new Node.Invisible( from1 ) );
     }
 
     @Test
-    void testNodeTypeIRIReference() {
-        testValueNode( new NodeType.IRIReference( from1, IRI.create( "http://test.de#" + value1 ) ) );
+    void testNodeIRIReference() {
+        testValueNode( new Node.IRIReference( from1, IRI.create( "http://test.de#" + value1 ) ) );
     }
 }
-

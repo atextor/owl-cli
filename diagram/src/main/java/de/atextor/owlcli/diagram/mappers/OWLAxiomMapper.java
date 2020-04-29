@@ -6,7 +6,6 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.HasOperands;
 import org.semanticweb.owlapi.model.OWLAnnotationAssertionAxiom;
@@ -123,24 +122,24 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom ) {
-        final Node complement = new NodeType.Complement( mappingConfig.getIdentifierMapper()
+        final Node complement = new Node.Complement( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return Graph.of( complement ).and( propertyStructure( axiom, complement ) );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLAsymmetricObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.ASYMMETRIC );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.ASYMMETRIC );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLReflexiveObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.REFLEXIVE );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.REFLEXIVE );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointClassesAxiom axiom ) {
-        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node disjointness = new Node.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, disjointness );
     }
 
@@ -177,25 +176,25 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
-        final Node complement = new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node complement = new Node.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return Graph.of( complement ).and( propertyStructure( axiom, complement ) );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDifferentIndividualsAxiom axiom ) {
-        final Node inequality = new NodeType.Inequality( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node inequality = new Node.Inequality( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, inequality );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointDataPropertiesAxiom axiom ) {
-        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node disjointness = new Node.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, disjointness );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointObjectPropertiesAxiom axiom ) {
-        final Node disjointness = new NodeType.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node disjointness = new Node.Disjointness( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, disjointness );
     }
 
@@ -206,13 +205,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLObjectPropertyAssertionAxiom axiom ) {
-        final Node invisible = new NodeType.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return Graph.of( invisible ).and( propertyStructure( axiom, invisible ) );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLFunctionalObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.FUNCTIONAL );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.FUNCTIONAL );
     }
 
     @Override
@@ -236,13 +235,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDisjointUnionAxiom axiom ) {
-        return linkNodeToMultipleOthers( axiom, new NodeType.DisjointUnion( mappingConfig.getIdentifierMapper()
+        return linkNodeToMultipleOthers( axiom, new Node.DisjointUnion( mappingConfig.getIdentifierMapper()
             .getSyntheticId() ) );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLSymmetricObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.SYMMETRIC );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.SYMMETRIC );
     }
 
     @Override
@@ -251,8 +250,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private Graph propertyMarker( final OWLPropertyExpression propertyExpression,
-                                  final NodeType.PropertyMarker.Kind markerKind ) {
-        final Node marker = new NodeType.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
+                                  final Node.PropertyMarker.Kind markerKind ) {
+        final Node marker = new Node.PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
             Set.of( markerKind ) );
         final Node propertyNode = propertyExpression.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
         final Edge edge = new PlainEdge( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
@@ -261,7 +260,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLFunctionalDataPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.FUNCTIONAL );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.FUNCTIONAL );
     }
 
     /**
@@ -336,18 +335,18 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
-        final Node invisible = new NodeType.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return Graph.of( invisible ).and( propertyStructure( axiom, invisible ) );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLTransitiveObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.TRANSITIVE );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.TRANSITIVE );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLIrreflexiveObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.IRREFLEXIVE );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.IRREFLEXIVE );
     }
 
     private Graph subProperties( final Graph superPropertyGraph, final Graph subPropertyGraph ) {
@@ -367,12 +366,12 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLInverseFunctionalObjectPropertyAxiom axiom ) {
-        return propertyMarker( axiom.getProperty(), NodeType.PropertyMarker.Kind.INVERSE_FUNCTIONAL );
+        return propertyMarker( axiom.getProperty(), Node.PropertyMarker.Kind.INVERSE_FUNCTIONAL );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLSameIndividualAxiom axiom ) {
-        final Node equality = new NodeType.Equality( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node equality = new Node.Equality( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, equality );
     }
 
@@ -386,8 +385,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final String value = chainLinks.stream()
             .flatMap( node -> node.getId().getIri().stream() )
             .map( iri -> mappingConfig.getNameMapper().getName( iri ) )
-            .collect( Collectors.joining( NodeType.PropertyChain.OPERATOR_SYMBOL ) );
-        final Node propertyChain = new NodeType.PropertyChain( mappingConfig.getIdentifierMapper()
+            .collect( Collectors.joining( Node.PropertyChain.OPERATOR_SYMBOL ) );
+        final Node propertyChain = new Node.PropertyChain( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), value );
 
         final Graph chainGraph = chainLinks.stream().map( chainLink -> {
@@ -404,7 +403,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLInverseObjectPropertiesAxiom axiom ) {
-        final Node equality = new NodeType.Inverse( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node equality = new Node.Inverse( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return linkNodeToMultipleOthers( axiom, equality );
     }
 
@@ -429,7 +428,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph objectGraph = axiom.getValue().accept( mappingConfig.getOwlAnnotationObjectMapper() );
 
-        final Node invisible = new NodeType.Invisible( mappingConfig.getIdentifierMapper()
+        final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
 
         final Edge subjectToInvisible = new PlainEdge( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
@@ -458,7 +457,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAnnotationPropertyDomainAxiom axiom ) {
-        final NodeType.IRIReference iriReference = new NodeType.IRIReference(
+        final Node.IRIReference iriReference = new Node.IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
@@ -468,7 +467,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAnnotationPropertyRangeAxiom axiom ) {
-        final NodeType.IRIReference iriReference = new NodeType.IRIReference(
+        final Node.IRIReference iriReference = new Node.IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getRange() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new DecoratedEdge( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),

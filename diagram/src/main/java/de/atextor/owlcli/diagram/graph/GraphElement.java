@@ -8,7 +8,7 @@ public interface GraphElement {
 
         T visit( DecoratedEdge decoratedEdge );
 
-        T visit( NodeType nodeType );
+        T visit( Node nodeType );
     }
 
     class VisitorAdapter<T> implements Visitor<T> {
@@ -29,7 +29,7 @@ public interface GraphElement {
         }
 
         @Override
-        public T visit( final NodeType nodeType ) {
+        public T visit( final Node nodeType ) {
             return defaultValue;
         }
     }

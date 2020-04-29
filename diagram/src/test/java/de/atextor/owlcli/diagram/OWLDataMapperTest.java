@@ -4,7 +4,7 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
+import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.OWLDataMapper;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -50,7 +50,7 @@ public class OWLDataMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
 
         final Graph graph = mapper.visit( owlDataOneOf );
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Complement.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Complement.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -90,7 +90,7 @@ public class OWLDataMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( owlDataOneOf );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( NodeType.ClosedClass.class );
+        assertThat( restrictionNode ).isInstanceOf( Node.ClosedClass.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -128,7 +128,7 @@ public class OWLDataMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
         final Graph graph = mapper.visit( intersection );
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Intersection.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Intersection.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -167,7 +167,7 @@ public class OWLDataMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
         final Graph graph = mapper.visit( intersection );
-        assertThat( graph.getNode().getClass() ).isEqualTo( NodeType.Union.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Union.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 

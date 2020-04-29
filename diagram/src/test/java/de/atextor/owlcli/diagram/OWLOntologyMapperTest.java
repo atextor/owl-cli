@@ -4,7 +4,6 @@ import de.atextor.owlcli.diagram.graph.DecoratedEdge;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
@@ -31,7 +30,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Class.class ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
@@ -42,7 +41,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         assertThat( propertyToDomain.getClass() ).isEqualTo( DecoratedEdge.class );
         assertThat( ( (DecoratedEdge) propertyToDomain ).getDecoration() ).isEqualTo( DecoratedEdge.DOMAIN );
         assertThat( propertyToDomain.getTo().getId() ).isEqualTo( nodes.stream()
-            .filter( node -> node.is( NodeType.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
+            .filter( node -> node.is( Node.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
     }
 
     @Test
@@ -58,8 +57,8 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Individual.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Individual.class ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
@@ -67,11 +66,11 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
-                node.is( NodeType.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
+                node.is( Node.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
 
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
-                node.is( NodeType.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
+                node.is( Node.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }
 
     @Test
@@ -86,7 +85,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Class.class ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
@@ -97,7 +96,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         assertThat( propertyToRange.getClass() ).isEqualTo( DecoratedEdge.class );
         assertThat( ( (DecoratedEdge) propertyToRange ).getDecoration() ).isEqualTo( DecoratedEdge.RANGE );
         assertThat( propertyToRange.getTo().getId() ).isEqualTo( nodes.stream()
-            .filter( node -> node.is( NodeType.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
+            .filter( node -> node.is( Node.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
     }
 
     @Test
@@ -113,8 +112,8 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 3 );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Individual.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Individual.class ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
 
         final List<Edge> edges = edges( result );
@@ -122,11 +121,11 @@ public class OWLOntologyMapperTest extends MapperTestBase {
 
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
-                node.is( NodeType.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
+                node.is( Node.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
 
         assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeDecoration ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
-                node.is( NodeType.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
+                node.is( Node.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }
 
     @Test
@@ -144,8 +143,8 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 4 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Class.class ) );
-        assertThat( nodes ).anyMatch( node -> node.is( NodeType.Individual.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Class.class ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Node.Individual.class ) );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 3 );
@@ -169,10 +168,10 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final List<Node> nodes = nodes( result );
         assertThat( nodes ).hasSize( 2 );
         assertThat( nodes ).anyMatch( isNodeWithId( "foo" ) );
-        assertThat( nodes ).anyMatch( node -> node.view( NodeType.PropertyMarker.class ).map( propertyMarker ->
-            propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.FUNCTIONAL ) &&
-                propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.TRANSITIVE ) &&
-                propertyMarker.getKind().contains( NodeType.PropertyMarker.Kind.IRREFLEXIVE )
+        assertThat( nodes ).anyMatch( node -> node.view( Node.PropertyMarker.class ).map( propertyMarker ->
+            propertyMarker.getKind().contains( Node.PropertyMarker.Kind.FUNCTIONAL ) &&
+                propertyMarker.getKind().contains( Node.PropertyMarker.Kind.TRANSITIVE ) &&
+                propertyMarker.getKind().contains( Node.PropertyMarker.Kind.IRREFLEXIVE )
         ).findFirst().orElse( false ) );
 
         final List<Edge> edges = edges( result );

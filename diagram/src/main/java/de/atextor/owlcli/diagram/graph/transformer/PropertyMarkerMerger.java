@@ -3,7 +3,6 @@ package de.atextor.owlcli.diagram.graph.transformer;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import io.vavr.Tuple2;
 
@@ -27,17 +26,17 @@ public class PropertyMarkerMerger extends GraphTransformer {
             .findFirst();
     }
 
-    private Optional<NodeType.PropertyMarker> markerByEdge( final Set<GraphElement> graph, final Edge edge ) {
+    private Optional<Node.PropertyMarker> markerByEdge( final Set<GraphElement> graph, final Edge edge ) {
         return getNode( graph, edge.getTo() ).stream()
-            .flatMap( node -> node.view( NodeType.PropertyMarker.class ) )
+            .flatMap( node -> node.view( Node.PropertyMarker.class ) )
             .findFirst();
     }
 
-    private ChangeSet mergePropertyMarkers( final Set<Tuple2<Edge, NodeType.PropertyMarker>> propertyMarkers ) {
-        final Set<NodeType.PropertyMarker.Kind> mergedKindSet =
+    private ChangeSet mergePropertyMarkers( final Set<Tuple2<Edge, Node.PropertyMarker>> propertyMarkers ) {
+        final Set<Node.PropertyMarker.Kind> mergedKindSet =
             propertyMarkers.stream().flatMap( marker -> marker._2().getKind().stream() ).collect( Collectors.toSet() );
-        final NodeType.PropertyMarker newMarker =
-            new NodeType.PropertyMarker( mappingConfiguration.getIdentifierMapper().getSyntheticId(), mergedKindSet );
+        final Node.PropertyMarker newMarker =
+            new Node.PropertyMarker( mappingConfiguration.getIdentifierMapper().getSyntheticId(), mergedKindSet );
 
         final Edge newEdge = propertyMarkers.iterator().next()._1().setTo( newMarker.getId() );
 
@@ -56,7 +55,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
             .map( GraphElement::asEdge )
             .collect( Collectors.groupingBy( Edge::getFrom ) )
             .values().stream().map( edges -> {
-                final Set<Tuple2<Edge, NodeType.PropertyMarker>> propertyMarkers = edges.stream()
+                final Set<Tuple2<Edge, Node.PropertyMarker>> propertyMarkers = edges.stream()
                     .flatMap( edge -> markerByEdge( graph, edge )
                         .map( marker -> new Tuple2<>( edge, marker ) )
                         .stream() ).collect( Collectors.toSet() );

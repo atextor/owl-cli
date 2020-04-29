@@ -2,7 +2,6 @@ package de.atextor.owlcli.diagram.graph.transformer;
 
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 
 import java.util.Set;
@@ -18,8 +17,8 @@ public class IriReferenceResolver extends GraphTransformer {
 
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
-        final Set<NodeType.IRIReference> references = graph.stream()
-            .flatMap( element -> element.view( NodeType.IRIReference.class ) )
+        final Set<Node.IRIReference> references = graph.stream()
+            .flatMap( element -> element.view( Node.IRIReference.class ) )
             .collect( Collectors.toSet() );
 
         if ( references.isEmpty() ) {
@@ -30,7 +29,7 @@ public class IriReferenceResolver extends GraphTransformer {
         return changeSet.applyTo( graph );
     }
 
-    private ChangeSet resolveReferences( final Set<GraphElement> graph, final Set<NodeType.IRIReference> references ) {
+    private ChangeSet resolveReferences( final Set<GraphElement> graph, final Set<Node.IRIReference> references ) {
         return references.stream().flatMap( reference -> {
             final Set<Node> referencedNodes = findNodesWithIri( graph, reference.getIri() )
                 .collect( Collectors.toSet() );
@@ -50,8 +49,8 @@ public class IriReferenceResolver extends GraphTransformer {
         } ).reduce( ChangeSet.EMPTY, ChangeSet::merge );
     }
 
-    private NodeType.Literal turnReferenceIntoLiteral( final NodeType.IRIReference reference ) {
-        return new NodeType.Literal(
+    private Node.Literal turnReferenceIntoLiteral( final Node.IRIReference reference ) {
+        return new Node.Literal(
             mappingConfiguration.getIdentifierMapper().getSyntheticId(),
             mappingConfiguration.getNameMapper().getName( reference.getIri() ) );
     }

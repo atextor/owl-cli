@@ -6,7 +6,6 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.graph.PlainEdge;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
@@ -62,7 +61,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLObjectIntersectionOf classExpression ) {
-        final Node intersectionNode = new NodeType.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node intersectionNode = new Node.Intersection( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( intersectionNode, operand ) );
         return Graph.of( intersectionNode, remainingElements );
@@ -70,7 +69,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLObjectUnionOf classExpression ) {
-        final Node unionNode = new NodeType.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node unionNode = new Node.Union( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = classExpression.operands()
             .flatMap( operand -> createEdgeToClassExpression( unionNode, operand ) );
         return Graph.of( unionNode, remainingElements );
@@ -78,7 +77,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLObjectComplementOf classExpression ) {
-        final Node complementNode = new NodeType.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node complementNode = new Node.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Stream<GraphElement> remainingElements = createEdgeToClassExpression( complementNode, classExpression
             .getOperand() );
         return Graph.of( complementNode, remainingElements );
@@ -122,21 +121,21 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLObjectSomeValuesFrom classExpression ) {
-        final Node restrictionNode = new NodeType.ExistentialRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.ExistentialRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLObjectAllValuesFrom classExpression ) {
-        final Node restrictionNode = new NodeType.UniversalRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.UniversalRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLObjectHasValue classExpression ) {
-        final Node restrictionNode = new NodeType.ValueRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.ValueRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         final Graph rNodeGraph = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.OBJECT_PROPERTY );
         final OWLIndividual individual = classExpression.getFiller();
@@ -149,11 +148,11 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     @Override
     public Graph visit( final @Nonnull OWLObjectMinCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
-            final Node restrictionNode = new NodeType.ObjectQualifiedMinimalCardinality( mappingConfig
+            final Node restrictionNode = new Node.ObjectQualifiedMinimalCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() );
             return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
         } else {
-            final Node restrictionNode = new NodeType.ObjectMinimalCardinality( mappingConfig.getIdentifierMapper()
+            final Node restrictionNode = new Node.ObjectMinimalCardinality( mappingConfig.getIdentifierMapper()
                 .getSyntheticId(), classExpression.getCardinality() );
             return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.OBJECT_PROPERTY );
         }
@@ -162,10 +161,10 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     @Override
     public Graph visit( final @Nonnull OWLObjectExactCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
-            return createPropertyAndObjectRangeEdges( new NodeType.ObjectQualifiedExactCardinality( mappingConfig
+            return createPropertyAndObjectRangeEdges( new Node.ObjectQualifiedExactCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() ), classExpression );
         } else {
-            final Node restrictionNode = new NodeType.ObjectExactCardinality( mappingConfig.getIdentifierMapper()
+            final Node restrictionNode = new Node.ObjectExactCardinality( mappingConfig.getIdentifierMapper()
                 .getSyntheticId(), classExpression.getCardinality() );
             return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.OBJECT_PROPERTY );
         }
@@ -174,10 +173,10 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     @Override
     public Graph visit( final @Nonnull OWLObjectMaxCardinality classExpression ) {
         if ( classExpression.isQualified() ) {
-            return createPropertyAndObjectRangeEdges( new NodeType.ObjectQualifiedMaximalCardinality( mappingConfig
+            return createPropertyAndObjectRangeEdges( new Node.ObjectQualifiedMaximalCardinality( mappingConfig
                 .getIdentifierMapper().getSyntheticId(), classExpression.getCardinality() ), classExpression );
         } else {
-            final Node restrictionNode = new NodeType.ObjectMaximalCardinality( mappingConfig.getIdentifierMapper()
+            final Node restrictionNode = new Node.ObjectMaximalCardinality( mappingConfig.getIdentifierMapper()
                 .getSyntheticId(), classExpression.getCardinality() );
             return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.OBJECT_PROPERTY );
         }
@@ -185,13 +184,13 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLObjectHasSelf classExpression ) {
-        final Node restrictionNode = new NodeType.Self( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node restrictionNode = new Node.Self( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.OBJECT_PROPERTY );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLObjectOneOf classExpression ) {
-        final Node restrictionNode = new NodeType.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node restrictionNode = new Node.ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return classExpression.individuals().map( individual -> {
             final Graph individualGraph = individual.accept( mappingConfig.getOwlIndividualMapper() );
             final Edge iEdge = new PlainEdge( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(), individualGraph
@@ -202,21 +201,21 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLDataSomeValuesFrom classExpression ) {
-        final Node restrictionNode = new NodeType.ExistentialRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.ExistentialRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDataAllValuesFrom classExpression ) {
-        final Node restrictionNode = new NodeType.UniversalRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.UniversalRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         return createPropertyAndObjectRangeEdges( restrictionNode, classExpression );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDataHasValue classExpression ) {
-        final Node restrictionNode = new NodeType.ValueRestriction( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.ValueRestriction( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
         final Graph uNodeGraph = createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.DATA_PROPERTY );
         final OWLLiteral literal = classExpression.getFiller();
@@ -228,28 +227,28 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
 
     @Override
     public Graph visit( final @Nonnull OWLDataMinCardinality classExpression ) {
-        final Node restrictionNode = new NodeType.DataMinimalCardinality( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.DataMinimalCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.DATA_PROPERTY );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDataExactCardinality classExpression ) {
-        final Node restrictionNode = new NodeType.DataExactCardinality( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.DataExactCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.DATA_PROPERTY );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDataMaxCardinality classExpression ) {
-        final Node restrictionNode = new NodeType.DataMaximalCardinality( mappingConfig.getIdentifierMapper()
+        final Node restrictionNode = new Node.DataMaximalCardinality( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), classExpression.getCardinality() );
         return createPropertyEdge( restrictionNode, classExpression, DecoratedEdge.DATA_PROPERTY );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLClass classExpression ) {
-        final Node classNode = new NodeType.Class( mappingConfig.getIdentifierMapper()
+        final Node classNode = new Node.Class( mappingConfig.getIdentifierMapper()
             .getIdForIri( classExpression.getIRI() ), mappingConfig.getNameMapper().getName( classExpression ) );
         return Graph.of( classNode );
     }

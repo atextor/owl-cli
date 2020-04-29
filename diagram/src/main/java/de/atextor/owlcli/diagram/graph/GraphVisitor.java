@@ -9,7 +9,7 @@ import java.util.function.Function;
 @AllArgsConstructor
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
 public class GraphVisitor<T> implements GraphElement.Visitor<T> {
-    NodeType.Visitor<T> nodeTypeVisitor;
+    Node.Visitor<T> nodeTypeVisitor;
     Function<PlainEdge, T> plainEdgeHandler;
     Function<DecoratedEdge, T> decoratedEdgeHandler;
 
@@ -24,7 +24,7 @@ public class GraphVisitor<T> implements GraphElement.Visitor<T> {
     }
 
     @Override
-    public T visit( final NodeType nodeType ) {
+    public T visit( final Node nodeType ) {
         return nodeType.accept( nodeTypeVisitor );
     }
 }

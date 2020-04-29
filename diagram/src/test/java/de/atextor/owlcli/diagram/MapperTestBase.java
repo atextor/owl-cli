@@ -5,7 +5,6 @@ import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
-import de.atextor.owlcli.diagram.graph.NodeType;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -125,9 +124,9 @@ public class MapperTestBase {
         return node -> node.getId().getId().equals( targetId );
     }
 
-    protected final Predicate<Node> isInvisible = node -> node.is( NodeType.Invisible.class );
+    protected final Predicate<Node> isInvisible = node -> node.is( Node.Invisible.class );
 
-    protected final Predicate<Node> isComplement = node -> node.is( NodeType.Complement.class );
+    protected final Predicate<Node> isComplement = node -> node.is( Node.Complement.class );
 
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
         return isNodeWithId( targetId.getId() );
