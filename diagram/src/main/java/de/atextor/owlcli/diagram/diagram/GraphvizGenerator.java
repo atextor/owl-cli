@@ -172,12 +172,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final NodeType.DataProperty dataProperty ) {
-            return generateNamedNode( dataProperty, Resource.OWL_OBJECT_PROPERTY );
+            return generateNamedNode( dataProperty, Resource.OWL_DATA_PROPERTY );
         }
 
         @Override
         public GraphvizDocument visit( final NodeType.ObjectProperty objectProperty ) {
-            return generateNamedNode( objectProperty, Resource.OWL_DATA_PROPERTY );
+            return generateNamedNode( objectProperty, Resource.OWL_OBJECT_PROPERTY );
         }
 
         @Override
