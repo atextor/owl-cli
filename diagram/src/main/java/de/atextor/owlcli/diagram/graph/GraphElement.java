@@ -11,29 +11,6 @@ public interface GraphElement {
         T visit( Node nodeType );
     }
 
-    class VisitorAdapter<T> implements Visitor<T> {
-        private final T defaultValue;
-
-        public VisitorAdapter( final T defaultValue ) {
-            this.defaultValue = defaultValue;
-        }
-
-        @Override
-        public T visit( final Edge.Plain edge ) {
-            return defaultValue;
-        }
-
-        @Override
-        public T visit( final Edge.Decorated decoratedEdge ) {
-            return defaultValue;
-        }
-
-        @Override
-        public T visit( final Node nodeType ) {
-            return defaultValue;
-        }
-    }
-
     default boolean isEdge() {
         return false;
     }
