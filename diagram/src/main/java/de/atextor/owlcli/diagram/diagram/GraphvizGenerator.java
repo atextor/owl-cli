@@ -352,7 +352,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String value = propertyMarker.getKind().stream()
                 .sorted( markerOrder )
                 .map( kind -> kind.toString().toLowerCase().replace( "_", " " ) )
-                .reduce( "", ( s1, s2 ) -> String.format( "%s\\n%s", s1, s2 ) );
+                .collect( Collectors.joining( "\\n" ) );
             return generateLiteralNode( propertyMarker.getId(), value );
         }
 
