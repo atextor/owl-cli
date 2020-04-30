@@ -7,9 +7,11 @@ import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
 import de.atextor.owlcli.diagram.graph.Node;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
@@ -152,6 +154,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
               </table> >]""" );
         final Template literalNodeTemplate = new Template( """
             ${nodeId} [label="${value}"] """ );
+        final Template htmlLabelNodeTemplate = new Template( """
+            ${nodeId} [label=< ${value} >] """ );
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
         Configuration.Format format;
@@ -194,7 +198,13 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.PropertyChain propertyChain ) {
-            return generateLiteralNode( propertyChain.getId(), propertyChain.getValue() );
+            final String operator = String
+                .format( " <FONT COLOR=\"#0A5EA8\"><B>%s</B></FONT> ", Node.PropertyChain.OPERATOR_SYMBOL );
+            final String[] parts = propertyChain.getValue().split( " " + Node.PropertyChain.OPERATOR_SYMBOL + " " );
+            final String label = Arrays.stream( parts )
+                .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
+                .collect( Collectors.joining( operator ) );
+            return generatePropertyChainNode( propertyChain.getId(), label );
         }
 
         @Override
@@ -373,6 +383,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         private GraphvizDocument generateLiteralNode( final Node.Id nodeId, final String value ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( literalNodeTemplate.apply(
+                Map.of( "nodeId", nodeId.getId(),
+                    "value", value ) ) ) );
+        }
+
+        private GraphvizDocument generatePropertyChainNode( final Node.Id nodeId, final String value ) {
+            return GraphvizDocument.withNode( new GraphvizDocument.Statement( htmlLabelNodeTemplate.apply(
                 Map.of( "nodeId", nodeId.getId(),
                     "value", value ) ) ) );
         }

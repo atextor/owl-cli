@@ -389,7 +389,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final String value = chainLinks.stream()
             .flatMap( node -> node.getId().getIri().stream() )
             .map( iri -> mappingConfig.getNameMapper().getName( iri ) )
-            .collect( Collectors.joining( Node.PropertyChain.OPERATOR_SYMBOL ) );
+            .collect( Collectors.joining( " " + Node.PropertyChain.OPERATOR_SYMBOL + " " ) );
         final Node propertyChain = new Node.PropertyChain( mappingConfig.getIdentifierMapper()
             .getSyntheticId(), value );
 
