@@ -2,5 +2,5 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 :foo a owl:DatatypeProperty .
-:bar a owl:NamedIndividual .
-:bar :foo "hello" .
+:bar a owl:DatatypeProperty ;
+   owl:propertyDisjointWith :foo .

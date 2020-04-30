@@ -1,0 +1,9 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:foo a owl:DatatypeProperty ;
+   owl:equivalentProperty :bar .
+:bar a owl:DatatypeProperty ;
+   owl:equivalentProperty :baz .
+:baz a owl:DatatypeProperty ;
+   owl:equivalentProperty :foo .

@@ -1,6 +1,7 @@
 @prefix : <https://github.com/atextor/owl-cli#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-:foo a owl:DatatypeProperty .
+:foo a owl:NamedIndividual .
 :bar a owl:NamedIndividual .
-:bar :foo "hello" .
+:property a owl:ObjectProperty .
+:foo :property :bar .

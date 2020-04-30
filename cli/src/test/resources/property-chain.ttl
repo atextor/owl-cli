@@ -1,0 +1,7 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:bar a owl:ObjectProperty .
+:baz a owl:ObjectProperty .
+:foo a owl:ObjectProperty ;
+   owl:propertyChainAxiom ( :bar :baz ) .

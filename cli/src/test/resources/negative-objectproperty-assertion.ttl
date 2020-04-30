@@ -1,0 +1,12 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:foo a owl:NamedIndividual .
+:bar a owl:NamedIndividual .
+:property a owl:ObjectProperty .
+[
+   a owl:NegativeObjectPropertyAssertion ;
+   owl:sourceIndividual :foo ;
+   owl:assertionProperty :property ;
+   owl:targetIndividual :bar
+] .
