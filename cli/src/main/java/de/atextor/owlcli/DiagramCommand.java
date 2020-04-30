@@ -52,7 +52,7 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
         public String nodeShape = config.nodeShape;
 
         @Parameter( names = { "--nodemargin" }, description = "Node margin" )
-        public double nodeMargin = config.nodeMargin;
+        public String nodeMargin = config.nodeMargin;
 
         @Parameter( names = { "--nodestyle" }, description = "Node style" )
         public String nodeStyle = config.nodeStyle;

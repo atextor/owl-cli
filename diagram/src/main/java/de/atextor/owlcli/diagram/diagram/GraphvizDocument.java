@@ -30,7 +30,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
             fontname = "${nodeFontname}"
             fontsize = ${nodeFontsize}
             shape = "${nodeShape}"
-            margin = ${nodeMargin}
+            margin = "${nodeMargin}"
             style = "${nodeStyle}"
           ]
 
@@ -73,8 +73,10 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     GraphvizDocument merge( final GraphvizDocument other ) {
         return new GraphvizDocument(
-            Stream.concat( getNodeStatements().stream(), other.getNodeStatements().stream() ).collect( Collectors.toList() ),
-            Stream.concat( getEdgeStatements().stream(), other.getEdgeStatements().stream() ).collect( Collectors.toList() ) );
+            Stream.concat( getNodeStatements().stream(), other.getNodeStatements().stream() )
+                .collect( Collectors.toList() ),
+            Stream.concat( getEdgeStatements().stream(), other.getEdgeStatements().stream() )
+                .collect( Collectors.toList() ) );
     }
 
     @Override
