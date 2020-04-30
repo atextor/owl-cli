@@ -278,7 +278,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     public void testOWLNegativeDataPropertyAssertionAxiom() {
         final String ontology = """
             :foo a owl:NamedIndividual .
-            :property a owl:ObjectProperty .
+            :property a owl:DatatypeProperty .
             [
                a owl:NegativePropertyAssertion ;
                owl:sourceIndividual :foo ;
