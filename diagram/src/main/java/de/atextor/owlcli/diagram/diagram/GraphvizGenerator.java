@@ -10,6 +10,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,14 +27,19 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         final Function<Edge.Decorated, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
-            final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
+            final String edgeStyle =
+                edgeTypeToGraphviz( edge.getType() )
+                    .map( style -> style + ", fontsize=" + configuration.fontsize )
+                    .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [%s, %s]", edge.getFrom().getId(), edge.getTo().getId(), decoration,
                     edgeStyle ) ) );
         };
 
         final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
-            final String edgeStyle = edgeTypeToGraphviz( edge.getType() );
+            final String edgeStyle = edgeTypeToGraphviz( edge.getType() )
+                .map( style -> style + ", fontsize=" + configuration.fontsize )
+                .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [%s]", edge.getFrom().getId(), edge.getTo().getId(), edgeStyle ) ) );
         };
@@ -41,20 +47,20 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
     }
 
-    private String edgeTypeToGraphviz( final Edge.Type type ) {
+    private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {
         return switch ( type ) {
             case DEFAULT_ARROW:
-                yield "arrowhead = normal";
+                yield Optional.of( "arrowhead = normal" );
             case DASHED_ARROW:
-                yield "arrowhead = normal, style = dashed";
+                yield Optional.of( "arrowhead = normal, style = dashed" );
             case HOLLOW_ARROW:
-                yield "arrowhead = empty";
+                yield Optional.of( "arrowhead = empty" );
             case DOUBLE_ENDED_HOLLOW_ARROW:
-                yield "dir = both, arrowhead = empty, arrowtail = empty";
+                yield Optional.of( "dir = both, arrowhead = empty, arrowtail = empty" );
             case NO_ARROW:
-                yield "arrowhead = none";
+                yield Optional.of( "arrowhead = none" );
             default:
-                yield "";
+                yield Optional.empty();
         };
     }
 
