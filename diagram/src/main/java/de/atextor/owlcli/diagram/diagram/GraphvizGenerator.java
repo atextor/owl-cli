@@ -210,7 +210,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String label = Arrays.stream( parts )
                 .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
                 .collect( Collectors.joining( operator ) );
-            return generatePropertyChainNode( propertyChain.getId(), label );
+            return generateHtmlLabelNode( propertyChain.getId(), label );
         }
 
         @Override
@@ -275,7 +275,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Complement complement ) {
-            return generateAnonymousNode( complement.getId(), Resource.OWL_COMPLEMENT );
+            return generateHtmlLabelNode( complement.getId(), "<FONT COLOR=\"#00B2B2\"><B>not</B></FONT>" );
         }
 
         @Override
@@ -393,7 +393,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                     "value", value ) ) ) );
         }
 
-        private GraphvizDocument generatePropertyChainNode( final Node.Id nodeId, final String value ) {
+        private GraphvizDocument generateHtmlLabelNode( final Node.Id nodeId, final String value ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( htmlLabelNodeTemplate.apply(
                 Map.of( "nodeId", nodeId.getId(),
                     "value", value ) ) ) );
