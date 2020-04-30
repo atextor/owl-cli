@@ -13,9 +13,9 @@ import java.util.stream.Stream;
 public class ResourceArgumentsProvider implements ArgumentsProvider {
     @Override
     public Stream<? extends Arguments> provideArguments( final ExtensionContext context ) {
-        return Arrays.stream( Objects.requireNonNull( Path.of( DiagramCommandTest.class.getResource( "" )
-            .getPath() ).getParent().getParent().getParent().getParent()
-            .resolve( "resources" ).toFile().listFiles( ( dir, name ) -> name.endsWith( ".ttl" ) ) ) )
+        return Arrays.stream( Objects
+            .requireNonNull( Path.of( System.getProperty( "user.dir" ), "src", "test", "resources" ).toFile()
+                .listFiles( ( dir, name ) -> name.endsWith( ".ttl" ) ) ) )
             .map( File::getName )
             .map( filename -> filename.replace( ".ttl", "" ) )
             .map( FilenameArguments::new );
