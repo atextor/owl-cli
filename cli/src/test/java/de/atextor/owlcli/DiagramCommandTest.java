@@ -61,9 +61,9 @@ public class DiagramCommandTest {
         final File tempDir = Files.newTemporaryFolder();
         assertThat( tempDir ).isEmptyDirectory();
 
+        final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
+        final File output = tempDir.toPath().resolve( testFileName + ".ttl" ).toFile();
         try {
-            final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
-            final File output = tempDir.toPath().resolve( testFileName + ".ttl" ).toFile();
             FileUtils.copyURLToFile( input, output );
             assertThat( output ).isFile();
             assertThat( fileContent( output ) ).isNotEmpty();
@@ -88,6 +88,9 @@ public class DiagramCommandTest {
             final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
             assertThat( writtenFile ).isFile();
             assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
+        } catch ( final Exception e ) {
+            System.err.printf( "Error while testing: input %s  output %s%n", input, output );
+            e.printStackTrace();
         } finally {
             FileUtils.deleteDirectory( tempDir );
         }
