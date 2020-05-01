@@ -1,0 +1,12 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:hasName a owl:DatatypeProperty .
+:Dog a owl:Class ;
+   owl:equivalentClass [
+      a owl:Restriction ;
+      owl:onProperty :hasName ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onDataRange xsd:string
+   ] .

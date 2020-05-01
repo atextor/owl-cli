@@ -1,0 +1,13 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:Dog a owl:Class .
+:hasDog a owl:ObjectProperty .
+:DogOwner a owl:Class ;
+   owl:equivalentClass [
+      a owl:Restriction ;
+      owl:onProperty :hasDog ;
+      owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+      owl:onClass :Dog
+   ] .
