@@ -95,7 +95,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         final Template literalNodeTemplate = new Template( """
             ${nodeId} [label="${value}"] """ );
         final Template htmlLabelNodeTemplate = new Template( """
-            ${nodeId} [label=< ${value} >] """ );
+            ${nodeId} [label=<${value}>] """ );
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
         Configuration.Format format;
@@ -154,7 +154,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.ExistentialRestriction existentialRestriction ) {
-            return generateAnonymousNode( existentialRestriction.getId(), Resource.OWL_SOMEVALUES );
+            return generateHtmlLabelNode( existentialRestriction.getId(),
+                "P <FONT COLOR=\"#B200B2\"><B>some</B></FONT> C" );
         }
 
         @Override
