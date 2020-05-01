@@ -62,28 +62,28 @@ public abstract class Edge implements GraphElement {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static class Decorated extends Edge {
-        public static final Decoration CLASS = new Decoration.ClassSymbol();
-        public static final Decoration OBJECT_PROPERTY = new Decoration.ObjectSymbol();
-        public static final Decoration DATA_PROPERTY = new Decoration.DataSymbol();
-        public static final Decoration DATA_RANGE = new Decoration.DataRangeSymbol();
-        public static final Decoration INDIVIDUAL = new Decoration.IndividualSymbol();
-        public static final Decoration LITERAL = new Decoration.LiteralSymbol();
-        public static final Decoration RANGE = new Decoration.Label( "range" );
-        public static final Decoration DOMAIN = new Decoration.Label( "domain" );
+        public static final String CLASS_LABEL = "C";
+        public static final String OBJECT_PROPERTY_LABEL = "P";
+        public static final String DATA_PROPERTY_LABEL = "P";
+        public static final String DATA_RANGE_LABEL = "C";
+        public static final String INDIVIDUAL_LABEL = "v";
+        public static final String LITERAL_LABEL = "v";
+        public static final String RANGE_LABEL = "range";
+        public static final String DOMAIN_LABEL = "domain";
 
         Type type;
         Node.Id from;
         Node.Id to;
-        Decoration decoration;
+        String label;
 
         @Override
         public Edge setFrom( final Node.Id newFromId ) {
-            return new Decorated( type, newFromId, to, decoration );
+            return new Decorated( type, newFromId, to, label );
         }
 
         @Override
         public Edge setTo( final Node.Id newToId ) {
-            return new Decorated( type, from, newToId, decoration );
+            return new Decorated( type, from, newToId, label );
         }
 
         @Override

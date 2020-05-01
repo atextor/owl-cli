@@ -38,7 +38,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final Edge propertyToDomain = edges.iterator().next();
         assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToDomain.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToDomain ).getDecoration() ).isEqualTo( Edge.Decorated.DOMAIN );
+        assertThat( ( (Edge.Decorated) propertyToDomain ).getLabel() ).isEqualTo( Edge.Decorated.DOMAIN_LABEL );
         assertThat( propertyToDomain.getTo().getId() ).isEqualTo( nodes.stream()
             .filter( node -> node.is( Node.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
     }
@@ -63,11 +63,11 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
 
-        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainDecoration ).and( hasFromBar ).and( edge ->
+        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainLabel ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
                 node.is( Node.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
 
-        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainDecoration ).and( hasFromBar ).and( edge ->
+        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasDomainLabel ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
                 node.is( Node.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }
@@ -93,7 +93,7 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final Edge propertyToRange = edges.iterator().next();
         assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToRange.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToRange ).getDecoration() ).isEqualTo( Edge.Decorated.RANGE );
+        assertThat( ( (Edge.Decorated) propertyToRange ).getLabel() ).isEqualTo( Edge.Decorated.RANGE_LABEL );
         assertThat( propertyToRange.getTo().getId() ).isEqualTo( nodes.stream()
             .filter( node -> node.is( Node.Class.class ) ).map( Node::getId ).findFirst().get().getId() );
     }
@@ -118,11 +118,11 @@ public class OWLOntologyMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 2 );
 
-        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeDecoration ).and( hasFromBar ).and( edge ->
+        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeLabel ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
                 node.is( Node.Class.class ) && node.getId().equals( edge.getTo() ) ) ) );
 
-        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeDecoration ).and( hasFromBar ).and( edge ->
+        assertThat( edges ).anyMatch( hasDefaultArrow.and( hasRangeLabel ).and( hasFromBar ).and( edge ->
             nodes.stream().anyMatch( node ->
                 node.is( Node.Individual.class ) && node.getId().equals( edge.getTo() ) ) ) );
     }

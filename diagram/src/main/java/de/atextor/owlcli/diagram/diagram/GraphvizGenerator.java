@@ -1,7 +1,6 @@
 package de.atextor.owlcli.diagram.diagram;
 
 import com.google.common.collect.Ordering;
-import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
@@ -16,24 +15,21 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
-    private final Decoration.Visitor<String> decorationToGraphvizFragment;
     private final GraphVisitor<GraphvizDocument> graphVisitor;
 
     GraphvizGenerator( final Configuration configuration ) {
-        decorationToGraphvizFragment = new GraphvizDecorationVisitor( configuration.format,
-            configuration.resourceDirectoryName );
         final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz =
             new GraphvizNodeVisitor( configuration.format, configuration.resourceDirectoryName );
 
         final Function<Edge.Decorated, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
-            final String decoration = edge.getDecoration().accept( decorationToGraphvizFragment );
+            final String label = edge.getLabel();
             final String edgeStyle =
                 edgeTypeToGraphviz( edge.getType() )
                     .map( style -> style + ", fontsize=" + configuration.fontsize )
                     .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                String.format( "%s -> %s [%s, %s]", edge.getFrom().getId(), edge.getTo().getId(), decoration,
-                    edgeStyle ) ) );
+                String.format( "%s -> %s [label=\"%s\", %s]", edge.getFrom().getId(), edge.getTo()
+                    .getId(), label, edgeStyle ) ) );
         };
 
         final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
@@ -69,68 +65,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         return graphElements
             .map( graphElement -> graphElement.accept( graphVisitor ) )
             .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
-    }
-
-    static class GraphvizDecorationVisitor implements Decoration.Visitor<String> {
-        private final Template imageLabelTemplate = new Template( """
-            label=<
-              <table border="0">
-                <tr>
-                  <td border="0" fixedsize="true" width="24" height="24">
-                    <img src="${resourceDirectoryName}/${imageName}" />
-                  </td>
-                </tr>
-              </table> >
-            """ );
-        Configuration.Format format;
-        String resourceDirectoryName;
-
-        GraphvizDecorationVisitor( final Configuration.Format format, final String resourceDirectoryName ) {
-            this.format = format;
-            this.resourceDirectoryName = resourceDirectoryName;
-        }
-
-        @Override
-        public String visit( final Decoration.Label label ) {
-            return "label=\"" + label.getText() + "\"";
-        }
-
-        @Override
-        public String visit( final Decoration.ClassSymbol classSymbol ) {
-            return generateImageLabel( Resource.EDGE_C );
-        }
-
-        @Override
-        public String visit( final Decoration.ObjectSymbol objectSymbol ) {
-            return generateImageLabel( Resource.EDGE_R );
-        }
-
-        @Override
-        public String visit( final Decoration.DataSymbol dataSymbol ) {
-            return generateImageLabel( Resource.EDGE_U );
-        }
-
-        @Override
-        public String visit( final Decoration.DataRangeSymbol dataRangeSymbol ) {
-            return generateImageLabel( Resource.EDGE_R );
-        }
-
-        @Override
-        public String visit( final Decoration.IndividualSymbol individualSymbol ) {
-            return generateImageLabel( Resource.EDGE_O );
-        }
-
-        @Override
-        public String visit( final Decoration.LiteralSymbol literalSymbol ) {
-            return generateImageLabel( Resource.LITERAL );
-        }
-
-        private String generateImageLabel( final Resource image ) {
-            return imageLabelTemplate.apply( Map.of(
-                "resourceDirectoryName", resourceDirectoryName,
-                "imageName", image.getResourceName( format )
-            ) );
-        }
     }
 
     static class GraphvizNodeVisitor implements Node.Visitor<GraphvizDocument> {

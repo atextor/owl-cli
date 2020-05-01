@@ -1,6 +1,5 @@
 package de.atextor.owlcli.diagram;
 
-import de.atextor.owlcli.diagram.graph.Decoration;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
@@ -33,12 +32,12 @@ public class MapperTestBase {
     protected final Predicate<Edge> hasHollowArrow = edge -> edge.getType().equals( Edge.Type.HOLLOW_ARROW );
     protected final Predicate<Edge> hasDashedArrow = edge -> edge.getType().equals( Edge.Type.DASHED_ARROW );
     protected final Predicate<Edge> hasNoArrow = edge -> edge.getType().equals( Edge.Type.NO_ARROW );
-    final Predicate<Edge> hasDomainDecoration = edge -> edge.view( Edge.Decorated.class )
-        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( Edge.Decorated.DOMAIN ) )
+    final Predicate<Edge> hasDomainLabel = edge -> edge.view( Edge.Decorated.class )
+        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.DOMAIN_LABEL ) )
         .findFirst()
         .orElse( false );
-    final Predicate<Edge> hasRangeDecoration = edge -> edge.view( Edge.Decorated.class )
-        .map( decoratedEdge -> decoratedEdge.getDecoration().equals( Edge.Decorated.RANGE ) )
+    final Predicate<Edge> hasRangeLabel = edge -> edge.view( Edge.Decorated.class )
+        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.RANGE_LABEL ) )
         .findFirst()
         .orElse( false );
     final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
@@ -136,11 +135,11 @@ public class MapperTestBase {
             && edge.getTo().getId().equals( toId );
     }
 
-    protected Predicate<Edge> isEdgeWithFromAndToAndDecoration( final String fromId, final String toId,
-                                                                final Decoration decoration ) {
+    protected Predicate<Edge> isEdgeWithFromAndToAndLabel( final String fromId, final String toId,
+                                                           final String label ) {
         return edge -> edge.getFrom().getId().equals( fromId )
             && edge.getTo().getId().equals( toId )
-            && ( (Edge.Decorated) edge ).getDecoration().equals( decoration );
+            && ( (Edge.Decorated) edge ).getLabel().equals( label );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {

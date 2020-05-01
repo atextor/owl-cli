@@ -146,7 +146,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
             .getId(), domainGraph
-            .getNode().getId(), Edge.Decorated.DOMAIN );
+            .getNode().getId(), Edge.Decorated.DOMAIN_LABEL );
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
@@ -155,7 +155,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
         final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
             .getId(), rangeGraph
-            .getNode().getId(), Edge.Decorated.RANGE );
+            .getNode().getId(), Edge.Decorated.RANGE_LABEL );
         return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 
@@ -466,7 +466,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.DOMAIN );
+            iriReference.getId(), Edge.Decorated.DOMAIN_LABEL );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
@@ -476,7 +476,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getRange() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.RANGE );
+            iriReference.getId(), Edge.Decorated.RANGE_LABEL );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
