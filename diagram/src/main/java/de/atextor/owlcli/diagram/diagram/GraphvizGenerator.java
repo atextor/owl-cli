@@ -99,27 +99,37 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Class class_ ) {
-            return generateNamedNode( class_, Resource.OWL_CLASS );
+            return generateHtmlLabelNode( class_.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#CFA500\"><B>●</B></FONT>  %s",
+                    class_.getName() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.DataProperty dataProperty ) {
-            return generateNamedNode( dataProperty, Resource.OWL_DATA_PROPERTY );
+            return generateHtmlLabelNode( dataProperty.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#38A14A\"><B>▬</B></FONT>  %s",
+                    dataProperty.getName() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectProperty objectProperty ) {
-            return generateNamedNode( objectProperty, Resource.OWL_OBJECT_PROPERTY );
+            return generateHtmlLabelNode( objectProperty.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#0079BA\"><B>▬</B></FONT>  %s",
+                    objectProperty.getName() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.AnnotationProperty annotationProperty ) {
-            return generateNamedNode( annotationProperty, Resource.OWL_ANNOTATION_PROPERTY );
+            return generateHtmlLabelNode( annotationProperty.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#D17A00\"><B>▬</B></FONT>  %s",
+                    annotationProperty.getName() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.Individual individual ) {
-            return generateNamedNode( individual, Resource.OWL_INDIVIDUAL );
+            return generateHtmlLabelNode( individual.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#874B82\"><B>◆</B></FONT>  %s",
+                    individual.getName() ) );
         }
 
         @Override
@@ -140,7 +150,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Datatype datatype ) {
-            return generateNamedNode( datatype, Resource.OWL_DATATYPE );
+            return generateHtmlLabelNode( datatype.getId(),
+                String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"#AD3B45\"><B>●</B></FONT>  %s",
+                    datatype.getName() ) );
         }
 
         @Override
@@ -183,7 +195,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Equality equality ) {
-            return generateHtmlLabelNode( equality.getId(), "<B>=</B>" );
+            return generateHtmlLabelNode( equality.getId(), "<FONT POINT-SIZE=\"16\">=</FONT>" );
         }
 
         @Override
@@ -193,12 +205,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Inequality inequality ) {
-            return generateHtmlLabelNode( inequality.getId(), "<B>≠</B>" );
+            return generateHtmlLabelNode( inequality.getId(), "<FONT POINT-SIZE=\"16\">≠</FONT>" );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ClosedClass closedClass ) {
-            return generateAnonymousNode( closedClass.getId(), Resource.OWL_CLOSEDCLASS );
+            return generateHtmlLabelNode( closedClass.getId(), "<FONT POINT-SIZE=\"16\">{}</FONT>" );
         }
 
         @Override
