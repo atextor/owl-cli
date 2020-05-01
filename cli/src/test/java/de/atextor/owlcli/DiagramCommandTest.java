@@ -82,7 +82,7 @@ public class DiagramCommandTest {
             final Path resourceDirectory = workingDirectory.resolve( "static" );
             assertThat( resourceDirectory.toFile().isDirectory() );
 
-            final Path sentinelResource = resourceDirectory.resolve( "owl-class.svg" );
+            final Path sentinelResource = resourceDirectory.resolve( "owl-self.svg" );
             assertThat( sentinelResource.toFile() ).exists();
 
             final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
