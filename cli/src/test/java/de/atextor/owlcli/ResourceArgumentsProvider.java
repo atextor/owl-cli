@@ -18,6 +18,7 @@ public class ResourceArgumentsProvider implements ArgumentsProvider {
                 .listFiles( ( dir, name ) -> name.endsWith( ".ttl" ) ) ) )
             .map( File::getName )
             .map( filename -> filename.replace( ".ttl", "" ) )
+            .sorted()
             .map( FilenameArguments::new );
     }
 
