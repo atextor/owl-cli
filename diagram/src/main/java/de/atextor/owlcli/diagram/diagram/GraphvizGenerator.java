@@ -160,7 +160,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.ValueRestriction valueRestriction ) {
-            return generateAnonymousNode( valueRestriction.getId(), Resource.OWL_HASVALUE );
+            return generateHtmlLabelNode( valueRestriction.getId(),
+                "P <FONT COLOR=\"#B200B2\"><B>value</B></FONT> v" );
         }
 
         @Override
