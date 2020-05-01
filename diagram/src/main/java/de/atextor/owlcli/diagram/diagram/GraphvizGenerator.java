@@ -83,15 +83,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                   <td border="0" fixedsize="true" width="24" height="24"><img src="${directory}/${resource}" scale="true" /></td>
                 </tr>
               </table> >]""" );
-        final Template cardinalityNodeTemplate = new Template( """
-            ${nodeId} [label=<
-              <table border="0">
-                <tr>
-                  <td border="0" fixedsize="true" width="16" height="16"><img src="${directory}/${prefixResource}" /></td>
-                  <td>${cardinality}</td>
-                  <td><img src="${directory}/${postfixResource}" /></td>
-                </tr>
-              </table> >]""" );
         final Template literalNodeTemplate = new Template( """
             ${nodeId} [label="${value}"] """ );
         final Template htmlLabelNodeTemplate = new Template( """
@@ -166,7 +157,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.UniversalRestriction universalRestriction ) {
-            return generateAnonymousNode( universalRestriction.getId(), Resource.OWL_ALLVALUES );
+            return generateHtmlLabelNode( universalRestriction.getId(),
+                "P <FONT COLOR=\"#B200B2\"><B>only</B></FONT> C" );
         }
 
         @Override
@@ -191,7 +183,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Equality equality ) {
-            return generateAnonymousNode( equality.getId(), Resource.EQ );
+            return generateHtmlLabelNode( equality.getId(), "<B>=</B>" );
         }
 
         @Override
@@ -201,7 +193,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Inequality inequality ) {
-            return generateAnonymousNode( inequality.getId(), Resource.NEQ );
+            return generateHtmlLabelNode( inequality.getId(), "<B>≠</B>" );
         }
 
         @Override
@@ -221,47 +213,65 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.ObjectMinimalCardinality objectMinimalCardinality ) {
-            return generateCardinalityNode( objectMinimalCardinality, Resource.GET, Resource.R );
+            return generateHtmlLabelNode( objectMinimalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT> %d",
+                    objectMinimalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
-            return generateCardinalityNode( objectQualifiedMinimalCardinality, Resource.GET, Resource.R_C );
+            return generateHtmlLabelNode( objectQualifiedMinimalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT>  %d C",
+                    objectQualifiedMinimalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectMaximalCardinality objectMaximalCardinality ) {
-            return generateCardinalityNode( objectMaximalCardinality, Resource.LET, Resource.R );
+            return generateHtmlLabelNode( objectMaximalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d",
+                    objectMaximalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
-            return generateCardinalityNode( objectQualifiedMaximalCardinality, Resource.LET, Resource.R_C );
+            return generateHtmlLabelNode( objectQualifiedMaximalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d C",
+                    objectQualifiedMaximalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectExactCardinality objectExactCardinality ) {
-            return generateCardinalityNode( objectExactCardinality, Resource.EQ, Resource.R );
+            return generateHtmlLabelNode( objectExactCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d",
+                    objectExactCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
-            return generateCardinalityNode( objectQualifiedExactCardinality, Resource.EQ, Resource.R_C );
+            return generateHtmlLabelNode( objectQualifiedExactCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d C",
+                    objectQualifiedExactCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.DataMinimalCardinality dataMinimalCardinality ) {
-            return generateCardinalityNode( dataMinimalCardinality, Resource.GET, Resource.U );
+            return generateHtmlLabelNode( dataMinimalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT>  %d",
+                    dataMinimalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.DataMaximalCardinality dataMaximalCardinality ) {
-            return generateCardinalityNode( dataMaximalCardinality, Resource.LET, Resource.U );
+            return generateHtmlLabelNode( dataMaximalCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d",
+                    dataMaximalCardinality.getCardinality() ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.DataExactCardinality dataExactCardinality ) {
-            return generateCardinalityNode( dataExactCardinality, Resource.EQ, Resource.U );
+            return generateHtmlLabelNode( dataExactCardinality.getId(),
+                String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d",
+                    dataExactCardinality.getCardinality() ) );
         }
 
         @Override
@@ -305,17 +315,6 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 Map.of( "nodeId", nodeId.getId(),
                     "directory", resourceDirectoryname,
                     "resource", symbol.getResourceName( format ) ) ) ) );
-        }
-
-        private GraphvizDocument generateCardinalityNode( final Node.CardinalityNode node,
-                                                          final Resource symbolPrefix,
-                                                          final Resource symbolPostfix ) {
-            return GraphvizDocument.withNode( new GraphvizDocument.Statement( cardinalityNodeTemplate.apply(
-                Map.of( "nodeId", node.getId().getId(),
-                    "directory", resourceDirectoryname,
-                    "prefixResource", symbolPrefix.getResourceName( format ),
-                    "postfixResource", symbolPostfix.getResourceName( format ),
-                    "cardinality", node.getCardinality() ) ) ) );
         }
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
