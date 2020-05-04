@@ -30,7 +30,7 @@ public class Configuration {
     @Builder.Default
     public String nodeShape = "box";
     @Builder.Default
-    public String nodeMargin = "0.11,0.0";
+    public String nodeMargin = "0.05,0.0";
     @Builder.Default
     public String nodeStyle = "rounded";
     @Builder.Default
