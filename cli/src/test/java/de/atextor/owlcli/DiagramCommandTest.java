@@ -1,8 +1,8 @@
 package de.atextor.owlcli;
 
 import org.apache.commons.io.FileUtils;
-import org.assertj.core.util.Files;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
@@ -16,6 +16,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class DiagramCommandTest {
+    @TempDir
+    File tempDir;
+
     private byte[] fileContent( final File file ) {
         try {
             return FileUtils.readFileToByteArray( file );
@@ -58,41 +61,29 @@ public class DiagramCommandTest {
     @ParameterizedTest
     @ArgumentsSource( ResourceArgumentsProvider.class )
     public void testDiagramGeneration( final String testFileName ) throws IOException {
-        final File tempDir = Files.newTemporaryFolder();
-        assertThat( tempDir ).isEmptyDirectory();
-
         final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
         final File output = tempDir.toPath().resolve( testFileName + ".ttl" ).toFile();
-        try {
-            FileUtils.copyURLToFile( input, output );
-            assertThat( output ).isFile();
-            assertThat( fileContent( output ) ).isNotEmpty();
 
-            final Runnable command = () -> App.main( new String[]{ "diagram", output.getAbsolutePath() } );
-            final MainClassRunner.ExecutionResult result = run( command );
+        FileUtils.copyURLToFile( input, output );
+        assertThat( output ).isFile();
+        assertThat( fileContent( output ) ).isNotEmpty();
 
-            System.out.println( result.getStdOut() );
-            System.out.println( result.getStdErr() );
+        final Runnable command = () -> App.main( new String[]{ "diagram", output.getAbsolutePath() } );
+        final MainClassRunner.ExecutionResult result = run( command );
 
-            assertThat( result.getExitStatus() ).isEqualTo( 0 );
-            assertThat( result.getStdOut() ).isEmpty();
-            assertThat( result.getStdErr() ).isEmpty();
+        System.out.println( result.getStdOut() );
+        System.out.println( result.getStdErr() );
 
-            final Path workingDirectory = tempDir.toPath();
-            final Path resourceDirectory = workingDirectory.resolve( "static" );
-            assertThat( resourceDirectory.toFile().isDirectory() );
+        assertThat( result.getExitStatus() ).isEqualTo( 0 );
+        assertThat( result.getStdOut() ).isEmpty();
+        assertThat( result.getStdErr() ).isEmpty();
 
-            final Path sentinelResource = resourceDirectory.resolve( "owl-self.svg" );
-            assertThat( sentinelResource.toFile() ).exists();
+        final Path workingDirectory = tempDir.toPath();
+        final Path resourceDirectory = workingDirectory.resolve( "static" );
+        assertThat( resourceDirectory.toFile().isDirectory() );
 
-            final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
-            assertThat( writtenFile ).isFile();
-            assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
-        } catch ( final Exception e ) {
-            System.err.printf( "Error while testing: input %s  output %s%n", input, output );
-            e.printStackTrace();
-        } finally {
-            FileUtils.deleteDirectory( tempDir );
-        }
+        final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
+        assertThat( writtenFile ).isFile();
+        assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
     }
 }

@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -76,34 +75,6 @@ public class DiagramGenerator {
         } );
     }
 
-    private Try<Void> writeResourceToDirectory( final Resource resource, final Path directory,
-                                                final Configuration configuration ) {
-        final String resourceName = resource.getResourceName( configuration.format );
-        final InputStream resourceInput = DiagramGenerator.class.getResourceAsStream( "/" + resourceName );
-        final File resourceFile = directory.resolve( resourceName ).toFile();
-
-        final OutputStream resourceOutput;
-        try {
-            resourceOutput = new FileOutputStream( resourceFile );
-        } catch ( final FileNotFoundException exception ) {
-            return Try.failure( exception );
-        }
-
-        return writeStreamToOutput( resourceInput, resourceOutput );
-    }
-
-    private Try<Path> setupResourceDirectory( final Path outputFilePath, final Configuration configuration ) {
-        final Path targetDirectory = outputFilePath.getParent().resolve( configuration.resourceDirectoryName );
-        targetDirectory.toFile().mkdirs();
-
-        final Stream<Try<Void>> resources = Arrays.stream( Resource.values() ).map( resource ->
-            writeResourceToDirectory( resource, targetDirectory, configuration ) );
-
-        return resources.filter( Try::isFailure ).findAny()
-            .map( element -> Try.<Path>failure( element.getCause() ) )
-            .orElse( Try.success( targetDirectory.getParent() ) );
-    }
-
     public Try<Void> generate( final InputStream ontologyInputStream, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
         final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -138,12 +109,7 @@ public class DiagramGenerator {
             }
         };
 
-        return output.fold(
-            outputStream -> executeDot( contentProvider, outputStream,
-                new File( System.getProperty( "user.dir" ) ), configuration ),
-            path -> setupResourceDirectory( path, configuration ).flatMap( workingDir ->
-                openStream( path ).map( outputStream ->
-                    executeDot( contentProvider, outputStream, workingDir.toFile(), configuration ) ) ) )
-            .map( __ -> null );
+        return output.fold( Try::success, this::openStream ).flatMap( stream ->
+            executeDot( contentProvider, stream, new File( System.getProperty( "user.dir" ) ), configuration ) );
     }
 }
