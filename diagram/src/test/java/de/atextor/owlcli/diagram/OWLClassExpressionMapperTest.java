@@ -408,7 +408,6 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
     @Test
     public void testOWLObjectHasSelf() {
         final String ontology = """
-            :Dog a owl:Class .
             :hasDog a owl:ObjectProperty .
             :DogOwner a owl:Class ;
                owl:equivalentClass [
