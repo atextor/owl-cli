@@ -32,6 +32,8 @@ public class GraphvizDocument implements Function<Configuration, String> {
             shape = "${nodeShape}"
             margin = "${nodeMargin}"
             style = "${nodeStyle}"
+            height = 0.3
+            width = 0.2
           ]
 
           ${statements}
