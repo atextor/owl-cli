@@ -18,6 +18,9 @@ package de.atextor.owlcli.diagram.mappers;
 import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.IRI;
 
+/**
+ * Determines how the name (i.e. label) of a node is retrieved from the original ontology element
+ */
 public interface NameMapper {
     String getName( final HasIRI object );
 

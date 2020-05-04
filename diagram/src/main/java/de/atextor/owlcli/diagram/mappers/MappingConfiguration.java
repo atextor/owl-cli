@@ -26,6 +26,9 @@ import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
+/**
+ * Captures the different parts of the ontology-to-graph mapping operation
+ */
 public interface MappingConfiguration {
     OWLAxiomVisitorEx<Graph> getOwlAxiomMapper();
 

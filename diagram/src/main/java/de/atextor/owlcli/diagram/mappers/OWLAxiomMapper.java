@@ -89,6 +89,9 @@ import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
+/**
+ * Maps {@link org.semanticweb.owlapi.model.OWLAxiom}s to {@link Graph}s
+ */
 public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

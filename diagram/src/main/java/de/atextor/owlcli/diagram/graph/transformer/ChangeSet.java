@@ -21,6 +21,9 @@ import lombok.Value;
 
 import java.util.Set;
 
+/**
+ * Represents additions and deletions to perform on a set of {@link GraphElement}s
+ */
 @Value
 class ChangeSet {
     public static final ChangeSet EMPTY = new ChangeSet( Set.of(), Set.of() );
@@ -28,10 +31,22 @@ class ChangeSet {
     Set<GraphElement> additions;
     Set<GraphElement> deletions;
 
+    /**
+     * Create a new ChangeSet from this and another given ChangeSet
+     *
+     * @param other the other ChangeSet
+     * @return the merged ChangeSet
+     */
     ChangeSet merge( final ChangeSet other ) {
         return new ChangeSet( Sets.union( additions, other.additions ), Sets.union( deletions, other.deletions ) );
     }
 
+    /**
+     * Apply this ChangeSet to a graph
+     *
+     * @param graph the input graph
+     * @return the resulting graph
+     */
     Set<GraphElement> applyTo( final Set<GraphElement> graph ) {
         return Sets.union( Sets.difference( graph, deletions ), additions );
     }

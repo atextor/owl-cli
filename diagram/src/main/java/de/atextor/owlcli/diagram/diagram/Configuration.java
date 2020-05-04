@@ -17,6 +17,9 @@ package de.atextor.owlcli.diagram.diagram;
 
 import lombok.Builder;
 
+/**
+ * The configuration that controls the visual output
+ */
 @Builder
 public class Configuration {
     public enum Format {

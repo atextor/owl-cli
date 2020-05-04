@@ -21,6 +21,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * A graph that consists of one node that can be separately retrieved and any number of additional {@link GraphElement}s
+ */
 @Getter
 public class Graph {
     Node node;

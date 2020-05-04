@@ -27,6 +27,9 @@ import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Maps {@link OWLPropertyExpression}s to {@link Graph}s
+ */
 public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

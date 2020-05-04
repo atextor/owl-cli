@@ -26,11 +26,19 @@ import org.semanticweb.owlapi.model.IRI;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Sealed class that contains the different types of nodes of the ontology graph.
+ */
 @ToString
 @EqualsAndHashCode
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
 @Getter
 public abstract class Node implements GraphElement {
+    /**
+     * Visitor for the nodes
+     *
+     * @param <T> the resulting type of the visit operation
+     */
     public interface Visitor<T> {
         T visit( Class class_ );
 
@@ -99,6 +107,10 @@ public abstract class Node implements GraphElement {
         T visit( PropertyMarker propertyMarker );
     }
 
+    /**
+     * Id of a node that has the (unique) internal identifier string, and if present, the {@link IRI} of the
+     * ontology element that is represented by the node having this Id.
+     */
     @Getter
     @EqualsAndHashCode
     public static class Id {

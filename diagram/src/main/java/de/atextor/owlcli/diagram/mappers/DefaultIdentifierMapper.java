@@ -20,13 +20,10 @@ import org.semanticweb.owlapi.model.IRI;
 
 import java.util.UUID;
 
+/**
+ * Default implementation for the {@link IdentifierMapper}
+ */
 public class DefaultIdentifierMapper implements IdentifierMapper {
-    private final MappingConfiguration mappingConfig;
-
-    public DefaultIdentifierMapper( final MappingConfiguration mappingConfig ) {
-        this.mappingConfig = mappingConfig;
-    }
-
     private String getRandomIdString() {
         return "_" + UUID.randomUUID().toString().replace( "-", "" );
     }

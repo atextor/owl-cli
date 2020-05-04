@@ -27,6 +27,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Main class for mapping an {@link OWLOntology} to a {@link Graph}. The mapping is done in two steps:
+ * First, all axioms in the ontology are separatly mapped using the respective OWL*Mappers into nodes and edges.
+ * Secondly, the {@link de.atextor.owlcli.diagram.graph.transformer.GraphTransformer}s clean up the graph by
+ * performing changes that take the context of the whole graph into account.
+ */
 public class OWLOntologyMapper implements Function<OWLOntology, Set<GraphElement>> {
     private final MappingConfiguration mappingConfiguration;
     private final List<Function<Set<GraphElement>, Set<GraphElement>>> transformers;

@@ -18,6 +18,10 @@ package de.atextor.owlcli.diagram.diagram;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * Minimalistic String template. The template string can contain references to (e.g. ${foo}) that are replaced
+ * with values on calling {@link #apply(Map)}.
+ */
 public class Template implements Function<Map<String, Object>, String> {
     final private String template;
 
@@ -25,6 +29,12 @@ public class Template implements Function<Map<String, Object>, String> {
         this.template = template;
     }
 
+    /**
+     * Apply the context to the template and return the resulting string
+     *
+     * @param context the context
+     * @return the resulting string
+     */
     @Override
     public String apply( final Map<String, Object> context ) {
         String result = template;

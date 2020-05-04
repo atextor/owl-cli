@@ -18,6 +18,10 @@ package de.atextor.owlcli.diagram.mappers;
 import de.atextor.owlcli.diagram.graph.Node;
 import org.semanticweb.owlapi.model.IRI;
 
+/**
+ * Creates {@link Node.Id}s for named nodes (i.e. for ontology elements that are identified by {@link IRI}s)
+ * or anonymous nodes
+ */
 public interface IdentifierMapper {
     Node.Id getIdForIri( final IRI iri );
 

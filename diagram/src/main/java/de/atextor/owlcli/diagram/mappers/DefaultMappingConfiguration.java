@@ -246,7 +246,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
                 owlAnnotationSubjectMapper( () -> new OWLAnnotationObjectMapper( mappingConfig ) );
             }
             if ( identifierMapperSupplier == null ) {
-                identifierMapper( () -> new DefaultIdentifierMapper( mappingConfig ) );
+                identifierMapper( DefaultIdentifierMapper::new );
             }
             if ( nameMapperSupplier == null ) {
                 nameMapper( () -> new DefaultNameMapper( mappingConfig ) );

@@ -23,6 +23,9 @@ import org.semanticweb.owlapi.model.OWLNamedIndividual;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Maps {@link org.semanticweb.owlapi.model.OWLIndividual}s to {@link Graph}s
+ */
 public class OWLIndividualMapper implements OWLIndividualVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

@@ -45,6 +45,10 @@ import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Dispatcher of multiple types of OWL objects; this is called in some generic mapping operations.
+ * Maps {@link org.semanticweb.owlapi.model.OWLObject}s to {@link Graph}s.
+ */
 public class OWLObjectMapper implements OWLObjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

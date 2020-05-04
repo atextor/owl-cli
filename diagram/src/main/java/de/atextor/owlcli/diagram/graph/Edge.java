@@ -18,12 +18,14 @@ package de.atextor.owlcli.diagram.graph;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+/**
+ * Sealed class that represents the types of edges in the graph
+ */
 public abstract class Edge implements GraphElement {
     public enum Type {
         DEFAULT_ARROW,
         HOLLOW_ARROW,
         DOUBLE_ENDED_HOLLOW_ARROW,
-        INVERSE_HOLLOW_ARROW,
         DASHED_ARROW,
         NO_ARROW
     }

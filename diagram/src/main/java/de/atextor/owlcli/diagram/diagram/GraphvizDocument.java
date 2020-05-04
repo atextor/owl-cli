@@ -28,6 +28,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Simple model for a Graphviz document, consisting of sets of edges and nodes
+ */
 @AllArgsConstructor
 @Getter
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )

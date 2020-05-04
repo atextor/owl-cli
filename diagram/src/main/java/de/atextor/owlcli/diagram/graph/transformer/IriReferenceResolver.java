@@ -23,13 +23,29 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Implements a graph transformation that removes all nodes of type {@link Node.IRIReference} from a graph and
+ * replaces them with the corresponding direct links to the referenced nodes where possible, and with literal
+ * nodes representing the reference IRI otherwise
+ */
 public class IriReferenceResolver extends GraphTransformer {
     private final MappingConfiguration mappingConfiguration;
 
+    /**
+     * Initialize the transformer
+     *
+     * @param mappingConfiguration the context mapping configuration
+     */
     public IriReferenceResolver( final MappingConfiguration mappingConfiguration ) {
         this.mappingConfiguration = mappingConfiguration;
     }
 
+    /**
+     * Apply this transformer to the given input graph
+     *
+     * @param graph the input graph
+     * @return the resulting graph that contains no {@link Node.IRIReference}s any more
+     */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
         final Set<Node.IRIReference> references = graph.stream()

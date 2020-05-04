@@ -26,6 +26,9 @@ import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+/**
+ * Base class for graph transformations
+ */
 public abstract class GraphTransformer implements UnaryOperator<Set<GraphElement>> {
     protected Stream<Node> findNodesWithIri( final Set<GraphElement> graph, final IRI iri ) {
         return graph.stream()

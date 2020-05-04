@@ -24,13 +24,32 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Implements a graph transformer that resolves
+ * <a href="https://www.w3.org/TR/owl2-new-features/#F12:_Punning">Punning</a> in a graph: An input ontology that
+ * uses punning for e.g. an individual and a class results in a graph that contains both the individual and the class
+ * as nodes, but both share the same {@link Node.Id}, as it is derived from the the element's
+ * {@link org.semanticweb.owlapi.model.IRI}. This transformer replaces the nodes with new, uniquely identified nodes
+ * (that keep the original IRI in their IDs) and updates all edges in the graph accordingly.
+ */
 public class PunningRemover extends GraphTransformer {
     private final MappingConfiguration mappingConfiguration;
 
+    /**
+     * Initialize the transformer
+     *
+     * @param mappingConfiguration the context mapping configuration
+     */
     public PunningRemover( final MappingConfiguration mappingConfiguration ) {
         this.mappingConfiguration = mappingConfiguration;
     }
 
+    /**
+     * Apply this transformer to the given input graph
+     *
+     * @param graph the input graph
+     * @return the resulting graph that has no more nodes with duplicate {@link Node.Id}s due to punning
+     */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
         return graph.stream()

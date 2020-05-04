@@ -21,6 +21,11 @@ import lombok.experimental.FieldDefaults;
 
 import java.util.function.Function;
 
+/**
+ * Visitor for a elements of a graph
+ *
+ * @param <T> the result type of the visit operation
+ */
 @AllArgsConstructor
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
 public class GraphVisitor<T> implements GraphElement.Visitor<T> {

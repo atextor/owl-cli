@@ -35,10 +35,20 @@ import java.nio.file.Path;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * Main diagram generator class: Loads an ontology, initializes and calls the {@link GraphvizGenerator} to transform
+ * the ontology into a Graphviz document, writes the document to a file and calls the Graphviz (dot) binary.
+ */
 public class DiagramGenerator {
     private final OWLOntologyMapper ontologyMapper;
     private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator;
 
+    /**
+     * Constructor. Initializes the Diagram generator with the necessary configuration.
+     *
+     * @param configuration the configuration to provide to the Graphviz Genenerator
+     * @param mappingConfig the mapping configuration to fine-tune the ontology mapping operation
+     */
     public DiagramGenerator( final Configuration configuration, final MappingConfiguration mappingConfig ) {
         ontologyMapper = new OWLOntologyMapper( mappingConfig );
         graphvizGenerator = new GraphvizGenerator( configuration );
@@ -90,6 +100,15 @@ public class DiagramGenerator {
         } );
     }
 
+    /**
+     * Performs diagram generation for an input ontology. The result is either written to a given {@link OutputStream}
+     * or a given {@link Path}.
+     *
+     * @param ontologyInputStream the input ontology
+     * @param output              the output to write
+     * @param configuration       the configuration for the diagram generation
+     * @return {@link io.vavr.control.Try.Success} on success
+     */
     public Try<Void> generate( final InputStream ontologyInputStream, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
         final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -110,6 +129,15 @@ public class DiagramGenerator {
         }
     }
 
+    /**
+     * Performs diagram generation for an input ontology. The result is either written to a given {@link OutputStream}
+     * or a given {@link Path}.
+     *
+     * @param ontology      the input ontology
+     * @param output        the output to write
+     * @param configuration the configuration for the diagram generation
+     * @return {@link io.vavr.control.Try.Success} on success
+     */
     public Try<Void> generate( final OWLOntology ontology, final Either<OutputStream, Path> output,
                                final Configuration configuration ) {
         final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology ).stream();

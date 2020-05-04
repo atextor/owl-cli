@@ -52,6 +52,9 @@ import org.semanticweb.owlapi.model.OWLRestriction;
 import javax.annotation.Nonnull;
 import java.util.stream.Stream;
 
+/**
+ * Maps {@link OWLClassExpression}s to {@link Graph}s
+ */
 public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

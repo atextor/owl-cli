@@ -29,9 +29,17 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Serializes a graph model (i.e. a Stream of {@link GraphElement}s) to a {@link GraphvizDocument} (DOT format).
+ */
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
     private final GraphVisitor<GraphvizDocument> graphVisitor;
 
+    /**
+     * Initialize the GraphvizGenerator with the necessary configuration
+     *
+     * @param configuration the given configuration
+     */
     GraphvizGenerator( final Configuration configuration ) {
         final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz =
             new GraphvizNodeVisitor( configuration.format, configuration.resourceDirectoryName );
@@ -70,11 +78,15 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 yield Optional.of( "dir = both, arrowhead = empty, arrowtail = empty" );
             case NO_ARROW:
                 yield Optional.of( "arrowhead = none" );
-            default:
-                yield Optional.empty();
         };
     }
 
+    /**
+     * Takes {@link GraphElement}s and turns them into the equivalent {@link GraphvizDocument}
+     *
+     * @param graphElements the input graph elements
+     * @return the resulting GraphvizDocument
+     */
     @Override
     public GraphvizDocument apply( final Stream<GraphElement> graphElements ) {
         return graphElements

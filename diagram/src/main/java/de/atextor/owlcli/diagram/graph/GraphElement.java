@@ -17,6 +17,9 @@ package de.atextor.owlcli.diagram.graph;
 
 import java.util.stream.Stream;
 
+/**
+ * An element of the graph
+ */
 public interface GraphElement {
     interface Visitor<T> {
         T visit( Edge.Plain edge );

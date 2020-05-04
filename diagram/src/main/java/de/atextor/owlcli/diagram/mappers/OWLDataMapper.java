@@ -35,6 +35,9 @@ import java.util.stream.Stream;
 
 import static io.vavr.API.TODO;
 
+/**
+ * Maps OWL Data objects to {@link Graph}s
+ */
 public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

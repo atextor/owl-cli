@@ -26,9 +26,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Implements a graph transformer that merges multiple {@link Node.PropertyMarker}s on a given Object property
+ * or Data Property into one Property Marker
+ */
 public class PropertyMarkerMerger extends GraphTransformer {
     MappingConfiguration mappingConfiguration;
 
+    /**
+     * Initialize the transformer
+     *
+     * @param mappingConfiguration the context mapping configuration
+     */
     public PropertyMarkerMerger( final MappingConfiguration mappingConfiguration ) {
         this.mappingConfiguration = mappingConfiguration;
     }
@@ -63,6 +72,12 @@ public class PropertyMarkerMerger extends GraphTransformer {
         return new ChangeSet( additions, deletions );
     }
 
+    /**
+     * Apply this transformer to the given input graph
+     *
+     * @param graph the input graph
+     * @return the resulting graph that has at most one {@link Node.PropertyMarker} for each property
+     */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
         return graph.stream()

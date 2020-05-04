@@ -18,6 +18,9 @@ package de.atextor.owlcli.diagram.mappers;
 import org.semanticweb.owlapi.model.HasIRI;
 import org.semanticweb.owlapi.model.IRI;
 
+/**
+ * Default implementation for the {@link NameMapper}
+ */
 class DefaultNameMapper implements NameMapper {
     private final MappingConfiguration mappingConfig;
 

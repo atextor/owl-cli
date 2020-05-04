@@ -27,6 +27,9 @@ import org.semanticweb.owlapi.model.OWLObjectProperty;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Maps {@link org.semanticweb.owlapi.model.OWLEntity}s to {@link Graph}s
+ */
 public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 

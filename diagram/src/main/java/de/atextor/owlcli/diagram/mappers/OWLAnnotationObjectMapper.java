@@ -26,6 +26,9 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
 
+/**
+ * Maps {@link org.semanticweb.owlapi.model.OWLAnnotationObject}s to {@link Graph}s
+ */
 public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<Graph>,
     OWLAnnotationSubjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
