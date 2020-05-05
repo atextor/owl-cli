@@ -162,8 +162,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), domainGraph
-            .getNode().getId(), Edge.Decorated.DOMAIN_LABEL );
+            .getId(), domainGraph.getNode().getId(), Edge.Decorated.DOMAIN_LABEL );
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
@@ -171,8 +170,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
         final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), rangeGraph
-            .getNode().getId(), Edge.Decorated.RANGE_LABEL );
+            .getId(), rangeGraph.getNode().getId(), Edge.Decorated.RANGE_LABEL );
         return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 

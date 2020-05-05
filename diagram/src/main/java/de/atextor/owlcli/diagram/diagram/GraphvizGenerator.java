@@ -41,14 +41,14 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
      * @param configuration the given configuration
      */
     GraphvizGenerator( final Configuration configuration ) {
-        final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz =
-            new GraphvizNodeVisitor( configuration.format, configuration.resourceDirectoryName );
+        final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz = new GraphvizNodeVisitor( configuration );
 
         final Function<Edge.Decorated, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
             final String label = edge.getLabel();
             final String edgeStyle =
                 edgeTypeToGraphviz( edge.getType() )
-                    .map( style -> style + ", fontsize=" + configuration.fontsize )
+                    .map( style -> String.format( "%s, fontsize=%d fontname=\"%s\"", style, configuration.fontsize,
+                        configuration.fontname ) )
                     .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [label=\"%s\", %s]", edge.getFrom().getId(), edge.getTo()
@@ -96,24 +96,27 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
     static class GraphvizNodeVisitor implements Node.Visitor<GraphvizDocument> {
         private enum Symbol {
-            CLASS( "#CFA500", "●" ),
-            DATA_PROPERTY( "#38A14A", "▬" ),
-            OBJECT_PROPERTY( "#0079BA", "▬" ),
-            ANNOTATION_PROPERTY( "#D17A00", "▬" ),
-            INDIVIDUAL( "#874B82", "◆" ),
-            DATA_TYPE( "#AD3B45", "●" );
+            CLASS( "#CFA500", "⬤", 12 ),
+            DATA_PROPERTY( "#38A14A", "▬", 16 ),
+            OBJECT_PROPERTY( "#0079BA", "▬", 16 ),
+            ANNOTATION_PROPERTY( "#D17A00", "▬", 16 ),
+            INDIVIDUAL( "#874B82", "◆", 16 ),
+            DATA_TYPE( "#AD3B45", "⬤", 12 );
 
             String color;
             String symbol;
+            int symbolSize;
 
-            Symbol( final String color, final String symbol ) {
+            Symbol( final String color, final String symbol, final int symbolSize ) {
                 this.color = color;
                 this.symbol = symbol;
+                this.symbolSize = symbolSize;
             }
 
-            String getNodeValue( final String elementName ) {
-                return String.format( "<FONT POINT-SIZE=\"16\" COLOR=\"%s\"><B>%s</B></FONT>  %s",
-                    color, symbol, elementName );
+            String getNodeValue( final String elementName, final Configuration configuration ) {
+                return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\"><B>%s</B></FONT> " +
+                        "<FONT POINT-SIZE=\"%s\" COLOR=\"#000000\" FACE=\"%s\">%s</FONT>",
+                    symbolSize, color, symbol, configuration.fontsize, configuration.fontname, elementName );
             }
         }
 
@@ -123,40 +126,40 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             ${nodeId} [label=<${value}>] """ );
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
-        Configuration.Format format;
-        String resourceDirectoryname;
+        Configuration configuration;
 
-        GraphvizNodeVisitor( final Configuration.Format format, final String resourceDirectoryname ) {
-            this.format = format;
-            this.resourceDirectoryname = resourceDirectoryname;
+        GraphvizNodeVisitor( final Configuration configuration ) {
+            this.configuration = configuration;
         }
 
         @Override
         public GraphvizDocument visit( final Node.Class class_ ) {
-            return generateHtmlLabelNode( class_.getId(), Symbol.CLASS.getNodeValue( class_.getName() ) );
+            return generateHtmlLabelNode( class_.getId(), Symbol.CLASS
+                .getNodeValue( class_.getName(), configuration ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.DataProperty dataProperty ) {
             return generateHtmlLabelNode( dataProperty.getId(), Symbol.DATA_PROPERTY
-                .getNodeValue( dataProperty.getName() ) );
+                .getNodeValue( dataProperty.getName(), configuration ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.ObjectProperty objectProperty ) {
             return generateHtmlLabelNode( objectProperty.getId(), Symbol.OBJECT_PROPERTY
-                .getNodeValue( objectProperty.getName() ) );
+                .getNodeValue( objectProperty.getName(), configuration ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.AnnotationProperty annotationProperty ) {
             return generateHtmlLabelNode( annotationProperty.getId(), Symbol.ANNOTATION_PROPERTY
-                .getNodeValue( annotationProperty.getName() ) );
+                .getNodeValue( annotationProperty.getName(), configuration ) );
         }
 
         @Override
         public GraphvizDocument visit( final Node.Individual individual ) {
-            return generateHtmlLabelNode( individual.getId(), Symbol.INDIVIDUAL.getNodeValue( individual.getName() ) );
+            return generateHtmlLabelNode( individual.getId(), Symbol.INDIVIDUAL
+                .getNodeValue( individual.getName(), configuration ) );
         }
 
         @Override
@@ -177,7 +180,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Datatype datatype ) {
-            return generateHtmlLabelNode( datatype.getId(), Symbol.DATA_TYPE.getNodeValue( datatype.getName() ) );
+            return generateHtmlLabelNode( datatype.getId(), Symbol.DATA_TYPE
+                .getNodeValue( datatype.getName(), configuration ) );
         }
 
         @Override
