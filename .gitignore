@@ -7,3 +7,8 @@ build
 .idea
 out/
 catalog-v*.xml
+
+.cache
+
+# The diagrams are generated at build time
+docs/modules/ROOT/assets/images/class-assertion.svg

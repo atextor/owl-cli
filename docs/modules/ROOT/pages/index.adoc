@@ -1,0 +1,11 @@
+= owl-cli
+
+This is the start page for version *{page-component-version}* of this component.
+
+== Images
+
+Test generated diagram:
+
+[.thumb]
+image::class-assertion.svg[scaledwidth=75%]
+

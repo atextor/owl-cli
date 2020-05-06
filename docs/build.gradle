@@ -1,11 +1,42 @@
 plugins {
-    id 'org.asciidoctor.jvm.convert'
+    id("com.github.node-gradle.node") version "2.2.0"
 }
 
-asciidoctor {
-    sources {
-        include 'index.adoc'
+node {
+    version = "12.13.1"
+    npmVersion = "6.9.0"
+    download = true
+    workDir = file("${project.buildDir}/nodejs")
+    npmWorkDir = file("${project.buildDir}/npm")
+    nodeModulesDir = file("${project.buildDir}")
+}
+
+task installAntoraCli(type: NpmTask) {
+    args = ['install', '@antora/cli']
+    outputs.file file("${project.buildDir}/node_modules/@antora/cli/bin/antora")
+}
+
+task installAntoraSiteGenerator(type: NpmTask) {
+    args = ['install', '@antora/site-generator-default']
+    outputs.file file("${project.buildDir}/node_modules/@antora/site-generator-default/lib/index.js")
+}
+
+task antora(type: NodeTask) {
+    dependsOn 'installAntoraCli'
+    dependsOn 'installAntoraSiteGenerator'
+    workingDir = rootProject.projectDir
+    script = file("${project.buildDir}/node_modules/@antora/cli/bin/antora")
+    args = ['site.yml', '--stacktrace']
+}
+
+project.fileTree(dir: 'modules/ROOT/examples', include: '*.ttl').files.each { ttlFile ->
+    def imageName = ttlFile.name.replaceFirst("[.][^.]+\$", "")
+    tasks.create(name: "${imageName}", type: JavaExec, dependsOn: ":cli:shadowJar") {
+        classpath = project(':cli').fileTree(dir: 'build/libs', include: '*.jar')
+        jvmArgs = ['--enable-preview']
+        workingDir = file("${project.projectDir}/modules/ROOT/examples")
+        args = ['diagram', "${imageName}.ttl", "../assets/images/${imageName}.svg"]
+        outputs.file file("${project.projectDir}/modules/ROOT/assets/images/${imageName}.svg")
     }
+    antora.dependsOn("${imageName}")
 }
-
-build.dependsOn 'asciidoctor'

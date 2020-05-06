@@ -1,0 +1,21 @@
+site:
+  title: owl-cli Documentation
+  url: https://github.com/atextor/owl-cli
+  start_page: main::index.adoc
+content:
+  sources:
+    - url: .
+      branches: master
+      start_path: docs
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+runtime:
+  cache_dir: ./.cache/antora
+asciidoc:
+  attributes:
+    doctype: book
+    sectanchors: true
+    idprefix: ''
+    idseparator: '-'
