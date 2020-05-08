@@ -9,7 +9,8 @@ content:
       start_path: docs
 ui:
   bundle:
-    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/master/raw/build/ui-bundle.zip?job=bundle-stable
+    # UI bundle is built from here: https://github.com/atextor/docs-antora-ui
+    url: ./docs/ui-bundle.zip
     snapshot: true
 runtime:
   cache_dir: ./.cache/antora

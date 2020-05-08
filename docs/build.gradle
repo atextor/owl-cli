@@ -16,17 +16,21 @@ task installAntoraCli(type: NpmTask) {
     outputs.file file("${project.buildDir}/node_modules/@antora/cli/bin/antora")
 }
 
-task installAntoraSiteGenerator(type: NpmTask) {
-    args = ['install', '@antora/site-generator-default']
-    outputs.file file("${project.buildDir}/node_modules/@antora/site-generator-default/lib/index.js")
+task installAntoraSiteGeneratorLunr(type: NpmTask) {
+    args = ['install', 'antora-site-generator-lunr']
+    outputs.file file("${project.buildDir}/node_modules/antora-site-generator-lunr/lib/index.js")
 }
 
 task antora(type: NodeTask) {
     dependsOn 'installAntoraCli'
-    dependsOn 'installAntoraSiteGenerator'
+    dependsOn 'installAntoraSiteGeneratorLunr'
+    environment = [
+        'DOCSEARCH_ENABLED': 'true',
+        'DOCSEARCH_ENGINE': 'lunr'
+    ]
     workingDir = rootProject.projectDir
     script = file("${project.buildDir}/node_modules/@antora/cli/bin/antora")
-    args = ['site.yml', '--stacktrace']
+    args = ['--generator', 'antora-site-generator-lunr', 'site.yml', '--stacktrace']
 }
 
 def ontologyDir = 'modules/ROOT/examples'
