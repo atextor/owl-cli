@@ -12,6 +12,11 @@ ui:
     # UI bundle is built from here: https://github.com/atextor/docs-antora-ui
     url: ./docs/ui-bundle.zip
     snapshot: true
+  supplemental_files:
+  - path: ui.yml
+    contents: |
+      static_files: [ .nojekyll ]
+  - path: .nojekyll
 runtime:
   cache_dir: ./.cache/antora
 asciidoc:
