@@ -1,5 +1,5 @@
 plugins {
-    id("com.github.node-gradle.node") version "2.2.0"
+    id 'com.github.node-gradle.node' version '2.2.0'
 }
 
 node {
@@ -29,14 +29,16 @@ task antora(type: NodeTask) {
     args = ['site.yml', '--stacktrace']
 }
 
-project.fileTree(dir: 'modules/ROOT/examples', include: '*.ttl').files.each { ttlFile ->
-    def imageName = ttlFile.name.replaceFirst("[.][^.]+\$", "")
-    tasks.create(name: "${imageName}", type: JavaExec, dependsOn: ":cli:shadowJar") {
+def ontologyDir = 'modules/ROOT/examples'
+project.fileTree(dir: ontologyDir, include: '*.ttl').files.each { ttlFile ->
+    def baseName = ttlFile.name.replaceFirst("[.][^.]+\$", "")
+    def imageFile = "${project.projectDir}/modules/ROOT/assets/images/${baseName}.svg"
+    tasks.create(name: "${baseName}", type: JavaExec, dependsOn: ":cli:shadowJar") {
         classpath = project(':cli').fileTree(dir: 'build/libs', include: '*.jar')
         jvmArgs = ['--enable-preview']
-        workingDir = file("${project.projectDir}/modules/ROOT/examples")
-        args = ['diagram', "${imageName}.ttl", "../assets/images/${imageName}.svg"]
-        outputs.file file("${project.projectDir}/modules/ROOT/assets/images/${imageName}.svg")
+        workingDir = file("${project.projectDir}/${ontologyDir}")
+        args = ['diagram', "${baseName}.ttl", imageFile]
+        outputs.file file(imageFile)
     }
-    antora.dependsOn("${imageName}")
+    antora.dependsOn("${baseName}")
 }
