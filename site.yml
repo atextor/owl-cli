@@ -25,3 +25,6 @@ asciidoc:
     sectanchors: true
     idprefix: ''
     idseparator: '-'
+    stem: 'asciimath'
+  extensions:
+    - "@djencks/asciidoctor-mathjax"

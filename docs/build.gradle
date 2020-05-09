@@ -21,9 +21,15 @@ task installAntoraSiteGeneratorLunr(type: NpmTask) {
     outputs.file file("${project.buildDir}/node_modules/antora-site-generator-lunr/lib/index.js")
 }
 
+task installAsciidoctorMathjax(type: NpmTask) {
+    args = ['install', '@djencks/asciidoctor-mathjax']
+    outputs.file file("${project.buildDir}/node_modules/@djencks/asciidoctor-mathjax/lib/asciidoctor-mathjax.js")
+}
+
 task antora(type: NodeTask) {
     dependsOn 'installAntoraCli'
     dependsOn 'installAntoraSiteGeneratorLunr'
+    dependsOn 'installAsciidoctorMathjax'
     environment = [
         'DOCSEARCH_ENABLED': 'true',
         'DOCSEARCH_ENGINE': 'lunr'
