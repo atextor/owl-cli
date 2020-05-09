@@ -2,10 +2,31 @@
 
 This is the start page for version *{page-component-version}* of this component.
 
-== Images
+== Diagram Notation
 
-Test generated diagram:
+.Mapping Syntax
+[cols="<.^,<.^,<.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
 
-[.thumb]
-image::class-assertion.svg[scaledwidth=75%]
+|EnumeratedClass(latexmath:[A{o_1\,\dots\,o_2}])
+|latexmath:[A\,\equiv\,\{o_1\}\sqcup\,\cdots\,\sqcup\{o_n\}]
+|image::enumerated-class.svg[scaledwidth=75%]
 
+|SubClassOf(latexmath:[C_1\,C_2])
+|latexmath:[C_1\,\sqsubseteq\,C_2]
+|image::subclassof.svg[scaledwidth=75%]
+
+|EquivalentClasses(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\equiv\,\cdots\,\equiv\,C_n]
+|image::equivalent-classes.svg[scaledwidth=75%]
+
+|DisjointClasses(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|image::disjoint-classes.svg[scaledwidth=75%]
+
+|TransitiveObjectProperty(latexmath:[R])
+|latexmath:[R\,\circ\,R\,\sqsubseteq\,R]
+|image::transitive-object-property.svg[scaledwidth=75%]
+
+|===

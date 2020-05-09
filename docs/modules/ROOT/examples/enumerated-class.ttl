@@ -1,0 +1,8 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:A a owl:Class ;
+   owl:equivalentClass [
+      a owl:Class ;
+      owl:oneOf ( :o1 :o2 )
+   ] .
