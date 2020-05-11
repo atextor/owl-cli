@@ -1,0 +1,120 @@
+= OWL Diagram Notation
+
+== Element Types
+
+.Mapping Syntax for OWL Element Types
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Element|Description Logics Notation|Diagram
+
+|Class(latexmath:[C])
+|latexmath:[C]
+|image::declaration-class.svg[scaledwidth=75%]
+
+|ObjectProperty(latexmath:[P])
+|latexmath:[P]
+|image::declaration-object-property.svg[scaledwidth=75%]
+
+|DataProperty(latexmath:[P])
+|latexmath:[P]
+|image::declaration-data-property.svg[scaledwidth=75%]
+
+|AnnotationProperty(latexmath:[P])
+|latexmath:[P]
+|image::declaration-annotation-property.svg[scaledwidth=75%]
+
+|NamedIndividual(latexmath:[o])
+|latexmath:[o]
+|image::declaration-individual.svg[scaledwidth=75%]
+
+|Datatype(latexmath:[D])
+|_no notation_
+|image::declaration-datatype.svg[scaledwidth=75%]
+
+|===
+
+== Class Expressions
+
+.Mapping Syntax for OWL Class Expressions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|ObjectIntersectionOf(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\sqcap\,\cdots\,\sqcap\,C_n]
+|image::class-intersection.svg[scaledwidth=75%]
+
+|ObjectUnionOf(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\sqcup\,\cdots\,\sqcup\,C_n]
+|image::class-union.svg[scaledwidth=75%]
+
+|ObjectComplementOf(latexmath:[C])
+|latexmath:[\neg\,C]
+|image::object-complement-of.svg[scaledwidth=75%]
+
+|ObjectSomeValuesFrom(latexmath:[P\,C])
+|latexmath:[\exists\,P.C]
+|image::object-some-values-from.svg[scaledwidth=75%]
+
+|ObjectAllValuesFrom(latexmath:[P\,C])
+|latexmath:[\forall\,P.C]
+|image::object-all-values-from.svg[scaledwidth=75%]
+
+|ObjectHasValue(latexmath:[P\,o])
+|latexmath:[P\,\ni\,o]
+|image::object-has-value.svg[scaledwidth=75%]
+
+|ObjectMinCardinality(latexmath:[n\,P])
+|latexmath:[\geq\,n\,P]
+|image::object-min-cardinality-unqualified.svg[scaledwidth=75%]
+
+|ObjectMinCardinality(latexmath:[n\,P\,C])
+|latexmath:[\geq\,n\,P.C]
+|image::object-min-cardinality-qualified.svg[scaledwidth=75%]
+
+|ObjectMaxCardinality(latexmath:[n\,P])
+|latexmath:[\leq\,n\,P]
+|image::object-max-cardinality-unqualified.svg[scaledwidth=75%]
+
+|ObjectMaxCardinality(latexmath:[n\,P\,C])
+|latexmath:[\leq\,n\,P.C]
+|image::object-max-cardinality-qualified.svg[scaledwidth=75%]
+
+|ObjectExactCardinality(latexmath:[n\,P])
+|latexmath:[=\,n\,P]
+|image::object-exact-cardinality-unqualified.svg[scaledwidth=75%]
+
+|ObjectExactCardinality(latexmath:[n\,P\,C])
+|latexmath:[=\,n\,P.C]
+|image::object-exact-cardinality-qualified.svg[scaledwidth=75%]
+
+|===
+
+== Axioms
+
+.Mapping Syntax for OWL Expressions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|EnumeratedClass(latexmath:[C\,{o_1\,\dots\,o_2}])
+|latexmath:[C\,\equiv\,\{o_1\}\sqcup\,\cdots\,\sqcup\{o_n\}]
+|image::enumerated-class.svg[scaledwidth=75%]
+
+|SubClassOf(latexmath:[C_1\,C_2])
+|latexmath:[C_1\,\sqsubseteq\,C_2]
+|image::subclassof.svg[scaledwidth=75%]
+
+|EquivalentClasses(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\equiv\,\cdots\,\equiv\,C_n]
+|image::equivalent-classes.svg[scaledwidth=75%]
+
+|DisjointClasses(latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|image::disjoint-classes.svg[scaledwidth=75%]
+
+|TransitiveObjectProperty(latexmath:[P])
+|latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
+|image::transitive-object-property.svg[scaledwidth=75%]
+
+|===
