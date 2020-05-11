@@ -1,4 +1,4 @@
 @prefix : <https://github.com/atextor/owl-cli#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-:P a owl:ObjectProperty, owl:TransitiveProperty .
+:P a owl:DatatypeProperty .
