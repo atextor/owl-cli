@@ -204,24 +204,12 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Node.Intersection intersection ) {
-            final String label = """
-                <table border="0">
-                   <tr>
-                     <td border="0" fixedsize="true" width="24" height="24" align="center"><FONT POINT-SIZE="24"><B>⨅</B></FONT></td>
-                   </tr>
-                 </table>""";
-            return generateHtmlLabelNode( intersection.getId(), " " + label );
+            return generateHtmlLabelNode( intersection.getId(), "<FONT COLOR=\"#00B2B2\"><B>and</B></FONT>" );
         }
 
         @Override
         public GraphvizDocument visit( final Node.Union union ) {
-            final String label = """
-                <table border="0">
-                   <tr>
-                     <td border="0" fixedsize="true" width="24" height="24" align="center"><FONT POINT-SIZE="24"><B>⨆</B></FONT></td>
-                   </tr>
-                 </table>""";
-            return generateHtmlLabelNode( union.getId(), " " + label );
+            return generateHtmlLabelNode( union.getId(), "<FONT COLOR=\"#00B2B2\"><B>or</B></FONT>" );
         }
 
         @Override
