@@ -23,7 +23,10 @@ import org.semanticweb.owlapi.model.AxiomType;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
+import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLObjectProperty;
+
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,6 +36,19 @@ public class OWLPropertyExpressionMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLObjectInverseOf() {
+        final String ontology = """
+            :foo a owl:ObjectProperty .
+            :bar a owl:ObjectProperty ;
+               owl:equivalentProperty [
+                  owl:inverseOf :foo
+               ] .
+            """;
+        final OWLEquivalentObjectPropertiesAxiom axiom = getAxiom( ontology, AxiomType.EQUIVALENT_OBJECT_PROPERTIES );
+        final Graph graph = axiom.operands().filter( operand -> !operand.isNamed() ).findFirst().get()
+            .accept( mapper );
+
+        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Inverse.class );
+        assertThat( graph.getOtherElements().collect( Collectors.toSet() ) ).hasSize( 2 );
     }
 
     @Test
