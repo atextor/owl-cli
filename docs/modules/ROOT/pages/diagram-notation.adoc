@@ -88,11 +88,59 @@
 |latexmath:[=\,n\,P.C]
 |image::object-exact-cardinality-qualified.svg[scaledwidth=75%]
 
+|DataSomeValuesFrom(latexmath:[P\,C])
+|latexmath:[\exists\,P.C]
+|image::data-some-values-from.svg[scaledwidth=75%]
+
+|DataAllValuesFrom(latexmath:[P\,C])
+|latexmath:[\forall\,P.C]
+|image::data-all-values-from.svg[scaledwidth=75%]
+
+|DataHasValue(latexmath:[P\,v])
+|latexmath:[P\,\ni\,v]
+|image::data-has-value.svg[scaledwidth=75%]
+
+|DataMinCardinality(latexmath:[n\,P])
+|latexmath:[\geq\,n\,P]
+|image::data-min-cardinality.svg[scaledwidth=75%]
+
+|DataMaxCardinality(latexmath:[n\,P])
+|latexmath:[\leq\,n\,P]
+|image::data-max-cardinality.svg[scaledwidth=75%]
+
+|DataExactCardinality(latexmath:[n\,P])
+|latexmath:[=\,n\,P]
+|image::data-exact-cardinality.svg[scaledwidth=75%]
+
+|===
+
+== Property Expressions
+.Mapping Syntax for OWL Property Expressions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|DataIntersectionOf(latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
+|image::data-intersection-of.svg[scaledwidth=75%]
+
+|DataUnionOf(latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
+|image::data-union-of.svg[scaledwidth=75%]
+
+|DataComplementOf(latexmath:[U])
+|latexmath:[\neg\,U]
+|image::data-complement-of.svg[scaledwidth=75%]
+
+|ObjectInverseOf(latexmath:[P])
+|latexmath:[P^{-}]
+|image::object-inverse-of.svg[scaledwidth=75%]
+
 |===
 
 == Axioms
 
-.Mapping Syntax for OWL Expressions
+.Mapping Syntax for OWL Axioms
 [cols="^.^,^.^,^.^a", options="header"]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
