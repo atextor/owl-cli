@@ -19,13 +19,19 @@ import de.atextor.owlcli.diagram.graph.Graph;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataExactCardinality;
 import org.semanticweb.owlapi.model.OWLDataHasValue;
+import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataMaxCardinality;
 import org.semanticweb.owlapi.model.OWLDataMinCardinality;
+import org.semanticweb.owlapi.model.OWLDataOneOf;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
+import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLDatatype;
+import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
+import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
 import org.semanticweb.owlapi.model.OWLObjectAllValuesFrom;
@@ -179,5 +185,35 @@ public class OWLObjectMapper implements OWLObjectVisitorEx<Graph> {
     @Override
     public Graph visit( final OWLDatatype datatype ) {
         return mappingConfig.getOwlDataMapper().visit( datatype );
+    }
+
+    @Override
+    public Graph visit( final OWLDataComplementOf complement ) {
+        return mappingConfig.getOwlDataMapper().visit( complement );
+    }
+
+    @Override
+    public Graph visit( final OWLDataOneOf oneOf ) {
+        return mappingConfig.getOwlDataMapper().visit( oneOf );
+    }
+
+    @Override
+    public Graph visit( final OWLDataIntersectionOf intersection ) {
+        return mappingConfig.getOwlDataMapper().visit( intersection );
+    }
+
+    @Override
+    public Graph visit( final OWLDataUnionOf union ) {
+        return mappingConfig.getOwlDataMapper().visit( union );
+    }
+
+    @Override
+    public Graph visit( final OWLDatatypeRestriction restriction ) {
+        return mappingConfig.getOwlDataMapper().visit( restriction );
+    }
+
+    @Override
+    public Graph visit( final OWLFacetRestriction restriction ) {
+        return mappingConfig.getOwlDataMapper().visit( restriction );
     }
 }
