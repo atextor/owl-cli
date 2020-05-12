@@ -394,9 +394,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     public Graph visit( final @Nonnull OWLSubPropertyChainOfAxiom axiom ) {
         final OWLPropertyExpressionVisitorEx<Graph> mapper = mappingConfig.getOwlPropertyExpressionMapper();
 
-        final Set<Node> chainLinks = axiom.getPropertyChain().stream()
+        final List<Node> chainLinks = axiom.getPropertyChain().stream()
             .map( expression -> expression.accept( mapper ).getNode() )
-            .collect( Collectors.toSet() );
+            .collect( Collectors.toList() );
         final String value = chainLinks.stream()
             .flatMap( node -> node.getId().getIri().stream() )
             .map( iri -> mappingConfig.getNameMapper().getName( iri ) )
