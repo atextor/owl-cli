@@ -39,14 +39,14 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
 
     @Override
     public Graph visit( final @Nonnull OWLObjectInverseOf property ) {
-        final Node complementNode =
-            new Node.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Node inverseNode =
+            new Node.Inverse( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
         final Graph propertyVisitorGraph =
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge propertyEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, complementNode.getId(),
+        final Edge propertyEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, inverseNode.getId(),
             propertyVisitorGraph.getNode().getId() );
-        return Graph.of( complementNode ).and( propertyVisitorGraph ).and( propertyEdge );
+        return Graph.of( inverseNode ).and( propertyVisitorGraph ).and( propertyEdge );
     }
 
     @Override
