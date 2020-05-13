@@ -35,7 +35,9 @@
 
 == Class Expressions
 
-.Mapping Syntax for OWL Class Expressions
+=== Propositional Connectives and Enumeration of Individuals
+
+.Mapping Syntax for Propositional Connectives and Enumeration of Individuals
 [cols="^.^,^.^,^.^a", options="header"]
 |===
 |OWL Expression|Description Logics Notation|Diagram
@@ -52,6 +54,19 @@
 |latexmath:[\neg\,C]
 |image::object-complement-of.svg[scaledwidth=75%]
 
+|ObjectOneOf(latexmath:[o_1\,\dots\,o_n])
+|latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
+|image::object-one-of.svg[scaledwidth=75%]
+
+|===
+
+=== Object Property Restrictions
+
+.Mapping Syntax for Object Property Restrictions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
 |ObjectSomeValuesFrom(latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
 |image::object-some-values-from.svg[scaledwidth=75%]
@@ -63,6 +78,20 @@
 |ObjectHasValue(latexmath:[P\,o])
 |latexmath:[P\,\ni\,o]
 |image::object-has-value.svg[scaledwidth=75%]
+
+|ObjectInverseOf(latexmath:[P])
+|latexmath:[P^{-}]
+|image::object-inverse-of.svg[scaledwidth=75%]
+
+// TODO Self-Restriction
+|===
+
+=== Object Property Cardinality Restrictions
+
+.Mapping Syntax for Object Property Cardinality Restrictions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
 
 |ObjectMinCardinality(latexmath:[n\,P])
 |latexmath:[\geq\,n\,P]
@@ -88,6 +117,15 @@
 |latexmath:[=\,n\,P.C]
 |image::object-exact-cardinality-qualified.svg[scaledwidth=75%]
 
+|===
+
+=== Data Property Restrictions
+
+.Mapping Syntax for Data Property Restrictions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
 |DataSomeValuesFrom(latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
 |image::data-some-values-from.svg[scaledwidth=75%]
@@ -99,30 +137,6 @@
 |DataHasValue(latexmath:[P\,v])
 |latexmath:[P\,\ni\,v]
 |image::data-has-value.svg[scaledwidth=75%]
-
-|DataMinCardinality(latexmath:[n\,P])
-|latexmath:[\geq\,n\,P]
-|image::data-min-cardinality.svg[scaledwidth=75%]
-
-|DataMaxCardinality(latexmath:[n\,P])
-|latexmath:[\leq\,n\,P]
-|image::data-max-cardinality.svg[scaledwidth=75%]
-
-|DataExactCardinality(latexmath:[n\,P])
-|latexmath:[=\,n\,P]
-|image::data-exact-cardinality.svg[scaledwidth=75%]
-
-|ObjectOneOf(latexmath:[o_1\,\dots\,o_n])
-|latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
-|image::object-one-of.svg[scaledwidth=75%]
-
-|===
-
-== Property Expressions
-.Mapping Syntax for OWL Property Expressions
-[cols="^.^,^.^,^.^a", options="header"]
-|===
-|OWL Expression|Description Logics Notation|Diagram
 
 |DataIntersectionOf(latexmath:[U_1\,\dots\,U_n])
 |latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
@@ -136,30 +150,41 @@
 |latexmath:[\neg\,U]
 |image::data-complement-of.svg[scaledwidth=75%]
 
-|ObjectInverseOf(latexmath:[P])
-|latexmath:[P^{-}]
-|image::object-inverse-of.svg[scaledwidth=75%]
-
-|ObjectPropertyChain(latexmath:[P_1\,\dots\,P_n])
-|latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
-|image::object-property-chain.svg[scaledwidth=75%]
-
 |DataOneOf(latexmath:[v_1\,\dots\,v_n])
 |latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
 |image::data-one-of.svg[scaledwidth=75%]
 
 |===
 
+=== Data Property Cardinality Restrictions
+
+.Mapping Syntax for Data Property Cardinality Restrictions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|DataMinCardinality(latexmath:[n\,P])
+|latexmath:[\geq\,n\,P]
+|image::data-min-cardinality.svg[scaledwidth=75%]
+
+|DataMaxCardinality(latexmath:[n\,P])
+|latexmath:[\leq\,n\,P]
+|image::data-max-cardinality.svg[scaledwidth=75%]
+
+|DataExactCardinality(latexmath:[n\,P])
+|latexmath:[=\,n\,P]
+|image::data-exact-cardinality.svg[scaledwidth=75%]
+
+|===
+
 == Axioms
 
-.Mapping Syntax for OWL Axioms
+=== Class Expression Axioms
+
+.Mapping Syntax for Class Expression Axioms
 [cols="^.^,^.^,^.^a", options="header"]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
-
-|EnumeratedClass(latexmath:[C\,{o_1\,\dots\,o_2}])
-|latexmath:[C\,\equiv\,\{o_1\}\sqcup\,\cdots\,\sqcup\{o_n\}]
-|image::enumerated-class.svg[scaledwidth=75%]
 
 |SubClassOf(latexmath:[C_1\,C_2])
 |latexmath:[C_1\,\sqsubseteq\,C_2]
@@ -173,9 +198,39 @@
 |latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |image::disjoint-classes.svg[scaledwidth=75%]
 
+|DisjointUnion(latexmath:[C\,C_1\,\dots\,C_n])
+a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
+latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|image::disjoint-union.svg[scaledwidth=75%]
+
+|===
+
+=== Object Property Axioms
+
+.Mapping Syntax for Object Property Axioms
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
 |SubObjectPropertyOf(latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\sqsubseteq\,P_2]
 |image::sub-object-property-of.svg[scaledwidth=75%]
+
+|ObjectPropertyChain(latexmath:[P_1\,\dots\,P_n])
+|latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
+|image::object-property-chain.svg[scaledwidth=75%]
+
+|EquivalentObjectProperties(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2]
+|image::equivalent-object-properties.svg[scaledwidth=75%]
+
+|DisjointObjectProperties(latexmath:[P_1\,P_2])
+|latexmath:[\text{Disjoint}(P_1,P_2)]
+|image::disjoint-object-properties.svg[scaledwidth=75%]
+
+|InverseObjectProperties(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2^{-}]
+|image::inverse-object-properties.svg[scaledwidth=75%]
 
 |ObjectPropertyDomain(latexmath:[C\,P])
 |latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
@@ -184,10 +239,6 @@
 |ObjectPropertyRange(latexmath:[C\,P])
 |latexmath:[\top\,\sqsubseteq\,\forall\,P.C]
 |image::object-property-range.svg[scaledwidth=75%]
-
-|InverseObjectProperties(latexmath:[P_1\,P_2])
-|latexmath:[P_1\,\equiv\,P_2^{-}]
-|image::inverse-object-properties.svg[scaledwidth=75%]
 
 |FunctionalObjectProperty(latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1\,P]
@@ -209,10 +260,6 @@
 |latexmath:[P\,\equiv\,P^{-}]
 |image::symmetric-object-property.svg[scaledwidth=75%]
 
-|DisjointObjectProperties(latexmath:[P_1\,P_2])
-|latexmath:[\text{Disjoint}(P_1,P_2)]
-|image::disjoint-object-properties.svg[scaledwidth=75%]
-
 |AsymmetricObjectProperty(latexmath:[P])
 |latexmath:[\text{Disjoint}(P,P^{-})]
 |image::asymmetric-object-property.svg[scaledwidth=75%]
@@ -221,13 +268,51 @@
 |latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
 |image::transitive-object-property.svg[scaledwidth=75%]
 
-|FunctionalDataProperty(latexmath:[P])
-|latexmath:[\top\,\sqsubseteq\,\leq\,1D]
-|image::functional-data-property.svg[scaledwidth=75%]
+|===
+
+=== Data Property Axioms
+
+.Mapping Syntax for Data Property Axioms
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|SubDataPropertyOf(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\sqsubseteq\,P_2]
+|image::sub-data-property-of.svg[scaledwidth=75%]
+
+|EquivalentDataProperties(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2]
+|image::equivalent-data-properties.svg[scaledwidth=75%]
 
 |DisjointDataProperties(latexmath:[P_1\,P_2])
 |latexmath:[\text{Disjoint}(P_1,P_2)]
 |image::disjoint-data-properties.svg[scaledwidth=75%]
+
+|DataPropertyDomain(latexmath:[C\,P])
+|latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
+|image::data-property-domain.svg[scaledwidth=75%]
+
+|DataPropertyRange(latexmath:[D\,P])
+|latexmath:[\top\,\sqsubseteq\,\forall\,P.D]
+|image::data-property-range.svg[scaledwidth=75%]
+
+|FunctionalDataProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1D]
+|image::functional-data-property.svg[scaledwidth=75%]
+
+|===
+
+=== Assertions
+
+.Mapping Syntax for Assertions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|EnumeratedClass(latexmath:[C\,{o_1\,\dots\,o_2}])
+|latexmath:[C\,\equiv\,\{o_1\}\sqcup\,\cdots\,\sqcup\{o_n\}]
+|image::enumerated-class.svg[scaledwidth=75%]
 
 |ClassAssertion(latexmath:[C\,o])
 |latexmath:[C(o)]
@@ -253,10 +338,5 @@
 a|latexmath:[\{o_i\}\sqcap\{o_j\}\sqsubseteq\bot,]
 latexmath:[1 \leq i \lt j \leq n]
 |image::different-individuals.svg[scaledwidth=75%]
-
-|DisjointUnion(latexmath:[C\,C_1\,\dots\,C_n])
-a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
-latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
-|image::disjoint-union.svg[scaledwidth=75%]
 
 |===
