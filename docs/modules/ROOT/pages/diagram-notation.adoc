@@ -20,7 +20,7 @@
 |image::declaration-data-property.svg[scaledwidth=75%]
 
 |AnnotationProperty(latexmath:[P])
-|latexmath:[P]
+|_no notation_
 |image::declaration-annotation-property.svg[scaledwidth=75%]
 
 |NamedIndividual(latexmath:[o])
@@ -112,6 +112,10 @@
 |latexmath:[=\,n\,P]
 |image::data-exact-cardinality.svg[scaledwidth=75%]
 
+|ObjectOneOf(latexmath:[o_1\,\dots\,o_n])
+|latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
+|image::object-one-of.svg[scaledwidth=75%]
+
 |===
 
 == Property Expressions
@@ -135,6 +139,14 @@
 |ObjectInverseOf(latexmath:[P])
 |latexmath:[P^{-}]
 |image::object-inverse-of.svg[scaledwidth=75%]
+
+|ObjectPropertyChain(latexmath:[P_1\,\dots\,P_n])
+|latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
+|image::object-property-chain.svg[scaledwidth=75%]
+
+|DataOneOf(latexmath:[v_1\,\dots\,v_n])
+|latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
+|image::data-one-of.svg[scaledwidth=75%]
 
 |===
 
@@ -161,8 +173,90 @@
 |latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |image::disjoint-classes.svg[scaledwidth=75%]
 
+|SubObjectPropertyOf(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\sqsubseteq\,P_2]
+|image::sub-object-property-of.svg[scaledwidth=75%]
+
+|ObjectPropertyDomain(latexmath:[C\,P])
+|latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
+|image::object-property-domain.svg[scaledwidth=75%]
+
+|ObjectPropertyRange(latexmath:[C\,P])
+|latexmath:[\top\,\sqsubseteq\,\forall\,P.C]
+|image::object-property-range.svg[scaledwidth=75%]
+
+|InverseObjectProperties(latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2^{-}]
+|image::inverse-object-properties.svg[scaledwidth=75%]
+
+|FunctionalObjectProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1\,P]
+|image::functional-object-property.svg[scaledwidth=75%]
+
+|InverseFunctionalObjectProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1\,P^{-}]
+|image::inverse-functional-object-property.svg[scaledwidth=75%]
+
+|ReflexiveObjectProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\exists\,P.\text{Self}]
+|image::reflexive-object-property.svg[scaledwidth=75%]
+
+|IrreflexiveObjectProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\neg\exists\,P.\text{Self}]
+|image::irreflexive-object-property.svg[scaledwidth=75%]
+
+|SymmetricObjectProperty(latexmath:[P])
+|latexmath:[P\,\equiv\,P^{-}]
+|image::symmetric-object-property.svg[scaledwidth=75%]
+
+|DisjointObjectProperties(latexmath:[P_1\,P_2])
+|latexmath:[\text{Disjoint}(P_1,P_2)]
+|image::disjoint-object-properties.svg[scaledwidth=75%]
+
+|AsymmetricObjectProperty(latexmath:[P])
+|latexmath:[\text{Disjoint}(P,P^{-})]
+|image::asymmetric-object-property.svg[scaledwidth=75%]
+
 |TransitiveObjectProperty(latexmath:[P])
 |latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
 |image::transitive-object-property.svg[scaledwidth=75%]
+
+|FunctionalDataProperty(latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1D]
+|image::functional-data-property.svg[scaledwidth=75%]
+
+|DisjointDataProperties(latexmath:[P_1\,P_2])
+|latexmath:[\text{Disjoint}(P_1,P_2)]
+|image::disjoint-data-properties.svg[scaledwidth=75%]
+
+|ClassAssertion(latexmath:[C\,o])
+|latexmath:[C(o)]
+|image::class-assertion.svg[scaledwidth=75%]
+
+|ObjectPropertyAssertion(latexmath:[P\,o_1\,o_2])
+|latexmath:[P(o_1,o_2)]
+|image::object-property-assertion.svg[scaledwidth=75%]
+
+|NegativeObjectPropertyAssertion(latexmath:[P\,o_1\,o_2])
+|latexmath:[(o_1,o_2):\neg\,P]
+|image::negative-object-property-assertion.svg[scaledwidth=75%]
+
+|DataPropertyAssertion(latexmath:[P\,o\,v])
+|latexmath:[P(o,v)]
+|image::data-property-assertion.svg[scaledwidth=75%]
+
+|NegativeDataPropertyAssertion(latexmath:[P\,o\,v])
+|latexmath:[(o,v):\neg\,P]
+|image::negative-data-property-assertion.svg[scaledwidth=75%]
+
+|DifferentIndividuals(latexmath:[o_1\,\dots\,o_n])
+a|latexmath:[\{o_i\}\sqcap\{o_j\}\sqsubseteq\bot,]
+latexmath:[1 \leq i \lt j \leq n]
+|image::different-individuals.svg[scaledwidth=75%]
+
+|DisjointUnion(latexmath:[C\,C_1\,\dots\,C_n])
+a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
+latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|image::disjoint-union.svg[scaledwidth=75%]
 
 |===
