@@ -114,7 +114,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             }
 
             String getNodeValue( final String elementName, final Configuration configuration ) {
-                return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\"><B>%s</B></FONT> " +
+                return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"sans\"><B>%s</B></FONT> " +
                         "<FONT POINT-SIZE=\"%s\" COLOR=\"#000000\" FACE=\"%s\">%s</FONT>",
                     symbolSize, color, symbol, configuration.fontsize, configuration.fontname, elementName );
             }
