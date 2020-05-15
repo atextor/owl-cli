@@ -100,7 +100,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             DATA_PROPERTY( "#38A14A", "▬", 16 ),
             OBJECT_PROPERTY( "#0079BA", "▬", 16 ),
             ANNOTATION_PROPERTY( "#D17A00", "▬", 16 ),
-            INDIVIDUAL( "#874B82", "◆", 16 ),
+            INDIVIDUAL( "#874B82", "◆", 14 ),
             DATA_TYPE( "#AD3B45", "⬤", 12 );
 
             String color;
@@ -114,7 +114,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             }
 
             String getNodeValue( final String elementName, final Configuration configuration ) {
-                return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"sans\"><B>%s</B></FONT> " +
+                return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"owlcli\"><B>%s</B></FONT> " +
                         "<FONT POINT-SIZE=\"%s\" COLOR=\"#000000\" FACE=\"%s\">%s</FONT>",
                     symbolSize, color, symbol, configuration.fontsize, configuration.fontname, elementName );
             }
@@ -217,7 +217,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String label = """
                 <table border="0">
                    <tr>
-                     <td border="0" fixedsize="true" width="30" height="24" align="center"><FONT POINT-SIZE="26"><B>  ⚬⚬</B></FONT></td>
+                     <td border="0" fixedsize="true" width="30" height="24" align="center"><FONT POINT-SIZE="26" face="owlcli">  ⚬⚬</FONT></td>
                    </tr>
                  </table>""";
             return generateHtmlLabelNode( disjointness.getId(), label );
@@ -228,7 +228,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String label = """
                 <table border="0">
                    <tr>
-                     <td border="0" fixedsize="true" width="24" height="24" align="center"><FONT POINT-SIZE="30"><B>⚭</B></FONT></td>
+                     <td border="0" fixedsize="true" width="24" height="24" align="center"><FONT POINT-SIZE="30" face="owlcli">⚭</FONT></td>
                    </tr>
                  </table>""";
             return generateHtmlLabelNode( disjointUnion.getId(), " " + label );

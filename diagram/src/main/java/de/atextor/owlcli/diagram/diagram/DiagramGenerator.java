@@ -20,6 +20,7 @@ import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
+import org.apache.commons.io.IOUtils;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
@@ -31,7 +32,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -42,6 +45,7 @@ import java.util.stream.Stream;
 public class DiagramGenerator {
     private final OWLOntologyMapper ontologyMapper;
     private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator;
+    private final List<Function<Try<String>, Try<String>>> svgPostProcessors = List.of( new FontEmbedder() );
 
     /**
      * Constructor. Initializes the Diagram generator with the necessary configuration.
@@ -84,20 +88,36 @@ public class DiagramGenerator {
 
         final OutputStream processStdIn = process.getOutputStream();
         final InputStream processStdOut = process.getInputStream();
+
         try {
             contentProvider.accept( processStdIn );
         } catch ( final IOException exception ) {
             return Try.failure( exception );
         }
 
-        return writeStreamToOutput( processStdOut, output ).flatMap( writingResult -> {
-            try {
-                process.waitFor();
-                return Try.success( null );
-            } catch ( final InterruptedException exception ) {
-                return Try.failure( exception );
-            }
-        } );
+        return postprocess( processStdOut, configuration ).flatMap( processedOutput ->
+            writeStreamToOutput( processedOutput, output ).flatMap( writingResult -> {
+                try {
+                    process.waitFor();
+                    return Try.success( null );
+                } catch ( final InterruptedException exception ) {
+                    return Try.failure( exception );
+                }
+            } ) );
+    }
+
+    private Try<InputStream> postprocess( final InputStream inputStream, final Configuration configuration ) {
+        if ( configuration.format == Configuration.Format.PNG ) {
+            return Try.success( inputStream );
+        }
+
+        try {
+            return svgPostProcessors.stream().sequential().reduce( Function.identity(), Function::andThen )
+                .apply( Try.success( IOUtils.toString( inputStream, StandardCharsets.UTF_8 ) ) )
+                .map( string -> IOUtils.toInputStream( string, StandardCharsets.UTF_8 ) );
+        } catch ( final IOException exception ) {
+            return Try.failure( exception );
+        }
     }
 
     /**
