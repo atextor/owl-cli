@@ -1,2 +1,2 @@
-* xref:index.adoc[Welcome]
+* xref:index.adoc[Home]
 * xref:diagram-notation.adoc[Diagram Notation]

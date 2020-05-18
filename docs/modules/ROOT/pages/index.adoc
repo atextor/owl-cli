@@ -1,4 +1,11 @@
+// -*- fill-column: 100; -*-
 = owl-cli
 
-This is the start page for version *{page-component-version}* of this component.
+(Version *{page-component-version}*)
 
+*owl-cli* is a command line tool for ontology engineering. It targets the
+https://en.wikipedia.org/wiki/Web_Ontology_Language[Web Ontology Language] (OWL 2) and
+https://en.wikipedia.org/wiki/Resource_Description_Framework[RDF]. The current main feature is the
+generation of automatically layed out diagrams for an OWL ontology.
+
+You can find the source code here: https://github.com/atextor/owl-cli
