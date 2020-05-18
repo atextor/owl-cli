@@ -26,10 +26,17 @@ task installAsciidoctorMathjax(type: NpmTask) {
     outputs.file file("${project.buildDir}/node_modules/@djencks/asciidoctor-mathjax/lib/asciidoctor-mathjax.js")
 }
 
+task setAntoraVersion(type: Copy) {
+    ant.replaceregexp(match:'version: .*', replace:"version: ${version}", flags:'g', byline:true) {
+        fileset(dir: "${project.projectDir}", includes: 'antora.yml')
+    }
+}
+
 task antora(type: NodeTask) {
     dependsOn 'installAntoraCli'
     dependsOn 'installAntoraSiteGeneratorLunr'
     dependsOn 'installAsciidoctorMathjax'
+    dependsOn 'setAntoraVersion'
     environment = [
         'DOCSEARCH_ENABLED': 'true',
         'DOCSEARCH_ENGINE': 'lunr'
