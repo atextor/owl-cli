@@ -20,7 +20,24 @@ cache:
 
 script:
   - ./gradlew check
-  - ./gradlew clean test jacocoRootReport
+  - ./gradlew clean test jacocoRootReport antora
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+deploy:
+  - provider: releases
+    api_key: "$GITHUB_API_KEY"
+    file_glob: true
+    file: cli/build/libs/owl-cli-*.jar
+    on:
+      repo: atextor/owl-cli
+    skip_cleanup: 'true'
+  - provider: pages
+    github_token: "$GITHUB_API_KEY"
+    keep_history: true
+    local_dir: build/site
+    on:
+      branch: master
+    skip_cleanup: true
+
