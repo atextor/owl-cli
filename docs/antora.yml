@@ -1,5 +1,5 @@
 name: main
-title: OWL-CLI
-version: dev
+title: owl-cli
+version: snapshot
 nav:
 - modules/ROOT/nav.adoc

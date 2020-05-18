@@ -14,7 +14,7 @@ allprojects {
 }
 
 subprojects {
-    version = '0.1.0'
+    version = 'snapshot'
     task allDeps(type: DependencyReportTask) {}
 }
 
