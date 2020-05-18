@@ -113,13 +113,14 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
-    propertyStructure( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode ) {
+    propertyStructure( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode,
+                       final Edge.Type subjectToThirdNodeType ) {
 
         final Graph subjectGraph = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph objectGraph = axiom.getObject().accept( mappingConfig.getOwlObjectMapper() );
 
-        final Edge subjectToThirdNode = new Edge.Plain( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
+        final Edge subjectToThirdNode = new Edge.Plain( subjectToThirdNodeType, subjectGraph.getNode().getId(),
             thirdNode.getId() );
         final Edge thirdNodeToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
             objectGraph.getNode().getId() );
@@ -139,7 +140,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     public Graph visit( final @Nonnull OWLNegativeObjectPropertyAssertionAxiom axiom ) {
         final Node complement = new Node.Complement( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
-        return Graph.of( complement ).and( propertyStructure( axiom, complement ) );
+        return Graph.of( complement ).and( propertyStructure( axiom, complement, Edge.Type.DEFAULT_ARROW ) );
     }
 
     @Override
@@ -192,7 +193,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLNegativeDataPropertyAssertionAxiom axiom ) {
         final Node complement = new Node.Complement( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        return Graph.of( complement ).and( propertyStructure( axiom, complement ) );
+        return Graph.of( complement ).and( propertyStructure( axiom, complement, Edge.Type.DEFAULT_ARROW ) );
     }
 
     @Override
@@ -221,7 +222,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLObjectPropertyAssertionAxiom axiom ) {
         final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        return Graph.of( invisible ).and( propertyStructure( axiom, invisible ) );
+        return Graph.of( invisible ).and( propertyStructure( axiom, invisible, Edge.Type.NO_ARROW ) );
     }
 
     @Override
@@ -351,7 +352,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLDataPropertyAssertionAxiom axiom ) {
         final Node invisible = new Node.Invisible( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        return Graph.of( invisible ).and( propertyStructure( axiom, invisible ) );
+        return Graph.of( invisible ).and( propertyStructure( axiom, invisible, Edge.Type.NO_ARROW ) );
     }
 
     @Override
