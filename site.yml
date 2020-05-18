@@ -1,6 +1,6 @@
 site:
   title: owl-cli Documentation
-  url: https://github.com/atextor/owl-cli
+  url: https://atextor.github.io/owl-cli
   start_page: main::index.adoc
 content:
   sources:
