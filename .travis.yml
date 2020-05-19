@@ -21,23 +21,8 @@ cache:
 script:
   - ./gradlew clean test check jacocoRootReport antora
 
-after_success: |
-  # Submit code coverage
-  bash <(curl -s https://codecov.io/bash)
-  # Push documentation to Github pages
-  if [ -n "$GITHUB_API_KEY" ]; then
-    cd "$TRAVIS_BUILD_DIR"
-    mkdir web
-    cd web
-    git init
-    git checkout -b gh-pages
-    cp -R ../build/site/* .
-    cp ../build/site/.nojekyll .
-    git add .
-    git -c user.name='travis' -c user.email='travis' commit -m 'Automatic deployment'
-    git push -f -q https://atextor:$GITHUB_API_KEY@github.com/atextor/owl-cli.git gh-pages >/dev/null 2>&1
-    cd "$TRAVIS_BUILD_DIR"
-  fi
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   - provider: releases
@@ -47,5 +32,11 @@ deploy:
     on:
       repo: atextor/owl-cli
     skip_cleanup: 'true'
-    draft: true
+  - provider: pages
+    github_token: "$GITHUB_API_KEY"
+    keep_history: true
+    local_dir: build/site
+    on:
+      branch: master
+    skip_cleanup: true
 
