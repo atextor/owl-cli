@@ -19,11 +19,12 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - ./gradlew check
-  - ./gradlew clean test jacocoRootReport antora
+  - ./gradlew clean test check jacocoRootReport antora
 
 after_success: |
+  # Submit code coverage
   bash <(curl -s https://codecov.io/bash)
+  # Push documentation to Github pages
   if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"
     mkdir web
