@@ -24,6 +24,11 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
+before_deploy:
+  - git config --local user.name "Travis"
+  - git config --local user.email "Travis"
+  - git tag snapshot
+
 deploy:
   - provider: releases
     api_key: "$GITHUB_API_KEY"
@@ -32,6 +37,7 @@ deploy:
     on:
       repo: atextor/owl-cli
     skip_cleanup: 'true'
+    overwrite: true
   - provider: pages
     github_token: "$GITHUB_API_KEY"
     keep_history: true
