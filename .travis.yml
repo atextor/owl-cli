@@ -18,31 +18,51 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
 
-script:
-  - ./gradlew clean test check jacocoRootReport antora
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
-before_deploy:
-  - git config --local user.name "Travis"
-  - git config --local user.email "Travis"
-  - git tag snapshot
-
-deploy:
-  - provider: releases
-    api_key: "$GITHUB_API_KEY"
-    file_glob: true
-    file: cli/build/libs/owl-cli-*.jar
-    on:
-      repo: atextor/owl-cli
-    skip_cleanup: 'true'
-    overwrite: true
-  - provider: pages
-    github_token: "$GITHUB_API_KEY"
-    keep_history: true
-    local_dir: build/site
-    on:
-      branch: master
-    skip_cleanup: true
+jobs:
+  include:
+    # -------------------------------------------
+    - stage: build+deploy-release
+      name: "Build and deploy Release"
+      if:
+        tag IS present
+      script: ./gradlew clean test check jacocoRootReport antora
+      after_success: bash <(curl -s https://codecov.io/bash)
+      deploy:
+        provider: releases
+        api_key: "$GITHUB_API_KEY"
+        file_glob: true
+        file: cli/build/libs/owl-cli-*.jar
+        on:
+          repo: atextor/owl-cli
+        skip_cleanup: 'true'
+    # -------------------------------------------
+    - stage: build+deploy-snapshot
+      name: "Build and deploy Snapshot"
+      if:
+        tag IS NOT present
+      script: ./gradlew clean test check jacocoRootReport antora
+      after_success: bash <(curl -s https://codecov.io/bash)
+      before_deploy:
+        - git config --local user.name "Travis"
+        - git config --local user.email "Travis"
+        - export TRAVIS_TAG=snapshot
+        - git tag $TRAVIS_TAG
+      deploy:
+        provider: releases
+        api_key: "$GITHUB_API_KEY"
+        file: cli/build/libs/owl-cli-snapshot.jar
+        on:
+          repo: atextor/owl-cli
+        skip_cleanup: 'true'
+        overwrite: true
+    # -------------------------------------------
+    - stage: build+deploy-documentation
+      name: "Build and deploy Documentation"
+      deploy:
+        provider: pages
+        github_token: "$GITHUB_API_KEY"
+        keep_history: false
+        local_dir: build/site
+        skip_cleanup: true
+    # -------------------------------------------
 
