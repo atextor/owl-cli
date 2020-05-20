@@ -46,7 +46,7 @@ jobs:
         - git config --local user.name "Travis"
         - git config --local user.email "Travis"
         - export TRAVIS_TAG=snapshot
-        - git push -q --delete https://atextor:$GITHUB_API_KEY@github.com/atextor/owl-cli.git $TRAVIS_TAG >/dev/null 2>&1
+        - git push -q --delete https://atextor:$GITHUB_API_KEY@github.com/atextor/owl-cli.git $TRAVIS_TAG >/dev/null 2>&1 || true
         - git tag -d $TRAVIS_TAG || true
         - git tag $TRAVIS_TAG
       deploy:
