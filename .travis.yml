@@ -55,7 +55,7 @@ jobs:
         file: cli/build/libs/owl-cli-snapshot.jar
         on:
           repo: atextor/owl-cli
-          branch: snapshot
+          branch: master
         skip_cleanup: 'true'
         overwrite: true
     # -------------------------------------------
@@ -70,6 +70,6 @@ jobs:
         skip_cleanup: true
         on:
           repo: atextor/owl-cli
-          branch: $TRAVIS_TAG
+          branch: master
     # -------------------------------------------
 
