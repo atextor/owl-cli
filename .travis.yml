@@ -55,16 +55,21 @@ jobs:
         file: cli/build/libs/owl-cli-snapshot.jar
         on:
           repo: atextor/owl-cli
+          branch: snapshot
         skip_cleanup: 'true'
         overwrite: true
     # -------------------------------------------
     - stage: build+deploy-documentation
       name: "Build and deploy Documentation"
+      script: skip
       deploy:
         provider: pages
         github_token: "$GITHUB_API_KEY"
         keep_history: false
         local_dir: build/site
         skip_cleanup: true
+        on:
+          repo: atextor/owl-cli
+          branch: $TRAVIS_TAG
     # -------------------------------------------
 
