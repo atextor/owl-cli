@@ -35,6 +35,7 @@ jobs:
           on:
             repo: atextor/owl-cli
           skip_cleanup: true
+          draft: false
         - provider: pages
           github_token: "$GITHUB_API_KEY"
           keep_history: false
@@ -66,6 +67,7 @@ jobs:
             branch: master
           skip_cleanup: true
           overwrite: true
+          draft: false
         - provider: pages
           github_token: "$GITHUB_API_KEY"
           keep_history: false
