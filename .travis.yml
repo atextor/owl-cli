@@ -36,6 +36,8 @@ jobs:
             repo: atextor/owl-cli
           skip_cleanup: true
           draft: false
+          tag_name: $TRAVIS_TAG
+          target_commitish: $TRAVIS_COMMIT
         - provider: pages
           github_token: "$GITHUB_API_KEY"
           keep_history: false
@@ -68,6 +70,8 @@ jobs:
           skip_cleanup: true
           overwrite: true
           draft: false
+          tag_name: $TRAVIS_TAG
+          target_commitish: $TRAVIS_COMMIT
         - provider: pages
           github_token: "$GITHUB_API_KEY"
           keep_history: false
