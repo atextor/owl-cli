@@ -254,8 +254,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node disjointUnion = new Node.DisjointUnion( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Graph linksGraph = linkNodeToMultipleOthers( axiom, disjointUnion );
         final Graph classGraph = axiom.getOWLClass().accept( mappingConfig.getOwlClassExpressionMapper() );
-        final Edge classToDisjointUnion = new Edge.Plain( Edge.Type.HOLLOW_ARROW, classGraph.getNode().getId(),
-            disjointUnion.getId() );
+        final Edge classToDisjointUnion = new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, classGraph.getNode()
+            .getId(), disjointUnion.getId() );
         return classGraph.and( linksGraph ).and( classToDisjointUnion );
     }
 
