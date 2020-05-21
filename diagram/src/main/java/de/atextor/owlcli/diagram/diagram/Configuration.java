@@ -55,6 +55,4 @@ public class Configuration {
     public Format format = Format.SVG;
     @Builder.Default
     public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
-    @Builder.Default
-    public String resourceDirectoryName = "static";
 }
