@@ -52,8 +52,8 @@ jobs:
       if:
         tag IS NOT present
       script: ./gradlew clean test check jacocoRootReport antora
-      after_success: bash <(curl -s https://codecov.io/bash)
-      before_deploy:
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
         - git config --local user.name "Travis"
         - git config --local user.email "Travis"
         - export TRAVIS_TAG=snapshot
