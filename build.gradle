@@ -14,7 +14,7 @@ allprojects {
 }
 
 subprojects {
-    version = 'snapshot'
+    version = "$version"
     task allDeps(type: DependencyReportTask) {}
 }
 
