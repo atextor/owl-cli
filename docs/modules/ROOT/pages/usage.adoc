@@ -1,0 +1,120 @@
+// -*- fill-column: 100; -*-
+= Usage
+
+You can call the built-in overview of commands and arguments via `--help` or `-h`:
+
+[source,shell]
+----
+$ owl --help
+Usage: owl [options] [command] [command options]
+  Options:
+    --help, -h
+      Prints the arguments
+  Commands:
+    ...
+----
+
+Other than the general help, you give one argument, the _command_, which will
+take its own arguments, for example:
+
+[source,shell]
+----
+$ owl diagram --help
+----
+
+The following subsections describe the available commands.
+
+== `diagram` Command
+
+The `diagram` command takes an OWL ontology as input and generates an
+automatically layouted diagram for it in the SVG or PNG format. This is
+implemented by mapping the ontology's axioms into a graph description in the
+https://www.graphviz.org/[Graphviz] language, which is passed to its `dot`
+layouting engine. Attributes such as fonts can be customized using arguments.
+
+NOTE: As no standardized graphical notation for OWL exists, the diagram notation
+used here is described in detail on a separate page:
+xref:diagram-notation.adoc[Diagram Notation].
+
+[#diagram-usage]
+=== General Usage
+
+General usage: `owl diagram [options] input [output]`, where `input` can be
+either an ontology file or `-` (which means: read from standard in) and `output`
+can be either an ontology file or `-` (which means: write to standard out). If
+`output` is not given, the output filename is the input filename with its file
+extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
+`output` is not given, the output is set to standard out.
+
+[#diagram-options]
+=== Options
+
+.diagram Command Options
+[cols="<,<,<,<", options="header"]
+|===
+|Option|Description|Default|Notes
+
+|--direction
+|Diagram layout direction
+|LEFT_TO_RIGHT
+|Possible Values: [TOP_TO_BOTTOM, LEFT_TO_RIGHT]
+
+|--dotbinary
+|Path to `dot` binary
+|dot
+|By default, `dot` is searched for in your `$PATH`
+
+|--fontname
+|Default font
+|Verdana
+|
+
+|--fontsize
+|Default font size
+|12
+|
+
+|--format
+|Output file format
+|SVG
+|Possible Values: [PNG, SVG]
+
+|--nodefontname
+|Font for nodes
+|Verdana
+|
+
+|--nodefontsize
+|Font size for nodes
+|Verdana
+|
+
+|--nodemargin
+|The margin to render inside of nodes
+|0.05,0.0
+|See the https://www.graphviz.org/doc/info/attrs.html#d:margin[Graphviz
+ documentation] for more information
+
+|--nodeshape
+|Node shape
+|box
+|See the https://www.graphviz.org/doc/info/shapes.html[Graphviz documentation]
+ for more information
+
+|--nodestyle
+|Node style
+|rounded
+|See the https://www.graphviz.org/doc/info/attrs.html#k:style[Graphviz
+ documentation] for more information
+
+|===
+
+[#diagram-example-usage]
+=== Example Usage
+
+Simple invocation with default arguments:
+
+[source,shell]
+----
+$ owl diagram myontology.ttl
+----

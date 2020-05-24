@@ -1,2 +1,3 @@
 * xref:index.adoc[Home]
+* xref:usage.adoc[Usage]
 * xref:diagram-notation.adoc[Diagram Notation]
