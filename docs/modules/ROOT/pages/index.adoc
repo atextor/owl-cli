@@ -8,4 +8,50 @@ https://en.wikipedia.org/wiki/Web_Ontology_Language[Web Ontology Language] (OWL 
 https://en.wikipedia.org/wiki/Resource_Description_Framework[RDF]. The current main feature is the
 generation of automatically layed out diagrams for an OWL ontology.
 
-You can find the source code here: https://github.com/atextor/owl-cli
+You can find the source code on https://github.com/atextor/owl-cli[Github].
+
+== Getting Started
+
+=== Installation
+
+==== Requirements
+
+Things you will need to have installed to run *owl-cli*:
+
+* Java (OpenJDK) *13* or newer
+* https://www.graphviz.org/[Graphviz] for the generation of diagrams. Note that this is a common
+  package that can be installed via all popular package managers, for example `apt-get`, `brew` or
+  `rpm`.
+
+==== Download and install
+
+Open your favorite terminal emulator and execute the following commands:
+
+[source,shell]
+----
+curl -L -o ~/.local/share/owl-cli/owl-cli-snapshot.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar
+echo "function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }" >> ~/.bashrc
+source ~/.bashrc
+----
+
+After installation, you can use the `owl` command: See the xref:usage.adoc[Usage Guide] for more
+information.
+
+=== Building from source
+
+[source,shell]
+----
+git clone https://github.com/atextor/owl-cli.git
+cd owl-cli
+./gradlew
+----
+
+This will build `cli/build/libs/owl-cli-snapshot.jar`, which you then can install locally:
+
+[source,shell]
+----
+mkdir -p ~/.local/share/owl-cli
+cp cli/build/libs/owl-cli-snapshot.jar !$
+echo "function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }" >> ~/.bashrc
+source ~/.bashrc
+----
