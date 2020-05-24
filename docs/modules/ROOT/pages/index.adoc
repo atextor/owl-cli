@@ -10,11 +10,9 @@ generation of automatically layed out diagrams for an OWL ontology.
 
 You can find the source code on https://github.com/atextor/owl-cli[Github].
 
-== Getting Started
+== Installation
 
-=== Installation
-
-==== Requirements
+=== Requirements
 
 Things you will need to have installed to run *owl-cli*:
 
@@ -23,7 +21,7 @@ Things you will need to have installed to run *owl-cli*:
   package that can be installed via all popular package managers, for example `apt-get`, `brew` or
   `rpm`.
 
-==== Download and install
+=== Download and install
 
 Open your favorite terminal emulator and execute the following commands:
 
@@ -34,8 +32,7 @@ echo "function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli
 source ~/.bashrc
 ----
 
-After installation, you can use the `owl` command: See the xref:usage.adoc[Usage Guide] for more
-information.
+After installation, you can use the `owl` command: See xref:usage.adoc[] for more information.
 
 === Building from source
 
