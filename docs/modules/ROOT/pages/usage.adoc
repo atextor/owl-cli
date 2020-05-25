@@ -1,6 +1,8 @@
 // -*- fill-column: 100; -*-
 = Usage
 
+NOTE: Although the package is called *owl-cli*, the command you invoke is called `owl`.
+
 You can call the built-in overview of commands and arguments via `--help` or `-h`:
 
 [source,shell]
@@ -54,54 +56,54 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |===
 |Option|Description|Default|Notes
 
-|--direction
+|`--direction`
 |Diagram layout direction
 |LEFT_TO_RIGHT
 |Possible Values: [TOP_TO_BOTTOM, LEFT_TO_RIGHT]
 
-|--dotbinary
+|`--dotbinary`
 |Path to `dot` binary
 |dot
 |By default, `dot` is searched for in your `$PATH`
 
-|--fontname
+|`--fontname`
 |Default font
 |Verdana
 |
 
-|--fontsize
+|`--fontsize`
 |Default font size
 |12
 |
 
-|--format
+|`--format`
 |Output file format
 |SVG
 |Possible Values: [PNG, SVG]
 
-|--nodefontname
+|`--nodefontname`
 |Font for nodes
 |Verdana
 |
 
-|--nodefontsize
+|`--nodefontsize`
 |Font size for nodes
 |Verdana
 |
 
-|--nodemargin
+|`--nodemargin`
 |The margin to render inside of nodes
 |0.05,0.0
 |See the https://www.graphviz.org/doc/info/attrs.html#d:margin[Graphviz
  documentation] for more information
 
-|--nodeshape
+|`--nodeshape`
 |Node shape
 |box
 |See the https://www.graphviz.org/doc/info/shapes.html[Graphviz documentation]
  for more information
 
-|--nodestyle
+|`--nodestyle`
 |Node style
 |rounded
 |See the https://www.graphviz.org/doc/info/attrs.html#k:style[Graphviz
