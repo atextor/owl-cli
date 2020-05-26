@@ -10,6 +10,8 @@ generation of automatically layed out diagrams for an OWL ontology.
 
 You can find the source code on https://github.com/atextor/owl-cli[Github].
 
+image::splash.svg[width=75%]
+
 == Installation
 
 === Requirements

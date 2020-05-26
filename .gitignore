@@ -12,3 +12,5 @@ catalog-v*.xml
 
 # The diagrams are generated at build time
 docs/modules/ROOT/assets/images/*.svg
+
+!docs/modules/ROOT/assets/images/splash.svg
