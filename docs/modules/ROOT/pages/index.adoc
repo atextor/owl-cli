@@ -53,6 +53,6 @@ This will build `cli/build/libs/owl-cli-snapshot.jar`, which you then can instal
 ----
 mkdir -p ~/.local/share/owl-cli
 cp cli/build/libs/owl-cli-snapshot.jar !$
-echo "function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }" >> ~/.bashrc
+echo 'function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
