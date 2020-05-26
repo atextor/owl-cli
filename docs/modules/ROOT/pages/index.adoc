@@ -28,7 +28,7 @@ Open your favorite terminal emulator and execute the following commands:
 [source,shell]
 ----
 curl -L -o ~/.local/share/owl-cli/owl-cli-snapshot.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar
-echo "function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }" >> ~/.bashrc
+echo 'function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
 
