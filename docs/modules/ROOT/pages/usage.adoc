@@ -24,7 +24,13 @@ take its own arguments, for example:
 $ owl diagram --help
 ----
 
-The following subsections describe the available commands.
+Commands that take ontology files as an input support all formats that are
+supported by https://github.com/owlcs/owlapi[OWL API], notably
+https://www.w3.org/TR/turtle/[RDF/Turtle],
+https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
+https://www.w3.org/TR/owl-xml-serialization/[OWL/XML] and
+https://www.w3.org/TR/owl2-syntax/[OWL Functional Syntax].
+
 
 == `diagram` Command
 
@@ -118,5 +124,22 @@ Simple invocation with default arguments:
 
 [source,shell]
 ----
+# Will create myontology.svg
 $ owl diagram myontology.ttl
+----
+
+Invocation where the output is specified as standard out and piped to
+https://imagemagick.org/script/convert.php[convert] to create a different format:
+
+[source,shell]
+----
+$ owl diagram myontology.ttl - | convert - myontology.jpg
+----
+
+Invocation where an ontology is downloaded, some terms are filtered and then
+piped to owl diagram:
+[source,shell]
+----
+$ curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
+grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg
 ----
