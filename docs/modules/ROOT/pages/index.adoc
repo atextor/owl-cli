@@ -36,6 +36,8 @@ After installation, you can use the `owl` command: See xref:usage.adoc[] for mor
 
 === Building from source
 
+You need Java *13*  on your `PATH`. Run the following commands:
+
 [source,shell]
 ----
 git clone https://github.com/atextor/owl-cli.git
