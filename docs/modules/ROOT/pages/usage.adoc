@@ -7,7 +7,7 @@ You can call the built-in overview of commands and arguments via `--help` or `-h
 
 [source,shell]
 ----
-$ owl --help
+owl --help
 Usage: owl [options] [command] [command options]
   Options:
     --help, -h
@@ -21,7 +21,7 @@ take its own arguments, for example:
 
 [source,shell]
 ----
-$ owl diagram --help
+owl diagram --help
 ----
 
 Commands that take ontology files as an input support all formats that are
@@ -125,7 +125,7 @@ Simple invocation with default arguments:
 [source,shell]
 ----
 # Will create myontology.svg
-$ owl diagram myontology.ttl
+owl diagram myontology.ttl
 ----
 
 Invocation where the output is specified as standard out and piped to
@@ -133,13 +133,13 @@ https://imagemagick.org/script/convert.php[convert] to create a different format
 
 [source,shell]
 ----
-$ owl diagram myontology.ttl - | convert - myontology.jpg
+owl diagram myontology.ttl - | convert - myontology.jpg
 ----
 
 Invocation where an ontology is downloaded, some terms are filtered and then
 piped to owl diagram:
 [source,shell]
 ----
-$ curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
+curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
 grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg
 ----
