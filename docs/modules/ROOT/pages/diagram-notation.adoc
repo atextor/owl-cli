@@ -78,6 +78,33 @@ The following sections describe the graphical notation using examples.
 
 |===
 
+== Data Ranges
+
+NOTE: This section is aligned to the https://www.w3.org/TR/owl2-syntax/#Data_Ranges[corresponding section] in the OWL 2 Specification.
+
+.Mapping Syntax for Data Ranges
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|DataIntersectionOf(latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
+|image::data-intersection-of.svg[scaledwidth=75%]
+
+|DataUnionOf(latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
+|image::data-union-of.svg[scaledwidth=75%]
+
+|DataComplementOf(latexmath:[U])
+|latexmath:[\neg\,U]
+|image::data-complement-of.svg[scaledwidth=75%]
+
+|DataOneOf(latexmath:[v_1\,\dots\,v_n])
+|latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
+|image::data-one-of.svg[scaledwidth=75%]
+
+|===
+
 == Class Expressions
 
 NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-syntax/#Class_Expressions[corresponding section] in the OWL 2 Specification.
@@ -184,22 +211,6 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |DataHasValue(latexmath:[P\,v])
 |latexmath:[P\,\ni\,v]
 |image::data-has-value.svg[scaledwidth=75%]
-
-|DataIntersectionOf(latexmath:[U_1\,\dots\,U_n])
-|latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
-|image::data-intersection-of.svg[scaledwidth=75%]
-
-|DataUnionOf(latexmath:[U_1\,\dots\,U_n])
-|latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
-|image::data-union-of.svg[scaledwidth=75%]
-
-|DataComplementOf(latexmath:[U])
-|latexmath:[\neg\,U]
-|image::data-complement-of.svg[scaledwidth=75%]
-
-|DataOneOf(latexmath:[v_1\,\dots\,v_n])
-|latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
-|image::data-one-of.svg[scaledwidth=75%]
 
 |===
 
