@@ -26,6 +26,8 @@ import org.semanticweb.owlapi.model.OWLDataComplementOf;
 import org.semanticweb.owlapi.model.OWLDataIntersectionOf;
 import org.semanticweb.owlapi.model.OWLDataOneOf;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
+import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDataRange;
 import org.semanticweb.owlapi.model.OWLDataSomeValuesFrom;
 import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom;
@@ -39,7 +41,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLDataMapperTest extends MapperTestBase {
     private final OWLDataMapper mapper = new OWLDataMapper( createTestMappingConfiguration() );
-
 
     @Test
     public void testOWLDataComplementOf() {
@@ -199,6 +200,30 @@ public class OWLDataMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDatatypeRestriction() {
+        final String ontology = """
+            :foo a owl:DatatypeProperty ;
+                rdfs:range [
+                    a rdfs:Datatype ;
+                    owl:onDatatype xsd:int ;
+                    owl:withRestrictions (
+                        [ xsd:minExclusive "4"^^xsd:int ] [ xsd:maxInclusive "10"^^xsd:int ]
+                    )
+                ] .
+            """;
+
+        final OWLDataPropertyRangeAxiom axiom = getAxiom( ontology, AxiomType.DATA_PROPERTY_RANGE );
+        final OWLDataRange range = axiom.getRange();
+
+        final Graph graph = range.accept( mapper );
+        final Set<GraphElement> elements = graph.getElementSet();
+        assertThat( edges( elements ) ).isEmpty();
+
+        final List<Node> nodes = nodes( elements );
+        assertThat( nodes ).hasSize( 1 );
+
+        final Node node = nodes.get( 0 );
+        assertThat( node.getClass() ).isEqualTo( Node.Datatype.class );
+        assertThat( node.as( Node.Datatype.class ).getName() ).matches( ".*\\[> 4, <= 10]" );
     }
 
     @Test
