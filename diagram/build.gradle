@@ -12,6 +12,7 @@ dependencies {
     implementation(deps.slf4j_api)
     implementation(deps.slf4j_simple)
     implementation(deps.vavr)
+    implementation(deps.commons_text)
 
     // Override transitive dependency versions due to vulns
     implementation(deps.jackson_databind)

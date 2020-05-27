@@ -20,6 +20,7 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
 import de.atextor.owlcli.diagram.graph.Node;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -64,6 +65,10 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         };
 
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
+    }
+
+    private static String escape( final String value ) {
+        return StringEscapeUtils.escapeHtml4( value );
     }
 
     private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {
@@ -181,7 +186,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         @Override
         public GraphvizDocument visit( final Node.Datatype datatype ) {
             return generateHtmlLabelNode( datatype.getId(), Symbol.DATA_TYPE
-                .getNodeValue( datatype.getName(), configuration ) );
+                .getNodeValue( escape( datatype.getName() ), configuration ) );
         }
 
         @Override

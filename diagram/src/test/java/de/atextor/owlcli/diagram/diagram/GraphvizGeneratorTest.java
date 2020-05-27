@@ -140,6 +140,7 @@ public class GraphvizGeneratorTest {
     @Test
     void testNodeDatatype() {
         testNamedNode( new Node.Datatype( from1, name1 ) );
+        testNodeWithId( new Node.Datatype( from1, "int[> 4, <= 10]" ) );
     }
 
     @Test
