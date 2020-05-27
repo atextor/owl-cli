@@ -1,0 +1,13 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:P a owl:DatatypeProperty ;
+  rdfs:range [
+    a rdfs:Datatype ;
+    owl:onDatatype xsd:int ;
+    owl:withRestrictions (
+        [ xsd:minExclusive "4"^^xsd:int ] [ xsd:maxInclusive "10"^^xsd:int ]
+    )
+  ] .

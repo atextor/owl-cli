@@ -103,6 +103,10 @@ NOTE: This section is aligned to the https://www.w3.org/TR/owl2-syntax/#Data_Ran
 |latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
 |image::data-one-of.svg[scaledwidth=75%]
 
+|DatatypeRestriction( int minExclusive 4 maxInclusive 10 )
+|_no notation_
+|image::datarange-expression.svg[scaledwidth=75%]
+
 |===
 
 == Class Expressions
