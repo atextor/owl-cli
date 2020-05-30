@@ -3,9 +3,14 @@
  * The contents of this file are subject to the LGPL License, Version 3.0.
  * Copyright (c) 2020, Andreas Textor.
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
- * You should have received a copy of the GNU General Public License along with this program.  If not, see http://www.gnu.org/licenses/.
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ * You should have received a copy of the GNU General Public License along with this program.  If not, see http://www
+ * .gnu.org/licenses/.
  */
 
 package de.atextor.owlcli;
@@ -23,6 +28,51 @@ import java.util.List;
 
 public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
+
+    public DiagramCommand() {
+        super( new Arguments() );
+    }
+
+    private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
+        return Configuration.builder()
+            .fontname( arguments.fontname )
+            .fontsize( arguments.fontsize )
+            .nodeFontname( arguments.nodeFontName )
+            .nodeFontsize( arguments.nodeFontsize )
+            .nodeShape( arguments.nodeShape )
+            .nodeMargin( arguments.nodeMargin )
+            .nodeStyle( arguments.nodeStyle )
+            .format( arguments.format )
+            .layoutDirection( arguments.layoutDirection )
+            .dotBinary( arguments.dotBinary )
+            .build();
+    }
+
+    @Override
+    public void run() {
+        if ( arguments.help ) {
+            System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
+            System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
+                "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
+            System.exit( 0 );
+        }
+
+        if ( arguments.inputOutput == null || arguments.inputOutput.size() > 2 ) {
+            exitWithErrorMessage( new ErrorMessage( "Error: Invalid number of input/output arguments" ) );
+        }
+
+        final Configuration configuration = buildConfigurationFromArguments( arguments );
+        final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
+        openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
+            openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
+                new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
+        ).onFailure( this::exitWithErrorMessage );
+    }
+
+    @Override
+    String getCommandName() {
+        return "diagram";
+    }
 
     private static class FormatParser implements IStringConverter<Configuration.Format> {
         @Override
@@ -76,51 +126,5 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
 
         @Parameter( names = { "--dotbinary" }, description = "Path to dot binary" )
         public String dotBinary = config.dotBinary;
-    }
-
-    private static Configuration buildConfigurationFromArguments( final Arguments arguments ) {
-        return Configuration.builder()
-            .fontname( arguments.fontname )
-            .fontsize( arguments.fontsize )
-            .nodeFontname( arguments.nodeFontName )
-            .nodeFontsize( arguments.nodeFontsize )
-            .nodeShape( arguments.nodeShape )
-            .nodeMargin( arguments.nodeMargin )
-            .nodeStyle( arguments.nodeStyle )
-            .format( arguments.format )
-            .layoutDirection( arguments.layoutDirection )
-            .dotBinary( arguments.dotBinary )
-            .build();
-    }
-
-    @Override
-    public void accept( final Arguments arguments ) {
-        if ( arguments.help ) {
-            System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
-            System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
-                "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
-            System.exit( 0 );
-        }
-
-        if ( arguments.inputOutput == null || arguments.inputOutput.size() > 2 ) {
-            exitWithErrorMessage( new ErrorMessage( "Error: Invalid number of input/output arguments" ) );
-        }
-
-        final Configuration configuration = buildConfigurationFromArguments( arguments );
-        final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
-        openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
-            openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
-                new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
-        ).onFailure( this::exitWithErrorMessage );
-    }
-
-    @Override
-    Arguments getArguments() {
-        return new DiagramCommand.Arguments();
-    }
-
-    @Override
-    String getCommandName() {
-        return "diagram";
     }
 }

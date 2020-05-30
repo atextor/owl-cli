@@ -28,9 +28,14 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.function.Consumer;
 
-abstract public class CommandBase<T> implements Consumer<T> {
+abstract public class CommandBase<T> implements Runnable {
+    T arguments;
+
+    protected CommandBase( final T arguments ) {
+        this.arguments = arguments;
+    }
+
     protected void exitWithErrorMessage( final Throwable throwable ) {
         System.err.println( "Error: " + throwable.getMessage() );
         System.exit( 1 );
@@ -88,7 +93,9 @@ abstract public class CommandBase<T> implements Consumer<T> {
         }
     }
 
-    abstract T getArguments();
+    public T getArguments() {
+        return arguments;
+    }
 
     abstract String getCommandName();
 }

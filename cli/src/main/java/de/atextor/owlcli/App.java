@@ -23,12 +23,44 @@ import com.beust.jcommander.ParameterException;
 import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
 
+import java.util.Set;
+
 public class App extends CommandBase<App.Arguments> {
     private JCommander jCommander;
 
-    static class Arguments {
-        @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
-        private boolean help;
+    public App() {
+        super( new Arguments() );
+    }
+
+    public static void main( final String[] args ) {
+        final App app = new App();
+        final Arguments arguments = app.getArguments();
+        final Set<CommandBase<?>> commands = Set.of( new DiagramCommand() );
+
+        final JCommander jCommander = JCommander.newBuilder().addObject( arguments ).build();
+        commands.forEach( command -> jCommander.addCommand( command.getCommandName(), command.getArguments() ) );
+        final IUsageFormatter usageFormatter = new CustomUsageFormatter( jCommander );
+        jCommander.setUsageFormatter( usageFormatter );
+
+        app.setjCommander( jCommander );
+
+        if ( args.length == 0 ) {
+            jCommander.usage();
+            System.exit( 0 );
+        }
+
+        app.parseCommandLineArguments( args ).onFailure( app::exitWithErrorMessage );
+        app.run();
+
+        commands.forEach( command -> {
+            if ( jCommander.getParsedCommand().equals( command.getCommandName() ) ) {
+                command.run();
+                System.exit( 0 );
+            }
+        } );
+
+        jCommander.usage();
+        System.exit( 0 );
     }
 
     private void setjCommander( final JCommander jCommander ) {
@@ -53,54 +85,21 @@ public class App extends CommandBase<App.Arguments> {
     }
 
     @Override
-    Arguments getArguments() {
-        return new Arguments();
-    }
-
-    @Override
     String getCommandName() {
         return "main";
     }
 
     @Override
-    public void accept( final Arguments arguments ) {
+    public void run() {
         if ( arguments.help ) {
             jCommander.usage();
             System.exit( 0 );
         }
     }
 
-    public static void main( final String[] args ) {
-        final Arguments arguments = new App().getArguments();
-
-        final DiagramCommand diagramCommand = new DiagramCommand();
-        final DiagramCommand.Arguments diagramArguments = diagramCommand.getArguments();
-
-        final JCommander jCommander = JCommander.newBuilder()
-            .addObject( arguments )
-            .addCommand( diagramCommand.getCommandName(), diagramArguments )
-            .build();
-        final IUsageFormatter usageFormatter = new CustomUsageFormatter( jCommander );
-        jCommander.setUsageFormatter( usageFormatter );
-
-        final App app = new App();
-        app.setjCommander( jCommander );
-
-        if ( args.length == 0 ) {
-            jCommander.usage();
-            System.exit( 0 );
-        }
-
-        app.parseCommandLineArguments( args ).onFailure( app::exitWithErrorMessage );
-        app.accept( arguments );
-
-        if ( jCommander.getParsedCommand().equals( diagramCommand.getCommandName() ) ) {
-            new DiagramCommand().accept( diagramArguments );
-            System.exit( 0 );
-        }
-
-        jCommander.usage();
-        System.exit( 0 );
+    static class Arguments {
+        @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
+        private boolean help;
     }
 
     private static class CustomUsageFormatter extends DefaultUsageFormatter {
