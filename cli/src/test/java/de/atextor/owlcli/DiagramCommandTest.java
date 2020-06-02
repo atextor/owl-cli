@@ -54,16 +54,6 @@ public class DiagramCommandTest {
     }
 
     @Test
-    public void testWithHelp() {
-        final Runnable command = () -> App.main( new String[]{ "diagram", "--help" } );
-        final MainClassRunner.ExecutionResult result = run( command );
-
-        assertThat( result.getExitStatus() ).isEqualTo( 0 );
-        assertThat( result.getStdOut() ).isNotEmpty();
-        assertThat( result.getStdErr() ).isEmpty();
-    }
-
-    @Test
     public void testWithInvalidInput() {
         final Runnable command = () -> App.main( new String[]{ "diagram", "definitelynotexistingfile" } );
         final MainClassRunner.ExecutionResult result = run( command );
