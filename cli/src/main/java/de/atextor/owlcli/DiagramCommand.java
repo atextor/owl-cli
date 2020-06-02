@@ -61,8 +61,9 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
         final Configuration configuration = buildConfigurationFromArguments( arguments );
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openInput( arguments.inputOutput.get( 0 ) ).flatMap( input ->
-            openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
-                new DiagramGenerator( configuration, mappingConfig ).generate( input, output, configuration ) )
+            loadOntology( input ).flatMap( ontology ->
+                openOutput( arguments.inputOutput, arguments.format ).flatMap( output ->
+                    new DiagramGenerator( configuration, mappingConfig ).generate( ontology, output, configuration ) ) )
         ).onFailure( this::exitWithErrorMessage );
     }
 

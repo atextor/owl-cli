@@ -18,6 +18,10 @@ package de.atextor.owlcli;
 import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
+import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +33,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Base class for all commands
+ *
+ * @param <T> the type of arguments this command takes. This should be annotated with
+ *            {@link com.beust.jcommander.Parameters}.
+ */
 abstract public class CommandBase<T> implements Runnable {
     T arguments;
 
@@ -89,6 +99,24 @@ abstract public class CommandBase<T> implements Runnable {
             }
             return Try.success( new FileInputStream( inputFile ) );
         } catch ( final FileNotFoundException exception ) {
+            return Try.failure( exception );
+        }
+    }
+
+    /**
+     * Loads an ontology from an input stream
+     *
+     * @param inputStream the input stream
+     * @return {@link Try.Success} with the {@link OWLOntology} on success, and a {@link Try.Failure} with the
+     * {@link OWLOntologyCreationException} otherwise.
+     */
+    public Try<OWLOntology> loadOntology( final InputStream inputStream ) {
+        final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        final OWLOntology ontology;
+        try {
+            ontology = manager.loadOntologyFromOntologyDocument( inputStream );
+            return Try.success( ontology );
+        } catch ( final OWLOntologyCreationException exception ) {
             return Try.failure( exception );
         }
     }

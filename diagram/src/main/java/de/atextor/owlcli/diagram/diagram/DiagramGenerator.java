@@ -21,10 +21,7 @@ import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import org.apache.commons.io.IOUtils;
-import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.OWLOntology;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
-import org.semanticweb.owlapi.model.OWLOntologyManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -116,27 +113,6 @@ public class DiagramGenerator {
                 .apply( Try.success( IOUtils.toString( inputStream, StandardCharsets.UTF_8 ) ) )
                 .map( string -> IOUtils.toInputStream( string, StandardCharsets.UTF_8 ) );
         } catch ( final IOException exception ) {
-            return Try.failure( exception );
-        }
-    }
-
-    /**
-     * Performs diagram generation for an input ontology. The result is either written to a given {@link OutputStream}
-     * or a given {@link Path}.
-     *
-     * @param ontologyInputStream the input ontology
-     * @param output              the output to write
-     * @param configuration       the configuration for the diagram generation
-     * @return {@link io.vavr.control.Try.Success} on success
-     */
-    public Try<Void> generate( final InputStream ontologyInputStream, final Either<OutputStream, Path> output,
-                               final Configuration configuration ) {
-        final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
-        final OWLOntology ontology;
-        try {
-            ontology = manager.loadOntologyFromOntologyDocument( ontologyInputStream );
-            return generate( ontology, output, configuration );
-        } catch ( final OWLOntologyCreationException exception ) {
             return Try.failure( exception );
         }
     }
