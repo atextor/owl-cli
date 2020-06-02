@@ -26,6 +26,10 @@ import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 
 import java.util.List;
 
+/**
+ * The command that takes an OWL ontology as input and genrates a diagram as output.
+ * This wraps the diagram module in the project and calls its main functionality, {@link DiagramGenerator}.
+ */
 public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
 
@@ -50,13 +54,6 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
 
     @Override
     public void run() {
-        if ( arguments.help ) {
-            System.out.println( "Input can be a relative or absolute filename, or - for stdin." );
-            System.out.println( "Output can be a relative or absolute filename, or - for stdout. If left out, the " +
-                "output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg." );
-            System.exit( 0 );
-        }
-
         if ( arguments.inputOutput == null || arguments.inputOutput.size() > 2 ) {
             exitWithErrorMessage( new ErrorMessage( "Error: Invalid number of input/output arguments" ) );
         }
@@ -72,6 +69,15 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
     @Override
     String getCommandName() {
         return "diagram";
+    }
+
+    @Override
+    String getHelp() {
+        return """
+            Input can be a relative or absolute filename, or - for stdin.
+            Output can be a relative or absolute filename, or - for stdout. If left out, the
+            output filename is the input filename with its file extension changed, e.g. foo.owl -> foo.svg.
+            """;
     }
 
     private static class FormatParser implements IStringConverter<Configuration.Format> {
@@ -90,9 +96,6 @@ public class DiagramCommand extends CommandBase<DiagramCommand.Arguments> {
 
     @Parameters( commandDescription = "Generate diagrams for OWL ontologies" )
     static class Arguments {
-        @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
-        public boolean help;
-
         @Parameter( description = "input [output]", required = true, variableArity = true )
         public List<String> inputOutput;
 

@@ -20,6 +20,7 @@ import com.beust.jcommander.IUsageFormatter;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.google.common.collect.Sets;
 import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
 
@@ -35,7 +36,9 @@ public class App extends CommandBase<App.Arguments> {
     public static void main( final String[] args ) {
         final App app = new App();
         final Arguments arguments = app.getArguments();
-        final Set<CommandBase<?>> commands = Set.of( new DiagramCommand() );
+        final Set<CommandBase<?>> commandsExceptHelp = Set.of( new DiagramCommand() );
+        final Set<CommandBase<?>> commands = Sets.union( commandsExceptHelp,
+            Set.of( new HelpCommand( commandsExceptHelp ) ) );
 
         final JCommander jCommander = JCommander.newBuilder().addObject( arguments ).build();
         commands.forEach( command -> jCommander.addCommand( command.getCommandName(), command.getArguments() ) );
@@ -45,8 +48,7 @@ public class App extends CommandBase<App.Arguments> {
         app.setjCommander( jCommander );
 
         if ( args.length == 0 ) {
-            jCommander.usage();
-            System.exit( 0 );
+            app.printHelpAndExit();
         }
 
         app.parseCommandLineArguments( args ).onFailure( app::exitWithErrorMessage );
@@ -59,8 +61,7 @@ public class App extends CommandBase<App.Arguments> {
             }
         } );
 
-        jCommander.usage();
-        System.exit( 0 );
+        app.printHelpAndExit();
     }
 
     private void setjCommander( final JCommander jCommander ) {
@@ -90,15 +91,25 @@ public class App extends CommandBase<App.Arguments> {
     }
 
     @Override
+    String getHelp() {
+        return "Command line tool for ontology engineering";
+    }
+
+    private void printHelpAndExit() {
+        System.out.println( getHelp() );
+        jCommander.usage();
+        System.exit( 0 );
+    }
+
+    @Override
     public void run() {
         if ( arguments.help ) {
-            jCommander.usage();
-            System.exit( 0 );
+            printHelpAndExit();
         }
     }
 
     static class Arguments {
-        @Parameter( names = { "--help", "-h" }, description = "Prints the arguments", help = true )
+        @Parameter( names = { "--help" }, description = "Prints the arguments", help = true )
         private boolean help;
     }
 

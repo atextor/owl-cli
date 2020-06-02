@@ -98,4 +98,6 @@ abstract public class CommandBase<T> implements Runnable {
     }
 
     abstract String getCommandName();
+
+    abstract String getHelp();
 }
