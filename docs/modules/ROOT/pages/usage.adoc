@@ -10,7 +10,7 @@ You can call the built-in overview of commands and arguments via `--help` or `-h
 owl --help
 Usage: owl [options] [command] [command options]
   Options:
-    --help, -h
+    --help
       Prints the arguments
   Commands:
     ...
@@ -21,7 +21,7 @@ take its own arguments, for example:
 
 [source,shell]
 ----
-owl diagram --help
+owl diagram --format png
 ----
 
 Commands that take ontology files as an input support all formats that are
@@ -64,8 +64,8 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 
 |`--direction`
 |Diagram layout direction
-|LEFT_TO_RIGHT
-|Possible Values: [TOP_TO_BOTTOM, LEFT_TO_RIGHT]
+|left_to_right
+|Possible Values: [top_to_bottom, left_to_right]
 
 |`--dotbinary`
 |Path to `dot` binary
@@ -84,8 +84,8 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 
 |`--format`
 |Output file format
-|SVG
-|Possible Values: [PNG, SVG]
+|svg
+|Possible Values: [png, svg]
 
 |`--nodefontname`
 |Font for nodes
