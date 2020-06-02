@@ -22,19 +22,6 @@ import lombok.Builder;
  */
 @Builder
 public class Configuration {
-    public enum Format {
-        PNG, SVG;
-
-        public String getExtension() {
-            return toString().toLowerCase();
-        }
-    }
-
-    public enum LayoutDirection {
-        TOP_TO_BOTTOM,
-        LEFT_TO_RIGHT
-    }
-
     @Builder.Default
     public String dotBinary = "dot";
     @Builder.Default
@@ -55,4 +42,37 @@ public class Configuration {
     public Format format = Format.SVG;
     @Builder.Default
     public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
+
+    public enum Format {
+        PNG, SVG;
+
+        public String getExtension() {
+            return toString().toLowerCase();
+        }
+
+        @Override
+        public String toString() {
+            return switch ( this ) {
+                case PNG:
+                    yield "png";
+                case SVG:
+                    yield "svg";
+            };
+        }
+    }
+
+    public enum LayoutDirection {
+        TOP_TO_BOTTOM,
+        LEFT_TO_RIGHT;
+
+        @Override
+        public String toString() {
+            return switch ( this ) {
+                case TOP_TO_BOTTOM:
+                    yield "top_to_bottom";
+                case LEFT_TO_RIGHT:
+                    yield "left_to_right";
+            };
+        }
+    }
 }
