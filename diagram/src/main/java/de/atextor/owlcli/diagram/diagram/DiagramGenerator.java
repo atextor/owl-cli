@@ -18,14 +18,11 @@ package de.atextor.owlcli.diagram.diagram;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
-import io.vavr.control.Either;
 import io.vavr.control.Try;
 import org.apache.commons.io.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntology;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -57,15 +54,8 @@ public class DiagramGenerator {
 
     private Try<Void> writeStreamToOutput( final InputStream in, final OutputStream out ) {
         try {
-            final byte[] buffer = new byte[1024];
-            for ( ; ; ) {
-                final int bytesRead;
-                bytesRead = in.read( buffer );
-                if ( bytesRead == -1 ) {
-                    return Try.success( null );
-                }
-                out.write( buffer, 0, bytesRead );
-            }
+            in.transferTo( out );
+            return Try.success( null );
         } catch ( final IOException exception ) {
             return Try.failure( exception );
         }
@@ -117,14 +107,6 @@ public class DiagramGenerator {
         }
     }
 
-    private Try<OutputStream> openStream( final Path filePath ) {
-        try {
-            return Try.success( new FileOutputStream( filePath.toFile() ) );
-        } catch ( final FileNotFoundException exeception ) {
-            return Try.failure( exeception );
-        }
-    }
-
     /**
      * Performs diagram generation for an input ontology. The result is either written to a given {@link OutputStream}
      * or a given {@link Path}.
@@ -134,7 +116,7 @@ public class DiagramGenerator {
      * @param configuration the configuration for the diagram generation
      * @return {@link io.vavr.control.Try.Success} on success
      */
-    public Try<Void> generate( final OWLOntology ontology, final Either<OutputStream, Path> output,
+    public Try<Void> generate( final OWLOntology ontology, final OutputStream output,
                                final Configuration configuration ) {
         final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology ).stream();
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( ontologyGraphRepresenation );
@@ -148,7 +130,6 @@ public class DiagramGenerator {
             }
         };
 
-        return output.fold( Try::success, this::openStream ).flatMap( stream ->
-            executeDot( contentProvider, stream, new File( System.getProperty( "user.dir" ) ), configuration ) );
+        return executeDot( contentProvider, output, new File( System.getProperty( "user.dir" ) ), configuration );
     }
 }

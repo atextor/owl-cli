@@ -25,6 +25,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+/**
+ * Provides the names of all the .ttl resources for parameterized tests (without .ttl extension)
+ */
 public class ResourceArgumentsProvider implements ArgumentsProvider {
     @Override
     public Stream<? extends Arguments> provideArguments( final ExtensionContext context ) {
