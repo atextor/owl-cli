@@ -21,7 +21,6 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.common.collect.Sets;
-import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
 
 import java.util.Set;
@@ -73,11 +72,9 @@ public class App extends CommandBase<App.Arguments> {
             jCommander.parse( args );
             return Try.success( null );
         } catch ( final IllegalArgumentException exception ) {
-            if ( exception.getMessage().contains( Configuration.Format.class.getSimpleName() ) ) {
-                return Try.failure( new RuntimeException( "Invalid format" ) );
-            }
-            if ( exception.getMessage().contains( Configuration.LayoutDirection.class.getSimpleName() ) ) {
-                return Try.failure( new RuntimeException( "Invalid layout direction" ) );
+            if ( exception.getMessage().startsWith( "No enum constant" ) ) {
+                return Try.failure( new RuntimeException( "Invalid argument: " + exception.getMessage()
+                    .substring( exception.getMessage().lastIndexOf( '.' ) + 1 ).toLowerCase() ) );
             }
             return Try.failure( exception );
         } catch ( final ParameterException exception ) {
