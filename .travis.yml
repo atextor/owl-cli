@@ -38,14 +38,6 @@ jobs:
           draft: false
           tag_name: $TRAVIS_TAG
           target_commitish: $TRAVIS_COMMIT
-        - provider: pages
-          github_token: "$GITHUB_API_KEY"
-          keep_history: false
-          local_dir: build/site
-          skip_cleanup: true
-          on:
-            repo: atextor/owl-cli
-            branch: master
     # -------------------------------------------
     - stage: build+deploy-snapshot
       name: "Build and deploy Snapshot"
