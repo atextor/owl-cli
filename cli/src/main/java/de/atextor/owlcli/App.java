@@ -119,11 +119,13 @@ public class App extends CommandBase<App.Arguments> {
             printHelpAndExit();
         }
 
-        applicationProperties().forEach( properties ->
-            System.out.printf( "owl-cli version: %s build date: %s%n",
-                properties.get( "application.version" ), properties.get( "application.buildDate" ) ) );
+        if ( arguments.version ) {
+            applicationProperties().forEach( properties ->
+                System.out.printf( "owl-cli version: %s build date: %s%n",
+                    properties.get( "application.version" ), properties.get( "application.buildDate" ) ) );
 
-        System.exit( 0 );
+            System.exit( 0 );
+        }
     }
 
     static class Arguments {

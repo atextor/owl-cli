@@ -12,6 +12,8 @@ Usage: owl [options] [command] [command options]
   Options:
     --help
       Prints the arguments
+    --version
+      Show current version
   Commands:
     ...
 ----
