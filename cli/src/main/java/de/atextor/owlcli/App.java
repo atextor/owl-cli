@@ -23,6 +23,9 @@ import com.beust.jcommander.ParameterException;
 import com.google.common.collect.Sets;
 import io.vavr.control.Try;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.Set;
 
 public class App extends CommandBase<App.Arguments> {
@@ -95,7 +98,19 @@ public class App extends CommandBase<App.Arguments> {
     private void printHelpAndExit() {
         System.out.println( getHelp() );
         jCommander.usage();
+        System.out.println( "See the online documentation: https://atextor.de/owl-cli/" );
         System.exit( 0 );
+    }
+
+    private Try<Properties> applicationProperties() {
+        final Properties properties = new Properties();
+        try ( final InputStream inputStream = getClass().getResourceAsStream( "/application.properties" ) ) {
+            properties.load( inputStream );
+        } catch ( final IOException e ) {
+            return Try.failure( e );
+        }
+
+        return Try.success( properties );
     }
 
     @Override
@@ -103,11 +118,20 @@ public class App extends CommandBase<App.Arguments> {
         if ( arguments.help ) {
             printHelpAndExit();
         }
+
+        applicationProperties().forEach( properties ->
+            System.out.printf( "owl-cli version: %s build date: %s%n",
+                properties.get( "application.version" ), properties.get( "application.buildDate" ) ) );
+
+        System.exit( 0 );
     }
 
     static class Arguments {
-        @Parameter( names = { "--help" }, description = "Prints the arguments", help = true )
+        @Parameter( names = "--help", description = "Prints the arguments", help = true )
         private boolean help;
+
+        @Parameter( names = "--version", description = "Show current version", help = true )
+        private boolean version;
     }
 
     private static class CustomUsageFormatter extends DefaultUsageFormatter {

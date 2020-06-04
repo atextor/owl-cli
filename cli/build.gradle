@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.*
+
 buildscript {
     repositories {
         jcenter()
@@ -42,7 +44,14 @@ dependencies {
 
 shadowJar {
     archiveBaseName = 'owl-cli'
-    classifier = null
+    archiveClassifier = null
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+        "application.version": version,
+        "application.buildDate": new Date().format("yyyy-MM-dd HH:mm:ss")
+    ]
 }
 
 compileJava {
