@@ -7,6 +7,10 @@ content:
     - url: .
       branches: HEAD
       start_path: docs
+    - url: https://github.com/atextor/owl-cli.git
+      tags: [v.*]
+      branches: ~
+      start_path: docs
 ui:
   bundle:
     # UI bundle is built from here: https://github.com/atextor/docs-antora-ui
