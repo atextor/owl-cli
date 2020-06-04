@@ -5,6 +5,7 @@ plugins {
     id 'com.adarshr.test-logger' version '2.0.0' apply false
     id 'io.franzbecker.gradle-lombok' version '3.3.0' apply false
     id 'com.github.johnrengelman.shadow' version '5.2.0' apply false
+    id 'org.ajoberstar.grgit' version '4.0.2'
 }
 
 allprojects {
@@ -13,8 +14,14 @@ allprojects {
     }
 }
 
+def currentTag = {
+    def grgit = grgit.open{ dir = "${projectDir}" }
+    def tag = grgit.describe{ tags = true }
+    tag.startsWith('snapshot') ? 'snapshot' : tag.replace('v', '')
+}
+
 subprojects {
-    version = "$version"
+    version = currentTag()
     task allDeps(type: DependencyReportTask) {}
 }
 
