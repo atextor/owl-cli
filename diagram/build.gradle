@@ -25,6 +25,7 @@ dependencies {
     // Test
     testImplementation(deps.junit_jupiter_api)
     testImplementation(deps.assertj)
+    testImplementation(deps.jqwik)
     testRuntimeOnly(deps.junit_jupiter_engine)
 }
 

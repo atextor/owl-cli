@@ -28,11 +28,11 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GraphvizGeneratorTest {
-    GraphvizGenerator generator = new GraphvizGenerator( Configuration.builder().build() );
-    Node.Id from1 = new Node.Id( "foo" );
-    Node.Id to1 = new Node.Id( "bar" );
-    String name1 = "baz";
-    int cardinality1 = 5;
+    final GraphvizGenerator generator = new GraphvizGenerator( Configuration.builder().build() );
+    final Node.Id from1 = new Node.Id( "foo" );
+    final Node.Id to1 = new Node.Id( "bar" );
+    final String name1 = "baz";
+    final int cardinality1 = 5;
     final String value1 = "theValue";
 
     Predicate<GraphvizDocument.Statement> contains( final String needle ) {
