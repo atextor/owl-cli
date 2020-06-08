@@ -225,7 +225,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Edge propertyToDomain = edges.iterator().next();
         assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToDomain.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToDomain ).getLabel() ).isEqualTo( Edge.Decorated.DOMAIN_LABEL );
+        assertThat( ( (Edge.Decorated) propertyToDomain ).getLabel() ).isEqualTo( Edge.Decorated.Label.DOMAIN );
     }
 
     @Test
@@ -250,7 +250,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Edge propertyToDomain = edges.iterator().next();
         assertThat( propertyToDomain.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToDomain.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToDomain ).getLabel() ).isEqualTo( Edge.Decorated.DOMAIN_LABEL );
+        assertThat( ( (Edge.Decorated) propertyToDomain ).getLabel() ).isEqualTo( Edge.Decorated.Label.DOMAIN );
     }
 
     @Test
@@ -437,7 +437,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Edge propertyToRange = edges.iterator().next();
         assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToRange.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToRange ).getLabel() ).isEqualTo( Edge.Decorated.RANGE_LABEL );
+        assertThat( ( (Edge.Decorated) propertyToRange ).getLabel() ).isEqualTo( Edge.Decorated.Label.RANGE );
     }
 
     @Test
@@ -596,7 +596,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         final Edge propertyToRange = edges.iterator().next();
         assertThat( propertyToRange.getType() ).isEqualTo( Edge.Type.DEFAULT_ARROW );
         assertThat( propertyToRange.getClass() ).isEqualTo( Edge.Decorated.class );
-        assertThat( ( (Edge.Decorated) propertyToRange ).getLabel() ).isEqualTo( Edge.Decorated.RANGE_LABEL );
+        assertThat( ( (Edge.Decorated) propertyToRange ).getLabel() ).isEqualTo( Edge.Decorated.Label.RANGE );
     }
 
     @Test

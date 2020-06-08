@@ -45,7 +45,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz = new GraphvizNodeVisitor( configuration );
 
         final Function<Edge.Decorated, GraphvizDocument> decoratedEdgeToGraphviz = edge -> {
-            final String label = edge.getLabel();
+            final String label = edge.getLabel().getLabel();
             final String edgeStyle =
                 edgeTypeToGraphviz( edge.getType() )
                     .map( style -> String.format( "%s, fontsize=%d fontname=\"%s\"", style, configuration.fontsize,

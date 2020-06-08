@@ -79,19 +79,31 @@ public abstract class Edge implements GraphElement {
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static class Decorated extends Edge {
-        public static final String CLASS_LABEL = "C";
-        public static final String OBJECT_PROPERTY_LABEL = "P";
-        public static final String DATA_PROPERTY_LABEL = "P";
-        public static final String DATA_RANGE_LABEL = "C";
-        public static final String INDIVIDUAL_LABEL = "v";
-        public static final String LITERAL_LABEL = "v";
-        public static final String RANGE_LABEL = "range";
-        public static final String DOMAIN_LABEL = "domain";
+        public enum Label {
+            CLASS( "C" ),
+            OBJECT_PROPERTY( "P" ),
+            DATA_PROPERTY( "P" ),
+            DATA_RANGE( "C" ),
+            INDIVIDUAL( "v" ),
+            LITERAL( "v" ),
+            RANGE( "range" ),
+            DOMAIN( "domain" );
+
+            String label;
+
+            Label( final String label ) {
+                this.label = label;
+            }
+
+            public String getLabel() {
+                return label;
+            }
+        }
 
         Type type;
         Node.Id from;
         Node.Id to;
-        String label;
+        Label label;
 
         @Override
         public Edge setFrom( final Node.Id newFromId ) {

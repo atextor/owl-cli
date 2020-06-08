@@ -182,9 +182,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges )
-            .anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "Dog", Edge.Decorated.CLASS_LABEL ) );
+            .anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "Dog", Edge.Decorated.Label.CLASS ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -218,9 +218,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges )
-            .anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "Dog", Edge.Decorated.CLASS_LABEL ) );
+            .anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "Dog", Edge.Decorated.Label.CLASS ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -255,9 +255,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "baz",
-            Edge.Decorated.INDIVIDUAL_LABEL ) );
+            Edge.Decorated.Label.INDIVIDUAL ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "bar",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -292,7 +292,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -332,9 +332,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "Dog",
-            Edge.Decorated.CLASS_LABEL ) );
+            Edge.Decorated.Label.CLASS ) );
     }
 
     @Test
@@ -373,9 +373,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "Dog",
-            Edge.Decorated.CLASS_LABEL ) );
+            Edge.Decorated.Label.CLASS ) );
     }
 
     @Test
@@ -415,9 +415,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "Dog",
-            Edge.Decorated.CLASS_LABEL ) );
+            Edge.Decorated.Label.CLASS ) );
     }
 
     @Test
@@ -451,7 +451,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasDog",
-            Edge.Decorated.OBJECT_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.OBJECT_PROPERTY ) );
     }
 
     @Test
@@ -517,9 +517,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "name",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "string",
-            Edge.Decorated.DATA_RANGE_LABEL ) );
+            Edge.Decorated.Label.DATA_RANGE ) );
     }
 
     @Test
@@ -552,9 +552,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "name",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "string",
-            Edge.Decorated.DATA_RANGE_LABEL ) );
+            Edge.Decorated.Label.DATA_RANGE ) );
     }
 
     @Test
@@ -589,9 +589,9 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "baz",
-            Edge.Decorated.LITERAL_LABEL ) );
+            Edge.Decorated.Label.LITERAL ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNode, "bar",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
     }
 
     @Test
@@ -626,7 +626,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasName",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
     }
 
     @Test
@@ -663,7 +663,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasName",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
     }
 
     @Test
@@ -698,7 +698,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
         assertThat( edges ).anyMatch( isEdgeWithFromAndToAndLabel( restrictionNodeId, "hasName",
-            Edge.Decorated.DATA_PROPERTY_LABEL ) );
+            Edge.Decorated.Label.DATA_PROPERTY ) );
     }
 
     @Test

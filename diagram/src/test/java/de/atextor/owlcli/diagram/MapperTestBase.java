@@ -48,11 +48,11 @@ public class MapperTestBase {
     protected final Predicate<Edge> hasDashedArrow = edge -> edge.getType().equals( Edge.Type.DASHED_ARROW );
     protected final Predicate<Edge> hasNoArrow = edge -> edge.getType().equals( Edge.Type.NO_ARROW );
     final Predicate<Edge> hasDomainLabel = edge -> edge.view( Edge.Decorated.class )
-        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.DOMAIN_LABEL ) )
+        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.Label.DOMAIN ) )
         .findFirst()
         .orElse( false );
     final Predicate<Edge> hasRangeLabel = edge -> edge.view( Edge.Decorated.class )
-        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.RANGE_LABEL ) )
+        .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.Label.RANGE ) )
         .findFirst()
         .orElse( false );
     final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
@@ -151,7 +151,7 @@ public class MapperTestBase {
     }
 
     protected Predicate<Edge> isEdgeWithFromAndToAndLabel( final String fromId, final String toId,
-                                                           final String label ) {
+                                                           final Edge.Decorated.Label label ) {
         return edge -> edge.getFrom().getId().equals( fromId )
             && edge.getTo().getId().equals( toId )
             && ( (Edge.Decorated) edge ).getLabel().equals( label );

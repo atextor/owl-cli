@@ -163,7 +163,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), domainGraph.getNode().getId(), Edge.Decorated.DOMAIN_LABEL );
+            .getId(), domainGraph.getNode().getId(), Edge.Decorated.Label.DOMAIN );
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
@@ -171,7 +171,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
         final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), rangeGraph.getNode().getId(), Edge.Decorated.RANGE_LABEL );
+            .getId(), rangeGraph.getNode().getId(), Edge.Decorated.Label.RANGE );
         return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 
@@ -478,7 +478,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.DOMAIN_LABEL );
+            iriReference.getId(), Edge.Decorated.Label.DOMAIN );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
@@ -488,7 +488,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getRange() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.RANGE_LABEL );
+            iriReference.getId(), Edge.Decorated.Label.RANGE );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
