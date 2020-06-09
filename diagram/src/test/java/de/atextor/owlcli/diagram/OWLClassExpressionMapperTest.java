@@ -19,6 +19,22 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.Class;
+import de.atextor.owlcli.diagram.graph.node.ClosedClass;
+import de.atextor.owlcli.diagram.graph.node.Complement;
+import de.atextor.owlcli.diagram.graph.node.DataExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ExistentialRestriction;
+import de.atextor.owlcli.diagram.graph.node.Intersection;
+import de.atextor.owlcli.diagram.graph.node.ObjectMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.Self;
+import de.atextor.owlcli.diagram.graph.node.Union;
+import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
+import de.atextor.owlcli.diagram.graph.node.ValueRestriction;
 import de.atextor.owlcli.diagram.mappers.OWLClassExpressionMapper;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -70,7 +86,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( intersectionId ) );
 
         final Graph graph = mapper.visit( intersection );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Intersection.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Intersection.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -104,7 +120,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( unionId ) );
 
         final Graph graph = mapper.visit( union );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Union.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Union.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -137,7 +153,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( complementId ) );
 
         final Graph graph = mapper.visit( union );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Complement.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Complement.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -170,7 +186,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( someValuesFrom );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.ExistentialRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( ExistentialRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -206,7 +222,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( allValuesFrom );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.UniversalRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( UniversalRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -242,7 +258,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( hasValue );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.ValueRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( ValueRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -279,7 +295,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.ObjectMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( ObjectMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -287,7 +303,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
 
-        assertThat( ( (Node.ObjectMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (ObjectMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
@@ -317,7 +333,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.ObjectQualifiedMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( ObjectQualifiedMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -326,7 +342,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (Node.ObjectQualifiedMinimalCardinality) restrictionNode ).getCardinality() )
+        assertThat( ( (ObjectQualifiedMinimalCardinality) restrictionNode ).getCardinality() )
             .isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
@@ -359,7 +375,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( cardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.ObjectQualifiedExactCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( ObjectQualifiedExactCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -368,7 +384,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (Node.ObjectQualifiedExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (ObjectQualifiedExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 2 );
@@ -400,7 +416,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( maxCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.ObjectQualifiedMaximalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( ObjectQualifiedMaximalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -409,7 +425,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "hasDog" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "Dog" ) );
 
-        assertThat( ( (Node.ObjectQualifiedMaximalCardinality) restrictionNode ).getCardinality() )
+        assertThat( ( (ObjectQualifiedMaximalCardinality) restrictionNode ).getCardinality() )
             .isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
@@ -440,7 +456,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( hasSelf );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.Self.class );
+        assertThat( restrictionNode ).isInstanceOf( Self.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -472,7 +488,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( hasSelf );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.ClosedClass.class );
+        assertThat( restrictionNode ).isInstanceOf( ClosedClass.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -505,7 +521,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( someValuesFrom );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.ExistentialRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( ExistentialRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -540,7 +556,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( allValuesFrom );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.UniversalRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( UniversalRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -576,7 +592,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         testIdentifierMapper.pushAnonId( new Node.Id( restrictionNode ) );
 
         final Graph graph = mapper.visit( hasValue );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.ValueRestriction.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( ValueRestriction.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -613,7 +629,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.DataMinimalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( DataMinimalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -621,7 +637,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (Node.DataMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (DataMinimalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
@@ -650,7 +666,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( cardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.DataExactCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( DataExactCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -658,7 +674,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (Node.DataExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (DataExactCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
@@ -685,7 +701,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
 
         final Graph graph = mapper.visit( minCardinality );
         final Node restrictionNode = graph.getNode();
-        assertThat( restrictionNode ).isInstanceOf( Node.DataMaximalCardinality.class );
+        assertThat( restrictionNode ).isInstanceOf( DataMaximalCardinality.class );
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isNotEmpty();
 
@@ -693,7 +709,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         assertThat( nodes ).hasSize( 1 );
         assertThat( nodes ).anyMatch( isNodeWithId( "hasName" ) );
 
-        assertThat( ( (Node.DataMaximalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
+        assertThat( ( (DataMaximalCardinality) restrictionNode ).getCardinality() ).isEqualTo( 1 );
 
         final List<Edge> edges = edges( remainingElements );
         assertThat( edges ).hasSize( 1 );
@@ -707,7 +723,7 @@ public class OWLClassExpressionMapperTest extends MapperTestBase {
         final OWLClass class_ = (OWLClass) axiom.getEntity();
 
         final Graph graph = mapper.visit( class_ );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Class.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Class.class );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

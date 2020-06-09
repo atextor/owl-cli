@@ -18,6 +18,7 @@ package de.atextor.owlcli.diagram.graph.transformer;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import io.vavr.Tuple2;
 
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Implements a graph transformer that merges multiple {@link Node.PropertyMarker}s on a given Object property
+ * Implements a graph transformer that merges multiple {@link PropertyMarker}s on a given Object property
  * or Data Property into one Property Marker
  */
 public class PropertyMarkerMerger extends GraphTransformer {
@@ -50,17 +51,17 @@ public class PropertyMarkerMerger extends GraphTransformer {
             .findFirst();
     }
 
-    private Optional<Node.PropertyMarker> markerByEdge( final Set<GraphElement> graph, final Edge edge ) {
+    private Optional<PropertyMarker> markerByEdge( final Set<GraphElement> graph, final Edge edge ) {
         return getNode( graph, edge.getTo() ).stream()
-            .flatMap( node -> node.view( Node.PropertyMarker.class ) )
+            .flatMap( node -> node.view( PropertyMarker.class ) )
             .findFirst();
     }
 
-    private ChangeSet mergePropertyMarkers( final Set<Tuple2<Edge, Node.PropertyMarker>> propertyMarkers ) {
-        final Set<Node.PropertyMarker.Kind> mergedKindSet =
+    private ChangeSet mergePropertyMarkers( final Set<Tuple2<Edge, PropertyMarker>> propertyMarkers ) {
+        final Set<PropertyMarker.Kind> mergedKindSet =
             propertyMarkers.stream().flatMap( marker -> marker._2().getKind().stream() ).collect( Collectors.toSet() );
-        final Node.PropertyMarker newMarker =
-            new Node.PropertyMarker( mappingConfiguration.getIdentifierMapper().getSyntheticId(), mergedKindSet );
+        final PropertyMarker newMarker =
+            new PropertyMarker( mappingConfiguration.getIdentifierMapper().getSyntheticId(), mergedKindSet );
 
         final Edge newEdge = propertyMarkers.iterator().next()._1().setTo( newMarker.getId() );
 
@@ -76,7 +77,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
      * Apply this transformer to the given input graph
      *
      * @param graph the input graph
-     * @return the resulting graph that has at most one {@link Node.PropertyMarker} for each property
+     * @return the resulting graph that has at most one {@link PropertyMarker} for each property
      */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
@@ -85,7 +86,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
             .map( GraphElement::asEdge )
             .collect( Collectors.groupingBy( Edge::getFrom ) )
             .values().stream().map( edges -> {
-                final Set<Tuple2<Edge, Node.PropertyMarker>> propertyMarkers = edges.stream()
+                final Set<Tuple2<Edge, PropertyMarker>> propertyMarkers = edges.stream()
                     .flatMap( edge -> markerByEdge( graph, edge )
                         .map( marker -> new Tuple2<>( edge, marker ) )
                         .stream() ).collect( Collectors.toSet() );

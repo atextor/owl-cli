@@ -18,6 +18,38 @@ package de.atextor.owlcli.diagram.diagram;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
+import de.atextor.owlcli.diagram.graph.node.Class;
+import de.atextor.owlcli.diagram.graph.node.ClosedClass;
+import de.atextor.owlcli.diagram.graph.node.Complement;
+import de.atextor.owlcli.diagram.graph.node.DataExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataProperty;
+import de.atextor.owlcli.diagram.graph.node.Datatype;
+import de.atextor.owlcli.diagram.graph.node.DisjointUnion;
+import de.atextor.owlcli.diagram.graph.node.Disjointness;
+import de.atextor.owlcli.diagram.graph.node.Equality;
+import de.atextor.owlcli.diagram.graph.node.ExistentialRestriction;
+import de.atextor.owlcli.diagram.graph.node.Individual;
+import de.atextor.owlcli.diagram.graph.node.Inequality;
+import de.atextor.owlcli.diagram.graph.node.Intersection;
+import de.atextor.owlcli.diagram.graph.node.Inverse;
+import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Literal;
+import de.atextor.owlcli.diagram.graph.node.ObjectExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectProperty;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.PropertyChain;
+import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
+import de.atextor.owlcli.diagram.graph.node.Self;
+import de.atextor.owlcli.diagram.graph.node.Union;
+import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
+import de.atextor.owlcli.diagram.graph.node.ValueRestriction;
 import de.atextor.owlcli.diagram.mappers.DefaultIdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
@@ -66,59 +98,59 @@ public class DiagramGeneratorTest {
     @Provide
     Arbitrary<Node> anyNamedNode() {
         return Arbitraries.oneOf(
-            Combinators.combine( anyId(), anyName() ).as( Node.Class::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.DataProperty::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.ObjectProperty::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.AnnotationProperty::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.Individual::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.Datatype::new ),
-            Combinators.combine( anyId(), anyName() ).as( Node.Literal::new )
+            Combinators.combine( anyId(), anyName() ).as( Class::new ),
+            Combinators.combine( anyId(), anyName() ).as( DataProperty::new ),
+            Combinators.combine( anyId(), anyName() ).as( ObjectProperty::new ),
+            Combinators.combine( anyId(), anyName() ).as( AnnotationProperty::new ),
+            Combinators.combine( anyId(), anyName() ).as( Individual::new ),
+            Combinators.combine( anyId(), anyName() ).as( Datatype::new ),
+            Combinators.combine( anyId(), anyName() ).as( Literal::new )
         );
     }
 
     @Provide
     Arbitrary<Node> anyCardinalityNode() {
         return Arbitraries.oneOf(
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.DataExactCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.DataMaximalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.DataMinimalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectExactCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectMaximalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectMinimalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectQualifiedExactCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectQualifiedMaximalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( Node.ObjectQualifiedMinimalCardinality::new ) );
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( DataExactCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( DataMaximalCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( DataMinimalCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectExactCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectMaximalCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectMinimalCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedExactCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedMaximalCardinality::new ),
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedMinimalCardinality::new ) );
     }
 
     Arbitrary<Node> anyOnlyIdentifiedNode() {
         return Arbitraries.oneOf(
-            anyId().map( Node.ExistentialRestriction::new ),
-            anyId().map( Node.ValueRestriction::new ),
-            anyId().map( Node.UniversalRestriction::new ),
-            anyId().map( Node.Intersection::new ),
-            anyId().map( Node.Union::new ),
-            anyId().map( Node.Disjointness::new ),
-            anyId().map( Node.DisjointUnion::new ),
-            anyId().map( Node.Equality::new ),
-            anyId().map( Node.Inverse::new ),
-            anyId().map( Node.Inequality::new ),
-            anyId().map( Node.ClosedClass::new ),
-            anyId().map( Node.Complement::new ),
-            anyId().map( Node.Self::new ),
-            anyId().map( Node.Invisible::new ) );
+            anyId().map( ExistentialRestriction::new ),
+            anyId().map( ValueRestriction::new ),
+            anyId().map( UniversalRestriction::new ),
+            anyId().map( Intersection::new ),
+            anyId().map( Union::new ),
+            anyId().map( Disjointness::new ),
+            anyId().map( DisjointUnion::new ),
+            anyId().map( Equality::new ),
+            anyId().map( Inverse::new ),
+            anyId().map( Inequality::new ),
+            anyId().map( ClosedClass::new ),
+            anyId().map( Complement::new ),
+            anyId().map( Self::new ),
+            anyId().map( Invisible::new ) );
     }
 
     @Provide
     Arbitrary<Node> anyPropertyChain() {
         final Arbitrary<String> anyValue = anyName().stream().reduce( "",
-            ( s1, s2 ) -> s1 + " " + Node.PropertyChain.OPERATOR_SYMBOL + " " + s2 );
-        return Combinators.combine( anyId(), anyValue ).as( Node.PropertyChain::new );
+            ( s1, s2 ) -> s1 + " " + PropertyChain.OPERATOR_SYMBOL + " " + s2 );
+        return Combinators.combine( anyId(), anyValue ).as( PropertyChain::new );
     }
 
     @Provide
     Arbitrary<Node> anyPropertyMarker() {
-        return Combinators.combine( anyId(), Arbitraries.of( Node.PropertyMarker.Kind.class ).set() )
-            .as( Node.PropertyMarker::new );
+        return Combinators.combine( anyId(), Arbitraries.of( PropertyMarker.Kind.class ).set() )
+            .as( PropertyMarker::new );
     }
 
     @Provide

@@ -16,7 +16,7 @@
 package de.atextor.owlcli.diagram;
 
 import de.atextor.owlcli.diagram.graph.Graph;
-import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.Individual;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLIndividualMapper;
 import org.junit.jupiter.api.Test;
@@ -45,9 +45,9 @@ public class OWLIndividualMapperTest extends MapperTestBase {
         assertThat( individual.isAnonymous() ).isTrue();
 
         final Graph graph = mapper.visit( individual.asOWLAnonymousIndividual() );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Individual.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Individual.class );
 
-        assertThat( ( (Node.Individual) graph.getNode() ).getName() ).isEqualTo( "[]" );
+        assertThat( ( (Individual) graph.getNode() ).getName() ).isEqualTo( "[]" );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 
@@ -62,9 +62,9 @@ public class OWLIndividualMapperTest extends MapperTestBase {
         assertThat( individual.isAnonymous() ).isFalse();
 
         final Graph graph = mapper.visit( individual.asOWLNamedIndividual() );
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.Individual.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( Individual.class );
 
-        assertThat( (Node.Individual) graph.getNode() ).matches( isNodeWithId( "Max" ) );
+        assertThat( (Individual) graph.getNode() ).matches( isNodeWithId( "Max" ) );
         assertThat( graph.getOtherElements() ).isEmpty();
     }
 }

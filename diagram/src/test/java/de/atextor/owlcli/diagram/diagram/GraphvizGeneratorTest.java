@@ -18,6 +18,34 @@ package de.atextor.owlcli.diagram.diagram;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
+import de.atextor.owlcli.diagram.graph.node.Class;
+import de.atextor.owlcli.diagram.graph.node.ClosedClass;
+import de.atextor.owlcli.diagram.graph.node.Complement;
+import de.atextor.owlcli.diagram.graph.node.DataExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataProperty;
+import de.atextor.owlcli.diagram.graph.node.Datatype;
+import de.atextor.owlcli.diagram.graph.node.DisjointUnion;
+import de.atextor.owlcli.diagram.graph.node.Disjointness;
+import de.atextor.owlcli.diagram.graph.node.ExistentialRestriction;
+import de.atextor.owlcli.diagram.graph.node.IRIReference;
+import de.atextor.owlcli.diagram.graph.node.Individual;
+import de.atextor.owlcli.diagram.graph.node.Intersection;
+import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Literal;
+import de.atextor.owlcli.diagram.graph.node.ObjectExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectProperty;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.PropertyChain;
+import de.atextor.owlcli.diagram.graph.node.Self;
+import de.atextor.owlcli.diagram.graph.node.Union;
+import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
+import de.atextor.owlcli.diagram.graph.node.ValueRestriction;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.IRI;
 
@@ -104,147 +132,147 @@ public class GraphvizGeneratorTest {
 
     @Test
     void testNodeelementsTypeClass() {
-        testNamedNode( new Node.Class( from1, name1 ) );
+        testNamedNode( new Class( from1, name1 ) );
     }
 
     @Test
     void testNodeDataProperty() {
-        testNamedNode( new Node.DataProperty( from1, name1 ) );
+        testNamedNode( new DataProperty( from1, name1 ) );
     }
 
     @Test
     void testNodeObjectProperty() {
-        testNamedNode( new Node.ObjectProperty( from1, name1 ) );
+        testNamedNode( new ObjectProperty( from1, name1 ) );
     }
 
     @Test
     void testNodeAnnotationProperty() {
-        testNamedNode( new Node.AnnotationProperty( from1, name1 ) );
+        testNamedNode( new AnnotationProperty( from1, name1 ) );
     }
 
     @Test
     void testNodeIndividual() {
-        testNamedNode( new Node.Individual( from1, name1 ) );
+        testNamedNode( new Individual( from1, name1 ) );
     }
 
     @Test
     void testNodeLiteral() {
-        testValueNode( new Node.Literal( from1, value1 ) );
+        testValueNode( new Literal( from1, value1 ) );
     }
 
     @Test
     void testNodePropertyChain() {
-        testValueNode( new Node.PropertyChain( from1, value1 ) );
+        testValueNode( new PropertyChain( from1, value1 ) );
     }
 
     @Test
     void testNodeDatatype() {
-        testNamedNode( new Node.Datatype( from1, name1 ) );
-        testNodeWithId( new Node.Datatype( from1, "int[> 4, <= 10]" ) );
+        testNamedNode( new Datatype( from1, name1 ) );
+        testNodeWithId( new Datatype( from1, "int[> 4, <= 10]" ) );
     }
 
     @Test
     void testNodeExistentialRestriction() {
-        testNodeWithId( new Node.ExistentialRestriction( from1 ) );
+        testNodeWithId( new ExistentialRestriction( from1 ) );
     }
 
     @Test
     void testNodeValueRestriction() {
-        testNodeWithId( new Node.ValueRestriction( from1 ) );
+        testNodeWithId( new ValueRestriction( from1 ) );
     }
 
     @Test
     void testNodeUniversalRestriction() {
-        testNodeWithId( new Node.UniversalRestriction( from1 ) );
+        testNodeWithId( new UniversalRestriction( from1 ) );
     }
 
     @Test
     void testNodeIntersection() {
-        testNodeWithId( new Node.Intersection( from1 ) );
+        testNodeWithId( new Intersection( from1 ) );
     }
 
     @Test
     void testNodeUnion() {
-        testNodeWithId( new Node.Union( from1 ) );
+        testNodeWithId( new Union( from1 ) );
     }
 
     @Test
     void testNodeDisjointness() {
-        testNodeWithId( new Node.Disjointness( from1 ) );
+        testNodeWithId( new Disjointness( from1 ) );
     }
 
     @Test
     void testNodeDisjointUnion() {
-        testNodeWithId( new Node.DisjointUnion( from1 ) );
+        testNodeWithId( new DisjointUnion( from1 ) );
     }
 
     @Test
     void testNodeClosedClass() {
-        testNodeWithId( new Node.ClosedClass( from1 ) );
+        testNodeWithId( new ClosedClass( from1 ) );
     }
 
     @Test
     void testNodeComplement() {
-        testNodeWithId( new Node.Complement( from1 ) );
+        testNodeWithId( new Complement( from1 ) );
     }
 
     @Test
     void testNodeSelf() {
-        testNodeWithId( new Node.Self( from1 ) );
+        testNodeWithId( new Self( from1 ) );
     }
 
     @Test
     void testNodeObjectMinimalCardinality() {
-        testCardinalityNode( new Node.ObjectMinimalCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectMinimalCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeObjectQualifiedMinimalCardinality() {
-        testCardinalityNode( new Node.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectQualifiedExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeObjectMaximalCardinality() {
-        testCardinalityNode( new Node.ObjectMaximalCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeObjectQualifiedMaximalCardinality() {
-        testCardinalityNode( new Node.ObjectQualifiedMaximalCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectQualifiedMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeObjectExactCardinality() {
-        testCardinalityNode( new Node.ObjectExactCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeObjectQualifiedExactCardinality() {
-        testCardinalityNode( new Node.ObjectQualifiedExactCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new ObjectQualifiedExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeDataMinimalCardinality() {
-        testCardinalityNode( new Node.DataMinimalCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new DataMinimalCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeDataMaximalCardinality() {
-        testCardinalityNode( new Node.DataMaximalCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new DataMaximalCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeDataExactCardinality() {
-        testCardinalityNode( new Node.DataExactCardinality( from1, cardinality1 ) );
+        testCardinalityNode( new DataExactCardinality( from1, cardinality1 ) );
     }
 
     @Test
     void testNodeInvisible() {
-        testNodeWithId( new Node.Invisible( from1 ) );
+        testNodeWithId( new Invisible( from1 ) );
     }
 
     @Test
     void testNodeIRIReference() {
-        testValueNode( new Node.IRIReference( from1, IRI.create( "http://test.de#" + value1 ) ) );
+        testValueNode( new IRIReference( from1, IRI.create( "http://test.de#" + value1 ) ) );
     }
 }

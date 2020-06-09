@@ -20,6 +20,39 @@ import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.GraphVisitor;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
+import de.atextor.owlcli.diagram.graph.node.Class;
+import de.atextor.owlcli.diagram.graph.node.ClosedClass;
+import de.atextor.owlcli.diagram.graph.node.Complement;
+import de.atextor.owlcli.diagram.graph.node.DataExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.DataProperty;
+import de.atextor.owlcli.diagram.graph.node.Datatype;
+import de.atextor.owlcli.diagram.graph.node.DisjointUnion;
+import de.atextor.owlcli.diagram.graph.node.Disjointness;
+import de.atextor.owlcli.diagram.graph.node.Equality;
+import de.atextor.owlcli.diagram.graph.node.ExistentialRestriction;
+import de.atextor.owlcli.diagram.graph.node.IRIReference;
+import de.atextor.owlcli.diagram.graph.node.Individual;
+import de.atextor.owlcli.diagram.graph.node.Inequality;
+import de.atextor.owlcli.diagram.graph.node.Intersection;
+import de.atextor.owlcli.diagram.graph.node.Inverse;
+import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Literal;
+import de.atextor.owlcli.diagram.graph.node.ObjectExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectProperty;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedExactCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
+import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMinimalCardinality;
+import de.atextor.owlcli.diagram.graph.node.PropertyChain;
+import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
+import de.atextor.owlcli.diagram.graph.node.Self;
+import de.atextor.owlcli.diagram.graph.node.Union;
+import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
+import de.atextor.owlcli.diagram.graph.node.ValueRestriction;
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.Arrays;
@@ -138,45 +171,45 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Class class_ ) {
+        public GraphvizDocument visit( final Class class_ ) {
             return generateHtmlLabelNode( class_.getId(), Symbol.CLASS
                 .getNodeValue( class_.getName(), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.DataProperty dataProperty ) {
+        public GraphvizDocument visit( final DataProperty dataProperty ) {
             return generateHtmlLabelNode( dataProperty.getId(), Symbol.DATA_PROPERTY
                 .getNodeValue( dataProperty.getName(), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectProperty objectProperty ) {
+        public GraphvizDocument visit( final ObjectProperty objectProperty ) {
             return generateHtmlLabelNode( objectProperty.getId(), Symbol.OBJECT_PROPERTY
                 .getNodeValue( objectProperty.getName(), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.AnnotationProperty annotationProperty ) {
+        public GraphvizDocument visit( final AnnotationProperty annotationProperty ) {
             return generateHtmlLabelNode( annotationProperty.getId(), Symbol.ANNOTATION_PROPERTY
                 .getNodeValue( annotationProperty.getName(), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Individual individual ) {
+        public GraphvizDocument visit( final Individual individual ) {
             return generateHtmlLabelNode( individual.getId(), Symbol.INDIVIDUAL
                 .getNodeValue( individual.getName(), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Literal literal ) {
+        public GraphvizDocument visit( final Literal literal ) {
             return generateLiteralNode( literal.getId(), literal.getValue() );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.PropertyChain propertyChain ) {
+        public GraphvizDocument visit( final PropertyChain propertyChain ) {
             final String operator = String
-                .format( " <FONT COLOR=\"#0A5EA8\"><B>%s</B></FONT> ", Node.PropertyChain.OPERATOR_SYMBOL );
-            final String[] parts = propertyChain.getValue().split( " " + Node.PropertyChain.OPERATOR_SYMBOL + " " );
+                .format( " <FONT COLOR=\"#0A5EA8\"><B>%s</B></FONT> ", PropertyChain.OPERATOR_SYMBOL );
+            final String[] parts = propertyChain.getValue().split( " " + PropertyChain.OPERATOR_SYMBOL + " " );
             final String label = Arrays.stream( parts )
                 .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
                 .collect( Collectors.joining( operator ) );
@@ -184,41 +217,41 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Datatype datatype ) {
+        public GraphvizDocument visit( final Datatype datatype ) {
             return generateHtmlLabelNode( datatype.getId(), Symbol.DATA_TYPE
                 .getNodeValue( escape( datatype.getName() ), configuration ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ExistentialRestriction existentialRestriction ) {
+        public GraphvizDocument visit( final ExistentialRestriction existentialRestriction ) {
             return generateHtmlLabelNode( existentialRestriction.getId(),
                 "P <FONT COLOR=\"#B200B2\"><B>some</B></FONT> C" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ValueRestriction valueRestriction ) {
+        public GraphvizDocument visit( final ValueRestriction valueRestriction ) {
             return generateHtmlLabelNode( valueRestriction.getId(),
                 "P <FONT COLOR=\"#B200B2\"><B>value</B></FONT> v" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.UniversalRestriction universalRestriction ) {
+        public GraphvizDocument visit( final UniversalRestriction universalRestriction ) {
             return generateHtmlLabelNode( universalRestriction.getId(),
                 "P <FONT COLOR=\"#B200B2\"><B>only</B></FONT>  C" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Intersection intersection ) {
+        public GraphvizDocument visit( final Intersection intersection ) {
             return generateHtmlLabelNode( intersection.getId(), "<FONT COLOR=\"#00B2B2\"><B>and</B></FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Union union ) {
+        public GraphvizDocument visit( final Union union ) {
             return generateHtmlLabelNode( union.getId(), "<FONT COLOR=\"#00B2B2\"><B>or</B></FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Disjointness disjointness ) {
+        public GraphvizDocument visit( final Disjointness disjointness ) {
             final String label = """
                 <table border="0">
                    <tr>
@@ -229,7 +262,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final Node.DisjointUnion disjointUnion ) {
+        public GraphvizDocument visit( final DisjointUnion disjointUnion ) {
             final String label = """
                 <table border="0">
                    <tr>
@@ -240,118 +273,118 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Equality equality ) {
+        public GraphvizDocument visit( final Equality equality ) {
             return generateHtmlLabelNode( equality.getId(), "<FONT POINT-SIZE=\"16\">=</FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Inverse inverse ) {
+        public GraphvizDocument visit( final Inverse inverse ) {
             return generateHtmlLabelNode( inverse.getId(), "<FONT COLOR=\"#B200B2\"><B>inverse</B></FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Inequality inequality ) {
+        public GraphvizDocument visit( final Inequality inequality ) {
             return generateHtmlLabelNode( inequality.getId(), "<FONT POINT-SIZE=\"16\">≠</FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ClosedClass closedClass ) {
+        public GraphvizDocument visit( final ClosedClass closedClass ) {
             return generateHtmlLabelNode( closedClass.getId(), "<FONT POINT-SIZE=\"16\">{}</FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Complement complement ) {
+        public GraphvizDocument visit( final Complement complement ) {
             return generateHtmlLabelNode( complement.getId(), "<FONT COLOR=\"#00B2B2\"><B>not</B></FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Self self ) {
+        public GraphvizDocument visit( final Self self ) {
             return generateHtmlLabelNode( self.getId(), "P <FONT COLOR=\"#B200B2\"><B>self</B></FONT>" );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectMinimalCardinality objectMinimalCardinality ) {
+        public GraphvizDocument visit( final ObjectMinimalCardinality objectMinimalCardinality ) {
             return generateHtmlLabelNode( objectMinimalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT>  %d",
                     objectMinimalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
+        public GraphvizDocument visit( final ObjectQualifiedMinimalCardinality objectQualifiedMinimalCardinality ) {
             return generateHtmlLabelNode( objectQualifiedMinimalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT>  %d C",
                     objectQualifiedMinimalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectMaximalCardinality objectMaximalCardinality ) {
+        public GraphvizDocument visit( final ObjectMaximalCardinality objectMaximalCardinality ) {
             return generateHtmlLabelNode( objectMaximalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d",
                     objectMaximalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
+        public GraphvizDocument visit( final ObjectQualifiedMaximalCardinality objectQualifiedMaximalCardinality ) {
             return generateHtmlLabelNode( objectQualifiedMaximalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d C",
                     objectQualifiedMaximalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectExactCardinality objectExactCardinality ) {
+        public GraphvizDocument visit( final ObjectExactCardinality objectExactCardinality ) {
             return generateHtmlLabelNode( objectExactCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d",
                     objectExactCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
+        public GraphvizDocument visit( final ObjectQualifiedExactCardinality objectQualifiedExactCardinality ) {
             return generateHtmlLabelNode( objectQualifiedExactCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d C",
                     objectQualifiedExactCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.DataMinimalCardinality dataMinimalCardinality ) {
+        public GraphvizDocument visit( final DataMinimalCardinality dataMinimalCardinality ) {
             return generateHtmlLabelNode( dataMinimalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>min</B></FONT>  %d",
                     dataMinimalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.DataMaximalCardinality dataMaximalCardinality ) {
+        public GraphvizDocument visit( final DataMaximalCardinality dataMaximalCardinality ) {
             return generateHtmlLabelNode( dataMaximalCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>max</B></FONT>  %d",
                     dataMaximalCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.DataExactCardinality dataExactCardinality ) {
+        public GraphvizDocument visit( final DataExactCardinality dataExactCardinality ) {
             return generateHtmlLabelNode( dataExactCardinality.getId(),
                 String.format( "P <FONT COLOR=\"#B200B2\"><B>exactly</B></FONT>  %d",
                     dataExactCardinality.getCardinality() ) );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.Invisible invisible ) {
+        public GraphvizDocument visit( final Invisible invisible ) {
             return generateInvisibleNode( invisible.getId() );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.IRIReference iriReference ) {
+        public GraphvizDocument visit( final IRIReference iriReference ) {
             return generateLiteralNode( iriReference.getId(), iriReference.getIri().toString() );
         }
 
         @Override
-        public GraphvizDocument visit( final Node.PropertyMarker propertyMarker ) {
-            final Ordering<Node.PropertyMarker.Kind> markerOrder = Ordering.explicit( List.of(
-                Node.PropertyMarker.Kind.FUNCTIONAL,
-                Node.PropertyMarker.Kind.INVERSE_FUNCTIONAL,
-                Node.PropertyMarker.Kind.TRANSITIVE,
-                Node.PropertyMarker.Kind.SYMMETRIC,
-                Node.PropertyMarker.Kind.ASYMMETRIC,
-                Node.PropertyMarker.Kind.REFLEXIVE,
-                Node.PropertyMarker.Kind.IRREFLEXIVE ) );
+        public GraphvizDocument visit( final PropertyMarker propertyMarker ) {
+            final Ordering<PropertyMarker.Kind> markerOrder = Ordering.explicit( List.of(
+                PropertyMarker.Kind.FUNCTIONAL,
+                PropertyMarker.Kind.INVERSE_FUNCTIONAL,
+                PropertyMarker.Kind.TRANSITIVE,
+                PropertyMarker.Kind.SYMMETRIC,
+                PropertyMarker.Kind.ASYMMETRIC,
+                PropertyMarker.Kind.REFLEXIVE,
+                PropertyMarker.Kind.IRREFLEXIVE ) );
 
             final String value = propertyMarker.getKind().stream()
                 .sorted( markerOrder )

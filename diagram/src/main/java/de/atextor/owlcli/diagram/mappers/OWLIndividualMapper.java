@@ -17,6 +17,7 @@ package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.Individual;
 import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
 import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLNamedIndividual;
@@ -35,7 +36,7 @@ public class OWLIndividualMapper implements OWLIndividualVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAnonymousIndividual individual ) {
-        final Node node = new Node.Individual( mappingConfig.getIdentifierMapper().getSyntheticId(), "[]" );
+        final Node node = new Individual( mappingConfig.getIdentifierMapper().getSyntheticId(), "[]" );
         return Graph.of( node );
     }
 
@@ -43,7 +44,7 @@ public class OWLIndividualMapper implements OWLIndividualVisitorEx<Graph> {
     public Graph visit( final @Nonnull OWLNamedIndividual individual ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() );
         final String label = id.getId();
-        final Node node = new Node.Individual( id, label );
+        final Node node = new Individual( id, label );
         return Graph.of( node );
     }
 }

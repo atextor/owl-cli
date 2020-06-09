@@ -17,6 +17,11 @@ package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
+import de.atextor.owlcli.diagram.graph.node.Class;
+import de.atextor.owlcli.diagram.graph.node.DataProperty;
+import de.atextor.owlcli.diagram.graph.node.Datatype;
+import de.atextor.owlcli.diagram.graph.node.ObjectProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLDataProperty;
@@ -40,7 +45,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLClass classExpression ) {
         final Node node =
-            new Node.Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
+            new Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
                 mappingConfig.getNameMapper().getName( classExpression ) );
         return Graph.of( node );
     }
@@ -48,7 +53,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLDatatype dataType ) {
         final Node node =
-            new Node.Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
+            new Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
                 mappingConfig.getNameMapper().getName( dataType ) );
         return Graph.of( node );
     }
@@ -61,7 +66,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLObjectProperty property ) {
         final Node node =
-            new Node.ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            new ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
@@ -69,7 +74,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLDataProperty property ) {
         final Node node =
-            new Node.DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            new DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
@@ -77,7 +82,7 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     @Override
     public Graph visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node node =
-            new Node.AnnotationProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            new AnnotationProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
                 mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }

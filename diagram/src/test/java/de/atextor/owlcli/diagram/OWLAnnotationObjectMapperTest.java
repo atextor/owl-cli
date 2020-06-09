@@ -18,6 +18,7 @@ package de.atextor.owlcli.diagram;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
 import de.atextor.owlcli.diagram.mappers.OWLAnnotationObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.semanticweb.owlapi.model.AxiomType;
@@ -45,7 +46,7 @@ public class OWLAnnotationObjectMapperTest extends MapperTestBase {
         final OWLAnnotationAssertionAxiom axiom = getAxiom( ontology, AxiomType.ANNOTATION_ASSERTION );
         final Graph graph = mapper.visit( axiom.getAnnotation() );
 
-        assertThat( graph.getNode().getClass() ).isEqualTo( Node.AnnotationProperty.class );
+        assertThat( graph.getNode().getClass() ).isEqualTo( AnnotationProperty.class );
 
         final Set<GraphElement> remainingElements = graph.getOtherElements().collect( Collectors.toSet() );
         assertThat( remainingElements ).isEmpty();

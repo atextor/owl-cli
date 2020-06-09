@@ -17,6 +17,7 @@ package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.IRIReference;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.model.OWLAnnotation;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
@@ -45,7 +46,7 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<G
     @Override
     public Graph visit( final @Nonnull IRI iri ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getSyntheticId();
-        return Graph.of( new Node.IRIReference( id, iri ) );
+        return Graph.of( new IRIReference( id, iri ) );
     }
 
     @Override

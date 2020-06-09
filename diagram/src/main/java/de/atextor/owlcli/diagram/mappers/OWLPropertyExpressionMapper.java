@@ -18,6 +18,10 @@ package de.atextor.owlcli.diagram.mappers;
 import de.atextor.owlcli.diagram.graph.Edge;
 import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.AnnotationProperty;
+import de.atextor.owlcli.diagram.graph.node.DataProperty;
+import de.atextor.owlcli.diagram.graph.node.Inverse;
+import de.atextor.owlcli.diagram.graph.node.ObjectProperty;
 import org.semanticweb.owlapi.model.OWLAnnotationProperty;
 import org.semanticweb.owlapi.model.OWLDataProperty;
 import org.semanticweb.owlapi.model.OWLObjectInverseOf;
@@ -40,7 +44,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     @Override
     public Graph visit( final @Nonnull OWLObjectInverseOf property ) {
         final Node inverseNode =
-            new Node.Inverse( mappingConfig.getIdentifierMapper().getSyntheticId() );
+            new Inverse( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
         final Graph propertyVisitorGraph =
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
@@ -53,7 +57,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     public Graph visit( final @Nonnull OWLObjectProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
-        final Node node = new Node.ObjectProperty( id, label );
+        final Node node = new ObjectProperty( id, label );
         return Graph.of( node );
     }
 
@@ -61,7 +65,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     public Graph visit( final @Nonnull OWLDataProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
-        final Node node = new Node.DataProperty( id, label );
+        final Node node = new DataProperty( id, label );
         return Graph.of( node );
     }
 
@@ -69,7 +73,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     public Graph visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
         final String label = id.getId();
-        final Node node = new Node.AnnotationProperty( id, label );
+        final Node node = new AnnotationProperty( id, label );
         return Graph.of( node );
     }
 }
