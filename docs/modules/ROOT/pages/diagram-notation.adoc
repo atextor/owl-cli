@@ -374,9 +374,6 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
-|EnumeratedClass(latexmath:[C\,{o_1\,\dots\,o_2}])
-|latexmath:[C\,\equiv\,\{o_1\}\sqcup\,\cdots\,\sqcup\{o_n\}]
-|image::enumerated-class.svg[scaledwidth=75%]
 
 |ClassAssertion(latexmath:[C\,o])
 |latexmath:[C(o)]
