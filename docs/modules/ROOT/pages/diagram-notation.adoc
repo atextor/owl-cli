@@ -161,7 +161,9 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |latexmath:[P^{-}]
 |image::object-inverse-of.svg[scaledwidth=75%]
 
-// TODO Self-Restriction
+|ObjectHasSelf(latexmath:[P])
+|latexmath:[\text{Self}(P)]
+|image::object-has-self.svg[scaledwidth=75%]
 |===
 
 === Object Property Cardinality Restrictions
