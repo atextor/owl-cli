@@ -376,6 +376,13 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
+|SameIndividuals(latexmath:[o_1\,\dots\,o_n])
+|latexmath:[o_i\,=\,o_j,1 \leq i \lt j \leq n]
+|image::same-individuals.svg[scaledwidth=75%]
+
+|DifferentIndividuals(latexmath:[o_1\,\dots\,o_n])
+|latexmath:[o_i\,\not=\,o_j,1 \leq i \lt j \leq n]
+|image::different-individuals.svg[scaledwidth=75%]
 
 |ClassAssertion(latexmath:[C\,o])
 |latexmath:[C(o)]
@@ -396,11 +403,6 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |NegativeDataPropertyAssertion(latexmath:[P\,o\,v])
 |latexmath:[(o,v):\neg\,P]
 |image::negative-data-property-assertion.svg[scaledwidth=75%]
-
-|DifferentIndividuals(latexmath:[o_1\,\dots\,o_n])
-a|latexmath:[\{o_i\}\sqcap\{o_j\}\sqsubseteq\bot,]
-latexmath:[1 \leq i \lt j \leq n]
-|image::different-individuals.svg[scaledwidth=75%]
 
 |===
 
