@@ -87,23 +87,23 @@ NOTE: This section is aligned to the https://www.w3.org/TR/owl2-syntax/#Data_Ran
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|DataIntersectionOf(latexmath:[U_1\,\dots\,U_n])
+|https://www.w3.org/TR/owl2-syntax/#Intersection_of_Data_Ranges[DataIntersectionOf](latexmath:[U_1\,\dots\,U_n])
 |latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
 |image::data-intersection-of.svg[scaledwidth=75%]
 
-|DataUnionOf(latexmath:[U_1\,\dots\,U_n])
+|https://www.w3.org/TR/owl2-syntax/#Union_of_Data_Ranges[DataUnionOf](latexmath:[U_1\,\dots\,U_n])
 |latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
 |image::data-union-of.svg[scaledwidth=75%]
 
-|DataComplementOf(latexmath:[U])
+|https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[DataComplementOf](latexmath:[U])
 |latexmath:[\neg\,U]
 |image::data-complement-of.svg[scaledwidth=75%]
 
-|DataOneOf(latexmath:[v_1\,\dots\,v_n])
+|https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals[DataOneOf](latexmath:[v_1\,\dots\,v_n])
 |latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
 |image::data-one-of.svg[scaledwidth=75%]
 
-|DatatypeRestriction( int minExclusive 4 maxInclusive 10 )
+|https://www.w3.org/TR/owl2-syntax/#Datatype_Restrictions[DatatypeRestriction]( int minExclusive 4 maxInclusive 10 )
 |_no notation_
 |image::datarange-expression.svg[scaledwidth=75%]
 
@@ -120,19 +120,19 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|ObjectIntersectionOf(latexmath:[C_1\,\dots\,C_n])
+|https://www.w3.org/TR/owl2-syntax/#Intersection_of_Class_Expressions[ObjectIntersectionOf](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\sqcap\,\cdots\,\sqcap\,C_n]
 |image::class-intersection.svg[scaledwidth=75%]
 
-|ObjectUnionOf(latexmath:[C_1\,\dots\,C_n])
+|https://www.w3.org/TR/owl2-syntax/#Union_of_Class_Expressions[ObjectUnionOf](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\sqcup\,\cdots\,\sqcup\,C_n]
 |image::class-union.svg[scaledwidth=75%]
 
-|ObjectComplementOf(latexmath:[C])
+|https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[ObjectComplementOf](latexmath:[C])
 |latexmath:[\neg\,C]
 |image::object-complement-of.svg[scaledwidth=75%]
 
-|ObjectOneOf(latexmath:[o_1\,\dots\,o_n])
+|https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals[ObjectOneOf](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
 |image::object-one-of.svg[scaledwidth=75%]
 
@@ -145,23 +145,23 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|ObjectSomeValuesFrom(latexmath:[P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Existential_Quantification[ObjectSomeValuesFrom](latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
 |image::object-some-values-from.svg[scaledwidth=75%]
 
-|ObjectAllValuesFrom(latexmath:[P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Universal_Quantification[ObjectAllValuesFrom](latexmath:[P\,C])
 |latexmath:[\forall\,P.C]
 |image::object-all-values-from.svg[scaledwidth=75%]
 
-|ObjectHasValue(latexmath:[P\,o])
+|https://www.w3.org/TR/owl2-syntax/#Individual_Value_Restriction[ObjectHasValue](latexmath:[P\,o])
 |latexmath:[P\,\ni\,o]
 |image::object-has-value.svg[scaledwidth=75%]
 
-|ObjectInverseOf(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties[ObjectInverseOf](latexmath:[P])
 |latexmath:[P^{-}]
 |image::object-inverse-of.svg[scaledwidth=75%]
 
-|ObjectHasSelf(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Self-Restriction[ObjectHasSelf](latexmath:[P])
 |latexmath:[\text{Self}(P)]
 |image::object-has-self.svg[scaledwidth=75%]
 |===
@@ -173,27 +173,27 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|ObjectMinCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P])
 |latexmath:[\geq\,n\,P]
 |image::object-min-cardinality-unqualified.svg[scaledwidth=75%]
 
-|ObjectMinCardinality(latexmath:[n\,P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P\,C])
 |latexmath:[\geq\,n\,P.C]
 |image::object-min-cardinality-qualified.svg[scaledwidth=75%]
 
-|ObjectMaxCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P])
 |latexmath:[\leq\,n\,P]
 |image::object-max-cardinality-unqualified.svg[scaledwidth=75%]
 
-|ObjectMaxCardinality(latexmath:[n\,P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P\,C])
 |latexmath:[\leq\,n\,P.C]
 |image::object-max-cardinality-qualified.svg[scaledwidth=75%]
 
-|ObjectExactCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P])
 |latexmath:[=\,n\,P]
 |image::object-exact-cardinality-unqualified.svg[scaledwidth=75%]
 
-|ObjectExactCardinality(latexmath:[n\,P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P\,C])
 |latexmath:[=\,n\,P.C]
 |image::object-exact-cardinality-qualified.svg[scaledwidth=75%]
 
@@ -206,15 +206,15 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|DataSomeValuesFrom(latexmath:[P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Existential_Quantification_2[DataSomeValuesFrom](latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
 |image::data-some-values-from.svg[scaledwidth=75%]
 
-|DataAllValuesFrom(latexmath:[P\,C])
+|https://www.w3.org/TR/owl2-syntax/#Universal_Quantification_2[DataAllValuesFrom](latexmath:[P\,C])
 |latexmath:[\forall\,P.C]
 |image::data-all-values-from.svg[scaledwidth=75%]
 
-|DataHasValue(latexmath:[P\,v])
+|https://www.w3.org/TR/owl2-syntax/#Literal_Value_Restriction[DataHasValue](latexmath:[P\,v])
 |latexmath:[P\,\ni\,v]
 |image::data-has-value.svg[scaledwidth=75%]
 
@@ -227,15 +227,15 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Expression|Description Logics Notation|Diagram
 
-|DataMinCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality_2[DataMinCardinality](latexmath:[n\,P])
 |latexmath:[\geq\,n\,P]
 |image::data-min-cardinality.svg[scaledwidth=75%]
 
-|DataMaxCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality_2[DataMaxCardinality](latexmath:[n\,P])
 |latexmath:[\leq\,n\,P]
 |image::data-max-cardinality.svg[scaledwidth=75%]
 
-|DataExactCardinality(latexmath:[n\,P])
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality_2[DataExactCardinality](latexmath:[n\,P])
 |latexmath:[=\,n\,P]
 |image::data-exact-cardinality.svg[scaledwidth=75%]
 
@@ -252,19 +252,19 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
-|SubClassOf(latexmath:[C_1\,C_2])
+|https://www.w3.org/TR/owl2-syntax/#Subclass_Axioms[SubClassOf](latexmath:[C_1\,C_2])
 |latexmath:[C_1\,\sqsubseteq\,C_2]
 |image::subclassof.svg[scaledwidth=75%]
 
-|EquivalentClasses(latexmath:[C_1\,\dots\,C_n])
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Classes[EquivalentClasses](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\equiv\,\cdots\,\equiv\,C_n]
 |image::equivalent-classes.svg[scaledwidth=75%]
 
-|DisjointClasses(latexmath:[C_1\,\dots\,C_n])
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Classes[DisjointClasses](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |image::disjoint-classes.svg[scaledwidth=75%]
 
-|DisjointUnion(latexmath:[C\,C_1\,\dots\,C_n])
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Union_of_Class_Expressions[DisjointUnion](latexmath:[C\,C_1\,\dots\,C_n])
 a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
 latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |image::disjoint-union.svg[scaledwidth=75%]
@@ -278,59 +278,59 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
-|SubObjectPropertyOf(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[SubObjectPropertyOf](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\sqsubseteq\,P_2]
 |image::sub-object-property-of.svg[scaledwidth=75%]
 
-|ObjectPropertyChain(latexmath:[P_1\,\dots\,P_n])
+|https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[ObjectPropertyChain](latexmath:[P_1\,\dots\,P_n])
 |latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
 |image::object-property-chain.svg[scaledwidth=75%]
 
-|EquivalentObjectProperties(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Object_Properties[EquivalentObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2]
 |image::equivalent-object-properties.svg[scaledwidth=75%]
 
-|DisjointObjectProperties(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Object_Properties[DisjointObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[\text{Disjoint}(P_1,P_2)]
 |image::disjoint-object-properties.svg[scaledwidth=75%]
 
-|InverseObjectProperties(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties_2[InverseObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2^{-}]
 |image::inverse-object-properties.svg[scaledwidth=75%]
 
-|ObjectPropertyDomain(latexmath:[C\,P])
+|https://www.w3.org/TR/owl2-syntax/#Object_Property_Domain[ObjectPropertyDomain](latexmath:[C\,P])
 |latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
 |image::object-property-domain.svg[scaledwidth=75%]
 
-|ObjectPropertyRange(latexmath:[C\,P])
+|https://www.w3.org/TR/owl2-syntax/#Object_Property_Range[ObjectPropertyRange](latexmath:[C\,P])
 |latexmath:[\top\,\sqsubseteq\,\forall\,P.C]
 |image::object-property-range.svg[scaledwidth=75%]
 
-|FunctionalObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Functional_Object_Properties[FunctionalObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1\,P]
 |image::functional-object-property.svg[scaledwidth=75%]
 
-|InverseFunctionalObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Inverse-Functional_Object_Properties[InverseFunctionalObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1\,P^{-}]
 |image::inverse-functional-object-property.svg[scaledwidth=75%]
 
-|ReflexiveObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Reflexive_Object_Properties[ReflexiveObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\exists\,P.\text{Self}]
 |image::reflexive-object-property.svg[scaledwidth=75%]
 
-|IrreflexiveObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Irreflexive_Object_Properties[IrreflexiveObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\neg\exists\,P.\text{Self}]
 |image::irreflexive-object-property.svg[scaledwidth=75%]
 
-|SymmetricObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Symmetric_Object_Properties[SymmetricObjectProperty](latexmath:[P])
 |latexmath:[P\,\equiv\,P^{-}]
 |image::symmetric-object-property.svg[scaledwidth=75%]
 
-|AsymmetricObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Asymmetric_Object_Properties[AsymmetricObjectProperty](latexmath:[P])
 |latexmath:[\text{Disjoint}(P,P^{-})]
 |image::asymmetric-object-property.svg[scaledwidth=75%]
 
-|TransitiveObjectProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Transitive_Object_Properties[TransitiveObjectProperty](latexmath:[P])
 |latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
 |image::transitive-object-property.svg[scaledwidth=75%]
 
@@ -343,27 +343,27 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
-|SubDataPropertyOf(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Data_Subproperties[SubDataPropertyOf](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\sqsubseteq\,P_2]
 |image::sub-data-property-of.svg[scaledwidth=75%]
 
-|EquivalentDataProperties(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Data_Properties[EquivalentDataProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2]
 |image::equivalent-data-properties.svg[scaledwidth=75%]
 
-|DisjointDataProperties(latexmath:[P_1\,P_2])
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Data_Properties[DisjointDataProperties](latexmath:[P_1\,P_2])
 |latexmath:[\text{Disjoint}(P_1,P_2)]
 |image::disjoint-data-properties.svg[scaledwidth=75%]
 
-|DataPropertyDomain(latexmath:[C\,P])
+|https://www.w3.org/TR/owl2-syntax/#Data_Property_Domain[DataPropertyDomain](latexmath:[C\,P])
 |latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
 |image::data-property-domain.svg[scaledwidth=75%]
 
-|DataPropertyRange(latexmath:[D\,P])
+|https://www.w3.org/TR/owl2-syntax/#Data_Property_Range[DataPropertyRange](latexmath:[D\,P])
 |latexmath:[\top\,\sqsubseteq\,\forall\,P.D]
 |image::data-property-range.svg[scaledwidth=75%]
 
-|FunctionalDataProperty(latexmath:[P])
+|https://www.w3.org/TR/owl2-syntax/#Functional_Data_Properties[FunctionalDataProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1D]
 |image::functional-data-property.svg[scaledwidth=75%]
 
@@ -376,31 +376,31 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 |===
 |OWL Axiom|Description Logics Notation|Diagram
 
-|SameIndividuals(latexmath:[o_1\,\dots\,o_n])
+|https://www.w3.org/TR/owl2-syntax/#Individual_Equality[SameIndividuals](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[o_i\,=\,o_j,1 \leq i \lt j \leq n]
 |image::same-individuals.svg[scaledwidth=75%]
 
-|DifferentIndividuals(latexmath:[o_1\,\dots\,o_n])
+|https://www.w3.org/TR/owl2-syntax/#Individual_Inequality[DifferentIndividuals](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[o_i\,\not=\,o_j,1 \leq i \lt j \leq n]
 |image::different-individuals.svg[scaledwidth=75%]
 
-|ClassAssertion(latexmath:[C\,o])
+|https://www.w3.org/TR/owl2-syntax/#Class_Assertions[ClassAssertion](latexmath:[C\,o])
 |latexmath:[C(o)]
 |image::class-assertion.svg[scaledwidth=75%]
 
-|ObjectPropertyAssertion(latexmath:[P\,o_1\,o_2])
+|https://www.w3.org/TR/owl2-syntax/#Positive_Object_Property_Assertions[ObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
 |latexmath:[P(o_1,o_2)]
 |image::object-property-assertion.svg[scaledwidth=75%]
 
-|NegativeObjectPropertyAssertion(latexmath:[P\,o_1\,o_2])
+|https://www.w3.org/TR/owl2-syntax/#Negative_Object_Property_Assertions[NegativeObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
 |latexmath:[(o_1,o_2):\neg\,P]
 |image::negative-object-property-assertion.svg[scaledwidth=75%]
 
-|DataPropertyAssertion(latexmath:[P\,o\,v])
+|https://www.w3.org/TR/owl2-syntax/#Positive_Data_Property_Assertions[DataPropertyAssertion](latexmath:[P\,o\,v])
 |latexmath:[P(o,v)]
 |image::data-property-assertion.svg[scaledwidth=75%]
 
-|NegativeDataPropertyAssertion(latexmath:[P\,o\,v])
+|https://www.w3.org/TR/owl2-syntax/#Negative_Data_Property_Assertions[NegativeDataPropertyAssertion](latexmath:[P\,o\,v])
 |latexmath:[(o,v):\neg\,P]
 |image::negative-data-property-assertion.svg[scaledwidth=75%]
 
