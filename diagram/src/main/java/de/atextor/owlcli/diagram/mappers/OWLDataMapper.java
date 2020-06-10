@@ -33,14 +33,11 @@ import org.semanticweb.owlapi.model.OWLDataUnionOf;
 import org.semanticweb.owlapi.model.OWLDataVisitorEx;
 import org.semanticweb.owlapi.model.OWLDatatype;
 import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
-import org.semanticweb.owlapi.model.OWLFacetRestriction;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static io.vavr.API.TODO;
 
 /**
  * Maps OWL Data objects to {@link Graph}s
@@ -112,11 +109,6 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
         final Node typeNode = new Datatype( mappingConfig.getIdentifierMapper().getSyntheticId(),
             datatypeName + " " + restrictionExpression );
         return Graph.of( typeNode );
-    }
-
-    @Override
-    public Graph visit( final @Nonnull OWLFacetRestriction node ) {
-        return TODO();
     }
 
     @Override
