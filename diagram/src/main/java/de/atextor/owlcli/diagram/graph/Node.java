@@ -34,6 +34,7 @@ import de.atextor.owlcli.diagram.graph.node.Inequality;
 import de.atextor.owlcli.diagram.graph.node.Intersection;
 import de.atextor.owlcli.diagram.graph.node.Inverse;
 import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Key;
 import de.atextor.owlcli.diagram.graph.node.Literal;
 import de.atextor.owlcli.diagram.graph.node.ObjectExactCardinality;
 import de.atextor.owlcli.diagram.graph.node.ObjectMaximalCardinality;
@@ -136,6 +137,8 @@ public abstract class Node implements GraphElement {
         T visit( IRIReference iriReference );
 
         T visit( PropertyMarker propertyMarker );
+
+        T visit( Key key );
     }
 
     /**

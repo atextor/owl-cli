@@ -39,6 +39,7 @@ import de.atextor.owlcli.diagram.graph.node.Inequality;
 import de.atextor.owlcli.diagram.graph.node.Intersection;
 import de.atextor.owlcli.diagram.graph.node.Inverse;
 import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Key;
 import de.atextor.owlcli.diagram.graph.node.Literal;
 import de.atextor.owlcli.diagram.graph.node.ObjectExactCardinality;
 import de.atextor.owlcli.diagram.graph.node.ObjectMaximalCardinality;
@@ -391,6 +392,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 .map( kind -> kind.toString().toLowerCase().replace( "_", " " ) )
                 .collect( Collectors.joining( "\\n" ) );
             return generateLiteralNode( propertyMarker.getId(), value );
+        }
+
+        @Override
+        public GraphvizDocument visit( final Key key ) {
+            return generateHtmlLabelNode( key.getId(), "<FONT COLOR=\"#B200B2\"><B>key</B></FONT>" );
         }
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
