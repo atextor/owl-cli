@@ -28,6 +28,7 @@ import de.atextor.owlcli.diagram.graph.node.IRIReference;
 import de.atextor.owlcli.diagram.graph.node.Inequality;
 import de.atextor.owlcli.diagram.graph.node.Inverse;
 import de.atextor.owlcli.diagram.graph.node.Invisible;
+import de.atextor.owlcli.diagram.graph.node.Key;
 import de.atextor.owlcli.diagram.graph.node.PropertyChain;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
 import org.semanticweb.owlapi.model.HasOperands;
@@ -436,7 +437,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLHasKeyAxiom axiom ) {
-        return TODO();
+        final Graph classResult = axiom.getClassExpression().accept( mappingConfig.getOwlClassExpressionMapper() );
+        final Node key = new Key( mappingConfig.getIdentifierMapper().getSyntheticId() );
+        final Edge fromClassToKey = new Edge.Plain( Edge.Type.DEFAULT_ARROW, classResult.getNode().getId(), key.getId() );
+        return linkNodeToMultipleOthers( axiom, key ).and( classResult ).and( fromClassToKey );
     }
 
     @Override
