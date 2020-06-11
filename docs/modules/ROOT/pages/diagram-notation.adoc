@@ -369,6 +369,19 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 
 |===
 
+=== Keys
+
+.Mapping Syntax for Keys
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Keys[HasKeys](latexmath:[C\,P_1\,\dots\,P_n])
+|_no notation_
+|image::has-key.svg[]
+
+|===
+
 === Assertions
 
 .Mapping Syntax for Assertions
