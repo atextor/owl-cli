@@ -21,6 +21,7 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.node.Equality;
 import de.atextor.owlcli.diagram.graph.node.Inequality;
 import de.atextor.owlcli.diagram.graph.node.Inverse;
+import de.atextor.owlcli.diagram.graph.node.Key;
 import de.atextor.owlcli.diagram.graph.node.PropertyChain;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
@@ -45,6 +46,7 @@ import org.semanticweb.owlapi.model.OWLEquivalentDataPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLEquivalentObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalDataPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLFunctionalObjectPropertyAxiom;
+import org.semanticweb.owlapi.model.OWLHasKeyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseFunctionalObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLInverseObjectPropertiesAxiom;
 import org.semanticweb.owlapi.model.OWLIrreflexiveObjectPropertyAxiom;
@@ -928,6 +930,32 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLHasKeyAxiom() {
+        final String ontology = """
+            :bar a owl:ObjectProperty .
+            :baz a owl:DatatypeProperty .
+            :Foo a owl:Class ;
+              owl:hasKey ( :bar :baz ) .
+            """;
+        final OWLHasKeyAxiom axiom = getAxiom( ontology, AxiomType.HAS_KEY );
+
+        final String keyId = "key";
+        testIdentifierMapper.pushAnonId( new Node.Id( keyId ) );
+
+        final Set<GraphElement> result = mapper.visit( axiom ).getElementSet();
+        assertThat( result ).hasSize( 7 );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Foo" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "baz" ) );
+        assertThat( nodes ).anyMatch( node -> node.is( Key.class ) );
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "Foo", keyId ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( keyId, "bar" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( keyId, "baz" ) );
     }
 
     @Test
