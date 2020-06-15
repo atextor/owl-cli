@@ -16,8 +16,10 @@
 package de.atextor.owlcli.diagram;
 
 import de.atextor.owlcli.diagram.graph.Edge;
+import de.atextor.owlcli.diagram.graph.Graph;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
+import de.atextor.owlcli.diagram.graph.node.Datatype;
 import de.atextor.owlcli.diagram.graph.node.Equality;
 import de.atextor.owlcli.diagram.graph.node.Inequality;
 import de.atextor.owlcli.diagram.graph.node.Inverse;
@@ -35,6 +37,7 @@ import org.semanticweb.owlapi.model.OWLClassAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyAssertionAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyDomainAxiom;
 import org.semanticweb.owlapi.model.OWLDataPropertyRangeAxiom;
+import org.semanticweb.owlapi.model.OWLDatatypeDefinitionAxiom;
 import org.semanticweb.owlapi.model.OWLDeclarationAxiom;
 import org.semanticweb.owlapi.model.OWLDifferentIndividualsAxiom;
 import org.semanticweb.owlapi.model.OWLDisjointClassesAxiom;
@@ -970,6 +973,34 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLDatatypeDefinitionAxiom() {
+        final String ontology = """
+            :foo a rdfs:Datatype ;
+                 owl:equivalentClass [
+                     a rdfs:Datatype ;
+                     owl:onDatatype xsd:int ;
+                     owl:withRestrictions (
+                         [ xsd:minExclusive "4"^^xsd:int ] [ xsd:maxInclusive "10"^^xsd:int ]
+                     )
+                 ] .
+             """;
+
+        final OWLDatatypeDefinitionAxiom axiom = getAxiom( ontology, AxiomType.DATATYPE_DEFINITION );
+
+        final String restrictionId = "restrictionId";
+        testIdentifierMapper.pushAnonId( new Node.Id( restrictionId ) );
+
+        final Graph graph = axiom.accept( mapper );
+        final Set<GraphElement> elements = graph.getElementSet();
+        assertThat( elements ).hasSize( 3 );
+
+        final List<Node> nodes = nodes( elements );
+        assertThat( nodes ).hasSize( 2 );
+        assertThat( nodes ).anyMatch( isNodeWithId( "foo" ).and( node -> node.is( Datatype.class ) ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( restrictionId ) );
+
+        final List<Edge> edges = edges( elements );
+        assertThat( edges ).hasSize( 1 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( "foo", restrictionId ).and( hasHollowArrow ) );
     }
 
     @Test
