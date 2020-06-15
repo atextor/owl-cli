@@ -442,7 +442,10 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDatatypeDefinitionAxiom axiom ) {
-        return TODO();
+        final Graph dataTypeGraph = axiom.getDatatype().accept( mappingConfig.getOwlEntityMapper() );
+        final Graph dataRangeGraph = axiom.getDataRange().accept( mappingConfig.getOwlDataMapper() );
+        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, dataTypeGraph.getNode(), dataRangeGraph.getNode() );
+        return dataTypeGraph.and( dataRangeGraph ).and( edge );
     }
 
     @Override

@@ -44,17 +44,15 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLClass classExpression ) {
-        final Node node =
-            new Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
-                mappingConfig.getNameMapper().getName( classExpression ) );
+        final Node node = new Class( mappingConfig.getIdentifierMapper().getIdForIri( classExpression.getIRI() ),
+            mappingConfig.getNameMapper().getName( classExpression ) );
         return Graph.of( node );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDatatype dataType ) {
-        final Node node =
-            new Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
-                mappingConfig.getNameMapper().getName( dataType ) );
+        final Node node = new Datatype( mappingConfig.getIdentifierMapper().getIdForIri( dataType.getIRI() ),
+            mappingConfig.getNameMapper().getName( dataType ) );
         return Graph.of( node );
     }
 
@@ -65,25 +63,22 @@ public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLObjectProperty property ) {
-        final Node node =
-            new ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                mappingConfig.getNameMapper().getName( property ) );
+        final Node node = new ObjectProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLDataProperty property ) {
-        final Node node =
-            new DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                mappingConfig.getNameMapper().getName( property ) );
+        final Node node = new DataProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLAnnotationProperty property ) {
-        final Node node =
-            new AnnotationProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
-                mappingConfig.getNameMapper().getName( property ) );
+        final Node node = new AnnotationProperty( mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() ),
+            mappingConfig.getNameMapper().getName( property ) );
         return Graph.of( node );
     }
 }
