@@ -54,9 +54,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
         final Graph diagramPartsForDataRange = classExpression.accept( this );
         final Node targetNode = diagramPartsForDataRange.getNode();
         final Stream<GraphElement> remainingElements = diagramPartsForDataRange.getOtherElements();
-        final Node.Id from = sourceNode.getId();
-        final Node.Id to = targetNode.getId();
-        final Edge operandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, from, to );
+        final Edge operandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, sourceNode, targetNode );
 
         return Stream.concat( Stream.of( sourceNode, targetNode, operandEdge ), remainingElements );
     }
@@ -76,8 +74,7 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
             new ClosedClass( mappingConfig.getIdentifierMapper().getSyntheticId() );
         return dataRange.values().map( value -> {
             final Graph valueGraph = value.accept( mappingConfig.getOwlDataMapper() );
-            final Edge vEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, restrictionNode.getId(),
-                valueGraph.getNode().getId() );
+            final Edge vEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, restrictionNode, valueGraph.getNode() );
             return valueGraph.and( vEdge );
         } ).reduce( Graph.of( restrictionNode ), Graph::and );
     }

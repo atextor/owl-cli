@@ -33,15 +33,15 @@ public abstract class Edge implements GraphElement {
     private Edge() {
     }
 
-    public abstract Node.Id getFrom();
+    public abstract Node getFrom();
 
-    public abstract Node.Id getTo();
+    public abstract Node getTo();
 
     public abstract Edge.Type getType();
 
-    public abstract Edge setFrom( Node.Id newFromId );
+    public abstract Edge setFrom( Node newFromId );
 
-    public abstract Edge setTo( Node.Id newToId );
+    public abstract Edge setTo( Node newToId );
 
     @Override
     public boolean isEdge() {
@@ -57,17 +57,17 @@ public abstract class Edge implements GraphElement {
     @EqualsAndHashCode( callSuper = true )
     public static class Plain extends Edge {
         Type type;
-        Node.Id from;
-        Node.Id to;
+        Node from;
+        Node to;
 
         @Override
-        public Edge setFrom( final Node.Id newFromId ) {
-            return new Plain( type, newFromId, to );
+        public Edge setFrom( final Node newFrom ) {
+            return new Plain( type, newFrom, to );
         }
 
         @Override
-        public Edge setTo( final Node.Id newToId ) {
-            return new Plain( type, from, newToId );
+        public Edge setTo( final Node newTo ) {
+            return new Plain( type, from, newTo );
         }
 
         @Override
@@ -101,18 +101,18 @@ public abstract class Edge implements GraphElement {
         }
 
         Type type;
-        Node.Id from;
-        Node.Id to;
+        Node from;
+        Node to;
         Label label;
 
         @Override
-        public Edge setFrom( final Node.Id newFromId ) {
-            return new Decorated( type, newFromId, to, label );
+        public Edge setFrom( final Node newFrom ) {
+            return new Decorated( type, newFrom, to, label );
         }
 
         @Override
-        public Edge setTo( final Node.Id newToId ) {
-            return new Decorated( type, from, newToId, label );
+        public Edge setTo( final Node newTo ) {
+            return new Decorated( type, from, newTo, label );
         }
 
         @Override

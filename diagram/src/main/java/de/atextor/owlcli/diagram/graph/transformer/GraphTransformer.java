@@ -47,13 +47,13 @@ public abstract class GraphTransformer implements UnaryOperator<Set<GraphElement
     }
 
     private ChangeSet updateEdge( final Set<GraphElement> graph, final Node oldNode, final Node newNode,
-                                  final Function<Edge, Node.Id> getter,
-                                  final BiFunction<Edge, Node.Id, Edge> setter ) {
+                                  final Function<Edge, Node> getter,
+                                  final BiFunction<Edge, Node, Edge> setter ) {
         return graph.stream()
             .filter( GraphElement::isEdge )
             .map( GraphElement::asEdge )
-            .filter( edge -> getter.apply( edge ).equals( oldNode.getId() ) )
-            .map( edge -> new ChangeSet( Set.of( setter.apply( edge, newNode.getId() ) ), Set.of( edge ) ) )
+            .filter( edge -> getter.apply( edge ).equals( oldNode ) )
+            .map( edge -> new ChangeSet( Set.of( setter.apply( edge, newNode ) ), Set.of( edge ) ) )
             .reduce( ChangeSet.EMPTY, ChangeSet::merge );
     }
 }

@@ -52,7 +52,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
     }
 
     private Optional<PropertyMarker> markerByEdge( final Set<GraphElement> graph, final Edge edge ) {
-        return getNode( graph, edge.getTo() ).stream()
+        return getNode( graph, edge.getTo().getId() ).stream()
             .flatMap( node -> node.view( PropertyMarker.class ) )
             .findFirst();
     }
@@ -63,7 +63,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
         final PropertyMarker newMarker =
             new PropertyMarker( mappingConfiguration.getIdentifierMapper().getSyntheticId(), mergedKindSet );
 
-        final Edge newEdge = propertyMarkers.iterator().next()._1().setTo( newMarker.getId() );
+        final Edge newEdge = propertyMarkers.iterator().next()._1().setTo( newMarker );
 
         final Set<GraphElement> additions = Set.of( newMarker, newEdge );
         final Set<GraphElement> deletions = propertyMarkers.stream()

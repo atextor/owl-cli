@@ -166,8 +166,7 @@ public class DiagramGeneratorTest {
     @Provide
     Arbitrary<Edge> anyPlainEdge() {
         final Arbitrary<Edge.Type> anyType = Arbitraries.of( Edge.Type.class );
-        return Combinators.combine( anyType, anyNode(), anyNode() )
-            .as( ( type, fromNode, toNode ) -> new Edge.Plain( type, fromNode.getId(), toNode.getId() ) );
+        return Combinators.combine( anyType, anyNode(), anyNode() ).as( Edge.Plain::new );
     }
 
     @Provide
@@ -178,9 +177,7 @@ public class DiagramGeneratorTest {
     @Provide
     Arbitrary<Edge> anyDecoratedEdge() {
         final Arbitrary<Edge.Type> anyType = Arbitraries.of( Edge.Type.class );
-        return Combinators.combine( anyType, anyNode(), anyNode(), anyEdgeLabel() )
-            .as( ( type, fromNode, toNode, label ) ->
-                new Edge.Decorated( type, fromNode.getId(), toNode.getId(), label ) );
+        return Combinators.combine( anyType, anyNode(), anyNode(), anyEdgeLabel() ).as( Edge.Decorated::new );
     }
 
     @Provide
@@ -207,4 +204,6 @@ public class DiagramGeneratorTest {
             .executeDot( contentProvider, output, workingDir, configuration );
         return executionResult.isSuccess();
     }
+
+
 }

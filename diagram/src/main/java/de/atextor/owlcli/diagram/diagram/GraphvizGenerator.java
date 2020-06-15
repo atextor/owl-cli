@@ -86,8 +86,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                         configuration.fontname ) )
                     .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                String.format( "%s -> %s [label=\"%s\", %s]", edge.getFrom().getId(), edge.getTo()
-                    .getId(), label, edgeStyle ) ) );
+                String.format( "%s -> %s [label=\"%s\", %s]", edge.getFrom().getId().getId(), edge.getTo()
+                    .getId().getId(), label, edgeStyle ) ) );
         };
 
         final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
@@ -95,7 +95,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 .map( style -> style + ", fontsize=" + configuration.fontsize )
                 .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                String.format( "%s -> %s [%s]", edge.getFrom().getId(), edge.getTo().getId(), edgeStyle ) ) );
+                String.format( "%s -> %s [%s]", edge.getFrom().getId().getId(), edge.getTo().getId()
+                    .getId(), edgeStyle ) ) );
         };
 
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );

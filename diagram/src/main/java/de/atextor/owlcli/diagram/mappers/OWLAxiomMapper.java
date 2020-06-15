@@ -117,9 +117,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph superClassGraph = axiom.getSuperClass().accept( mapper );
         final Graph subClassGraph = axiom.getSubClass().accept( mapper );
 
-        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode().getId(),
-            superClassGraph.getNode().getId() );
-
+        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subClassGraph.getNode(), superClassGraph.getNode() );
         return superClassGraph.and( subClassGraph ).and( edge );
     }
 
@@ -131,12 +129,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph objectGraph = axiom.getObject().accept( mappingConfig.getOwlObjectMapper() );
 
-        final Edge subjectToThirdNode = new Edge.Plain( subjectToThirdNodeType, subjectGraph.getNode().getId(),
-            thirdNode.getId() );
-        final Edge thirdNodeToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, thirdNode.getId(),
-            objectGraph.getNode().getId() );
-        final Edge thirdNodeToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, thirdNode.getId(),
-            propertyGraph.getNode().getId() );
+        final Edge subjectToThirdNode = new Edge.Plain( subjectToThirdNodeType, subjectGraph.getNode(), thirdNode );
+        final Edge thirdNodeToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, thirdNode, objectGraph.getNode() );
+        final Edge thirdNodeToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, thirdNode, propertyGraph.getNode() );
 
         return subjectGraph
             .and( propertyGraph )
@@ -173,16 +168,16 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private <P extends OWLPropertyExpression, A extends OWLPropertyDomainAxiom<P>> Graph propertyDomain( final A axiom ) {
         final Graph domainGraph = axiom.getDomain().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), domainGraph.getNode().getId(), Edge.Decorated.Label.DOMAIN );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode(),
+            domainGraph.getNode(), Edge.Decorated.Label.DOMAIN );
         return domainGraph.and( propertyGraph ).and( domainEdge );
     }
 
     private <P extends OWLPropertyExpression, R extends OWLPropertyRange, A extends OWLPropertyRangeAxiom<P, R>> Graph propertyRange( final A axiom ) {
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Graph rangeGraph = axiom.getRange().accept( mappingConfig.getOwlObjectMapper() );
-        final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode()
-            .getId(), rangeGraph.getNode().getId(), Edge.Decorated.Label.RANGE );
+        final Edge rangeEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode(),
+            rangeGraph.getNode(), Edge.Decorated.Label.RANGE );
         return propertyGraph.and( rangeGraph ).and( rangeEdge );
     }
 
@@ -254,8 +249,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
                                                                   final Node fromNode ) {
         return axiom.operands().map( operand -> {
             final Graph operandGraph = operand.accept( mappingConfig.getOwlObjectMapper() );
-            final Edge fromNodeToOperandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, fromNode.getId(),
-                operandGraph.getNode().getId() );
+            final Edge fromNodeToOperandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, fromNode, operandGraph
+                .getNode() );
             return operandGraph.and( fromNodeToOperandEdge );
         } ).reduce( Graph.of( fromNode ), Graph::and );
     }
@@ -265,8 +260,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node disjointUnion = new DisjointUnion( mappingConfig.getIdentifierMapper().getSyntheticId() );
         final Graph linksGraph = linkNodeToMultipleOthers( axiom, disjointUnion );
         final Graph classGraph = axiom.getOWLClass().accept( mappingConfig.getOwlClassExpressionMapper() );
-        final Edge classToDisjointUnion = new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, classGraph.getNode()
-            .getId(), disjointUnion.getId() );
+        final Edge classToDisjointUnion = new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, classGraph
+            .getNode(), disjointUnion );
         return classGraph.and( linksGraph ).and( classToDisjointUnion );
     }
 
@@ -285,7 +280,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node marker = new PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
             Set.of( markerKind ) );
         final Node propertyNode = propertyExpression.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
-        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, propertyNode.getId(), marker.getId() );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, propertyNode, marker );
         return Graph.of( marker ).and( propertyNode ).and( edge );
     }
 
@@ -329,8 +324,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             final Iterator<O> iterator = expressionsList.iterator();
             final Graph graph1 = operands.get( iterator.next() );
             final Graph graph2 = operands.get( iterator.next() );
-            return new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, graph1.getNode().getId(),
-                graph2.getNode().getId() );
+            return new Edge.Plain( Edge.Type.DOUBLE_ENDED_HOLLOW_ARROW, graph1.getNode(), graph2.getNode() );
         } );
 
         final Node firstOperand = operands.values().iterator().next().getNode();
@@ -350,8 +344,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Graph classExpressionGraph =
             classExpression.accept( mappingConfig.getOwlClassExpressionMapper() );
 
-        final Edge edge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, individualGraph.getNode().getId(),
-            classExpressionGraph.getNode().getId() );
+        final Edge edge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, individualGraph.getNode(),
+            classExpressionGraph.getNode() );
         return individualGraph.and( classExpressionGraph ).and( edge );
     }
 
@@ -377,8 +371,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private Graph subProperties( final Graph superPropertyGraph, final Graph subPropertyGraph ) {
-        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode().getId(),
-            superPropertyGraph.getNode().getId() );
+        final Edge edge = new Edge.Plain( Edge.Type.HOLLOW_ARROW, subPropertyGraph.getNode(),
+            superPropertyGraph.getNode() );
         return superPropertyGraph.and( subPropertyGraph ).and( edge );
     }
 
@@ -417,15 +411,13 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
             .getSyntheticId(), value );
 
         final Graph chainGraph = chainLinks.stream().map( chainLink -> {
-            final Edge fromPropertyChainToChainLink = new Edge.Plain( Edge.Type.DEFAULT_ARROW, propertyChain
-                .getId(),
-                chainLink.getId() );
+            final Edge fromPropertyChainToChainLink = new Edge.Plain( Edge.Type.DEFAULT_ARROW, propertyChain,
+                chainLink );
             return Graph.of( chainLink ).and( fromPropertyChainToChainLink );
         } ).reduce( Graph.of( propertyChain ), Graph::and );
 
         final Node property = axiom.getSuperProperty().accept( mapper ).getNode();
-        final Edge propertyToPropertyChain = new Edge.Plain( Edge.Type.HOLLOW_ARROW, property.getId(), propertyChain
-            .getId() );
+        final Edge propertyToPropertyChain = new Edge.Plain( Edge.Type.HOLLOW_ARROW, property, propertyChain );
         return Graph.of( property ).and( propertyToPropertyChain ).and( chainGraph );
     }
 
@@ -439,7 +431,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     public Graph visit( final @Nonnull OWLHasKeyAxiom axiom ) {
         final Graph classResult = axiom.getClassExpression().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Node key = new Key( mappingConfig.getIdentifierMapper().getSyntheticId() );
-        final Edge fromClassToKey = new Edge.Plain( Edge.Type.DEFAULT_ARROW, classResult.getNode().getId(), key.getId() );
+        final Edge fromClassToKey = new Edge.Plain( Edge.Type.DEFAULT_ARROW, classResult.getNode(), key );
         return linkNodeToMultipleOthers( axiom, key ).and( classResult ).and( fromClassToKey );
     }
 
@@ -462,12 +454,9 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final Node invisible = new Invisible( mappingConfig.getIdentifierMapper()
             .getSyntheticId() );
 
-        final Edge subjectToInvisible = new Edge.Plain( Edge.Type.NO_ARROW, subjectGraph.getNode().getId(),
-            invisible.getId() );
-        final Edge invisibleToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, invisible.getId(),
-            objectGraph.getNode().getId() );
-        final Edge invisibleToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, invisible.getId(),
-            propertyGraph.getNode().getId() );
+        final Edge subjectToInvisible = new Edge.Plain( Edge.Type.NO_ARROW, subjectGraph.getNode(), invisible );
+        final Edge invisibleToObject = new Edge.Plain( Edge.Type.DEFAULT_ARROW, invisible, objectGraph.getNode() );
+        final Edge invisibleToProperty = new Edge.Plain( Edge.Type.DASHED_ARROW, invisible, propertyGraph.getNode() );
 
         return subjectGraph
             .and( propertyGraph )
@@ -491,8 +480,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final IRIReference iriReference = new IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getDomain() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.Label.DOMAIN );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode(),
+            iriReference, Edge.Decorated.Label.DOMAIN );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 
@@ -501,8 +490,8 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
         final IRIReference iriReference = new IRIReference(
             mappingConfig.getIdentifierMapper().getSyntheticId(), axiom.getRange() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph.getNode().getId(),
-            iriReference.getId(), Edge.Decorated.Label.RANGE );
+        final Edge domainEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, propertyGraph
+            .getNode(), iriReference, Edge.Decorated.Label.RANGE );
         return propertyGraph.and( iriReference ).and( domainEdge );
     }
 

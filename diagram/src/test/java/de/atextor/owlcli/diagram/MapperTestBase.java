@@ -57,7 +57,7 @@ public class MapperTestBase {
         .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.Label.RANGE ) )
         .findFirst()
         .orElse( false );
-    final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().equals( "bar" );
+    final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().getId().equals( "bar" );
 
     protected MappingConfiguration createTestMappingConfiguration() {
         return DefaultMappingConfiguration.builder()
@@ -148,14 +148,14 @@ public class MapperTestBase {
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
-        return edge -> edge.getFrom().getId().equals( fromId )
-            && edge.getTo().getId().equals( toId );
+        return edge -> edge.getFrom().getId().getId().equals( fromId )
+            && edge.getTo().getId().getId().equals( toId );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndToAndLabel( final String fromId, final String toId,
                                                            final Edge.Decorated.Label label ) {
-        return edge -> edge.getFrom().getId().equals( fromId )
-            && edge.getTo().getId().equals( toId )
+        return edge -> edge.getFrom().getId().getId().equals( fromId )
+            && edge.getTo().getId().getId().equals( toId )
             && ( (Edge.Decorated) edge ).getLabel().equals( label );
     }
 
@@ -164,10 +164,10 @@ public class MapperTestBase {
     }
 
     protected Predicate<Edge> isEdgeWithFrom( final String iri ) {
-        return edge -> edge.getFrom().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
+        return edge -> edge.getFrom().getId().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
     }
 
     protected Predicate<Edge> isEdgeWithTo( final String iri ) {
-        return edge -> edge.getTo().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
+        return edge -> edge.getTo().getId().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
     }
 }

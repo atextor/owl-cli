@@ -79,7 +79,8 @@ public class GraphvizGeneratorTest {
     @Test
     void testEdgeTypes() {
         final BiConsumer<Edge.Type, String> checkType = ( edgeType, needle ) -> {
-            final Stream<GraphElement> elements = Stream.of( new Edge.Plain( edgeType, from1, to1 ) );
+            final Stream<GraphElement> elements = Stream.of( new Edge.Plain( edgeType, new Class( from1,
+                "from1" ), new Class( to1, "to1" ) ) );
             final GraphvizDocument result = generator.apply( elements );
             assertThat( result.getNodeStatements() ).isEmpty();
             assertThat( result.getEdgeStatements() ).anyMatch( contains( needle ) );

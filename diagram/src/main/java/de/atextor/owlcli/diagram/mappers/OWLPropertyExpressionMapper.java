@@ -48,8 +48,8 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
         final OWLPropertyExpression invertedProperty = property.getInverseProperty();
         final Graph propertyVisitorGraph =
             invertedProperty.accept( mappingConfig.getOwlPropertyExpressionMapper() );
-        final Edge propertyEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, inverseNode.getId(),
-            propertyVisitorGraph.getNode().getId() );
+        final Edge propertyEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, inverseNode, propertyVisitorGraph
+            .getNode() );
         return Graph.of( inverseNode ).and( propertyVisitorGraph ).and( propertyEdge );
     }
 
