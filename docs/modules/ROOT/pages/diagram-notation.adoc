@@ -369,6 +369,19 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 
 |===
 
+=== Datatype Definitions
+
+.Mapping Syntax for Datatype Definitions
+[cols="^.^,^.^,^.^a", options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Datatype_Definitions[DatatypeDefinition](latexmath:[D\,\text{range}])
+|_no notation_
+|image::datatype-definition.svg[]
+
+|===
+
 === Keys
 
 .Mapping Syntax for Keys
