@@ -50,6 +50,7 @@ import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
 import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMinimalCardinality;
 import de.atextor.owlcli.diagram.graph.node.PropertyChain;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
+import de.atextor.owlcli.diagram.graph.node.Rule;
 import de.atextor.owlcli.diagram.graph.node.Self;
 import de.atextor.owlcli.diagram.graph.node.Union;
 import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
@@ -398,6 +399,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         @Override
         public GraphvizDocument visit( final Key key ) {
             return generateHtmlLabelNode( key.getId(), "<FONT COLOR=\"#B200B2\"><B>key</B></FONT>" );
+        }
+
+        @Override
+        public GraphvizDocument visit( final Rule rule ) {
+            return generateLiteralNode( rule.getId(), rule.getValue() );
         }
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {

@@ -45,6 +45,7 @@ import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMaximalCardinality;
 import de.atextor.owlcli.diagram.graph.node.ObjectQualifiedMinimalCardinality;
 import de.atextor.owlcli.diagram.graph.node.PropertyChain;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
+import de.atextor.owlcli.diagram.graph.node.Rule;
 import de.atextor.owlcli.diagram.graph.node.Self;
 import de.atextor.owlcli.diagram.graph.node.Union;
 import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
@@ -139,6 +140,8 @@ public abstract class Node implements GraphElement {
         T visit( PropertyMarker propertyMarker );
 
         T visit( Key key );
+
+        T visit( Rule rule );
     }
 
     /**
