@@ -56,7 +56,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     @Override
     public Graph visit( final @Nonnull OWLObjectProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
-        final String label = id.getId();
+        final String label = mappingConfig.getNameMapper().getName( property );
         final Node node = new ObjectProperty( id, label );
         return Graph.of( node );
     }
@@ -64,7 +64,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     @Override
     public Graph visit( final @Nonnull OWLDataProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
-        final String label = id.getId();
+        final String label = mappingConfig.getNameMapper().getName( property );
         final Node node = new DataProperty( id, label );
         return Graph.of( node );
     }
@@ -72,7 +72,7 @@ public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitor
     @Override
     public Graph visit( final @Nonnull OWLAnnotationProperty property ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( property.getIRI() );
-        final String label = id.getId();
+        final String label = mappingConfig.getNameMapper().getName( property );
         final Node node = new AnnotationProperty( id, label );
         return Graph.of( node );
     }
