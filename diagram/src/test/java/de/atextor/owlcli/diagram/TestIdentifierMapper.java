@@ -38,7 +38,8 @@ public class TestIdentifierMapper implements IdentifierMapper {
         return "_" + UUID.randomUUID().toString().replace( "-", "" );
     }
 
-    private Node.Id pop() {
+    @Override
+    public Node.Id getSyntheticId() {
         if ( preconfiguredAnonIds.empty() ) {
             return new Node.Id( getRandomIdString() );
         }
@@ -46,12 +47,10 @@ public class TestIdentifierMapper implements IdentifierMapper {
     }
 
     @Override
-    public Node.Id getSyntheticId() {
-        return pop();
-    }
-
-    @Override
     public Node.Id getSyntheticIdForIri( final IRI iri ) {
-        return pop();
+        if ( preconfiguredAnonIds.empty() ) {
+            return new Node.Id( getRandomIdString(), iri );
+        }
+        return preconfiguredAnonIds.pop();
     }
 }
