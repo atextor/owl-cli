@@ -432,3 +432,11 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 
 |===
 
+== SWRL Rules
+
+Rules defined in the https://www.w3.org/Submission/SWRL/[Semantic Web Rule Language] (SWRL) can be
+embedded in an OWL ontology. Rules are rendered as described in
+https://www.w3.org/Submission/SWRL/#2.2[Human Readable Syntax], and are linked with the ontology
+entities they refer to:
+
+image::swrl-rule.svg[]
