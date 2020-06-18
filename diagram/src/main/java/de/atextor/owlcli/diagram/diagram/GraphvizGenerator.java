@@ -154,6 +154,14 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 this.symbolSize = symbolSize;
             }
 
+            /**
+             * Returns a DOT fragement for an element with this symbol. Note that the referenced font 'owlcli'
+             * is injected during rendering using the {@link FontEmbedder}.
+             *
+             * @param elementName   the name of the element
+             * @param configuration the diagram generation configuration
+             * @return the dot fragment for this element
+             */
             String getNodeValue( final String elementName, final Configuration configuration ) {
                 return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"owlcli\"><B>%s</B></FONT> " +
                         "<FONT POINT-SIZE=\"%s\" COLOR=\"#000000\" FACE=\"%s\">%s</FONT>",
@@ -403,7 +411,13 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         @Override
         public GraphvizDocument visit( final Rule rule ) {
-            return generateLiteralNode( rule.getId(), rule.getValue() );
+            final String operator = String
+                .format( " <FONT COLOR=\"#B2B2B2\"><B>%s</B></FONT> ", Rule.IMPLICATION_SYMBOL );
+            final String[] parts = rule.getValue().split( " " + Rule.IMPLICATION_SYMBOL + " " );
+            final String label = Arrays.stream( parts )
+                .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
+                .collect( Collectors.joining( operator ) );
+            return generateHtmlLabelNode( rule.getId(), label );
         }
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
