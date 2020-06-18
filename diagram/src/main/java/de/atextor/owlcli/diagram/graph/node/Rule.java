@@ -25,6 +25,9 @@ import lombok.Value;
 @Value
 @EqualsAndHashCode( callSuper = true )
 public class Rule extends Node {
+    public static final String CONJUNCTION_SYMBOL = "∧";
+    public static final String IMPLICATION_SYMBOL = "⇒";
+
     Id id;
     String value;
 
