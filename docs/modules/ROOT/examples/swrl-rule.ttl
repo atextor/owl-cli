@@ -1,3 +1,4 @@
+# diagram generation hint: top_to_bottom
 @prefix : <https://github.com/atextor/owl-cli#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
