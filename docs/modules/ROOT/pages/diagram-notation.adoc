@@ -437,6 +437,18 @@ latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
 Rules defined in the https://www.w3.org/Submission/SWRL/[Semantic Web Rule Language] (SWRL) can be
 embedded in an OWL ontology. Rules are rendered as described in
 https://www.w3.org/Submission/SWRL/#2.2[Human Readable Syntax], and are linked with the ontology
-entities they refer to:
+entities they refer to. The following table shows rendering examples for the different kinds of
+rule atoms.
 
-image::swrl-rule.svg[]
+.Mapping Syntax for SWRL Rules
+[cols="^.^,^.^a", options="header"]
+|===
+|Atom Type|Diagram
+
+|Class
+|image::swrl-rule-class-atom.svg[]
+
+|Object Property
+|image::swrl-rule-object-property-atom.svg[]
+
+|===
