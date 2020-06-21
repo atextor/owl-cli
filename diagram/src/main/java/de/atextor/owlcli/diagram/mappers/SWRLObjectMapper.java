@@ -21,6 +21,7 @@ import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.node.Literal;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.SWRLAtom;
 import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDataPropertyAtom;
@@ -60,7 +61,20 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLClassAtom atom ) {
-        return null;
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
+
+        final String label = String.format( "%s(%s)", atom.getPredicate().isNamed() ?
+            mappingConfig.getNameMapper().getName( atom.getPredicate().asOWLClass() ) : "<?>", arguments );
+
+        final Node objectProperty =
+            atom.getPredicate().accept( mappingConfig.getOwlClassExpressionMapper() ).getNode();
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, objectProperty );
+
+        return Graph.of( literal ).and( objectProperty ).and( edge )
+            .and( argumentGraphElements.stream().filter( IS_RULE_SYNTAX_PART.negate() ) );
     }
 
     @Override
@@ -68,15 +82,23 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
         return null;
     }
 
-    @Override
-    public Graph visit( final @Nonnull SWRLObjectPropertyAtom atom ) {
-        final List<GraphElement> argumentGraphElements = atom.allArguments().flatMap( argument ->
+    private List<GraphElement> argumentElements( final SWRLAtom atom ) {
+        return atom.allArguments().flatMap( argument ->
             argument.accept( this ).toStream() ).collect( Collectors.toList() );
-        final String arguments = argumentGraphElements.stream()
+    }
+
+    private String printArgumentElements( final List<GraphElement> argumentElements ) {
+        return argumentElements.stream()
             .flatMap( element -> element.view( Literal.class ) )
             .filter( IS_RULE_SYNTAX_PART )
             .map( Literal::getValue )
             .collect( Collectors.joining( ", " ) );
+    }
+
+    @Override
+    public Graph visit( final @Nonnull SWRLObjectPropertyAtom atom ) {
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
 
         final String label = String.format( "%s(%s)", atom.getPredicate().isNamed() ?
             mappingConfig.getNameMapper().getName( atom.getPredicate().getNamedProperty() ) : "<?>", arguments );
