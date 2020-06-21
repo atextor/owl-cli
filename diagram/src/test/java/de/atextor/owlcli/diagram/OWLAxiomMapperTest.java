@@ -1031,7 +1031,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testSWRLRule() {
+    public void testSWRLRuleWithObjectPropertyAtoms() {
         final String ontology = """
             :hasParent a owl:ObjectProperty .
             :hasBrother a owl:ObjectProperty .
@@ -1086,6 +1086,52 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasParent" ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasBrother" ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasUncle" ) );
+    }
+
+    @Test
+    public void testSWRLRuleWithClassAtoms() {
+        final String ontology = """
+            :Student a owl:Class .
+            :Person a owl:Class .
+
+            <urn:swrl:var#a> a swrl:Variable .
+
+            [
+               a swrl:Imp ;
+               swrl:body (
+                  [
+                     a swrl:ClassAtom ;
+                     swrl:classPredicate :Student ;
+                     swrl:argument1 <urn:swrl:var#a>
+                  ]
+               ) ;
+               swrl:head (
+                  [
+                     a swrl:ClassAtom ;
+                     swrl:classPredicate :Person ;
+                     swrl:argument1 <urn:swrl:var#a>
+                  ]
+               )
+            ] .
+            """;
+
+        final SWRLRule rule = getAxiom( ontology, AxiomType.SWRL_RULE );
+
+        final Set<GraphElement> result = rule.accept( mapper ).getElementSet();
+        System.out.println( result );
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 3 );
+        assertThat( nodes ).anyMatch( node -> node.is( Rule.class ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Student" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Person" ) );
+
+        final Node ruleNode = nodes.stream().filter( node -> node.is( Rule.class ) ).findFirst().get();
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 2 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Student" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Person" ) );
     }
 
     private void assertEquivalentResult( final Set<GraphElement> result, final IRI fooIri, final IRI barIri,
