@@ -82,6 +82,7 @@ public class MapperTestBase {
             @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
             @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
             @prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+            @prefix var: <urn:swrl:var#> .
             """ + content : """
             Prefix(:=<http://test.de#>)
             Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
@@ -90,6 +91,7 @@ public class MapperTestBase {
             Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
             Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
             Prefix(swrl:=<http://www.w3.org/2003/11/swrl#>)
+            Prefix(var:=<urn:swrl:var#>)
             Ontology(<http://test.de>
             """ + content + """
             )""";

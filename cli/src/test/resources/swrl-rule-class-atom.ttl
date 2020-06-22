@@ -2,11 +2,12 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix var: <urn:swrl:var#> .
 
 :Student a owl:Class .
 :Person a owl:Class .
 
-<urn:swrl:var#a> a swrl:Variable .
+var:a a swrl:Variable .
 
 [
    a swrl:Imp ;
@@ -14,14 +15,14 @@
       [
          a swrl:ClassAtom ;
          swrl:classPredicate :Student ;
-         swrl:argument1 <urn:swrl:var#a>
+         swrl:argument1 var:a
       ]
    ) ;
    swrl:head (
       [
          a swrl:ClassAtom ;
          swrl:classPredicate :Person ;
-         swrl:argument1 <urn:swrl:var#a>
+         swrl:argument1 var:a
       ]
    )
 ] .

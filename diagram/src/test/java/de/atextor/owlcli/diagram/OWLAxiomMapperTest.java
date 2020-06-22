@@ -1037,9 +1037,9 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             :hasBrother a owl:ObjectProperty .
             :hasUncle a owl:ObjectProperty .
 
-            <urn:swrl:var#a> a swrl:Variable .
-            <urn:swrl:var#b> a swrl:Variable .
-            <urn:swrl:var#c> a swrl:Variable .
+            var:a a swrl:Variable .
+            var:b a swrl:Variable .
+            var:c a swrl:Variable .
 
             [
                a swrl:Imp ;
@@ -1047,22 +1047,22 @@ public class OWLAxiomMapperTest extends MapperTestBase {
                   [
                      a swrl:IndividualPropertyAtom ;
                      swrl:propertyPredicate :hasParent ;
-                     swrl:argument1 <urn:swrl:var#a> ;
-                     swrl:argument2 <urn:swrl:var#b>
+                     swrl:argument1 var:a ;
+                     swrl:argument2 var:b
                   ]
                   [
                      a swrl:IndividualPropertyAtom ;
                      swrl:propertyPredicate :hasBrother ;
-                     swrl:argument1 <urn:swrl:var#b> ;
-                     swrl:argument2 <urn:swrl:var#c>
+                     swrl:argument1 var:b ;
+                     swrl:argument2 var:c
                   ]
                ) ;
                swrl:head (
                   [
                      a swrl:IndividualPropertyAtom ;
                      swrl:propertyPredicate :hasUncle ;
-                     swrl:argument1 <urn:swrl:var#a> ;
-                     swrl:argument2 <urn:swrl:var#c>
+                     swrl:argument1 var:a ;
+                     swrl:argument2 var:c
                   ]
                )
             ] .
@@ -1094,7 +1094,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
             :Student a owl:Class .
             :Person a owl:Class .
 
-            <urn:swrl:var#a> a swrl:Variable .
+            var:a a swrl:Variable .
 
             [
                a swrl:Imp ;
@@ -1102,14 +1102,14 @@ public class OWLAxiomMapperTest extends MapperTestBase {
                   [
                      a swrl:ClassAtom ;
                      swrl:classPredicate :Student ;
-                     swrl:argument1 <urn:swrl:var#a>
+                     swrl:argument1 var:a
                   ]
                ) ;
                swrl:head (
                   [
                      a swrl:ClassAtom ;
                      swrl:classPredicate :Person ;
-                     swrl:argument1 <urn:swrl:var#a>
+                     swrl:argument1 var:a
                   ]
                )
             ] .
