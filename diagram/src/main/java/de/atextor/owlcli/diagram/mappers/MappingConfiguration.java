@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
+import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
 
 /**
  * Captures the different parts of the ontology-to-graph mapping operation
@@ -47,6 +48,8 @@ public interface MappingConfiguration {
     OWLAnnotationObjectVisitorEx<Graph> getOwlAnnotationObjectMapper();
 
     OWLAnnotationSubjectVisitorEx<Graph> getOwlAnnotationSubjectMapper();
+
+    SWRLObjectVisitorEx<Graph> getSwrlObjectMapper();
 
     IdentifierMapper getIdentifierMapper();
 

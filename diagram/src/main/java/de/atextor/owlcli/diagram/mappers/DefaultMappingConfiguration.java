@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLEntityVisitorEx;
 import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
+import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
 
 import java.util.Optional;
 
@@ -38,6 +39,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLEntityVisitorEx<Graph> owlEntityMapper;
     private OWLAnnotationObjectVisitorEx<Graph> owlAnnotationObjectMapper;
     private OWLAnnotationSubjectVisitorEx<Graph> owlAnnotationSubjectMapper;
+    private SWRLObjectVisitorEx<Graph> swrlObjectMapper;
     private IdentifierMapper identifierMapper;
     private NameMapper nameMapper;
 
@@ -90,6 +92,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     @Override
+    public SWRLObjectVisitorEx<Graph> getSwrlObjectMapper() {
+        return swrlObjectMapper;
+    }
+
+    @Override
     public IdentifierMapper getIdentifierMapper() {
         return identifierMapper;
     }
@@ -135,6 +142,10 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlAnnotationSubjectMapper = owlAnnotationSubjectMapper;
     }
 
+    public void setSwrlObjectMapper( final SWRLObjectVisitorEx<Graph> swrlObjectMapper ) {
+        this.swrlObjectMapper = swrlObjectMapper;
+    }
+
     private void setIdentifierMapper( final IdentifierMapper identifierMapper ) {
         this.identifierMapper = identifierMapper;
     }
@@ -157,6 +168,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         private Optional<OWLEntityVisitorEx<Graph>> owlEntityMapper = Optional.empty();
         private Optional<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapper = Optional.empty();
         private Optional<OWLAnnotationSubjectVisitorEx<Graph>> owlAnnotationSubjectMapper = Optional.empty();
+        private Optional<SWRLObjectVisitorEx<Graph>> swrlObjectMapper = Optional.empty();
         private Optional<IdentifierMapper> identifierMapper = Optional.empty();
         private Optional<NameMapper> nameMapper = Optional.empty();
 
@@ -205,6 +217,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             return this;
         }
 
+        public Builder swrlObjectMapper( final SWRLObjectVisitorEx<Graph> mapper ) {
+            swrlObjectMapper = Optional.of( mapper );
+            return this;
+        }
+
         public Builder identifierMapper( final IdentifierMapper mapper ) {
             identifierMapper = Optional.of( mapper );
             return this;
@@ -232,6 +249,8 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
                 .orElseGet( () -> new OWLAnnotationObjectMapper( mappingConfig ) ) );
             mappingConfig.setOwlAnnotationSubjectMapper( owlAnnotationSubjectMapper
                 .orElseGet( () -> new OWLAnnotationObjectMapper( mappingConfig ) ) );
+            mappingConfig
+                .setSwrlObjectMapper( swrlObjectMapper.orElseGet( () -> new SWRLObjectMapper( mappingConfig ) ) );
             mappingConfig.setIdentifierMapper( identifierMapper.orElseGet( DefaultIdentifierMapper::new ) );
             mappingConfig.setNameMapper( nameMapper.orElseGet( () -> new DefaultNameMapper( mappingConfig ) ) );
 
