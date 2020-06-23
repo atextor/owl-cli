@@ -16,6 +16,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
+import de.atextor.owlcli.diagram.printers.OWLDataPrinter;
 import org.semanticweb.owlapi.model.OWLAnnotationObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAnnotationSubjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLAxiomVisitorEx;
@@ -42,6 +43,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     private SWRLObjectVisitorEx<Graph> swrlObjectMapper;
     private IdentifierMapper identifierMapper;
     private NameMapper nameMapper;
+    private OWLDataVisitorEx<String> owlDataPrinter;
 
     private DefaultMappingConfiguration() {
     }
@@ -106,6 +108,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         return nameMapper;
     }
 
+    @Override
+    public OWLDataVisitorEx<String> getOwlDataPrinter() {
+        return owlDataPrinter;
+    }
+
     private void setOwlAxiomMapper( final OWLAxiomVisitorEx<Graph> owlAxiomMapper ) {
         this.owlAxiomMapper = owlAxiomMapper;
     }
@@ -154,6 +161,10 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.nameMapper = nameMapper;
     }
 
+    public void setOwlDataPrinter( final OWLDataVisitorEx<String> owlDataPrinter ) {
+        this.owlDataPrinter = owlDataPrinter;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -171,6 +182,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         private Optional<SWRLObjectVisitorEx<Graph>> swrlObjectMapper = Optional.empty();
         private Optional<IdentifierMapper> identifierMapper = Optional.empty();
         private Optional<NameMapper> nameMapper = Optional.empty();
+        private Optional<OWLDataVisitorEx<String>> owlDataPrinter = Optional.empty();
 
         public Builder owlAxiomMapper( final OWLAxiomVisitorEx<Graph> mapper ) {
             owlAxiomMapper = Optional.of( mapper );
@@ -232,6 +244,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             return this;
         }
 
+        public Builder owlDataPrinter( final OWLDataVisitorEx<String> mapper ) {
+            owlDataPrinter = Optional.of( mapper );
+            return this;
+        }
+
         public MappingConfiguration build() {
             final DefaultMappingConfiguration mappingConfig = new DefaultMappingConfiguration();
 
@@ -253,6 +270,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
                 .setSwrlObjectMapper( swrlObjectMapper.orElseGet( () -> new SWRLObjectMapper( mappingConfig ) ) );
             mappingConfig.setIdentifierMapper( identifierMapper.orElseGet( DefaultIdentifierMapper::new ) );
             mappingConfig.setNameMapper( nameMapper.orElseGet( () -> new DefaultNameMapper( mappingConfig ) ) );
+            mappingConfig.setOwlDataPrinter( owlDataPrinter.orElseGet( () -> new OWLDataPrinter( mappingConfig ) ) );
 
             return mappingConfig;
         }
