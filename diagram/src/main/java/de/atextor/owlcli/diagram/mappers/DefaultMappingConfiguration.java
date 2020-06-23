@@ -26,7 +26,7 @@ import org.semanticweb.owlapi.model.OWLIndividualVisitorEx;
 import org.semanticweb.owlapi.model.OWLObjectVisitorEx;
 import org.semanticweb.owlapi.model.OWLPropertyExpressionVisitorEx;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLAxiomVisitorEx<Graph> owlAxiomMapper;
@@ -148,121 +148,92 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     }
 
     public static class Builder {
-        private Supplier<OWLAxiomVisitorEx<Graph>> owlAxiomMapperSupplier = null;
-        private Supplier<OWLClassExpressionVisitorEx<Graph>> owlClassExpressionMapperSupplier = null;
-        private Supplier<OWLIndividualVisitorEx<Graph>> owlIndividualMapperSupplier = null;
-        private Supplier<OWLPropertyExpressionVisitorEx<Graph>> owlPropertyExpressionMapperSupplier = null;
-        private Supplier<OWLObjectVisitorEx<Graph>> owlObjectMapperSupplier = null;
-        private Supplier<OWLDataVisitorEx<Graph>> owlDataMapperSupplier = null;
-        private Supplier<OWLEntityVisitorEx<Graph>> owlEntityMapperSupplier = null;
-        private Supplier<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapperSupplier = null;
-        private Supplier<OWLAnnotationSubjectVisitorEx<Graph>> owlAnnotationSubjectMapperSupplier = null;
-        private Supplier<IdentifierMapper> identifierMapperSupplier = null;
-        private Supplier<NameMapper> nameMapperSupplier = null;
+        private Optional<OWLAxiomVisitorEx<Graph>> owlAxiomMapper = Optional.empty();
+        private Optional<OWLClassExpressionVisitorEx<Graph>> owlClassExpressionMapper = Optional.empty();
+        private Optional<OWLIndividualVisitorEx<Graph>> owlIndividualMapper = Optional.empty();
+        private Optional<OWLPropertyExpressionVisitorEx<Graph>> owlPropertyExpressionMapper = Optional.empty();
+        private Optional<OWLObjectVisitorEx<Graph>> owlObjectMapper = Optional.empty();
+        private Optional<OWLDataVisitorEx<Graph>> owlDataMapper = Optional.empty();
+        private Optional<OWLEntityVisitorEx<Graph>> owlEntityMapper = Optional.empty();
+        private Optional<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapper = Optional.empty();
+        private Optional<OWLAnnotationSubjectVisitorEx<Graph>> owlAnnotationSubjectMapper = Optional.empty();
+        private Optional<IdentifierMapper> identifierMapper = Optional.empty();
+        private Optional<NameMapper> nameMapper = Optional.empty();
 
-        public Builder owlAxiomMapper( final Supplier<OWLAxiomVisitorEx<Graph>> supplier ) {
-            owlAxiomMapperSupplier = supplier;
+        public Builder owlAxiomMapper( final OWLAxiomVisitorEx<Graph> mapper ) {
+            owlAxiomMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlClassExpressionMapper( final Supplier<OWLClassExpressionVisitorEx<Graph>> supplier ) {
-            owlClassExpressionMapperSupplier = supplier;
+        public Builder owlClassExpressionMapper( final OWLClassExpressionVisitorEx<Graph> mapper ) {
+            owlClassExpressionMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlIndividualMapper( final Supplier<OWLIndividualVisitorEx<Graph>> supplier ) {
-            owlIndividualMapperSupplier = supplier;
+        public Builder owlIndividualMapper( final OWLIndividualVisitorEx<Graph> mapper ) {
+            owlIndividualMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlPropertyExpressionMapper( final Supplier<OWLPropertyExpressionVisitorEx<Graph>> supplier ) {
-            owlPropertyExpressionMapperSupplier = supplier;
+        public Builder owlPropertyExpressionMapper( final OWLPropertyExpressionVisitorEx<Graph> mapper ) {
+            owlPropertyExpressionMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlObjectMapper( final Supplier<OWLObjectVisitorEx<Graph>> supplier ) {
-            owlObjectMapperSupplier = supplier;
+        public Builder owlObjectMapper( final OWLObjectVisitorEx<Graph> mapper ) {
+            owlObjectMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlDataMapper( final Supplier<OWLDataVisitorEx<Graph>> supplier ) {
-            owlDataMapperSupplier = supplier;
+        public Builder owlDataMapper( final OWLDataVisitorEx<Graph> mapper ) {
+            owlDataMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlEntityMapper( final Supplier<OWLEntityVisitorEx<Graph>> supplier ) {
-            owlEntityMapperSupplier = supplier;
+        public Builder owlEntityMapper( final OWLEntityVisitorEx<Graph> mapper ) {
+            owlEntityMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlAnnotationObjectMapper( final Supplier<OWLAnnotationObjectVisitorEx<Graph>> supplier ) {
-            owlAnnotationObjectMapperSupplier = supplier;
+        public Builder owlAnnotationObjectMapper( final OWLAnnotationObjectVisitorEx<Graph> mapper ) {
+            owlAnnotationObjectMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder owlAnnotationSubjectMapper( final Supplier<OWLAnnotationSubjectVisitorEx<Graph>> supplier ) {
-            owlAnnotationSubjectMapperSupplier = supplier;
+        public Builder owlAnnotationSubjectMapper( final OWLAnnotationSubjectVisitorEx<Graph> mapper ) {
+            owlAnnotationSubjectMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder identifierMapper( final Supplier<IdentifierMapper> supplier ) {
-            identifierMapperSupplier = supplier;
+        public Builder identifierMapper( final IdentifierMapper mapper ) {
+            identifierMapper = Optional.of( mapper );
             return this;
         }
 
-        public Builder nameMapper( final Supplier<NameMapper> supplier ) {
-            nameMapperSupplier = supplier;
+        public Builder nameMapper( final NameMapper mapper ) {
+            nameMapper = Optional.of( mapper );
             return this;
         }
 
         public MappingConfiguration build() {
             final DefaultMappingConfiguration mappingConfig = new DefaultMappingConfiguration();
 
-            if ( owlAxiomMapperSupplier == null ) {
-                owlAxiomMapper( () -> new OWLAxiomMapper( mappingConfig ) );
-            }
-            if ( owlClassExpressionMapperSupplier == null ) {
-                owlClassExpressionMapper( () -> new OWLClassExpressionMapper( mappingConfig ) );
-            }
-            if ( owlIndividualMapperSupplier == null ) {
-                owlIndividualMapper( () -> new OWLIndividualMapper( mappingConfig ) );
-            }
-            if ( owlPropertyExpressionMapperSupplier == null ) {
-                owlPropertyExpressionMapper( () -> new OWLPropertyExpressionMapper( mappingConfig ) );
-            }
-            if ( owlObjectMapperSupplier == null ) {
-                owlObjectMapper( () -> new OWLObjectMapper( mappingConfig ) );
-            }
-            if ( owlDataMapperSupplier == null ) {
-                owlDataMapper( () -> new OWLDataMapper( mappingConfig ) );
-            }
-            if ( owlEntityMapperSupplier == null ) {
-                owlEntityMapper( () -> new OWLEntityMapper( mappingConfig ) );
-            }
-            if ( owlAnnotationObjectMapperSupplier == null ) {
-                owlAnnotationObjectMapper( () -> new OWLAnnotationObjectMapper( mappingConfig ) );
-            }
-            if ( owlAnnotationSubjectMapperSupplier == null ) {
-                owlAnnotationSubjectMapper( () -> new OWLAnnotationObjectMapper( mappingConfig ) );
-            }
-            if ( identifierMapperSupplier == null ) {
-                identifierMapper( DefaultIdentifierMapper::new );
-            }
-            if ( nameMapperSupplier == null ) {
-                nameMapper( () -> new DefaultNameMapper( mappingConfig ) );
-            }
-
-            mappingConfig.setOwlAxiomMapper( owlAxiomMapperSupplier.get() );
-            mappingConfig.setOwlClassExpressionMapper( owlClassExpressionMapperSupplier.get() );
-            mappingConfig.setOwlIndividualMapper( owlIndividualMapperSupplier.get() );
-            mappingConfig.setOwlPropertyExpressionMapper( owlPropertyExpressionMapperSupplier.get() );
-            mappingConfig.setOwlObjectMapper( owlObjectMapperSupplier.get() );
-            mappingConfig.setOwlDataMapper( owlDataMapperSupplier.get() );
-            mappingConfig.setOwlEntityMapper( owlEntityMapperSupplier.get() );
-            mappingConfig.setOwlAnnotationObjectMapper( owlAnnotationObjectMapperSupplier.get() );
-            mappingConfig.setOwlAnnotationSubjectMapper( owlAnnotationSubjectMapperSupplier.get() );
-            mappingConfig.setIdentifierMapper( identifierMapperSupplier.get() );
-            mappingConfig.setNameMapper( nameMapperSupplier.get() );
+            mappingConfig.setOwlAxiomMapper( owlAxiomMapper.orElseGet( () -> new OWLAxiomMapper( mappingConfig ) ) );
+            mappingConfig.setOwlClassExpressionMapper( owlClassExpressionMapper
+                .orElseGet( () -> new OWLClassExpressionMapper( mappingConfig ) ) );
+            mappingConfig.setOwlIndividualMapper( owlIndividualMapper
+                .orElseGet( () -> new OWLIndividualMapper( mappingConfig ) ) );
+            mappingConfig.setOwlPropertyExpressionMapper( owlPropertyExpressionMapper
+                .orElseGet( () -> new OWLPropertyExpressionMapper( mappingConfig ) ) );
+            mappingConfig.setOwlObjectMapper( owlObjectMapper.orElseGet( () -> new OWLObjectMapper( mappingConfig ) ) );
+            mappingConfig.setOwlDataMapper( owlDataMapper.orElseGet( () -> new OWLDataMapper( mappingConfig ) ) );
+            mappingConfig.setOwlEntityMapper( owlEntityMapper.orElseGet( () -> new OWLEntityMapper( mappingConfig ) ) );
+            mappingConfig.setOwlAnnotationObjectMapper( owlAnnotationObjectMapper
+                .orElseGet( () -> new OWLAnnotationObjectMapper( mappingConfig ) ) );
+            mappingConfig.setOwlAnnotationSubjectMapper( owlAnnotationSubjectMapper
+                .orElseGet( () -> new OWLAnnotationObjectMapper( mappingConfig ) ) );
+            mappingConfig.setIdentifierMapper( identifierMapper.orElseGet( DefaultIdentifierMapper::new ) );
+            mappingConfig.setNameMapper( nameMapper.orElseGet( () -> new DefaultNameMapper( mappingConfig ) ) );
 
             return mappingConfig;
         }
