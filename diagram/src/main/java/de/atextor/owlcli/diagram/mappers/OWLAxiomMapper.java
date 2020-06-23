@@ -86,7 +86,6 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
-import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
 import org.semanticweb.owlapi.model.SWRLRule;
 
 import javax.annotation.Nonnull;
@@ -503,20 +502,19 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLRule rule ) {
-        final SWRLObjectVisitorEx<Graph> swrlObjectMapper = new SWRLObjectMapper( mappingConfig );
         final Function<Stream<GraphElement>, String> reduceWithConjuction = stream ->
             stream.map( element -> element.as( Literal.class ) )
                 .map( Literal::getValue )
                 .collect( Collectors.joining( " " + Rule.CONJUNCTION_SYMBOL + " " ) );
 
         final Map<Boolean, List<GraphElement>> partitionedBodyElements =
-            rule.body().flatMap( atom -> atom.accept( swrlObjectMapper ).toStream() )
+            rule.body().flatMap( atom -> atom.accept( mappingConfig.getSwrlObjectMapper() ).toStream() )
                 .collect( Collectors.partitioningBy( SWRLObjectMapper.IS_RULE_SYNTAX_PART ) );
 
         final String bodyExpression = reduceWithConjuction.apply( partitionedBodyElements.get( true ).stream() );
 
         final Map<Boolean, List<GraphElement>> partitionedHeadElements =
-            rule.head().flatMap( atom -> atom.accept( swrlObjectMapper ).toStream() )
+            rule.head().flatMap( atom -> atom.accept( mappingConfig.getSwrlObjectMapper() ).toStream() )
                 .collect( Collectors.partitioningBy( SWRLObjectMapper.IS_RULE_SYNTAX_PART ) );
 
         final String headExpression = reduceWithConjuction.apply( partitionedHeadElements.get( true ).stream() );
