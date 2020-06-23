@@ -36,7 +36,6 @@ import org.semanticweb.owlapi.model.OWLDatatypeRestriction;
 import org.semanticweb.owlapi.model.OWLLiteral;
 
 import javax.annotation.Nonnull;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -98,13 +97,8 @@ public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLDatatypeRestriction restriction ) {
-        final String datatypeName = mappingConfig.getNameMapper().getName( restriction.getDatatype() );
-        final String restrictionExpression = restriction.facetRestrictions()
-            .map( owlFacetRestriction -> owlFacetRestriction.getFacet().getSymbolicForm() + " " + owlFacetRestriction
-                .getFacetValue().getLiteral() ).collect( Collectors.joining( ", ", "[", "]" ) );
-
         final Node typeNode = new Datatype( mappingConfig.getIdentifierMapper().getSyntheticId(),
-            datatypeName + " " + restrictionExpression );
+            restriction.accept( mappingConfig.getOwlDataPrinter() ) );
         return Graph.of( typeNode );
     }
 
