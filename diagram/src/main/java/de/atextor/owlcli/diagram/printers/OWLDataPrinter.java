@@ -61,14 +61,14 @@ public class OWLDataPrinter implements OWLDataVisitorEx<String> {
 
     @Override
     public String visit( final @Nonnull OWLDatatypeRestriction node ) {
-        return node.facetRestrictions().map( owlFacetRestriction ->
-            owlFacetRestriction.accept( this ) + " "
-                + owlFacetRestriction.getFacetValue().getLiteral() ).collect( Collectors.joining( ", ", "[", "]" ) );
+        return node.getDatatype().accept( this ) + " " + node.facetRestrictions()
+            .map( owlFacetRestriction -> owlFacetRestriction.accept( this ) )
+            .collect( Collectors.joining( ", ", "[", "]" ) );
     }
 
     @Override
     public String visit( final @Nonnull OWLFacetRestriction node ) {
-        return node.getFacet().getSymbolicForm();
+        return node.getFacet().getSymbolicForm() + " " + node.getFacetValue().getLiteral();
     }
 
     @Override
