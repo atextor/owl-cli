@@ -27,10 +27,8 @@ import org.semanticweb.owlapi.model.OWLIndividual;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class OWLIndividualMapperTest extends MapperTestBase {
-    private final OWLIndividualMapper mapper = new OWLIndividualMapper( DefaultMappingConfiguration
-        .builder()
-        .nameMapper( () -> testNameMapper )
-        .build() );
+    private final OWLIndividualMapper mapper =
+        new OWLIndividualMapper( DefaultMappingConfiguration.builder().nameMapper( testNameMapper ).build() );
 
     @Test
     public void testOWLAnonymousIndividual() {

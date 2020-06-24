@@ -61,8 +61,8 @@ public class MapperTestBase {
 
     protected MappingConfiguration createTestMappingConfiguration() {
         return DefaultMappingConfiguration.builder()
-            .identifierMapper( () -> testIdentifierMapper )
-            .nameMapper( () -> testNameMapper )
+            .identifierMapper( testIdentifierMapper )
+            .nameMapper( testNameMapper )
             .build();
     }
 
