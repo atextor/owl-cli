@@ -29,6 +29,9 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import javax.annotation.Nonnull;
 import java.util.stream.Collectors;
 
+/**
+ * Serializes {@link org.semanticweb.owlapi.model.OWLDataRange}s into expressions.
+ */
 public class OWLDataPrinter implements OWLDataVisitorEx<String> {
     private final MappingConfiguration mappingConfig;
 
