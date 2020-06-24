@@ -56,4 +56,6 @@ public interface MappingConfiguration {
     NameMapper getNameMapper();
 
     OWLDataVisitorEx<String> getOwlDataPrinter();
+
+    OWLPropertyExpressionVisitorEx<String> getOwlPropertyExpressionPrinter();
 }
