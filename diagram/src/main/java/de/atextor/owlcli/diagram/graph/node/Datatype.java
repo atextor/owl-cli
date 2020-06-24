@@ -18,12 +18,14 @@ package de.atextor.owlcli.diagram.graph.node;
 import de.atextor.owlcli.diagram.graph.Node;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * Represents an OWL Datatype node in the graph.
  */
 @Value
 @EqualsAndHashCode( callSuper = true )
+@With
 public class Datatype extends Node.NamedNode {
     Id id;
     String name;
@@ -31,10 +33,5 @@ public class Datatype extends Node.NamedNode {
     @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
-    }
-
-    @Override
-    public Node clone( final Id newId ) {
-        return new Datatype( newId, name );
     }
 }

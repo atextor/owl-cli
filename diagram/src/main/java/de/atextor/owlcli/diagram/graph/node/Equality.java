@@ -18,22 +18,19 @@ package de.atextor.owlcli.diagram.graph.node;
 import de.atextor.owlcli.diagram.graph.Node;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * Represents an equality symbol ("=") node in the graph.
  */
 @Value
 @EqualsAndHashCode( callSuper = true )
+@With
 public class Equality extends Node {
     Id id;
 
     @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
-    }
-
-    @Override
-    public Node clone( final Id newId ) {
-        return new Equality( newId );
     }
 }

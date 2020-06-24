@@ -18,12 +18,14 @@ package de.atextor.owlcli.diagram.graph.node;
 import de.atextor.owlcli.diagram.graph.Node;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * Represents an OWL Object Property Chain node in the graph.
  */
 @Value
 @EqualsAndHashCode( callSuper = true )
+@With
 public class PropertyChain extends Node {
     public static final String OPERATOR_SYMBOL = "o";
 
@@ -33,10 +35,5 @@ public class PropertyChain extends Node {
     @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
-    }
-
-    @Override
-    public Node clone( final Id newId ) {
-        return new PropertyChain( newId, value );
     }
 }

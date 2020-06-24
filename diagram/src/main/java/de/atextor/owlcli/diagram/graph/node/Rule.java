@@ -18,12 +18,14 @@ package de.atextor.owlcli.diagram.graph.node;
 import de.atextor.owlcli.diagram.graph.Node;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 /**
  * Represents a rule node in the graph.
  */
 @Value
 @EqualsAndHashCode( callSuper = true )
+@With
 public class Rule extends Node {
     public static final String CONJUNCTION_SYMBOL = "∧";
     public static final String IMPLICATION_SYMBOL = "⇒";
@@ -34,10 +36,5 @@ public class Rule extends Node {
     @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
-    }
-
-    @Override
-    public Node clone( final Id newId ) {
-        return new Rule( newId, value );
     }
 }

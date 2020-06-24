@@ -18,6 +18,7 @@ package de.atextor.owlcli.diagram.graph.node;
 import de.atextor.owlcli.diagram.graph.Node;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
+import lombok.With;
 
 import java.util.Set;
 
@@ -27,6 +28,7 @@ import java.util.Set;
  */
 @Value
 @EqualsAndHashCode( callSuper = true )
+@With
 public class PropertyMarker extends Node {
     public enum Kind {
         FUNCTIONAL,
@@ -44,10 +46,5 @@ public class PropertyMarker extends Node {
     @Override
     public <T> T accept( final Visitor<T> visitor ) {
         return visitor.visit( this );
-    }
-
-    @Override
-    public Node clone( final Id newId ) {
-        return new PropertyMarker( newId, kind );
     }
 }

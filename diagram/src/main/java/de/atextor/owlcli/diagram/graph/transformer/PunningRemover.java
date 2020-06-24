@@ -66,7 +66,7 @@ public class PunningRemover extends GraphTransformer {
     }
 
     private Stream<ChangeSet> updateNode( final Set<GraphElement> graph, final Node node ) {
-        final Node newNode = node.clone( buildNewNodeId( node.getId() ) );
+        final Node newNode = node.withId( buildNewNodeId( node.getId() ) );
         final ChangeSet updatedToEdges = updateEdgesTo( graph, node, newNode );
         final ChangeSet updatedNode = new ChangeSet( Set.of( newNode ), Set.of( node ) );
         return Stream.of( updatedNode, updatedToEdges );

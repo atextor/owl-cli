@@ -190,7 +190,7 @@ public abstract class Node implements GraphElement {
 
     public abstract <T> T accept( final Visitor<T> visitor );
 
-    public abstract Node clone( Node.Id newId );
+    public abstract Node withId( Node.Id newId );
 
     @Override
     public boolean isNode() {
