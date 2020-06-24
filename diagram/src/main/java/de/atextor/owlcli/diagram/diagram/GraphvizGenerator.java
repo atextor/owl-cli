@@ -415,6 +415,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 .format( " <FONT COLOR=\"#B2B2B2\"><B>%s</B></FONT> ", Rule.IMPLICATION_SYMBOL );
             final String[] parts = rule.getValue().split( " " + Rule.IMPLICATION_SYMBOL + " " );
             final String label = Arrays.stream( parts )
+                .map( GraphvizGenerator::escape )
                 .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
                 .collect( Collectors.joining( operator ) );
             return generateHtmlLabelNode( rule.getId(), label );
