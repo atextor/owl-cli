@@ -26,7 +26,6 @@ import de.atextor.owlcli.diagram.graph.node.Inverse;
 import de.atextor.owlcli.diagram.graph.node.Key;
 import de.atextor.owlcli.diagram.graph.node.PropertyChain;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
-import de.atextor.owlcli.diagram.graph.node.Rule;
 import de.atextor.owlcli.diagram.mappers.IdentifierMapper;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.OWLAxiomMapper;
@@ -69,7 +68,6 @@ import org.semanticweb.owlapi.model.OWLSubObjectPropertyOfAxiom;
 import org.semanticweb.owlapi.model.OWLSubPropertyChainOfAxiom;
 import org.semanticweb.owlapi.model.OWLSymmetricObjectPropertyAxiom;
 import org.semanticweb.owlapi.model.OWLTransitiveObjectPropertyAxiom;
-import org.semanticweb.owlapi.model.SWRLRule;
 
 import java.util.List;
 import java.util.Set;
@@ -1028,110 +1026,6 @@ public class OWLAxiomMapperTest extends MapperTestBase {
 
     @Test
     public void testOWLAnnotationPropertyRangeAxiom() {
-    }
-
-    @Test
-    public void testSWRLRuleWithObjectPropertyAtoms() {
-        final String ontology = """
-            :hasParent a owl:ObjectProperty .
-            :hasBrother a owl:ObjectProperty .
-            :hasUncle a owl:ObjectProperty .
-
-            var:a a swrl:Variable .
-            var:b a swrl:Variable .
-            var:c a swrl:Variable .
-
-            [
-               a swrl:Imp ;
-               swrl:body (
-                  [
-                     a swrl:IndividualPropertyAtom ;
-                     swrl:propertyPredicate :hasParent ;
-                     swrl:argument1 var:a ;
-                     swrl:argument2 var:b
-                  ]
-                  [
-                     a swrl:IndividualPropertyAtom ;
-                     swrl:propertyPredicate :hasBrother ;
-                     swrl:argument1 var:b ;
-                     swrl:argument2 var:c
-                  ]
-               ) ;
-               swrl:head (
-                  [
-                     a swrl:IndividualPropertyAtom ;
-                     swrl:propertyPredicate :hasUncle ;
-                     swrl:argument1 var:a ;
-                     swrl:argument2 var:c
-                  ]
-               )
-            ] .
-            """;
-
-        final SWRLRule rule = getAxiom( ontology, AxiomType.SWRL_RULE );
-
-        final Set<GraphElement> result = rule.accept( mapper ).getElementSet();
-
-        final List<Node> nodes = nodes( result );
-        assertThat( nodes ).hasSize( 4 );
-        assertThat( nodes ).anyMatch( node -> node.is( Rule.class ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "hasParent" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "hasBrother" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "hasUncle" ) );
-
-        final Node ruleNode = nodes.stream().filter( node -> node.is( Rule.class ) ).findFirst().get();
-
-        final List<Edge> edges = edges( result );
-        assertThat( edges ).hasSize( 3 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasParent" ) );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasBrother" ) );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "hasUncle" ) );
-    }
-
-    @Test
-    public void testSWRLRuleWithClassAtoms() {
-        final String ontology = """
-            :Student a owl:Class .
-            :Person a owl:Class .
-
-            var:a a swrl:Variable .
-
-            [
-               a swrl:Imp ;
-               swrl:body (
-                  [
-                     a swrl:ClassAtom ;
-                     swrl:classPredicate :Student ;
-                     swrl:argument1 var:a
-                  ]
-               ) ;
-               swrl:head (
-                  [
-                     a swrl:ClassAtom ;
-                     swrl:classPredicate :Person ;
-                     swrl:argument1 var:a
-                  ]
-               )
-            ] .
-            """;
-
-        final SWRLRule rule = getAxiom( ontology, AxiomType.SWRL_RULE );
-
-        final Set<GraphElement> result = rule.accept( mapper ).getElementSet();
-        System.out.println( result );
-
-        final List<Node> nodes = nodes( result );
-        assertThat( nodes ).hasSize( 3 );
-        assertThat( nodes ).anyMatch( node -> node.is( Rule.class ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "Student" ) );
-        assertThat( nodes ).anyMatch( isNodeWithId( "Person" ) );
-
-        final Node ruleNode = nodes.stream().filter( node -> node.is( Rule.class ) ).findFirst().get();
-
-        final List<Edge> edges = edges( result );
-        assertThat( edges ).hasSize( 2 );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Student" ) );
-        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Person" ) );
     }
 
     private void assertEquivalentResult( final Set<GraphElement> result, final IRI fooIri, final IRI barIri,
