@@ -79,7 +79,13 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLDataRangeAtom atom ) {
-        return null;
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
+        final String label = String.format( "%s(%s)", atom.getPredicate().accept( mappingConfig.getOwlDataPrinter() ),
+            arguments );
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        return Graph.of( literal );
     }
 
     private List<GraphElement> argumentElements( final SWRLAtom atom ) {
@@ -100,8 +106,8 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
         final List<GraphElement> argumentGraphElements = argumentElements( atom );
         final String arguments = printArgumentElements( argumentGraphElements );
 
-        final String label = String.format( "%s(%s)", atom.getPredicate().isNamed() ?
-            mappingConfig.getNameMapper().getName( atom.getPredicate().getNamedProperty() ) : "<?>", arguments );
+        final String label = String.format( "%s(%s)", atom.getPredicate()
+            .accept( mappingConfig.getOwlPropertyExpressionPrinter() ), arguments );
 
         final Node objectProperty =
             atom.getPredicate().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
@@ -115,7 +121,20 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLDataPropertyAtom atom ) {
-        return null;
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
+
+        final String label = String.format( "%s(%s)", atom.getPredicate()
+            .accept( mappingConfig.getOwlPropertyExpressionPrinter() ), arguments );
+
+        final Node dataProperty =
+            atom.getPredicate().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, dataProperty );
+
+        return Graph.of( literal ).and( dataProperty ).and( edge )
+            .and( argumentGraphElements.stream().filter( IS_RULE_SYNTAX_PART.negate() ) );
     }
 
     @Override
