@@ -451,4 +451,7 @@ rule atoms.
 |Object Property
 |image::swrl-rule-object-property-atom.svg[]
 
+|Data Property, Data Range
+|image::swrl-rule-data-range-atom.svg[]
+
 |===
