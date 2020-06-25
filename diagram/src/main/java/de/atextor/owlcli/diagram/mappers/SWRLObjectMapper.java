@@ -64,8 +64,8 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
         final List<GraphElement> argumentGraphElements = argumentElements( atom );
         final String arguments = printArgumentElements( argumentGraphElements );
 
-        final String label = String.format( "%s(%s)", atom.getPredicate().isNamed() ?
-            mappingConfig.getNameMapper().getName( atom.getPredicate().asOWLClass() ) : "<?>", arguments );
+        final String label = String.format( "%s(%s)",
+            atom.getPredicate().accept( mappingConfig.getOwlClassExpressionPrinter() ), arguments );
 
         final Node objectProperty =
             atom.getPredicate().accept( mappingConfig.getOwlClassExpressionMapper() ).getNode();
@@ -144,6 +144,8 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLVariable variable ) {
+        // Do not call namemapper for variable IRI fragment: variable name is not subject to be
+        // rendered with prefix
         return Graph.of( new Literal( mappingConfig.getIdentifierMapper().getSyntheticIdForIri( LITERAL_ID ),
             "?" + variable.getIRI().getFragment() ) );
     }

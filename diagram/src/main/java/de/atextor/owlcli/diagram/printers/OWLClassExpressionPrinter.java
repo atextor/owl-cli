@@ -18,6 +18,7 @@ package de.atextor.owlcli.diagram.printers;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import org.semanticweb.owlapi.model.HasCardinality;
 import org.semanticweb.owlapi.model.HasFiller;
+import org.semanticweb.owlapi.model.OWLClass;
 import org.semanticweb.owlapi.model.OWLClassExpression;
 import org.semanticweb.owlapi.model.OWLClassExpressionVisitorEx;
 import org.semanticweb.owlapi.model.OWLDataAllValuesFrom;
@@ -180,5 +181,10 @@ public class OWLClassExpressionPrinter implements OWLClassExpressionVisitorEx<St
     @Override
     public String visit( final @Nonnull OWLDataMaxCardinality classExpression ) {
         return printUnqualifiedCardinalityRestriction( classExpression, "max" );
+    }
+
+    @Override
+    public String visit( final OWLClass classExpression ) {
+        return mappingConfig.getNameMapper().getName( classExpression );
     }
 }
