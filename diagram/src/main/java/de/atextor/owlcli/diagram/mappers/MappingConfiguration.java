@@ -58,4 +58,6 @@ public interface MappingConfiguration {
     OWLDataVisitorEx<String> getOwlDataPrinter();
 
     OWLPropertyExpressionVisitorEx<String> getOwlPropertyExpressionPrinter();
+
+    OWLIndividualVisitorEx<String> getOwlIndividualPrinter();
 }

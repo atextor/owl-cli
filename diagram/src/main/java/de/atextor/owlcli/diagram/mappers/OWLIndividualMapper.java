@@ -36,14 +36,15 @@ public class OWLIndividualMapper implements OWLIndividualVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull OWLAnonymousIndividual individual ) {
-        final Node node = new Individual( mappingConfig.getIdentifierMapper().getSyntheticId(), "[]" );
+        final Node node = new Individual( mappingConfig.getIdentifierMapper().getSyntheticId(),
+            individual.accept( mappingConfig.getOwlIndividualPrinter() ) );
         return Graph.of( node );
     }
 
     @Override
     public Graph visit( final @Nonnull OWLNamedIndividual individual ) {
         final Node.Id id = mappingConfig.getIdentifierMapper().getIdForIri( individual.getIRI() );
-        final String label = id.getId();
+        final String label = individual.accept( mappingConfig.getOwlIndividualPrinter() );
         final Node node = new Individual( id, label );
         return Graph.of( node );
     }
