@@ -16,6 +16,7 @@
 package de.atextor.owlcli.diagram.mappers;
 
 import de.atextor.owlcli.diagram.graph.Graph;
+import de.atextor.owlcli.diagram.printers.OWLClassExpressionPrinter;
 import de.atextor.owlcli.diagram.printers.OWLDataPrinter;
 import de.atextor.owlcli.diagram.printers.OWLIndividualPrinter;
 import de.atextor.owlcli.diagram.printers.OWLPropertyExpressionPrinter;
@@ -48,6 +49,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLDataVisitorEx<String> owlDataPrinter;
     private OWLPropertyExpressionVisitorEx<String> owlPropertyExpressionPrinter;
     private OWLIndividualVisitorEx<String> owlIndividualPrinter;
+    private OWLClassExpressionVisitorEx<String> owlClassExpressionPrinter;
 
     private DefaultMappingConfiguration() {
     }
@@ -127,6 +129,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         return owlPropertyExpressionPrinter;
     }
 
+    @Override
+    public OWLClassExpressionVisitorEx<String> getOwlClassExpressionPrinter() {
+        return owlClassExpressionPrinter;
+    }
+
     private void setOwlAxiomMapper( final OWLAxiomVisitorEx<Graph> owlAxiomMapper ) {
         this.owlAxiomMapper = owlAxiomMapper;
     }
@@ -187,6 +194,10 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlIndividualPrinter = owlIndividualPrinter;
     }
 
+    private void setOwlClassExpressionPrinter( final OWLClassExpressionVisitorEx<String> owlClassExpressionPrinter ) {
+        this.owlClassExpressionPrinter = owlClassExpressionPrinter;
+    }
+
     public static Builder builder() {
         return new Builder();
     }
@@ -207,6 +218,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         private Optional<OWLDataVisitorEx<String>> owlDataPrinter = Optional.empty();
         private Optional<OWLPropertyExpressionVisitorEx<String>> owlPropertyExpressionPrinter = Optional.empty();
         private Optional<OWLIndividualVisitorEx<String>> owlIndividualPrinter = Optional.empty();
+        private Optional<OWLClassExpressionVisitorEx<String>> owlClassExpressionPrinter = Optional.empty();
 
         public Builder owlAxiomMapper( final OWLAxiomVisitorEx<Graph> mapper ) {
             owlAxiomMapper = Optional.of( mapper );
@@ -283,6 +295,11 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             return this;
         }
 
+        public Builder owlClassExpressionPrinter( final OWLClassExpressionVisitorEx<String> printer ) {
+            owlClassExpressionPrinter = Optional.of( printer );
+            return this;
+        }
+
         public MappingConfiguration build() {
             final DefaultMappingConfiguration mappingConfig = new DefaultMappingConfiguration();
 
@@ -309,6 +326,8 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
                 .orElseGet( () -> new OWLPropertyExpressionPrinter( mappingConfig ) ) );
             mappingConfig.setOwlIndividualPrinter( owlIndividualPrinter.orElseGet(
                 () -> new OWLIndividualPrinter( mappingConfig ) ) );
+            mappingConfig.setOwlClassExpressionPrinter( owlClassExpressionPrinter.orElseGet(
+                () -> new OWLClassExpressionPrinter( mappingConfig ) ) );
 
             return mappingConfig;
         }
