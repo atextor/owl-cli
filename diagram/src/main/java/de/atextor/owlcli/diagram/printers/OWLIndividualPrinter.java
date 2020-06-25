@@ -39,6 +39,6 @@ public class OWLIndividualPrinter implements OWLIndividualVisitorEx<String> {
 
     @Override
     public String visit( final @Nonnull OWLNamedIndividual individual ) {
-        return individual.getIRI().getFragment();
+        return mappingConfiguration.getNameMapper().getName( individual );
     }
 }
