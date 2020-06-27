@@ -40,8 +40,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
-    private final MappingConfiguration mappingConfig;
-
     /*
      * During traversal of the rule expression tree, both Literal nodes and other GraphElements
      * (mainly Edges) are collected. The values of the Literal nodes are concatenated in the end
@@ -50,10 +48,10 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
      * identifier "marker" IRI.
      */
     private static final IRI LITERAL_ID = IRI.create( "urn:owl-cli:literal-id" );
-
     public static final Predicate<GraphElement> IS_RULE_SYNTAX_PART =
         graphElement -> graphElement.is( Literal.class ) &&
             graphElement.as( Literal.class ).getId().getIri().map( iri -> iri.equals( LITERAL_ID ) ).orElse( false );
+    private final MappingConfiguration mappingConfig;
 
     public SWRLObjectMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
@@ -152,7 +150,12 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLIndividualArgument argument ) {
-        return null;
+        final Node individual = argument.getIndividual().accept( mappingConfig.getOwlIndividualMapper() ).getNode();
+        final String label = argument.getIndividual().accept( mappingConfig.getOwlIndividualPrinter() );
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, individual );
+        return Graph.of( literal ).and( individual ).and( edge );
     }
 
     @Override
