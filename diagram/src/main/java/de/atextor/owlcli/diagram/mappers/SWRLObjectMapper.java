@@ -164,8 +164,17 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
     }
 
     @Override
-    public Graph visit( final @Nonnull SWRLSameIndividualAtom node ) {
-        return null;
+    public Graph visit( final @Nonnull SWRLSameIndividualAtom atom ) {
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
+        final String label = String.format( "sameAs(%s)", arguments );
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        return atom.individualsInSignature().map( owlIndividual -> {
+            final Node individual = owlIndividual.accept( mappingConfig.getOwlIndividualMapper() ).getNode();
+            final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, individual );
+            return Graph.of( individual ).and( edge );
+        } ).reduce( Graph.of( literal ), Graph::and );
     }
 
     @Override
