@@ -65,13 +65,12 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
         final String label = String.format( "%s(%s)",
             atom.getPredicate().accept( mappingConfig.getOwlClassExpressionPrinter() ), arguments );
 
-        final Node objectProperty =
-            atom.getPredicate().accept( mappingConfig.getOwlClassExpressionMapper() ).getNode();
+        final Graph classGraph = atom.getPredicate().accept( mappingConfig.getOwlClassExpressionMapper() );
         final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
             .getSyntheticIdForIri( LITERAL_ID ), label );
-        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, objectProperty );
+        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, classGraph.getNode() );
 
-        return Graph.of( literal ).and( objectProperty ).and( edge )
+        return Graph.of( literal ).and( classGraph ).and( edge )
             .and( argumentGraphElements.stream().filter( IS_RULE_SYNTAX_PART.negate() ) );
     }
 
