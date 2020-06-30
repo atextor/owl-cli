@@ -448,6 +448,9 @@ rule atoms.
 |Class
 |image::swrl-rule-class-atom.svg[]
 
+|Class with Expression
+|image::swrl-rule-class-atom-with-expression.svg[]
+
 |Object Property
 |image::swrl-rule-object-property-atom.svg[]
 
