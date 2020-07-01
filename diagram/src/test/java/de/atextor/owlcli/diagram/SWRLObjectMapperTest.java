@@ -265,4 +265,64 @@ public class SWRLObjectMapperTest extends MapperTestBase {
         assertThat( edges ).anyMatch( isEdgeWithFromAndTo( cardinality.getId().getId(), "hasChild" ) );
         assertThat( edges ).anyMatch( isEdgeWithFromAndTo( cardinality.getId().getId(), "Person" ) );
     }
+
+    @Test
+    public void testSWRLBuiltinAtom() {
+        final String ontology = """
+            :Person a owl:Class .
+            :Adult a owl:Class .
+            :age a owl:DatatypeProperty .
+
+            var:a a swrl:Variable .
+            var:p a swrl:Variable .
+
+            [
+               a swrl:Imp ;
+               swrl:body (
+                  [
+                     a swrl:ClassAtom ;
+                     swrl:classPredicate :Person ;
+                     swrl:argument1 var:p
+                  ]
+                  [
+                     a swrl:DatavaluedPropertyAtom ;
+                     swrl:propertyPredicate :age ;
+                     swrl:argument1 var:p ;
+                     swrl:argument2 var:a
+                  ]
+                  [
+                     a swrl:BuiltinAtom ;
+                     swrl:builtin swrlb:greaterThanOrEqual ;
+                     swrl:arguments ( var:a 18 )
+                  ]
+               ) ;
+               swrl:head (
+                  [
+                     a swrl:ClassAtom ;
+                     swrl:classPredicate :Adult ;
+                     swrl:argument1 var:p
+                  ]
+               )
+            ] .
+            """;
+
+        final SWRLRule rule = getAxiom( ontology, AxiomType.SWRL_RULE );
+
+        final Set<GraphElement> result = rule.accept( mapper ).getElementSet();
+
+        final List<Node> nodes = nodes( result );
+        assertThat( nodes ).hasSize( 4 );
+        assertThat( nodes ).anyMatch( node -> node.is( Rule.class ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Person" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "Adult" ) );
+        assertThat( nodes ).anyMatch( isNodeWithId( "age" ) );
+
+        final Node ruleNode = nodes.stream().filter( node -> node.is( Rule.class ) ).findFirst().get();
+
+        final List<Edge> edges = edges( result );
+        assertThat( edges ).hasSize( 3 );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Person" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "Adult" ) );
+        assertThat( edges ).anyMatch( isEdgeWithFromAndTo( ruleNode.getId().getId(), "age" ) );
+    }
 }
