@@ -16,7 +16,7 @@ before_install:
   - sudo apt-get install -y graphviz
 
 install:
-  - sdk install (sdk list java | grep -o '13\.[0-9\.]*-open' | head -1) || true
+  - sdk install $(sdk list java | grep -o '13\.[0-9\.]*-open' | head -1) || true
   - java -version
 
 before_cache:
