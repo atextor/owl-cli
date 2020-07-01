@@ -31,8 +31,10 @@ import org.semanticweb.owlapi.model.SWRLIndividualArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
+import org.semanticweb.owlapi.model.SWRLRule;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.vocab.Namespaces;
 import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.annotation.Nonnull;
@@ -41,12 +43,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
-    /*
+    /**
      * During traversal of the rule expression tree, both Literal nodes and other GraphElements
      * (mainly Edges) are collected. The values of the Literal nodes are concatenated in the end
      * to render the final rule representation. In order to differentiate the to-be-concatenated
      * Literal nodes from "regular" Literal nodes that might occur, they are given an internal
-     * identifier "marker" IRI.
+     * identifier "marker" IRI. The concatenation is done in
+     * {@link de.atextor.owlcli.diagram.mappers.OWLAxiomMapper#visit(SWRLRule)}.
      */
     private static final IRI LITERAL_ID = IRI.create( "urn:owl-cli:literal-id" );
     public static final Predicate<GraphElement> IS_RULE_SYNTAX_PART =
@@ -137,7 +140,14 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLBuiltInAtom atom ) {
-        return null;
+        final List<GraphElement> argumentGraphElements = argumentElements( atom );
+        final String arguments = printArgumentElements( argumentGraphElements );
+        final String builtin = Namespaces.SWRLB.inNamespace( atom.getPredicate() ) ?
+            String.format( "swrlb:%s", atom.getPredicate().getFragment() ) :
+            mappingConfig.getNameMapper().getName( atom.getPredicate() );
+        final String label = String.format( "%s(%s)", builtin, arguments );
+        return Graph.of( new Literal( mappingConfig.getIdentifierMapper().getSyntheticIdForIri( LITERAL_ID ),
+            label ) );
     }
 
     @Override
