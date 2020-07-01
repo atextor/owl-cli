@@ -17,6 +17,8 @@ before_install:
 
 install:
   - sdk install $(sdk list java | grep -o '13\.[0-9\.]*-open' | head -1) || true
+  - unset _JAVA_OPTIONS
+  - unset JAVA_HOME
   - java -version
 
 before_cache:
