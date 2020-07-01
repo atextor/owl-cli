@@ -3,13 +3,21 @@ install: true
 
 os: linux
 dist: trusty
-jdk: openjdk13
 
 before_install:
+  - "[[ -d /home/travis/.sdkman/ ]] && [[ -d /home/travis/.sdkman/bin/ ]] || rm -rf /home/travis/.sdkman/"
+  - curl -sL https://get.sdkman.io | bash
+  - echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+  - echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+  - source $HOME/.sdkman/bin/sdkman-init.sh
   - sudo apt-get update
   - echo msttcorefonts msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
   - sudo apt-get install ttf-mscorefonts-installer
   - sudo apt-get install -y graphviz
+
+install:
+  - sdk install (sdk list java | grep -o '13\.[0-9\.]*-open' | head -1) || true
+  - java -version
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
