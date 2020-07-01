@@ -33,6 +33,7 @@ import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
 import org.semanticweb.owlapi.model.SWRLSameIndividualAtom;
 import org.semanticweb.owlapi.model.SWRLVariable;
+import org.semanticweb.owlapi.vocab.OWL2Datatype;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -159,7 +160,16 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLLiteralArgument argument ) {
-        return argument.getLiteral().accept( mappingConfig.getOwlDataMapper() );
+        final OWL2Datatype literalType = argument.getLiteral().getDatatype().getBuiltInDatatype();
+        final boolean quote = switch ( literalType.getCategory() ) {
+            case CAT_STRING_WITH_LANGUAGE_TAG, CAT_STRING_WITHOUT_LANGUAGE_TAG, CAT_URI -> true;
+            default -> false;
+        };
+        final String labelContent = argument.getLiteral().accept( mappingConfig.getOwlDataPrinter() );
+        final String label = quote ? "\"" + labelContent + "\"" : labelContent;
+        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
+            .getSyntheticIdForIri( LITERAL_ID ), label );
+        return Graph.of( literal );
     }
 
     @Override
