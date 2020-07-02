@@ -39,6 +39,7 @@ dependencies {
     testImplementation(deps.junit_jupiter_params)
     testImplementation(deps.commons_io)
     testImplementation(deps.assertj)
+    testImplementation(deps.classgraph)
     testRuntimeOnly(deps.junit_jupiter_engine)
 }
 
