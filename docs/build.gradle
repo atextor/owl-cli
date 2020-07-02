@@ -58,6 +58,7 @@ project.fileTree(dir: ontologyDir, include: '*.ttl').files.each { ttlFile ->
         jvmArgs = ['--enable-preview']
         workingDir = file("${project.projectDir}/${ontologyDir}")
         args = diagramArgs
+        inputs.file file(ttlFile)
         outputs.file file(imageFile)
     }
     antora.dependsOn("${baseName}")
