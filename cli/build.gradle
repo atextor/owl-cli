@@ -24,6 +24,8 @@ dependencies {
     implementation(deps.owlapi)
     implementation(deps.vavr)
     implementation(deps.jcommander)
+    implementation(deps.picocli)
+    annotationProcessor(deps.picocli_codegen)
 
     // Override transitive dependency versions due to vulns
     implementation(deps.guava)
@@ -56,7 +58,7 @@ processResources {
 }
 
 compileJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview"]
+    options.compilerArgs += ["--enable-preview", "-Xlint:preview", "-Aproject=${project.group}/${project.name}"]
     sourceCompatibility = 13
     targetCompatibility = 13
 }
