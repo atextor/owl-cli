@@ -22,63 +22,47 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
 
-/**
- * Base class for all commands
- *
- * @param <T> the type of arguments this command takes. This should be annotated with
- *            {@link com.beust.jcommander.Parameters}.
- */
-abstract public class CommandBase<T> implements Runnable {
-    T arguments;
-
-    protected CommandBase( final T arguments ) {
-        this.arguments = arguments;
-    }
+public class AbstractCommand {
 
     protected void exitWithErrorMessage( final Throwable throwable ) {
         System.err.println( "Error: " + throwable.getMessage() );
         System.exit( 1 );
     }
 
-    protected Try<OutputStream> openOutput( final List<String> inputOutput,
+    protected Try<OutputStream> openOutput( final @Nonnull String input, final String output,
                                             final Configuration.Format targetFormat ) {
-        final String inputFilename = inputOutput.get( 0 );
-
-        if ( inputOutput.size() == 2 ) {
-            final String outputFilename = inputOutput.get( 1 );
+        if ( output != null ) {
             // Output is given as - --> write to stdout
-            if ( outputFilename.equals( "-" ) ) {
+            if ( output.equals( "-" ) ) {
                 return Try.success( System.out );
             }
 
             // Output is given as something else --> open as file
             try {
-                return Try.success( new FileOutputStream( outputFilename ) );
+                return Try.success( new FileOutputStream( output ) );
             } catch ( final FileNotFoundException exception ) {
                 return Try.failure( exception );
             }
         }
 
-        if ( inputFilename.equals( "-" ) ) {
+        if ( input.equals( "-" ) ) {
             // Input is stdin, outout is not given -> write to stdout
-            if ( inputOutput.size() == 1 ) {
-                return Try.success( System.out );
-            }
+            return Try.success( System.out );
         }
 
         // Input is something else, output is not given -> interpret input as filename,
         // change input's file extension to target format and use as output file name
-        final String outputFilename = inputFilename.replaceFirst( "[.][^.]+$",
+        final String outputFilename = input.replaceFirst( "[.][^.]+$",
             "." + targetFormat.toString().toLowerCase() );
-        if ( outputFilename.equals( inputFilename ) ) {
+        if ( outputFilename.equals( input ) ) {
             return Try.failure( new ErrorMessage( "Can't determine an ouput filename" ) );
         }
 
@@ -121,12 +105,4 @@ abstract public class CommandBase<T> implements Runnable {
             return Try.failure( exception );
         }
     }
-
-    public T getArguments() {
-        return arguments;
-    }
-
-    abstract String getCommandName();
-
-    abstract String getHelp();
 }

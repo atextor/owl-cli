@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommandLineTest {
     @Test
     public void testNoArguments() {
-        final Runnable command = () -> App.main( new String[]{} );
+        final Runnable command = () -> OWLCLI.main( new String[]{} );
         final MainClassRunner.ExecutionResult result = run( command );
 
         assertThat( result.getExitStatus() ).isEqualTo( 0 );
@@ -33,7 +33,7 @@ public class CommandLineTest {
 
     @Test
     public void testHelp() {
-        final Runnable command = () -> App.main( new String[]{ "--help" } );
+        final Runnable command = () -> OWLCLI.main( new String[]{ "--help" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
         assertThat( result.getExitStatus() ).isEqualTo( 0 );
@@ -43,7 +43,7 @@ public class CommandLineTest {
 
     @Test
     public void testInvalidArguments() {
-        final Runnable command = () -> App.main( new String[]{ "definitelynotavalidargument" } );
+        final Runnable command = () -> OWLCLI.main( new String[]{ "definitelynotavalidargument" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
         assertThat( result.getExitStatus() ).isEqualTo( 1 );

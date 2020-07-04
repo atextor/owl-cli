@@ -79,4 +79,4 @@ test {
     }
 }
 
-mainClassName = 'de.atextor.owlcli.App'
+mainClassName = 'de.atextor.owlcli.OWLCLI'

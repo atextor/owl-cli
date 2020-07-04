@@ -45,7 +45,7 @@ public class DiagramCommandTest {
 
     @Test
     public void testWithoutParameters() {
-        final Runnable command = () -> App.main( new String[]{ "diagram" } );
+        final Runnable command = () -> OWLCLI.main( new String[]{ "diagram" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
         assertThat( result.getExitStatus() ).isEqualTo( 1 );
@@ -55,7 +55,7 @@ public class DiagramCommandTest {
 
     @Test
     public void testWithInvalidInput() {
-        final Runnable command = () -> App.main( new String[]{ "diagram", "definitelynotexistingfile" } );
+        final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", "definitelynotexistingfile" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
         assertThat( result.getExitStatus() ).isEqualTo( 1 );
@@ -73,7 +73,7 @@ public class DiagramCommandTest {
         assertThat( output ).isFile();
         assertThat( fileContent( output ) ).isNotEmpty();
 
-        final Runnable command = () -> App.main( new String[]{ "diagram", output.getAbsolutePath() } );
+        final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", output.getAbsolutePath() } );
         final MainClassRunner.ExecutionResult result = run( command );
 
         System.out.println( result.getStdOut() );
