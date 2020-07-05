@@ -26,10 +26,10 @@ import java.util.Properties;
 @CommandLine.Command( name = "owlcli",
     description = "Command line tool for ontology engineering",
     subcommands = { CommandLine.HelpCommand.class },
-    headerHeading = "@|bold,underline Usage|@:%n%n",
-    descriptionHeading = "%n@|bold,underline Description|@:%n%n",
-    parameterListHeading = "%n@|bold,underline Parameters|@:%n",
-    optionListHeading = "%n@|bold,underline Options|@:%n",
+    headerHeading = "@|bold Usage|@:%n%n",
+    descriptionHeading = "%n@|bold Description|@:%n%n",
+    parameterListHeading = "%n@|bold Parameters|@:%n",
+    optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {

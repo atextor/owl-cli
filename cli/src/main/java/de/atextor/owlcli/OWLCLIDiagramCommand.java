@@ -24,9 +24,9 @@ import picocli.CommandLine;
 
 @CommandLine.Command( name = "diagram",
     description = "Generates automatically-layouted diagrams for an ontology",
-    descriptionHeading = "%n@|bold,underline Description|@:%n%n",
-    parameterListHeading = "%n@|bold,underline Parameters|@:%n",
-    optionListHeading = "%n@|bold,underline Options|@:%n",
+    descriptionHeading = "%n@|bold Description|@:%n%n",
+    parameterListHeading = "%n@|bold Parameters|@:%n",
+    optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation for details:%n"+
         "https://atextor.de/owl-cli/main/snapshot/usage.html#diagram-command"
 )
