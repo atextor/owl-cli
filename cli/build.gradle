@@ -18,6 +18,8 @@ plugins {
     id 'com.adarshr.test-logger'
 }
 
+applicationDefaultJvmArgs = ["--enable-preview"]
+
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation project(':diagram')
