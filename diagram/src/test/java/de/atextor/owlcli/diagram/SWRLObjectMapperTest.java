@@ -267,7 +267,7 @@ public class SWRLObjectMapperTest extends MapperTestBase {
     }
 
     @Test
-    public void testSWRLBuiltinAtom() {
+    public void testSWRLRuleWithDataPropertyAtomAndBuiltinAtom() {
         final String ontology = """
             :Person a owl:Class .
             :Adult a owl:Class .
