@@ -5,6 +5,10 @@ plugins {
     id 'com.adarshr.test-logger'
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation(deps.guava)
@@ -13,6 +17,11 @@ dependencies {
     implementation(deps.slf4j_simple)
     implementation(deps.vavr)
     implementation(deps.commons_text)
+
+    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.2.0'
+
+    // Override transitive dependency versions due to features
+    implementation(deps.caffeine)
 
     // Override transitive dependency versions due to vulns
     implementation(deps.jackson_databind)
@@ -30,18 +39,19 @@ dependencies {
 }
 
 compileJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    options.compilerArgs += ["--release", "11" ]
+    sourceCompatibility = 13
+    targetCompatibility = 11
 }
 
 compileTestJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview" ]
+    options.compilerArgs += ["--release", "11" ]
     sourceCompatibility = 13
-    targetCompatibility = 13
+    targetCompatibility = 11
 }
 
 test {
     useJUnitPlatform()
-    jvmArgs '--enable-preview'
     maxHeapSize = '1G'
     ignoreFailures = false
     failFast = true

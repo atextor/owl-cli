@@ -18,6 +18,10 @@ plugins {
     id 'com.adarshr.test-logger'
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 applicationDefaultJvmArgs = ["--enable-preview"]
 
 apply from: file("${rootDir}/dependencies.gradle")
@@ -28,6 +32,11 @@ dependencies {
     implementation(deps.jcommander)
     implementation(deps.picocli)
     annotationProcessor(deps.picocli_codegen)
+
+    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.2.0'
+
+    // Override transitive dependency versions due to features
+    implementation(deps.caffeine)
 
     // Override transitive dependency versions due to vulns
     implementation(deps.guava)
@@ -60,18 +69,19 @@ processResources {
 }
 
 compileJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview", "-Aproject=${project.group}/${project.name}"]
+    options.compilerArgs += ["--release", "11", "-Aproject=${project.group}/${project.name}"]
     sourceCompatibility = 13
-    targetCompatibility = 13
+    targetCompatibility = 11
 }
 
 compileTestJava {
-    options.compilerArgs += ["--enable-preview", "-Xlint:preview"]
+    options.compilerArgs += ["--release", "11"]
+    sourceCompatibility = 13
+    targetCompatibility = 11
 }
 
 test {
     useJUnitPlatform()
-    jvmArgs '--enable-preview'
     maxHeapSize = '1G'
     ignoreFailures = false
     failFast = true
