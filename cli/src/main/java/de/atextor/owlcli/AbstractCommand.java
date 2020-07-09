@@ -15,12 +15,20 @@
 
 package de.atextor.owlcli;
 
+import com.google.common.collect.ImmutableSet;
 import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
-import org.semanticweb.owlapi.apibinding.OWLManager;
+import org.semanticweb.owlapi.io.OWLParserFactory;
+import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyFactory;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.OWLStorerFactory;
+import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl;
+import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
+import uk.ac.manchester.cs.owl.owlapi.concurrent.NonConcurrentOWLOntologyBuilder;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -29,6 +37,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Set;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class AbstractCommand {
 
@@ -88,6 +99,88 @@ public class AbstractCommand {
         }
     }
 
+    protected OWLOntologyManager createOWLOntologyManager() {
+        final ImmutableSet<OWLParserFactory> parserFactories = ImmutableSet.<OWLParserFactory>builder()
+            .add( new org.semanticweb.owlapi.rio.RioBinaryRdfParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonLDParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioN3ParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNQuadsParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNTriplesParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFaParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFXMLParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrigParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrixParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTurtleParserFactory() )
+            .add( new org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxOntologyParserFactory() )
+            .add( new org.semanticweb.owlapi.krss2.parser.KRSS2OWLParserFactory() )
+            .add( new org.semanticweb.owlapi.rdf.turtle.parser.TurtleOntologyParserFactory() )
+            .add( new org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParserFactory() )
+            .add( new org.semanticweb.owlapi.owlxml.parser.OWLXMLParserFactory() )
+            .add( new org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParserFactory() )
+            .add( new org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParserFactory() )
+            .add( new org.semanticweb.owlapi.oboformat.OBOFormatOWLAPIParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioBinaryRdfParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonLDParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioN3ParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNQuadsParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNTriplesParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFaParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFXMLParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrigParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrixParserFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTurtleParserFactory() )
+            .build();
+
+        final Set<OWLOntologyFactory> ontologyFactories = ImmutableSet.<OWLOntologyFactory>builder()
+            .add( new OWLOntologyFactoryImpl( new NonConcurrentOWLOntologyBuilder() ) )
+            .build();
+
+        final Set<OWLStorerFactory> storerFactories = ImmutableSet.<OWLStorerFactory>builder()
+            .add( new org.semanticweb.owlapi.rio.RioBinaryRdfStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonLDStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioN3StorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNQuadsStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNTriplesStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFXMLStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrigStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrixStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTurtleStorerFactory() )
+            .add( new org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorerFactory() )
+            .add( new org.semanticweb.owlapi.owlxml.renderer.OWLXMLStorerFactory() )
+            .add( new org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorerFactory() )
+            .add( new org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterSyntaxStorerFactory() )
+            .add( new org.semanticweb.owlapi.krss2.renderer.KRSS2OWLSyntaxStorerFactory() )
+            .add( new org.semanticweb.owlapi.rdf.turtle.renderer.TurtleStorerFactory() )
+            .add( new org.semanticweb.owlapi.latex.renderer.LatexStorerFactory() )
+            .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxHTMLStorerFactory() )
+            .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxStorerFactory() )
+            .add( new org.semanticweb.owlapi.oboformat.OBOFormatStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioBinaryRdfStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonLDStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioJsonStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioN3StorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNQuadsStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioNTriplesStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioRDFXMLStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrigStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTrixStorerFactory() )
+            .add( new org.semanticweb.owlapi.rio.RioTurtleStorerFactory() )
+            .build();
+
+        final OWLDataFactory dataFactory = new OWLDataFactoryImpl();
+        final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+        final OWLOntologyManager manager = new OWLOntologyManagerImpl( dataFactory, readWriteLock );
+
+        manager.setOntologyFactories( ontologyFactories );
+        manager.setOntologyParsers( parserFactories );
+        manager.setOntologyStorers( storerFactories );
+
+        return manager;
+    }
+
     /**
      * Loads an ontology from an input stream
      *
@@ -96,7 +189,7 @@ public class AbstractCommand {
      * {@link OWLOntologyCreationException} otherwise.
      */
     public Try<OWLOntology> loadOntology( final InputStream inputStream ) {
-        final OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+        final OWLOntologyManager manager = createOWLOntologyManager();
         final OWLOntology ontology;
         try {
             ontology = manager.loadOntologyFromOntologyDocument( inputStream );
