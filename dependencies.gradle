@@ -5,6 +5,7 @@ ext.deps = [
     commons_text:            'org.apache.commons:commons-text:1.8',
     guava:                   'com.google.guava:guava:28.2-jre',
     httpclient:              'org.apache.httpcomponents:httpclient:4.5.12',
+    jabel:                   'com.github.bsideup.jabel:jabel-javac-plugin:0.2.0',
     jackson_databind:        'com.fasterxml.jackson.core:jackson-databind:2.10.3',
     jcommander:              'com.beust:jcommander:1.78',
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.13',

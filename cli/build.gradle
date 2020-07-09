@@ -32,8 +32,7 @@ dependencies {
     implementation(deps.jcommander)
     implementation(deps.picocli)
     annotationProcessor(deps.picocli_codegen)
-
-    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.2.0'
+    annotationProcessor(deps.jabel)
 
     // Override transitive dependency versions due to features
     implementation(deps.caffeine)

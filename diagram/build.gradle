@@ -17,8 +17,7 @@ dependencies {
     implementation(deps.slf4j_simple)
     implementation(deps.vavr)
     implementation(deps.commons_text)
-
-    annotationProcessor 'com.github.bsideup.jabel:jabel-javac-plugin:0.2.0'
+    annotationProcessor(deps.jabel)
 
     // Override transitive dependency versions due to features
     implementation(deps.caffeine)
