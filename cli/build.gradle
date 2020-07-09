@@ -22,8 +22,6 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-applicationDefaultJvmArgs = ["--enable-preview"]
-
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation project(':diagram')
@@ -58,6 +56,20 @@ dependencies {
 shadowJar {
     archiveBaseName = 'owl-cli'
     archiveClassifier = null
+}
+
+task nativeImage(type: Exec, dependsOn: "shadowJar") {
+    commandLine 'native-image',
+      "-H:ConfigurationFileDirectories=${projectDir}/native-image,$buildDir/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
+      '--initialize-at-build-time=uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl',
+      '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
+      '--initialize-at-build-time=org.slf4j.LoggerFactory',
+      '--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder',
+      '-H:-UseServiceLoaderFeature',
+      '--no-fallback',
+      '--report-unsupported-elements-at-runtime',
+      '-jar', "${buildDir}/libs/owl-cli-${version}.jar",
+      "${buildDir}/owl"
 }
 
 processResources {
