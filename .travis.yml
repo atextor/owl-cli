@@ -65,7 +65,7 @@ jobs:
       name: "Build and deploy Snapshot"
       if:
         tag IS NOT present
-      script: ./gradlew clean test check jacocoRootReport nativeImage antora
+      script: ./gradlew clean test check jacocoRootReport nativeImage
       after_success:
         - |-
           bash <(curl -s https://codecov.io/bash)
@@ -88,13 +88,13 @@ jobs:
           draft: false
           tag_name: $TRAVIS_TAG
           target_commitish: $TRAVIS_COMMIT
-        - provider: pages
-          github_token: "$GITHUB_API_KEY"
-          keep_history: false
-          local_dir: build/site
-          skip_cleanup: true
-          on:
-            repo: atextor/owl-cli
-            branch: master
-    # -------------------------------------------
+    #     - provider: pages
+    #       github_token: "$GITHUB_API_KEY"
+    #       keep_history: false
+    #       local_dir: build/site
+    #       skip_cleanup: true
+    #       on:
+    #         repo: atextor/owl-cli
+    #         branch: master
+    # # -------------------------------------------
 
