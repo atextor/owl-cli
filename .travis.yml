@@ -24,6 +24,7 @@ install:
     sdk install java 13.0.2-open || true
     sdk install java 20.1.0.r11-grl || true
     sdk use java 20.1.0.r11-grl
+    gu install native-image
     unset _JAVA_OPTIONS
     unset JAVA_HOME
     java -version
