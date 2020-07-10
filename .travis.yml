@@ -4,6 +4,9 @@ install: true
 os: linux
 dist: trusty
 
+# - Install SDKMAN
+# - Install msttcorefonts, so we have the Verdana font available for diagram generation
+# - Install graphviz, so we have the dot binary available for diagram generation
 before_install:
   - |-
     curl -sL https://get.sdkman.io | bash
@@ -15,9 +18,12 @@ before_install:
     sudo apt-get install ttf-mscorefonts-installer
     sudo apt-get install -y graphviz
 
+# Install JDK 13 and GraalVM 20.1 (JDK 11)
 install:
   - |-
-    sdk install java $(sdk list java | grep -o '13\.[0-9\.]*-open' | head -1) || true
+    sdk install java 13.0.2-open || true
+    sdk install java 20.1.0.r11-grl || true
+    sdk use java 20.1.0.r11-grl
     unset _JAVA_OPTIONS
     unset JAVA_HOME
     java -version
@@ -58,7 +64,7 @@ jobs:
       name: "Build and deploy Snapshot"
       if:
         tag IS NOT present
-      script: ./gradlew clean test check jacocoRootReport antora
+      script: ./gradlew clean test check jacocoRootReport nativeImage antora
       after_success:
         - |-
           bash <(curl -s https://codecov.io/bash)
@@ -70,7 +76,9 @@ jobs:
       deploy:
         - provider: releases
           api_key: "$GITHUB_API_KEY"
-          file: cli/build/libs/owl-cli-snapshot.jar
+          file:
+            - cli/build/libs/owl-cli-snapshot.jar
+            - cli/build/bin/owl
           on:
             repo: atextor/owl-cli
             branch: master
