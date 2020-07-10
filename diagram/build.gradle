@@ -31,6 +31,7 @@ dependencies {
     implementation(deps.commons_codec)
 
     // Test
+    testAnnotationProcessor(deps.jabel)
     testImplementation(deps.junit_jupiter_api)
     testImplementation(deps.assertj)
     testImplementation(deps.jqwik)
@@ -39,10 +40,11 @@ dependencies {
 
 def homeDir = System.getProperty("user.home")
 
+def jabelAnnotationProcessor = 'com.github.bsideup.jabel.JabelJavacProcessor'
+def lombokAnnotationProcessor = 'lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+def lombokClaimingProcessor = 'lombok.launch.AnnotationProcessorHider$ClaimingProcessor'
+
 compileJava {
-    def jabelAnnotationProcessor = 'com.github.bsideup.jabel.JabelJavacProcessor'
-    def lombokAnnotationProcessor = 'lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
-    def lombokClaimingProcessor = 'lombok.launch.AnnotationProcessorHider$ClaimingProcessor'
     options.fork = true
     options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
     options.compilerArgs += ["--release", "11", "-processor", "${jabelAnnotationProcessor},${lombokAnnotationProcessor},${lombokClaimingProcessor}"]
@@ -53,7 +55,7 @@ compileJava {
 compileTestJava {
     options.fork = true
     options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
-    options.compilerArgs += ["--release", "11" ]
+    options.compilerArgs += ["--release", "11", "-processor", "${jabelAnnotationProcessor}"]
     sourceCompatibility = 13
     targetCompatibility = 11
 }
