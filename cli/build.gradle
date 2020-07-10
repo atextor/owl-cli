@@ -60,16 +60,21 @@ shadowJar {
 
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     commandLine 'native-image',
-      "-H:ConfigurationFileDirectories=${projectDir}/native-image,$buildDir/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
+      "-H:ConfigurationFileDirectories=${project.projectDir}/native-image,${buildDir}/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
       '--initialize-at-build-time=uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl',
       '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
       '--initialize-at-build-time=org.slf4j.LoggerFactory',
       '--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder',
+      '-H:+TraceClassInitialization',
+      '-H:+TraceServiceLoaderFeature',
       '-H:-UseServiceLoaderFeature',
+      '-H:+AllowIncompleteClasspath',
       '--no-fallback',
       '--report-unsupported-elements-at-runtime',
       '-jar', "${buildDir}/libs/owl-cli-${version}.jar",
-      "${buildDir}/owl"
+      "${buildDir}/bin/owl"
+    inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
+    outputs.file file("${buildDir}/bin/owl")
 }
 
 processResources {
