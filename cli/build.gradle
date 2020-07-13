@@ -27,7 +27,6 @@ dependencies {
     implementation project(':diagram')
     implementation(deps.owlapi)
     implementation(deps.vavr)
-    implementation(deps.jcommander)
     implementation(deps.picocli)
     annotationProcessor(deps.picocli_codegen)
     annotationProcessor(deps.jabel)
