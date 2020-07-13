@@ -58,8 +58,7 @@ shadowJar {
     archiveClassifier = null
 }
 
-task nativeImage(type: Exec, dependsOn: "shadowJar") {
-    commandLine 'native-image',
+def nativeImageCommandLine = ['native-image',
       "-H:ConfigurationFileDirectories=${project.projectDir}/native-image,${buildDir}/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
       '--initialize-at-build-time=uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl',
       '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
@@ -72,7 +71,12 @@ task nativeImage(type: Exec, dependsOn: "shadowJar") {
       '--no-fallback',
       '--report-unsupported-elements-at-runtime',
       '-jar', "${buildDir}/libs/owl-cli-${version}.jar",
-      "${buildDir}/bin/owl"
+      "${buildDir}/bin/owl"]
+task nativeImage(type: Exec, dependsOn: "shadowJar") {
+    doFirst {
+        println "native-image command: " + nativeImageCommandLine.join(' ')
+    }
+    commandLine nativeImageCommandLine
     inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
     outputs.file file("${buildDir}/bin/owl")
 }
