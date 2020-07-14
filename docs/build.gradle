@@ -54,7 +54,7 @@ project.fileTree(dir: ontologyDir, include: '*.ttl').files.each { ttlFile ->
         ['diagram', '--direction', 'top_to_bottom', "${baseName}.ttl", imageFile] :
         ['diagram', "${baseName}.ttl", imageFile]
     def command = [project(':cli').file('build/bin/owl').getCanonicalPath()] + diagramArgs
-    tasks.create(name: "${baseName}", type: Exec, dependsOn: ":cli:nativeImage") {
+    tasks.create(name: "${baseName}", type: Exec, dependsOn: ":cli:nativeImagePass2") {
         commandLine command
         workingDir = file("${project.projectDir}/${ontologyDir}")
         inputs.file file(ttlFile)
