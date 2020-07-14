@@ -62,7 +62,7 @@ jobs:
       name: "Build and deploy Snapshot"
       if:
         tag IS NOT present
-      script: ./gradlew clean test check jacocoRootReport nativeImage
+      script: ./gradlew clean test check jacocoRootReport antora
       after_success:
         - |-
           bash <(curl -s https://codecov.io/bash)
