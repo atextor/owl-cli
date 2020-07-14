@@ -73,7 +73,16 @@ def nativeImageCommandLine = ['native-image',
       "${buildDir}/bin/owl"]
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     doFirst {
-        println "native-image command: " + nativeImageCommandLine.join(' ')
+        println nativeImageCommandLine.join(' ')
+    }
+    commandLine nativeImageCommandLine
+    inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
+    outputs.file file("${buildDir}/bin/owl")
+}
+
+task nativeImagePass2(type: Exec, dependsOn: "nativeImage") {
+    doFirst {
+        println nativeImageCommandLine.join(' ')
     }
     commandLine nativeImageCommandLine
     inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
