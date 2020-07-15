@@ -43,7 +43,7 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     reports {
         html.enabled = true
         xml.enabled = true
-        xml.destination(new File("${buildDir}/reports/jacoco/report.xml"))
+        xml.destination(file("${buildDir}/reports/jacoco/report.xml"))
         csv.enabled = false
     }
 }
@@ -51,11 +51,11 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
 defaultTasks 'test', 'shadowJar'
 
 def isNonStable = { String version ->
-  return ['ALPHA', 'BETA', 'RC', 'M'].any { it -> version.toUpperCase().contains(it) }
+    return ['ALPHA', 'BETA', 'RC', 'M'].any { it -> version.toUpperCase().contains(it) }
 }
 
 dependencyUpdates {
-  rejectVersionIf {
-    isNonStable(it.candidate.version)
-  }
+    rejectVersionIf {
+        isNonStable(it.candidate.version)
+    }
 }
