@@ -75,11 +75,12 @@ jobs:
           export TRAVIS_TAG=snapshot
           git push -q --delete https://atextor:$GITHUB_API_KEY@github.com/atextor/owl-cli.git $TRAVIS_TAG >/dev/null 2>&1 || true
           git tag $TRAVIS_TAG
+          mv cli/build/libs/owl-cli-snapshot.jar cli/build/libs/owl-cli.jar
       deploy:
         - provider: releases
           api_key: "$GITHUB_API_KEY"
           file:
-            - cli/build/libs/owl-cli-snapshot.jar
+            - cli/build/libs/owl-cli.jar
             - cli/build/bin/owl
           on:
             repo: atextor/owl-cli
