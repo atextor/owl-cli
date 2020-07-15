@@ -16,3 +16,5 @@ docs/modules/ROOT/assets/images/*.svg
 !docs/modules/ROOT/assets/images/splash.svg
 
 **/.jqwik-database
+
+**/src/generated/java

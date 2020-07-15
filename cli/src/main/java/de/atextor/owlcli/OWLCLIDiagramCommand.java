@@ -28,7 +28,7 @@ import picocli.CommandLine;
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation for details:%n"+
-        "https://atextor.de/owl-cli/main/snapshot/usage.html#diagram-command"
+        "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#diagram-command"
 )
 public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLICommand, Runnable {
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;

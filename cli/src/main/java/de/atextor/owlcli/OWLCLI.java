@@ -15,13 +15,9 @@
 
 package de.atextor.owlcli;
 
-import io.vavr.control.Try;
 import picocli.CommandLine;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Properties;
 
 @CommandLine.Command( name = "owl",
     description = "Command line tool for ontology engineering",
@@ -58,17 +54,6 @@ public class OWLCLI implements Runnable {
         System.exit( exitCode );
     }
 
-    private Try<Properties> applicationProperties() {
-        final Properties properties = new Properties();
-        try ( final InputStream inputStream = getClass().getResourceAsStream( "/application.properties" ) ) {
-            properties.load( inputStream );
-        } catch ( final IOException e ) {
-            return Try.failure( e );
-        }
-
-        return Try.success( properties );
-    }
-
     @Override
     public void run() {
         if ( helpRequested ) {
@@ -76,10 +61,7 @@ public class OWLCLI implements Runnable {
         }
 
         if ( version ) {
-            applicationProperties().forEach( properties ->
-                System.out.printf( "owl-cli version: %s build date: %s%n",
-                    properties.get( "application.version" ), properties.get( "application.buildDate" ) ) );
-
+            System.out.printf( "owl-cli version: %s build date: %s%n", OWLCLIConfig.VERSION, OWLCLIConfig.BUILD_DATE );
             System.exit( 0 );
         }
 

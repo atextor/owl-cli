@@ -89,17 +89,39 @@ task nativeImagePass2(type: Exec, dependsOn: "nativeImage") {
     outputs.file file("${buildDir}/bin/owl")
 }
 
-processResources {
-    filter ReplaceTokens, tokens: [
-        "application.version": version,
-        "application.buildDate": new Date().format("yyyy-MM-dd HH:mm:ss")
-    ]
+def appConfigClass = "OWLCLIConfig"
+def genSrc = "${project.projectDir}/src/generated/java"
+def genPackage = "${genSrc}/de/atextor/owlcli"
+def genAppConfig = "${genPackage}/${appConfigClass}.java"
+task generateStaticProperties() {
+    doLast {
+        file("${genPackage}").mkdirs()
+        file("${genAppConfig}").text = """/* Generated file, do not change */
+package de.atextor.owlcli;
+
+public class ${appConfigClass} {
+    public static final String VERSION = "${version}";
+    public static final String BUILD_DATE = "${new Date().format("yyyy-MM-dd HH:mm:ss")}";
+}
+"""
+    }
+    outputs.file file("${genAppConfig}")
+}
+
+sourceSets {
+    generated {
+        java.srcDir "${genSrc}"
+    }
+    main {
+        compileClasspath += generated.output
+    }
 }
 
 compileJava {
     options.compilerArgs += ["--release", "11", "-Aproject=${project.group}/${project.name}"]
     sourceCompatibility = 13
     targetCompatibility = 11
+    dependsOn(generateStaticProperties)
 }
 
 compileTestJava {
