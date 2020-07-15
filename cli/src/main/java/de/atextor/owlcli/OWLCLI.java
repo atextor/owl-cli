@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-@CommandLine.Command( name = "owlcli",
+@CommandLine.Command( name = "owl",
     description = "Command line tool for ontology engineering",
     subcommands = { CommandLine.HelpCommand.class },
     headerHeading = "@|bold Usage|@:%n%n",
