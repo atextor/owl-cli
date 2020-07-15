@@ -45,12 +45,16 @@ jobs:
       if:
         tag IS present AND tag =~ /^v.*/
       script: ./gradlew clean test check jacocoRootReport antora
-      after_success: bash <(curl -s https://codecov.io/bash)
+      after_success:
+        - |-
+          bash <(curl -s https://codecov.io/bash)
+          mv cli/build/libs/owl-cli-*.jar cli/build/libs/owl-cli.jar
       deploy:
         - provider: releases
           api_key: "$GITHUB_API_KEY"
-          file_glob: true
-          file: cli/build/libs/owl-cli-*.jar
+          file:
+            - cli/build/libs/owl-cli.jar
+            - cli/build/bin/owl
           on:
             repo: atextor/owl-cli
           skip_cleanup: true
