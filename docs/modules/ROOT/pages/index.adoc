@@ -18,7 +18,7 @@ image::splash.svg[width=75%]
 
 Things you will need to have installed to run *owl-cli*:
 
-* Java (OpenJDK) *13* or newer
+* Java (OpenJDK) *11* or newer
 * https://www.graphviz.org/[Graphviz] for the generation of diagrams. Note that this is a common
   package that can be installed via all popular package managers, for example `apt-get`, `brew` or
   `rpm`.
@@ -29,19 +29,38 @@ Open your favorite terminal emulator and execute the following commands:
 
 [source,shell]
 ----
-curl -L -o ~/.local/share/owl-cli/owl-cli-snapshot.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar
-echo 'function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }' >> ~/.bashrc
+curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli.jar
+echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
 
 After installation, you can use the `owl` command: See xref:usage.adoc[] for more information.
 
-=== Building from source
+== Building from source
 
-You need Java *13*  on your `PATH`. Run the following commands:
+[[building-executable-jar]]
+=== Building the executable JAR from source
+
+*owl-cli* uses Java 13 source features, but the build generates a Java 11-compatible JAR file. This
+ means, for building the executable JAR file, you need Java *13*. The `gradle` build forks jobs
+ where it expects Java 13 to be installed in a certain place (see <<building-native-image>> for an
+ explanation). We rely on the locations as used by https://sdkman.io/[SDKMAN!].
+
+Run the following commands:
 
 [source,shell]
 ----
+# The following commands install SDKMAN!. If you have it installed already, you can skip it.
+curl -sL https://get.sdkman.io | bash
+echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+source $HOME/.sdkman/bin/sdkman-init.sh
+
+# Use SDKMAN! to install JDK
+sdk install java 13.0.2-open
+sdk use java 13.0.2-open
+
+# Build the project
 git clone https://github.com/atextor/owl-cli.git
 cd owl-cli
 ./gradlew
@@ -52,7 +71,45 @@ This will build `cli/build/libs/owl-cli-snapshot.jar`, which you then can instal
 [source,shell]
 ----
 mkdir -p ~/.local/share/owl-cli
-cp cli/build/libs/owl-cli-snapshot.jar !$
-echo 'function owl() { java --enable-preview -jar ~/.local/share/owl-cli/owl-cli-snapshot.jar $*; }' >> ~/.bashrc
+cp cli/build/libs/owl-cli-snapshot.jar !$/owl-cli.jar
+echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
+
+After that, you can use the `owl` command: See xref:usage.adoc[] for more information.
+
+[[building-native-image]]
+=== Building the native image (executable binary) from source
+
+NOTE: The following steps have only been tested on Linux, as of now
+
+*owl-cli* uses Java 13 source features, but the build generates a Java 11-compatible JAR file, which
+ is required for the generation of the native image using https://www.graalvm.org/[GraalVM], as
+ GraalVM currently does not support Java 13 class files. This means, for building the native image,
+ you need both Java *11* (i.e. GraalVM JDK) *and* Java *13*. In particular, the `gradle` build must
+ be executed using Java 11, while Java 13 is installed in a certain place where the build can
+ find it. We rely on the locations as used by https://sdkman.io/[SDKMAN!].
+
+Run the following commands:
+
+[source,shell]
+----
+# The following commands install SDKMAN!. If you have it installed already, you can skip it.
+curl -sL https://get.sdkman.io | bash
+echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+source $HOME/.sdkman/bin/sdkman-init.sh
+
+# Use SDKMAN! to install JDKs
+sdk install java 13.0.2-open
+sdk install java 20.1.0.r11-grl
+sdk use java 20.1.0.r11-grl
+
+# Build the project
+git clone https://github.com/atextor/owl-cli.git
+cd owl-cli
+./gradlew nativeImagePass2
+----
+
+This will build `cli/build/bin/owl`, which you can put anywhere on your `PATH`.
+
