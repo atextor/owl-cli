@@ -21,12 +21,16 @@ import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.node.Literal;
 import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLPropertyExpression;
+import org.semanticweb.owlapi.model.SWRLArgument;
 import org.semanticweb.owlapi.model.SWRLAtom;
+import org.semanticweb.owlapi.model.SWRLBinaryAtom;
 import org.semanticweb.owlapi.model.SWRLBuiltInAtom;
 import org.semanticweb.owlapi.model.SWRLClassAtom;
 import org.semanticweb.owlapi.model.SWRLDataPropertyAtom;
 import org.semanticweb.owlapi.model.SWRLDataRangeAtom;
 import org.semanticweb.owlapi.model.SWRLDifferentIndividualsAtom;
+import org.semanticweb.owlapi.model.SWRLIArgument;
 import org.semanticweb.owlapi.model.SWRLIndividualArgument;
 import org.semanticweb.owlapi.model.SWRLLiteralArgument;
 import org.semanticweb.owlapi.model.SWRLObjectPropertyAtom;
@@ -52,9 +56,11 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
      * {@link de.atextor.owlcli.diagram.mappers.OWLAxiomMapper#visit(SWRLRule)}.
      */
     private static final IRI LITERAL_ID = IRI.create( "urn:owl-cli:literal-id" );
+
     public static final Predicate<GraphElement> IS_RULE_SYNTAX_PART =
         graphElement -> graphElement.is( Literal.class ) &&
             graphElement.as( Literal.class ).getId().getIri().map( iri -> iri.equals( LITERAL_ID ) ).orElse( false );
+
     private final MappingConfiguration mappingConfig;
 
     public SWRLObjectMapper( final MappingConfiguration mappingConfig ) {
@@ -104,38 +110,29 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLObjectPropertyAtom atom ) {
-        final List<GraphElement> argumentGraphElements = argumentElements( atom );
-        final String arguments = printArgumentElements( argumentGraphElements );
-
-        final String label = String.format( "%s(%s)", atom.getPredicate()
-            .accept( mappingConfig.getOwlPropertyExpressionPrinter() ), arguments );
-
-        final Node objectProperty =
-            atom.getPredicate().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
-        final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
-            .getSyntheticIdForIri( LITERAL_ID ), label );
-        final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, objectProperty );
-
-        return Graph.of( literal ).and( objectProperty ).and( edge )
-            .and( argumentGraphElements.stream().filter( IS_RULE_SYNTAX_PART.negate() ) );
+        return visitPropertyAtom( atom, atom.getPredicate() );
     }
 
-    @Override
-    public Graph visit( final @Nonnull SWRLDataPropertyAtom atom ) {
+    private <T extends SWRLArgument> Graph visitPropertyAtom( final SWRLBinaryAtom<SWRLIArgument, T> atom,
+                                                              final OWLPropertyExpression predicate ) {
         final List<GraphElement> argumentGraphElements = argumentElements( atom );
         final String arguments = printArgumentElements( argumentGraphElements );
 
-        final String label = String.format( "%s(%s)", atom.getPredicate()
-            .accept( mappingConfig.getOwlPropertyExpressionPrinter() ), arguments );
-
+        final String label = String.format(
+            "%s(%s)", predicate.accept( mappingConfig.getOwlPropertyExpressionPrinter() ), arguments );
         final Node dataProperty =
-            atom.getPredicate().accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
+            predicate.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
         final Literal literal = new Literal( mappingConfig.getIdentifierMapper()
             .getSyntheticIdForIri( LITERAL_ID ), label );
         final Edge edge = new Edge.Plain( Edge.Type.DASHED_ARROW, literal, dataProperty );
 
         return Graph.of( literal ).and( dataProperty ).and( edge )
             .and( argumentGraphElements.stream().filter( IS_RULE_SYNTAX_PART.negate() ) );
+    }
+
+    @Override
+    public Graph visit( final @Nonnull SWRLDataPropertyAtom atom ) {
+        return visitPropertyAtom( atom, atom.getPredicate() );
     }
 
     @Override
