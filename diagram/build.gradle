@@ -12,9 +12,10 @@ repositories {
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation(deps.guava)
-    implementation(deps.owlapi)
+    implementation(deps.owlapi) {
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
     implementation(deps.slf4j_api)
-    implementation(deps.slf4j_simple)
     implementation(deps.vavr)
     implementation(deps.commons_text)
     annotationProcessor(deps.jabel)
