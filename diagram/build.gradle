@@ -39,12 +39,6 @@ dependencies {
     testRuntimeOnly(deps.junit_jupiter_engine)
 }
 
-def homeDir = System.getProperty("user.home")
-
-def jabelAnnotationProcessor = 'com.github.bsideup.jabel.JabelJavacProcessor'
-def lombokAnnotationProcessor = 'lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
-def lombokClaimingProcessor = 'lombok.launch.AnnotationProcessorHider$ClaimingProcessor'
-
 compileJava {
     options.fork = true
     options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")

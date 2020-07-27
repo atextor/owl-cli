@@ -55,6 +55,12 @@ def nativeImageCommandLine = ['native-image',
       '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
       '--initialize-at-build-time=org.slf4j.LoggerFactory',
       '--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder',
+      '--initialize-at-build-time=ch.qos.logback.core.util.Loader',
+      '--initialize-at-build-time=ch.qos.logback.classic.Level',
+      '--initialize-at-build-time=ch.qos.logback.classic.Logger',
+      '--initialize-at-build-time=ch.qos.logback.core.status.InfoStatus',
+      '--initialize-at-build-time=ch.qos.logback.core.status.StatusBase',
+      '--initialize-at-build-time=ch.qos.logback.core.spi.AppenderAttachableImpl',
       '-H:+TraceClassInitialization',
       '-H:+TraceServiceLoaderFeature',
       '-H:-UseServiceLoaderFeature',
@@ -110,7 +116,9 @@ sourceSets {
 }
 
 compileJava {
-    options.compilerArgs += ["--release", "11", "-Aproject=${project.group}/${project.name}"]
+    options.fork = true
+    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
+    options.compilerArgs += ["--release", "11", "-processor", "${jabelAnnotationProcessor},${lombokAnnotationProcessor},${lombokClaimingProcessor},${picocliProcessor}"]
     sourceCompatibility = 13
     targetCompatibility = 11
     dependsOn(generateStaticProperties)

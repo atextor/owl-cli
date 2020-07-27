@@ -23,6 +23,13 @@ def currentTag = {
 subprojects {
     version = currentTag()
     task allDeps(type: DependencyReportTask) {}
+    ext {
+        homeDir = System.getProperty("user.home")
+        jabelAnnotationProcessor = 'com.github.bsideup.jabel.JabelJavacProcessor'
+        lombokAnnotationProcessor = 'lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+        lombokClaimingProcessor = 'lombok.launch.AnnotationProcessorHider$ClaimingProcessor'
+        picocliProcessor = 'picocli.codegen.aot.graalvm.processor.NativeImageConfigGeneratorProcessor'
+    }
 }
 
 apply plugin: 'jacoco'
