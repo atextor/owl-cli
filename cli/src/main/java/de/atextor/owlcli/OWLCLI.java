@@ -15,9 +15,9 @@
 
 package de.atextor.owlcli;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
-
-import java.io.PrintWriter;
 
 @CommandLine.Command( name = "owl",
     description = "Command line tool for ontology engineering",
@@ -29,16 +29,20 @@ import java.io.PrintWriter;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
+
+    @CommandLine.Mixin
+    LoggingMixin loggingMixin;
+
     private static final CommandLine.IParameterExceptionHandler exceptionHandler =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
-            final PrintWriter writer = cmd.getErr();
-            writer.println( "Error: " + exception.getMessage() );
+            LOG.warn( "Error: ", exception );
             cmd.getErr().println( cmd.getHelp().fullSynopsis() );
             return 1;
         };
 
-    CommandLine commandLine = new CommandLine( this );
+    private final CommandLine commandLine = new CommandLine( this );
 
     @CommandLine.Option( names = { "--help" }, usageHelp = true, description = "Show short help" )
     private boolean helpRequested;
@@ -50,6 +54,7 @@ public class OWLCLI implements Runnable {
         final int exitCode = new OWLCLI().commandLine
             .addSubcommand( new OWLCLIDiagramCommand() )
             .setParameterExceptionHandler( exceptionHandler )
+            .setExecutionStrategy( LoggingMixin::executionStrategy )
             .execute( args );
         System.exit( exitCode );
     }
@@ -67,4 +72,6 @@ public class OWLCLI implements Runnable {
 
         System.out.println( commandLine.getHelp().fullSynopsis() );
     }
+
+
 }

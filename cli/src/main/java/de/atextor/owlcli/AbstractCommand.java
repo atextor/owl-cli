@@ -43,8 +43,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class AbstractCommand {
 
-    protected void exitWithErrorMessage( final Throwable throwable ) {
-        System.err.println( "Error: " + throwable.getMessage() );
+    protected void commandFailed() {
         System.exit( 1 );
     }
 

@@ -19,6 +19,7 @@ dependencies {
     }
     implementation(deps.vavr)
     implementation(deps.picocli)
+    implementation(deps.logback)
     annotationProcessor(deps.picocli_codegen)
     annotationProcessor(deps.jabel)
 

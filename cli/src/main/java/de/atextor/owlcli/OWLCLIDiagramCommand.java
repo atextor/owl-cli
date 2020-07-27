@@ -20,6 +20,8 @@ import de.atextor.owlcli.diagram.diagram.DiagramGenerator;
 import de.atextor.owlcli.diagram.diagram.GraphvizDocument;
 import de.atextor.owlcli.diagram.mappers.DefaultMappingConfiguration;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 @CommandLine.Command( name = "diagram",
@@ -27,11 +29,16 @@ import picocli.CommandLine;
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
-    footer = "%nSee the online documentation for details:%n"+
+    footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#diagram-command"
 )
 public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLICommand, Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger( OWLCLIDiagramCommand.class );
+
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
+
+    @CommandLine.Mixin
+    LoggingMixin loggingMixin;
 
     @CommandLine.Option( names = { "--fontname" }, description = "The font to use (Default: ${DEFAULT-VALUE})" )
     private String fontname = config.fontname;
@@ -94,7 +101,17 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLIComma
         openInput( input ).flatMap( inputStream ->
             loadOntology( inputStream ).flatMap( ontology ->
                 openOutput( input, output, format ).flatMap( outputStream ->
-                    new DiagramGenerator( configuration, mappingConfig ).generate( ontology, outputStream, configuration ) ) )
+                    new DiagramGenerator( configuration, mappingConfig )
+                        .generate( ontology, outputStream, configuration ) ) )
         ).onFailure( this::exitWithErrorMessage );
+    }
+
+    protected void exitWithErrorMessage( final Throwable throwable ) {
+        if ( loggingMixin.getVerbosity().length > 0 ) {
+            LOG.warn( "Error", throwable );
+        } else {
+            LOG.warn( "Error: " + throwable.getMessage() );
+        }
+        commandFailed();
     }
 }
