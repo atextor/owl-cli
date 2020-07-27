@@ -18,6 +18,8 @@ package de.atextor.owlcli.diagram.graph.transformer;
 import de.atextor.owlcli.diagram.graph.GraphElement;
 import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +36,8 @@ import java.util.stream.Stream;
  */
 public class PunningRemover extends GraphTransformer {
     private final MappingConfiguration mappingConfiguration;
+
+    private static final Logger LOG = LoggerFactory.getLogger( PunningRemover.class );
 
     /**
      * Initialize the transformer
@@ -52,7 +56,8 @@ public class PunningRemover extends GraphTransformer {
      */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
-        return graph.stream()
+        LOG.debug( "Removing punning in {}", graph );
+        final Set<GraphElement> result = graph.stream()
             .filter( GraphElement::isNode )
             .map( GraphElement::asNode )
             .filter( node -> node.getId().getIri().isPresent() )
@@ -63,6 +68,8 @@ public class PunningRemover extends GraphTransformer {
             .flatMap( iri -> findNodesWithIri( graph, iri ).flatMap( node -> updateNode( graph, node ) ) )
             .reduce( ChangeSet.EMPTY, ChangeSet::merge )
             .applyTo( graph );
+        LOG.debug( "Processed graph: {}", graph );
+        return result;
     }
 
     private Stream<ChangeSet> updateNode( final Set<GraphElement> graph, final Node node ) {

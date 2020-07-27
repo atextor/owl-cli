@@ -21,6 +21,8 @@ import de.atextor.owlcli.diagram.mappers.OWLOntologyMapper;
 import io.vavr.control.Try;
 import org.apache.commons.io.IOUtils;
 import org.semanticweb.owlapi.model.OWLOntology;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +40,12 @@ import java.util.stream.Stream;
  */
 public class DiagramGenerator {
     private final OWLOntologyMapper ontologyMapper;
+
     private final Function<Stream<GraphElement>, GraphvizDocument> graphvizGenerator;
+
     private final List<Function<Try<String>, Try<String>>> svgPostProcessors = List.of( new FontEmbedder() );
+
+    private static final Logger LOG = LoggerFactory.getLogger( DiagramGenerator.class );
 
     /**
      * Constructor. Initializes the Diagram generator with the necessary configuration.
@@ -68,6 +74,7 @@ public class DiagramGenerator {
         final String command = configuration.dotBinary + " -T" + configuration.format.getExtension();
         final Process process;
         try {
+            LOG.info( "Running dot: {}", command );
             process = Runtime.getRuntime().exec( command, null, workingDir );
         } catch ( final IOException exception ) {
             return Try.failure( exception );
@@ -84,6 +91,7 @@ public class DiagramGenerator {
 
         return postprocess( processStdOut, configuration ).flatMap( processedOutput ->
             writeStreamToOutput( processedOutput, output ).flatMap( writingResult -> {
+                LOG.debug( "Writing to output {}", output );
                 try {
                     process.waitFor();
                     return Try.success( null );
@@ -118,9 +126,12 @@ public class DiagramGenerator {
      */
     public Try<Void> generate( final OWLOntology ontology, final OutputStream output,
                                final Configuration configuration ) {
+        LOG.info( "Applying ontology mappers" );
         final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology ).stream();
+        LOG.info( "Generating Graphviz document" );
         final GraphvizDocument graphvizDocument = graphvizGenerator.apply( ontologyGraphRepresenation );
         final String graphvizGraph = graphvizDocument.apply( configuration );
+        LOG.trace( "Generated Graphviz document: {}", graphvizGraph );
 
         final ThrowingConsumer<OutputStream, IOException> contentProvider = outputStream -> {
             outputStream.write( graphvizGraph.getBytes() );
@@ -130,6 +141,7 @@ public class DiagramGenerator {
             }
         };
 
+        LOG.debug( "Calling dot binary" );
         return executeDot( contentProvider, output, new File( System.getProperty( "user.dir" ) ), configuration );
     }
 }

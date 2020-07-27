@@ -20,6 +20,8 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.node.IRIReference;
 import de.atextor.owlcli.diagram.graph.node.Literal;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +34,8 @@ import java.util.stream.Stream;
  */
 public class IriReferenceResolver extends GraphTransformer {
     private final MappingConfiguration mappingConfiguration;
+
+    private static final Logger LOG = LoggerFactory.getLogger( IriReferenceResolver.class );
 
     /**
      * Initialize the transformer
@@ -50,16 +54,20 @@ public class IriReferenceResolver extends GraphTransformer {
      */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
+        LOG.debug( "Resolving IRI references in {}", graph );
         final Set<IRIReference> references = graph.stream()
             .flatMap( element -> element.view( IRIReference.class ) )
             .collect( Collectors.toSet() );
 
         if ( references.isEmpty() ) {
+            LOG.debug( "Resolved graph: {}", graph );
             return graph;
         }
 
         final ChangeSet changeSet = resolveReferences( graph, references );
-        return changeSet.applyTo( graph );
+        final Set<GraphElement> result = changeSet.applyTo( graph );
+        LOG.debug( "Resolved graph: {}", result );
+        return result;
     }
 
     private ChangeSet resolveReferences( final Set<GraphElement> graph, final Set<IRIReference> references ) {

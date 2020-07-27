@@ -36,7 +36,9 @@ import java.util.stream.Stream;
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
 public class GraphvizDocument implements Function<Configuration, String> {
     public static final GraphvizDocument BLANK = new GraphvizDocument();
+
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
+
     private static final Template GRAPHVIZ_TEMPLATE = new Template( """
         digraph G {
           rankdir = ${rankdir}
@@ -69,6 +71,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
     }
 
     private List<Statement> nodeStatements;
+
     private List<Statement> edgeStatements;
 
     private GraphvizDocument() {
@@ -113,5 +116,13 @@ public class GraphvizDocument implements Function<Configuration, String> {
             "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
                 .map( Statement::toFragment )
                 .collect( Collectors.joining( "   \n" ) ) ) );
+    }
+
+    @Override
+    public String toString() {
+        return "GraphvizDocument{" +
+            "nodeStatements=" + nodeStatements +
+            ", edgeStatements=" + edgeStatements +
+            '}';
     }
 }

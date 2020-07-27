@@ -56,6 +56,8 @@ import de.atextor.owlcli.diagram.graph.node.Union;
 import de.atextor.owlcli.diagram.graph.node.UniversalRestriction;
 import de.atextor.owlcli.diagram.graph.node.ValueRestriction;
 import org.apache.commons.text.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -70,6 +72,8 @@ import java.util.stream.Stream;
  */
 public class GraphvizGenerator implements Function<Stream<GraphElement>, GraphvizDocument> {
     private final GraphVisitor<GraphvizDocument> graphVisitor;
+
+    private static final Logger LOG = LoggerFactory.getLogger( GraphvizGenerator.class );
 
     /**
      * Initialize the GraphvizGenerator with the necessary configuration
@@ -131,7 +135,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     @Override
     public GraphvizDocument apply( final Stream<GraphElement> graphElements ) {
         return graphElements
+            .peek( graphElement -> LOG.debug( "Serializing to Graphviz: {}", graphElement ) )
             .map( graphElement -> graphElement.accept( graphVisitor ) )
+            .peek( graphvizDocument -> LOG.debug( "Result: {}", graphvizDocument ) )
             .reduce( GraphvizDocument.BLANK, GraphvizDocument::merge );
     }
 
@@ -145,7 +151,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             DATA_TYPE( "#AD3B45", "⬤", 12 );
 
             String color;
+
             String symbol;
+
             int symbolSize;
 
             Symbol( final String color, final String symbol, final int symbolSize ) {
@@ -171,10 +179,13 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         final Template literalNodeTemplate = new Template( """
             ${nodeId} [label="${value}"] """ );
+
         final Template htmlLabelNodeTemplate = new Template( """
             ${nodeId} [label=<${value}>] """ );
+
         final Template invisibleNodeTemplate = new Template( """
             ${nodeId} [label="", width="0", style="invis"] """ );
+
         Configuration configuration;
 
         GraphvizNodeVisitor( final Configuration configuration ) {

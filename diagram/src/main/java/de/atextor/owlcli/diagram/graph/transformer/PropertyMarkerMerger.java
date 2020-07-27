@@ -21,6 +21,8 @@ import de.atextor.owlcli.diagram.graph.Node;
 import de.atextor.owlcli.diagram.graph.node.PropertyMarker;
 import de.atextor.owlcli.diagram.mappers.MappingConfiguration;
 import io.vavr.Tuple2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 import java.util.Set;
@@ -32,7 +34,9 @@ import java.util.stream.Stream;
  * or Data Property into one Property Marker
  */
 public class PropertyMarkerMerger extends GraphTransformer {
-    MappingConfiguration mappingConfiguration;
+    private final MappingConfiguration mappingConfiguration;
+
+    private static final Logger LOG = LoggerFactory.getLogger( PropertyMarkerMerger.class );
 
     /**
      * Initialize the transformer
@@ -81,7 +85,8 @@ public class PropertyMarkerMerger extends GraphTransformer {
      */
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
-        return graph.stream()
+        LOG.debug( "Merging Property Markers in {}", graph );
+        final Set<GraphElement> result = graph.stream()
             .filter( GraphElement::isEdge )
             .map( GraphElement::asEdge )
             .collect( Collectors.groupingBy( Edge::getFrom ) )
@@ -96,5 +101,7 @@ public class PropertyMarkerMerger extends GraphTransformer {
                 return ChangeSet.EMPTY;
             } ).reduce( ChangeSet.EMPTY, ChangeSet::merge )
             .applyTo( graph );
+        LOG.debug( "Processed graph: {}", result );
+        return result;
     }
 }
