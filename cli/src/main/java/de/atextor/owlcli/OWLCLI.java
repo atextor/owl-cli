@@ -15,9 +15,9 @@
 
 package de.atextor.owlcli;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
+
+import java.io.PrintWriter;
 
 @CommandLine.Command( name = "owl",
     description = "Command line tool for ontology engineering",
@@ -29,15 +29,14 @@ import picocli.CommandLine;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
-    private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
-
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
     private static final CommandLine.IParameterExceptionHandler exceptionHandler =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
-            LOG.warn( "Error: ", exception );
+            final PrintWriter writer = cmd.getErr();
+            writer.println( "Error: " + exception.getMessage() );
             cmd.getErr().println( cmd.getHelp().fullSynopsis() );
             return 1;
         };

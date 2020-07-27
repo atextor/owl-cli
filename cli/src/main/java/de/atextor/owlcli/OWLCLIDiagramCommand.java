@@ -107,8 +107,8 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLIComma
     }
 
     protected void exitWithErrorMessage( final Throwable throwable ) {
-        if ( loggingMixin.getVerbosity().length > 0 ) {
-            LOG.warn( "Error", throwable );
+        if ( loggingMixin.getVerbosity().length == 0 ) {
+            System.err.println( "Error: " + throwable.getMessage() );
         } else {
             LOG.warn( "Error: " + throwable.getMessage() );
         }
