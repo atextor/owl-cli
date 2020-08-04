@@ -62,7 +62,7 @@ def nativeImageCommandLine = ['native-image',
       '--initialize-at-build-time=ch.qos.logback.core.status.StatusBase',
       '--initialize-at-build-time=ch.qos.logback.core.spi.AppenderAttachableImpl',
       '-H:+TraceClassInitialization',
-      '-H:+TraceServiceLoaderFeature',
+      // This can't be used, because uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl cannot be instantiated reflectively. It does not have a nullary constructor.
       '-H:-UseServiceLoaderFeature',
       '-H:+AllowIncompleteClasspath',
       '--no-fallback',
