@@ -1,5 +1,4 @@
 {
-  "resources":[{"pattern":"\\Qapplication.properties\\E"}],
   "bundles": [
       {"name":"com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"}
   ]
