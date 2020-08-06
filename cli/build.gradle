@@ -50,7 +50,9 @@ shadowJar {
 }
 
 def nativeImageCommandLine = ['native-image',
+      // Merge manually maintained and picocli-generated configs
       "-H:ConfigurationFileDirectories=${project.projectDir}/native-image,${buildDir}/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
+      // Build-time initializations
       '--initialize-at-build-time=uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl',
       '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
       '--initialize-at-build-time=org.slf4j.LoggerFactory',
