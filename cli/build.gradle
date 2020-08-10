@@ -49,29 +49,7 @@ shadowJar {
     archiveClassifier = null
 }
 
-def nativeImageCommandLine = ['native-image',
-      // Merge manually maintained and picocli-generated configs
-      "-H:ConfigurationFileDirectories=${project.projectDir}/native-image,${buildDir}/classes/java/main/META-INF/native-image/picocli-generated/owl-cli/cli",
-      // Build-time initializations
-      '--initialize-at-build-time=uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl',
-      '--initialize-at-build-time=org.slf4j.impl.SimpleLogger',
-      '--initialize-at-build-time=org.slf4j.LoggerFactory',
-      '--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder',
-      '--initialize-at-build-time=ch.qos.logback.core.util.Loader',
-      '--initialize-at-build-time=ch.qos.logback.classic.Level',
-      '--initialize-at-build-time=ch.qos.logback.classic.Logger',
-      '--initialize-at-build-time=ch.qos.logback.core.status.InfoStatus',
-      '--initialize-at-build-time=ch.qos.logback.core.status.StatusBase',
-      '--initialize-at-build-time=ch.qos.logback.core.spi.AppenderAttachableImpl',
-      '-H:+TraceClassInitialization',
-      // This can't be used, because uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl cannot be instantiated reflectively. It does not have a nullary constructor.
-      '-H:-UseServiceLoaderFeature',
-      '-H:+AllowIncompleteClasspath',
-      '-H:EnableURLProtocols=http,https',
-      '--no-fallback',
-      '--report-unsupported-elements-at-runtime',
-      '-jar', "${buildDir}/libs/owl-cli-${version}.jar",
-      "${buildDir}/bin/owl"]
+def nativeImageCommandLine = ['native-image', '--verbose', '-jar', "${buildDir}/libs/owl-cli-${version}.jar", "${buildDir}/bin/owl"]
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     doFirst {
         println nativeImageCommandLine.join(' ')
