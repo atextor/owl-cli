@@ -41,17 +41,17 @@ dependencies {
 
 compileJava {
     options.fork = true
-    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
-    sourceCompatibility = 13
+    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/15-open")
     options.compilerArgs += ["--release", "11", "-processor", "${lombokAnnotationProcessor},${lombokClaimingProcessor}"]
+    sourceCompatibility = 15
     targetCompatibility = 11
 }
 
 compileTestJava {
     options.fork = true
-    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
-    sourceCompatibility = 13
+    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/15-open")
     options.compilerArgs += ["--release", "11"]
+    sourceCompatibility = 15
     targetCompatibility = 11
 }
 

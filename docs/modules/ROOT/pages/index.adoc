@@ -41,9 +41,9 @@ After installation, you can use the `owl` command: See xref:usage.adoc[] for mor
 [[building-executable-jar]]
 === Building the executable JAR from source
 
-*owl-cli* uses Java 13 source features, but the build generates a Java 11-compatible JAR file. This
- means, for building the executable JAR file, you need Java *13*. The `gradle` build forks jobs
- where it expects Java 13 to be installed in a certain place (see <<building-native-image>> for an
+*owl-cli* uses Java 15 source features, but the build generates a Java 11-compatible JAR file. This
+ means, for building the executable JAR file, you need Java *15*. The `gradle` build forks jobs
+ where it expects Java 15 to be installed in a certain place (see <<building-native-image>> for an
  explanation). We rely on the locations as used by https://sdkman.io/[SDKMAN!].
 
 Run the following commands:
@@ -57,8 +57,8 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 13.0.2-open
-sdk use java 13.0.2-open
+sdk install java 15-open
+sdk use java 15-open
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -83,11 +83,11 @@ After that, you can use the `owl` command: See xref:usage.adoc[] for more inform
 
 NOTE: The following steps have only been tested on Linux, as of now
 
-*owl-cli* uses Java 13 source features, but the build generates a Java 11-compatible JAR file, which
+*owl-cli* uses Java 15 source features, but the build generates a Java 11-compatible JAR file, which
  is required for the generation of the native image using https://www.graalvm.org/[GraalVM], as
- GraalVM currently does not support Java 13 class files. This means, for building the native image,
- you need both Java *11* (i.e. GraalVM JDK) *and* Java *13*. In particular, the `gradle` build must
- be executed using Java 11, while Java 13 is installed in a certain place where the build can
+ GraalVM currently does not support Java 15 class files. This means, for building the native image,
+ you need both Java *11* (i.e. GraalVM JDK) *and* Java *15*. In particular, the `gradle` build must
+ be executed using Java 11, while Java 15 is installed in a certain place where the build can
  find it. We rely on the locations as used by https://sdkman.io/[SDKMAN!].
 
 Run the following commands:
@@ -101,7 +101,7 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDKs
-sdk install java 13.0.2-open
+sdk install java 15-open
 sdk install java 20.1.0.r11-grl
 sdk use java 20.1.0.r11-grl
 
