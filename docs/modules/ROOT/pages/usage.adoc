@@ -3,19 +3,25 @@
 
 NOTE: Although the package is called *owl-cli*, the command you invoke is called `owl`.
 
-You can call the built-in overview of commands and arguments via `--help` or `-h`:
+You can call the built-in overview of commands and arguments via `--help`:
 
 [source,shell]
 ----
-owl --help
-Usage: owl [options] [command] [command options]
-  Options:
-    --help
-      Prints the arguments
-    --version
-      Show current version
-  Commands:
-    ...
+Usage:
+
+Usage: owl [-v] [--help] [--version] [COMMAND]
+
+Description:
+
+Command line tool for ontology engineering
+
+Options:
+      --help      Show short help
+  -v, --verbose   Specify multiple -v options to increase verbosity,
+                  e.g. use `-v`, `-vv` or `-vvv` for more details
+      --version   Show current version
+Commands:
+  ...
 ----
 
 Other than the general help, you give one argument, the _command_, which will
@@ -34,6 +40,7 @@ https://www.w3.org/TR/owl-xml-serialization/[OWL/XML] and
 https://www.w3.org/TR/owl2-syntax/[OWL Functional Syntax].
 
 
+[#diagram-command]
 == `diagram` Command
 
 The `diagram` command takes an OWL ontology as input and generates an
