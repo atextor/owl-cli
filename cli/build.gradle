@@ -99,8 +99,8 @@ sourceSets {
 compileJava {
     options.fork = true
     options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/13.0.2-open")
-    options.compilerArgs += ["--release", "11", "-processor", "${jabelAnnotationProcessor},${lombokAnnotationProcessor},${lombokClaimingProcessor},${picocliProcessor}"]
     sourceCompatibility = 13
+    options.compilerArgs += ["--release", "11", "-processor", "${lombokAnnotationProcessor},${lombokClaimingProcessor},${picocliProcessor}"]
     targetCompatibility = 11
     dependsOn(generateStaticProperties)
 }
