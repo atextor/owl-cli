@@ -57,6 +57,8 @@ jobs:
             - cli/build/bin/owl
           on:
             repo: atextor/owl-cli
+            tags: true
+            all_branches: true
           skip_cleanup: true
           draft: false
           tag_name: $TRAVIS_TAG
