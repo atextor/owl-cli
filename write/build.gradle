@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'io.franzbecker.gradle-lombok'
+    id 'com.adarshr.test-logger'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+apply from: file("${rootDir}/dependencies.gradle")
+dependencies {
+    implementation(deps.guava)
+    // implementation(deps.owlapi) {
+        // exclude group: 'org.slf4j', module: 'slf4j-simple'
+    // }
+    implementation(deps.slf4j_api)
+    implementation(deps.vavr)
+    implementation(deps.commons_text)
+    annotationProcessor(deps.jabel)
+
+    // Override transitive dependency versions due to features
+    // implementation(deps.caffeine)
+
+    // Override transitive dependency versions due to vulns
+    // implementation(deps.jackson_databind)
+    // implementation(deps.rdf4j_util)
+    // implementation(deps.rdf4j_rio_rdfxml)
+    // implementation(deps.rdf4j_rio_trix)
+    // implementation(deps.httpclient)
+    // implementation(deps.commons_codec)
+
+    // Test
+    testAnnotationProcessor(deps.jabel)
+    testImplementation(deps.junit_jupiter_api)
+    testImplementation(deps.assertj)
+    testImplementation(deps.jqwik)
+    testRuntimeOnly(deps.junit_jupiter_engine)
+}
+
+compileJava {
+    options.fork = true
+    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/15-open")
+    options.compilerArgs += ["--release", "11", "-processor", "${lombokAnnotationProcessor},${lombokClaimingProcessor}"]
+    sourceCompatibility = 15
+    targetCompatibility = 11
+}
+
+compileTestJava {
+    options.fork = true
+    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/15-open")
+    options.compilerArgs += ["--release", "11"]
+    sourceCompatibility = 15
+    targetCompatibility = 11
+}
+
+test {
+    useJUnitPlatform()
+    maxHeapSize = '1G'
+    ignoreFailures = false
+    failFast = true
+
+    filter {
+        includeTestsMatching "*Test"
+    }
+}
+

@@ -7,6 +7,7 @@ ext.deps = [
     httpclient:              'org.apache.httpcomponents:httpclient:4.5.12',
     jabel:                   'com.github.bsideup.jabel:jabel-javac-plugin:0.3.0',
     jackson_databind:        'com.fasterxml.jackson.core:jackson-databind:2.11.2',
+    logback:                 'ch.qos.logback:logback-classic:1.2.3',
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.16',
     picocli:                 'info.picocli:picocli:4.5.1',
     picocli_codegen:         'info.picocli:picocli-codegen:4.5.1',
@@ -14,7 +15,6 @@ ext.deps = [
     rdf4j_rio_trix:          'org.eclipse.rdf4j:rdf4j-rio-trix:3.4.2',
     rdf4j_util:              'org.eclipse.rdf4j:rdf4j-util:3.4.2',
     slf4j_api:               'org.slf4j:slf4j-api:1.7.30',
-    logback:                 'ch.qos.logback:logback-classic:1.2.3',
     vavr:                    'io.vavr:vavr:0.10.3',
 
     // Test
