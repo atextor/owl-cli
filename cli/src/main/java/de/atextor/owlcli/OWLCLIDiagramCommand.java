@@ -100,7 +100,7 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLIComma
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openInput( input ).flatMap( inputStream ->
             loadOntology( inputStream ).flatMap( ontology ->
-                openOutput( input, output, format ).flatMap( outputStream ->
+                openOutput( input, output, format.toString() ).flatMap( outputStream ->
                     new DiagramGenerator( configuration, mappingConfig )
                         .generate( ontology, outputStream, configuration ) ) )
         ).onFailure( this::exitWithErrorMessage );

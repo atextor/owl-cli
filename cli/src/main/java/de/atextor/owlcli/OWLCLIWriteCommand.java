@@ -16,7 +16,7 @@
 package de.atextor.owlcli;
 
 import de.atextor.owlcli.write.Configuration;
-import de.atextor.owlcli.write.Write;
+import de.atextor.owlcli.write.RdfWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -32,36 +32,51 @@ import picocli.CommandLine;
 public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );
 
-    private static final Configuration config = Write.DEFAULT_CONFIGURATION;
+    private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
+
+    @CommandLine.Option( names = { "-o", "--out" },
+        description = "Output file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
+    private Configuration.Format outputFormat = config.outputFormat;
+
+    @CommandLine.Option( names = { "-i", "--input" },
+        description = "Input file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE}" )
+    private Configuration.Format inputFormat = config.inputFormat;
 
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
-    @CommandLine.Option( names = { "--format" },
-        description = "Output file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
-    private final Configuration.Format format = config.format;
-
-    @CommandLine.Parameters( paramLabel = "INPUT", description = "File name or - for stdin", arity = "1",
+    @CommandLine.Parameters( paramLabel = "INPUT", description = "File name, URL, or - for stdin", arity = "1",
         index = "0" )
     private String input;
 
     @CommandLine.Parameters( paramLabel = "OUTPUT",
-        description = "File name or - for stdout. If left out, the input file name is used, e.g. foo.ttl -> " +
-            "foo.svg or stdout if INPUT is -.",
+        description = "File name or - for stdout. If left out and the output format is different than the"
+            + " input format, the input file name is used, e.g. foo.ttl -> foo.n3; or stdout if INPUT is -.",
         arity = "0..1", index = "1" )
     private String output;
 
     @Override
     public void run() {
-        final Configuration configuration = Configuration.builder()
-            .format( format )
-            .build();
+        final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()
+            .outputFormat( outputFormat )
+            .inputFormat( inputFormat );
+
+        final RdfWriter writer = new RdfWriter();
+
+        if ( input.toLowerCase().startsWith( "http:" ) || input.toLowerCase().startsWith( "https:" ) ) {
+            final Configuration configuration = configurationBuilder.build();
+            openOutput( input, output != null ? output : "-", "ttl" )
+                .map( outputStream -> writer.write( input, outputStream, configuration ) )
+                .onFailure( this::exitWithErrorMessage );
+            return;
+        }
 
         openInput( input ).flatMap( inputStream -> {
-            openOutput( output ).forEach( outputStream -> {
-                System.out.println( "x" );
-            } )
-        } ).onFailure( this::exitWithErrorMessage );
+                final Configuration configuration = configurationBuilder.base( "file://" + input ).build();
+                return openOutput( input, output, "ttl" )
+                    .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
+            }
+        ).onFailure( this::exitWithErrorMessage );
     }
 
     protected void exitWithErrorMessage( final Throwable throwable ) {

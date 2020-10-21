@@ -11,25 +11,11 @@ repositories {
 
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
-    implementation(deps.guava)
-    // implementation(deps.owlapi) {
-        // exclude group: 'org.slf4j', module: 'slf4j-simple'
-    // }
+    implementation(deps.jena)
+    implementation(deps.jena_core)
     implementation(deps.slf4j_api)
     implementation(deps.vavr)
-    implementation(deps.commons_text)
     annotationProcessor(deps.jabel)
-
-    // Override transitive dependency versions due to features
-    // implementation(deps.caffeine)
-
-    // Override transitive dependency versions due to vulns
-    // implementation(deps.jackson_databind)
-    // implementation(deps.rdf4j_util)
-    // implementation(deps.rdf4j_rio_rdfxml)
-    // implementation(deps.rdf4j_rio_trix)
-    // implementation(deps.httpclient)
-    // implementation(deps.commons_codec)
 
     // Test
     testAnnotationProcessor(deps.jabel)

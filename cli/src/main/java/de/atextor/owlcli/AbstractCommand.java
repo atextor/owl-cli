@@ -16,7 +16,6 @@
 package de.atextor.owlcli;
 
 import com.google.common.collect.ImmutableSet;
-import de.atextor.owlcli.diagram.diagram.Configuration;
 import io.vavr.control.Try;
 import org.semanticweb.owlapi.io.OWLParserFactory;
 import org.semanticweb.owlapi.model.OWLDataFactory;
@@ -48,7 +47,7 @@ public class AbstractCommand {
     }
 
     protected Try<OutputStream> openOutput( final @Nonnull String input, final String output,
-                                            final Configuration.Format targetFormat ) {
+                                            final String targetFileExtension ) {
         if ( output != null ) {
             // Output is given as - --> write to stdout
             if ( output.equals( "-" ) ) {
@@ -71,7 +70,7 @@ public class AbstractCommand {
         // Input is something else, output is not given -> interpret input as filename,
         // change input's file extension to target format and use as output file name
         final String outputFilename = input.replaceFirst( "[.][^.]+$",
-            "." + targetFormat.toString().toLowerCase() );
+            "." + targetFileExtension.toLowerCase() );
         if ( outputFilename.equals( input ) ) {
             return Try.failure( new ErrorMessage( "Can't determine an ouput filename" ) );
         }

@@ -20,20 +20,27 @@ import lombok.Builder;
 @Builder
 public class Configuration {
     @Builder.Default
-    public Format format = Format.TURTLE;
+    public Format outputFormat = Format.TURTLE;
+
+    @Builder.Default
+    public Format inputFormat = Format.TURTLE;
+
+    @Builder.Default
+    public String base = "urn:owlcli#";
 
     public enum Format {
         TURTLE,
-        RDFXML;
-
+        RDFXML,
+        NTRIPLE,
+        N3;
 
         @Override
         public String toString() {
             return switch ( this ) {
-                case TURTLE:
-                    yield "turtle";
-                case RDFXML:
-                    yield "rdf-xml";
+                case TURTLE -> "turtle";
+                case RDFXML -> "rdfxml";
+                case NTRIPLE -> "ntriple";
+                case N3 -> "n3";
             };
         }
     }
