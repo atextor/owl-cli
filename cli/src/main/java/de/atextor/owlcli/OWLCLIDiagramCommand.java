@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 @CommandLine.Command( name = "diagram",
-    description = "Generates automatically-layouted diagrams for an ontology",
+    description = "Generate automatically-layouted diagrams for an ontology",
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",

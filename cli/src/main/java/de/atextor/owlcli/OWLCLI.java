@@ -52,6 +52,7 @@ public class OWLCLI implements Runnable {
     public static void main( final String[] args ) {
         final int exitCode = new OWLCLI().commandLine
             .addSubcommand( new OWLCLIDiagramCommand() )
+            .addSubcommand( new OWLCLIWriteCommand() )
             .setParameterExceptionHandler( exceptionHandler )
             .setExecutionStrategy( LoggingMixin::executionStrategy )
             .execute( args );

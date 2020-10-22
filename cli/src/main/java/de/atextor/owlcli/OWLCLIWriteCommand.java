@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 @CommandLine.Command( name = "write",
-    description = "Serialize an ontology",
+    description = "Read a given RDF document and write it out, possibly in a different format",
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
@@ -39,8 +39,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private Configuration.Format outputFormat = config.outputFormat;
 
     @CommandLine.Option( names = { "-i", "--input" },
-        description = "Input file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE}" )
     private Configuration.Format inputFormat = config.inputFormat;
+        description = "Input file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
 
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
@@ -50,8 +50,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private String input;
 
     @CommandLine.Parameters( paramLabel = "OUTPUT",
-        description = "File name or - for stdout. If left out and the output format is different than the"
-            + " input format, the input file name is used, e.g. foo.ttl -> foo.n3; or stdout if INPUT is -.",
+        description = "File name or - for stdout. If left out, output is written to stdout.",
         arity = "0..1", index = "1" )
     private String output;
 
