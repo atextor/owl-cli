@@ -30,6 +30,7 @@ public class ResourceArgumentsProvider implements ArgumentsProvider {
     public Stream<? extends Arguments> provideArguments( final ExtensionContext context ) {
         return new ClassGraph().scan().getResourcesWithExtension( ".ttl" ).getPaths().stream()
             .map( filename -> filename.replace( ".ttl", "" ) )
+            .filter( filename -> !filename.contains( "/" ) )
             .sorted()
             .map( FilenameArguments::new );
     }
