@@ -39,8 +39,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private Configuration.Format outputFormat = config.outputFormat;
 
     @CommandLine.Option( names = { "-i", "--input" },
-    private Configuration.Format inputFormat = config.inputFormat;
         description = "Input file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
+    private Configuration.Format inputFormat = config.inputFormat;
 
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
