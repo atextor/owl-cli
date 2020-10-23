@@ -72,7 +72,7 @@ public class AbstractCommand {
         final String outputFilename = input.replaceFirst( "[.][^.]+$",
             "." + targetFileExtension.toLowerCase() );
         if ( outputFilename.equals( input ) ) {
-            return Try.failure( new ErrorMessage( "Can't determine an ouput filename" ) );
+            return Try.failure( new ErrorMessage( "Can't determine an output filename" ) );
         }
 
         try {

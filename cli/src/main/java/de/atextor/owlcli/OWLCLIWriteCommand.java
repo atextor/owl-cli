@@ -72,7 +72,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
         openInput( input ).flatMap( inputStream -> {
                 final Configuration configuration = configurationBuilder.base( "file://" + input ).build();
-                return openOutput( input, output, "ttl" )
+                return openOutput( input, output != null ? output : "-", "ttl" )
                     .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
             }
         ).onFailure( this::exitWithErrorMessage );
