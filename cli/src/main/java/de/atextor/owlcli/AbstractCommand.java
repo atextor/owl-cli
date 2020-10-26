@@ -17,6 +17,7 @@ package de.atextor.owlcli;
 
 import com.google.common.collect.ImmutableSet;
 import io.vavr.control.Try;
+import org.apache.jena.sys.JenaSystem;
 import org.semanticweb.owlapi.io.OWLParserFactory;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
@@ -195,5 +196,10 @@ public class AbstractCommand {
         } catch ( final OWLOntologyCreationException exception ) {
             return Try.failure( exception );
         }
+    }
+
+    protected void initJena() {
+        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
+        JenaSystem.init();
     }
 }

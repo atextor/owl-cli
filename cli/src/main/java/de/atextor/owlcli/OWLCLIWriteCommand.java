@@ -60,6 +60,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .outputFormat( outputFormat )
             .inputFormat( inputFormat );
 
+        initJena();
+
         final RdfWriter writer = new RdfWriter();
 
         if ( input.toLowerCase().startsWith( "http:" ) || input.toLowerCase().startsWith( "https:" ) ) {

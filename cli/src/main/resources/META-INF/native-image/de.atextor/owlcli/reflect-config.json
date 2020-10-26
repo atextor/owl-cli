@@ -244,6 +244,11 @@
   "allPublicMethods":true
 },
 {
+  "name":"de.atextor.owlcli.OWLCLIWriteCommand",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true
+},
+{
   "name":"java.lang.Object",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
@@ -335,6 +340,21 @@
 {
   "name":"java.time.ZonedDateTime",
   "methods":[{"name":"parse","parameterTypes":["java.lang.CharSequence"] }]
+},
+{
+  "name":"org.apache.jena.ext.com.google.common.cache.Striped64",
+  "fields":[
+    {"name":"base", "allowUnsafeAccess":true},
+    {"name":"busy", "allowUnsafeAccess":true}
+  ]
+},
+{
+  "name":"org.apache.jena.n3.N3TurtleJenaWriter",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.jena.n3.turtle.TurtleReader",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"org.semanticweb.owlapi.apibinding.OWLManager$InjectorConstants",

@@ -1,8 +1,11 @@
 {
   "resources":[
+    {"pattern":"\\QMETA-INF/services/org.apache.jena.sys.JenaSubsystemLifecycle\\E"},
+    {"pattern":"\\Qorg/apache/jena/jena-properties.xml\\E"},
     {"pattern":"\\Qorg/slf4j/impl/StaticLoggerBinder.class\\E"}
   ],
   "bundles": [
-    {"name":"com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"}
+    {"name":"com.sun.org.apache.xerces.internal.impl.msg.XMLMessages"},
+    {"name":"org.apache.jena.ext.xerces.impl.xpath.regex.message"}
   ]
 }
