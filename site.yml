@@ -8,7 +8,7 @@ content:
       branches: HEAD
       start_path: docs
     - url: https://github.com/atextor/owl-cli.git
-      tags: [v.*]
+      tags: [v*]
       branches: ~
       start_path: docs
 ui:

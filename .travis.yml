@@ -8,6 +8,7 @@ dist: trusty
 # - Install msttcorefonts, so we have the Verdana font available for diagram generation
 # - Install graphviz, so we have the dot binary available for diagram generation
 # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+# - Clean Antora cache
 before_install:
   - |-
     curl -sL https://get.sdkman.io | bash
@@ -27,6 +28,7 @@ before_install:
     gu install native-image
     unset _JAVA_OPTIONS
     java -version
+    rm -rf .cache
 
 before_cache:
   - |-
