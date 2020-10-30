@@ -11,9 +11,7 @@ catalog-v*.xml
 .cache
 
 # The diagrams are generated at build time
-docs/modules/ROOT/assets/images/*.svg
 
-!docs/modules/ROOT/assets/images/splash.svg
 
 **/.jqwik-database
 

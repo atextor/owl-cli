@@ -28,14 +28,29 @@ fi
 echo Releasing version $version
 tag="v${version}"
 git checkout -b $branchname
+
+# Generate documentation images. The generated images that are not present in
+# the normal source repository (because during a snapshot build they are
+# generated) need to be actually present in the source tree in the tagged
+# release commit, because this is what Antora will check out at a later time in
+# order to build the respective module version. So generate them, remove the
+# corresponding entry from .gitignore and commit them.
+./gradlew generateImages
+sed -i -e '/docs\/modules\/ROOT\/assets\/images/d' .gitignore
+git add .gitignore
+git add docs/modules/ROOT/assets/images/*.svg
+
+# Set versions
 for file in docs/antora.yml gradle.properties; do
     sed -i -e 's/snapshot/'$version'/g' ${file}
     git add $file
 done
+
 git commit -m "Release version $version"
 git tag ${tag}
-git checkout master
-git branch -D $branchname
+echo Pushing branch
+git push -u origin ${branchname}
 echo Pushing tag ${tag}
 git push origin ${tag}
+git checkout master
 

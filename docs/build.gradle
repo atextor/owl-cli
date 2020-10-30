@@ -33,11 +33,15 @@ task setAntoraVersion(type: Copy) {
     }
 }
 
+task generateImages() {
+}
+
 task antora(type: NodeTask) {
     dependsOn 'installAntoraCli'
     dependsOn 'installAntoraSiteGeneratorLunr'
     dependsOn 'installAsciidoctorMathjax'
     dependsOn 'setAntoraVersion'
+    dependsOn 'generateImages'
     environment = [
         'DOCSEARCH_ENABLED': 'true',
         'DOCSEARCH_ENGINE': 'lunr'
@@ -61,5 +65,5 @@ project.fileTree(dir: ontologyDir, include: '*.ttl').files.each { ttlFile ->
         inputs.file file(ttlFile)
         outputs.file file(imageFile)
     }
-    antora.dependsOn("${baseName}")
+    generateImages.dependsOn("${baseName}")
 }
