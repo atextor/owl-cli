@@ -82,9 +82,16 @@ public class DiagramGenerator {
 
         final OutputStream processStdIn = process.getOutputStream();
         final InputStream processStdOut = process.getInputStream();
+        final InputStream processStdErr = process.getErrorStream();
 
         try {
             contentProvider.accept( processStdIn );
+            final String graphvisErrorOutput = IOUtils.toString( processStdErr, StandardCharsets.UTF_8 );
+            if ( !graphvisErrorOutput.isEmpty() ) {
+                LOG.debug( "Dot returned an error: {}", graphvisErrorOutput );
+                return Try.failure( new RuntimeException( "An error occured while running dot. This is most likely "
+                    + "due to a bug in owl-cli." ) );
+            }
         } catch ( final IOException exception ) {
             return Try.failure( exception );
         }
