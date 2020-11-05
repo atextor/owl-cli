@@ -76,50 +76,50 @@ public class DiagramGenerator {
         try {
             LOG.info( "Running dot: {}", command );
             process = Runtime.getRuntime().exec( command, null, workingDir );
-        } catch ( final IOException exception ) {
-            return Try.failure( exception );
-        }
 
-        final OutputStream processStdIn = process.getOutputStream();
-        final InputStream processStdOut = process.getInputStream();
-        final InputStream processStdErr = process.getErrorStream();
+            final OutputStream processStdIn = process.getOutputStream();
+            final InputStream processStdOut = process.getInputStream();
+            final InputStream processStdErr = process.getErrorStream();
 
-        try {
             contentProvider.accept( processStdIn );
-            final String graphvisErrorOutput = IOUtils.toString( processStdErr, StandardCharsets.UTF_8 );
-            if ( !graphvisErrorOutput.isEmpty() ) {
-                LOG.debug( "Dot returned an error: {}", graphvisErrorOutput );
+            final byte[] graphvizStdout = IOUtils.toByteArray( processStdOut );
+            final String graphvizStderr = IOUtils.toString( processStdErr, StandardCharsets.UTF_8 );
+
+            if ( !graphvizStderr.isEmpty() ) {
+                LOG.debug( "Dot returned an error: {}", graphvizStderr );
                 return Try.failure( new RuntimeException( "An error occured while running dot. This is most likely "
                     + "due to a bug in owl-cli." ) );
             }
+
+            if ( configuration.format == Configuration.Format.PNG ) {
+                output.write( graphvizStdout );
+                output.flush();
+                if ( output != System.out ) {
+                    output.close();
+                }
+                return Try.success( null );
+            }
+
+            final String svgOutput = new String( graphvizStdout, StandardCharsets.UTF_8 );
+            return postprocess( svgOutput ).flatMap( processedOutput ->
+                writeStreamToOutput( processedOutput, output ).flatMap( writingResult -> {
+                    LOG.debug( "Writing to output {}", output );
+                    try {
+                        process.waitFor();
+                        return Try.success( null );
+                    } catch ( final InterruptedException exception ) {
+                        return Try.failure( exception );
+                    }
+                } ) );
         } catch ( final IOException exception ) {
             return Try.failure( exception );
         }
-
-        return postprocess( processStdOut, configuration ).flatMap( processedOutput ->
-            writeStreamToOutput( processedOutput, output ).flatMap( writingResult -> {
-                LOG.debug( "Writing to output {}", output );
-                try {
-                    process.waitFor();
-                    return Try.success( null );
-                } catch ( final InterruptedException exception ) {
-                    return Try.failure( exception );
-                }
-            } ) );
     }
 
-    private Try<InputStream> postprocess( final InputStream inputStream, final Configuration configuration ) {
-        if ( configuration.format == Configuration.Format.PNG ) {
-            return Try.success( inputStream );
-        }
-
-        try {
-            return svgPostProcessors.stream().sequential().reduce( Function.identity(), Function::andThen )
-                .apply( Try.success( IOUtils.toString( inputStream, StandardCharsets.UTF_8 ) ) )
-                .map( string -> IOUtils.toInputStream( string, StandardCharsets.UTF_8 ) );
-        } catch ( final IOException exception ) {
-            return Try.failure( exception );
-        }
+    private Try<InputStream> postprocess( final String dotOutput ) {
+        return svgPostProcessors.stream().sequential().reduce( Function.identity(), Function::andThen )
+            .apply( Try.success( dotOutput ) )
+            .map( string -> IOUtils.toInputStream( string, StandardCharsets.UTF_8 ) );
     }
 
     /**
