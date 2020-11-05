@@ -85,7 +85,7 @@ public class DiagramGenerator {
             final byte[] graphvizStdout = IOUtils.toByteArray( processStdOut );
             final String graphvizStderr = IOUtils.toString( processStdErr, StandardCharsets.UTF_8 );
 
-            if ( !graphvizStderr.isEmpty() ) {
+            if ( !graphvizStderr.isEmpty() && !graphvizStderr.startsWith( "Warning:" ) ) {
                 LOG.debug( "Dot returned an error: {}", graphvizStderr );
                 return Try.failure( new RuntimeException( "An error occured while running dot. This is most likely "
                     + "due to a bug in owl-cli." ) );
