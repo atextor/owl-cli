@@ -91,8 +91,8 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                         configuration.fontname ) )
                     .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                String.format( "%s -> %s [label=\"%s\", %s]", edge.getFrom().getId().getId(), edge.getTo()
-                    .getId().getId(), label, edgeStyle ) ) );
+                String.format( "%s -> %s [label=\"%s\", %s]", escapeNodeId( edge.getFrom().getId() ),
+                    escapeNodeId( edge.getTo().getId() ), label, edgeStyle ) ) );
         };
 
         final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
@@ -100,15 +100,31 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 .map( style -> style + ", fontsize=" + configuration.fontsize )
                 .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
-                String.format( "%s -> %s [%s]", edge.getFrom().getId().getId(), edge.getTo().getId()
-                    .getId(), edgeStyle ) ) );
+                String.format( "%s -> %s [%s]", escapeNodeId( edge.getFrom().getId() ),
+                    escapeNodeId( edge.getTo().getId() ), edgeStyle ) ) );
         };
 
         graphVisitor = new GraphVisitor<>( nodeTypeToGraphviz, plainEdgeToGraphviz, decoratedEdgeToGraphviz );
     }
 
+    /**
+     * Called for values
+     *
+     * @param value the string to escape
+     * @return the escaped value
+     */
     private static String escape( final String value ) {
         return StringEscapeUtils.escapeHtml4( value );
+    }
+
+    /**
+     * Called for ids
+     *
+     * @param id the id to escape
+     * @return the id as escaped string
+     */
+    private static String escapeNodeId( final Node.Id id ) {
+        return id.getId().replace( "-", "_" );
     }
 
     private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {
@@ -434,18 +450,18 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         private GraphvizDocument generateInvisibleNode( final Node.Id nodeId ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( invisibleNodeTemplate.apply(
-                Map.of( "nodeId", nodeId.getId() ) ) ) );
+                Map.of( "nodeId", escapeNodeId( nodeId ) ) ) ) );
         }
 
         private GraphvizDocument generateLiteralNode( final Node.Id nodeId, final String value ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( literalNodeTemplate.apply(
-                Map.of( "nodeId", nodeId.getId(),
+                Map.of( "nodeId", escapeNodeId( nodeId ),
                     "value", value ) ) ) );
         }
 
         private GraphvizDocument generateHtmlLabelNode( final Node.Id nodeId, final String value ) {
             return GraphvizDocument.withNode( new GraphvizDocument.Statement( htmlLabelNodeTemplate.apply(
-                Map.of( "nodeId", nodeId.getId(),
+                Map.of( "nodeId", escapeNodeId( nodeId ),
                     "value", value ) ) ) );
         }
     }
