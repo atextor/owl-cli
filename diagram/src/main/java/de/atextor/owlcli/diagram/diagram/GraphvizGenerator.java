@@ -249,6 +249,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
                 .format( " <FONT COLOR=\"#0A5EA8\"><B>%s</B></FONT> ", PropertyChain.OPERATOR_SYMBOL );
             final String[] parts = propertyChain.getValue().split( " " + PropertyChain.OPERATOR_SYMBOL + " " );
             final String label = Arrays.stream( parts )
+                .filter( part -> !part.isEmpty() )
                 .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
                 .collect( Collectors.joining( operator ) );
             return generateHtmlLabelNode( propertyChain.getId(), label );

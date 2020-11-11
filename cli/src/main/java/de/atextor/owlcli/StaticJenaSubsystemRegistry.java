@@ -26,7 +26,6 @@ import java.util.List;
  * This class implements Jena's internal module registry, but unlike the default implementation
  * {@link org.apache.jena.sys.JenaSubsystemRegistryBasic}, it does not depend on the service loader
  * mechanism, which is disabled in OWL-CLI's GraalVM build.
- * <p>
  * The modules list therefore must contain all classes that are mentioned in the respective
  * META-INF/services/org.apache.jena.sys.JenaSubsystemLifcycle of the used Jena dependencies.
  */
