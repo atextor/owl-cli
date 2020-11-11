@@ -71,10 +71,15 @@ import java.util.Set;
 
 public class DiagramGeneratorTest {
     File workingDir = new File( System.getProperty( "user.dir" ) );
+
     final Configuration configuration = Configuration.builder().build();
+
     final MappingConfiguration mappingConfiguration = DefaultMappingConfiguration.builder().build();
+
     final DiagramGenerator diagramGenerator = new DiagramGenerator( configuration, mappingConfiguration );
+
     final GraphvizGenerator graphvizGenerator = new GraphvizGenerator( configuration );
+
     final IdentifierMapper identifierMapper = new DefaultIdentifierMapper();
 
     @Provide
@@ -142,7 +147,7 @@ public class DiagramGeneratorTest {
 
     @Provide
     Arbitrary<Node> anyPropertyChain() {
-        final Arbitrary<String> anyValue = anyName().stream().reduce( "",
+        final Arbitrary<String> anyValue = anyName().stream().ofMinSize( 2 ).reduce( "",
             ( s1, s2 ) -> s1 + " " + PropertyChain.OPERATOR_SYMBOL + " " + s2 );
         return Combinators.combine( anyId(), anyValue ).as( PropertyChain::new );
     }
