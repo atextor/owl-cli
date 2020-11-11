@@ -202,6 +202,9 @@ public class DiagramGeneratorTest {
         final ByteArrayOutputStream output = new ByteArrayOutputStream();
         final Try<Void> executionResult = diagramGenerator
             .executeDot( contentProvider, output, workingDir, configuration );
+        if ( executionResult.isFailure() ) {
+            System.out.println( executionResult.getCause().getMessage() );
+        }
         return executionResult.isSuccess();
     }
 

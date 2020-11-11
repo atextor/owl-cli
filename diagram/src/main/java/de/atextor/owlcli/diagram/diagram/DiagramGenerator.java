@@ -88,7 +88,7 @@ public class DiagramGenerator {
             if ( !graphvizStderr.isEmpty() && !graphvizStderr.startsWith( "Warning:" ) ) {
                 LOG.debug( "Dot returned an error: {}", graphvizStderr );
                 return Try.failure( new RuntimeException( "An error occured while running dot. This is most likely "
-                    + "due to a bug in owl-cli." ) );
+                    + "due to a bug in owl-cli. Captured message was: " + graphvizStderr ) );
             }
 
             if ( configuration.format == Configuration.Format.PNG ) {
