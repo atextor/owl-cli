@@ -1,0 +1,213 @@
+/*
+ * This file is part of OWL-CLI.
+ * The contents of this file are subject to the LGPL License, Version 3.0.
+ * Copyright (c) 2020, Andreas Textor.
+ *
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General
+ * Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ *  warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ * You should have received a copy of the GNU General Public License along with this program.  If not, see http://www
+ * .gnu.org/licenses/.
+ */
+
+package de.atextor.owlcli.write;
+
+import io.vavr.control.Try;
+import lombok.Builder;
+import lombok.Value;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.vocabulary.DCTerms;
+import org.apache.jena.vocabulary.OWL2;
+import org.apache.jena.vocabulary.RDF;
+import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.SKOS;
+import org.apache.jena.vocabulary.XSD;
+
+import java.net.URI;
+import java.util.Set;
+
+@Builder
+public class FormattingStyle {
+    @Builder.Default
+    Set<KnownPrefix> knownPrefixes = Set.of(
+        PREFIX_RDF,
+        PREFIX_RDFS,
+        PREFIX_XSD,
+        PREFIX_OWL,
+        PREFIX_DCTERMS,
+        PREFIX_FMT
+    );
+
+    @Builder.Default
+    GapStyle afterClosingParenthesis = GapStyle.NEWLINE;
+
+    @Builder.Default
+    GapStyle afterClosingSquareBracket = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle afterComma = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle afterDot = GapStyle.NEWLINE;
+
+    @Builder.Default
+    GapStyle afterOpeningParenthesis = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle afterOpeningSquareBracket = GapStyle.NEWLINE;
+
+    @Builder.Default
+    GapStyle afterSemicolon = GapStyle.NEWLINE;
+
+    @Builder.Default
+    Alignment alignPrefixes = Alignment.OFF;
+
+    @Builder.Default
+    GapStyle beforeClosingParenthesis = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle beforeClosingSquareBracket = GapStyle.NEWLINE;
+
+    @Builder.Default
+    GapStyle beforeComma = GapStyle.NOTHING;
+
+    @Builder.Default
+    GapStyle beforeDot = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle beforeOpeningParenthesis = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle beforeOpeningSquareBracket = GapStyle.SPACE;
+
+    @Builder.Default
+    GapStyle beforeSemicolon = GapStyle.SPACE;
+
+    @Builder.Default
+    Charset charset = Charset.UTF_8;
+
+    @Builder.Default
+    EndOfLineStyle endOfLine = EndOfLineStyle.LF;
+
+    @Builder.Default
+    IndentStyle indentStyle = IndentStyle.SPACE;
+
+    @Builder.Default
+    WrappingStyle wrapListItems = WrappingStyle.FOR_LONG_LINES;
+
+    @Builder.Default
+    boolean rdfTypeInNewLine = false;
+
+    @Builder.Default
+    boolean useAForRdfType = true;
+
+    @Builder.Default
+    boolean useCommaByDefault = false;
+
+    @Builder.Default
+    Set<Property> commaForPredicate = Set.of( RDF.type );
+
+    @Builder.Default
+    Set<Property> noCommaForPredicate = Set.of();
+
+    @Builder.Default
+    boolean useShortLiterals = true;
+
+    @Builder.Default
+    boolean alignBaseIRI = false;
+
+    @Builder.Default
+    boolean alignObjects = false;
+
+    @Builder.Default
+    boolean alignPredicates = true;
+
+    @Builder.Default
+    int continuationIndentSize = 8;
+
+    @Builder.Default
+    boolean indentPrediates = true;
+
+    @Builder.Default
+    boolean insertFinalNewline = true;
+
+    @Builder.Default
+    int indentSize = 4;
+
+    @Builder.Default
+    int maxLineLength = 100;
+
+    @Builder.Default
+    boolean trimTrailingWhitespace = true;
+
+    public enum Alignment {
+        LEFT,
+        OFF,
+        RIGHT
+    }
+
+    public enum Charset {
+        LATIN1,
+        UTF_16_BE,
+        UTF_16_LE,
+        UTF_8,
+        UTF_8_BOM
+    }
+
+    public enum EndOfLineStyle {
+        CR,
+        CRLF,
+        LF
+    }
+
+    public enum GapStyle {
+        NEWLINE,
+        NOTHING,
+        SPACE
+    }
+
+    public enum IndentStyle {
+        SPACE,
+        TAB
+    }
+
+    public enum WrappingStyle {
+        ALWAYS,
+        FOR_LONG_LINES,
+        NEVER
+    }
+
+    @Value
+    public static class KnownPrefix {
+        URI iri;
+
+        String prefix;
+    }
+
+    public static final KnownPrefix PREFIX_FMT = new KnownPrefix( URI.create( FMT.NS ), "fmt" );
+
+    public static final KnownPrefix PREFIX_RDF = new KnownPrefix( URI.create( RDF.uri ), "rdf" );
+
+    public static final KnownPrefix PREFIX_RDFS = new KnownPrefix( URI.create( RDFS.uri ), "rdfs" );
+
+    public static final KnownPrefix PREFIX_XSD = new KnownPrefix( URI.create( XSD.NS ), "xsd" );
+
+    public static final KnownPrefix PREFIX_OWL = new KnownPrefix( URI.create( OWL2.NS ), "owl" );
+
+    public static final KnownPrefix PREFIX_DCTERMS = new KnownPrefix( URI.create( DCTerms.NS ), "dcterms" );
+
+    public static final KnownPrefix PREFIX_VANN = new KnownPrefix( URI
+        .create( "http://purl.org/vocab/vann/" ), "vann" );
+
+    public static final KnownPrefix PREFIX_SKOS = new KnownPrefix( URI.create( SKOS.getURI() ), "skos" );
+
+    public static final KnownPrefix PREFIX_EX = new KnownPrefix( URI.create( "http://example.org/" ), "ex" );
+
+    public static Try<FormattingStyle> fromModel( final Model model ) {
+        return null;
+    }
+}
