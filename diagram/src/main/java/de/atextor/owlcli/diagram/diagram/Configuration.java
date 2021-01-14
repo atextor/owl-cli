@@ -24,27 +24,37 @@ import lombok.Builder;
 public class Configuration {
     @Builder.Default
     public String dotBinary = "dot";
+
     @Builder.Default
     public String fontname = "Verdana";
+
     @Builder.Default
     public int fontsize = 12;
+
     @Builder.Default
     public String nodeFontname = "Verdana";
+
     @Builder.Default
     public int nodeFontsize = 12;
+
     @Builder.Default
     public String nodeShape = "box";
+
     @Builder.Default
     public String nodeMargin = "0.05,0.0";
+
     @Builder.Default
     public String nodeStyle = "rounded";
+
     @Builder.Default
     public Format format = Format.SVG;
+
     @Builder.Default
     public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
 
     public enum Format {
-        PNG, SVG;
+        PNG,
+        SVG;
 
         public String getExtension() {
             return toString().toLowerCase();
@@ -53,10 +63,8 @@ public class Configuration {
         @Override
         public String toString() {
             return switch ( this ) {
-                case PNG:
-                    yield "png";
-                case SVG:
-                    yield "svg";
+                case PNG -> "png";
+                case SVG -> "svg";
             };
         }
     }
@@ -68,10 +76,8 @@ public class Configuration {
         @Override
         public String toString() {
             return switch ( this ) {
-                case TOP_TO_BOTTOM:
-                    yield "top_to_bottom";
-                case LEFT_TO_RIGHT:
-                    yield "left_to_right";
+                case TOP_TO_BOTTOM -> "top_to_bottom";
+                case LEFT_TO_RIGHT -> "left_to_right";
             };
         }
     }
