@@ -20,6 +20,8 @@ import lombok.Builder;
 import lombok.Value;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.DCTerms;
 import org.apache.jena.vocabulary.OWL2;
 import org.apache.jena.vocabulary.RDF;
@@ -28,7 +30,9 @@ import org.apache.jena.vocabulary.SKOS;
 import org.apache.jena.vocabulary.XSD;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 @Builder
 public class FormattingStyle {
@@ -143,6 +147,49 @@ public class FormattingStyle {
 
     @Builder.Default
     boolean trimTrailingWhitespace = true;
+
+    @Builder.Default
+    List<String> prefixOrder = List.of(
+        "rdf",
+        "rdfs",
+        "xsd",
+        "owl"
+    );
+
+    @Builder.Default
+    List<Resource> subjectOrder = List.of(
+        OWL2.Ontology,
+        OWL2.Class,
+        OWL2.ObjectProperty,
+        OWL2.DatatypeProperty,
+        OWL2.AnnotationProperty,
+        OWL2.NamedIndividual,
+        OWL2.AllDifferent,
+        OWL2.Axiom
+    );
+
+    @Builder.Default
+    List<Property> predicateOrder = List.of(
+        RDF.type
+    );
+
+    @Builder.Default
+    List<RDFNode> objectOrder = List.of(
+        OWL2.NamedIndividual,
+        OWL2.ObjectProperty,
+        OWL2.DatatypeProperty,
+        OWL2.AnnotationProperty,
+        OWL2.FunctionalProperty,
+        OWL2.InverseFunctionalProperty,
+        OWL2.TransitiveProperty,
+        OWL2.SymmetricProperty,
+        OWL2.AsymmetricProperty,
+        OWL2.ReflexiveProperty,
+        OWL2.IrreflexiveProperty
+    );
+
+    @Builder.Default
+    BiFunction<Resource, Integer, String> anonymousNodeIdGenerator = ( resource, integer ) -> "_:genId" + integer;
 
     public enum Alignment {
         LEFT,
