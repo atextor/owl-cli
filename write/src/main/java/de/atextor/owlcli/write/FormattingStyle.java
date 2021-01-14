@@ -124,10 +124,10 @@ public class FormattingStyle {
     boolean alignObjects = false;
 
     @Builder.Default
-    boolean alignPredicates = true;
+    boolean alignPredicates = false;
 
     @Builder.Default
-    int continuationIndentSize = 8;
+    int continuationIndentSize = 4;
 
     @Builder.Default
     boolean indentPrediates = true;
@@ -136,7 +136,7 @@ public class FormattingStyle {
     boolean insertFinalNewline = true;
 
     @Builder.Default
-    int indentSize = 4;
+    int indentSize = 2;
 
     @Builder.Default
     int maxLineLength = 100;
