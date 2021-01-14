@@ -183,29 +183,29 @@ public class FormattingStyle {
 
     @Value
     public static class KnownPrefix {
-        URI iri;
-
         String prefix;
+
+        URI iri;
     }
 
-    public static final KnownPrefix PREFIX_FMT = new KnownPrefix( URI.create( FMT.NS ), "fmt" );
+    public static final KnownPrefix PREFIX_FMT = new KnownPrefix( "fmt", URI.create( FMT.NS ) );
 
-    public static final KnownPrefix PREFIX_RDF = new KnownPrefix( URI.create( RDF.uri ), "rdf" );
+    public static final KnownPrefix PREFIX_RDF = new KnownPrefix( "rdf", URI.create( RDF.uri ) );
 
-    public static final KnownPrefix PREFIX_RDFS = new KnownPrefix( URI.create( RDFS.uri ), "rdfs" );
+    public static final KnownPrefix PREFIX_RDFS = new KnownPrefix( "rdfs", URI.create( RDFS.uri ) );
 
-    public static final KnownPrefix PREFIX_XSD = new KnownPrefix( URI.create( XSD.NS ), "xsd" );
+    public static final KnownPrefix PREFIX_XSD = new KnownPrefix( "xsd", URI.create( XSD.NS ) );
 
-    public static final KnownPrefix PREFIX_OWL = new KnownPrefix( URI.create( OWL2.NS ), "owl" );
+    public static final KnownPrefix PREFIX_OWL = new KnownPrefix( "owl", URI.create( OWL2.NS ) );
 
-    public static final KnownPrefix PREFIX_DCTERMS = new KnownPrefix( URI.create( DCTerms.NS ), "dcterms" );
+    public static final KnownPrefix PREFIX_DCTERMS = new KnownPrefix( "dcterms", URI.create( DCTerms.NS ) );
 
-    public static final KnownPrefix PREFIX_VANN = new KnownPrefix( URI
-        .create( "http://purl.org/vocab/vann/" ), "vann" );
+    public static final KnownPrefix PREFIX_VANN = new KnownPrefix( "vann",
+        URI.create( "http://purl.org/vocab/vann/" ) );
 
-    public static final KnownPrefix PREFIX_SKOS = new KnownPrefix( URI.create( SKOS.getURI() ), "skos" );
+    public static final KnownPrefix PREFIX_SKOS = new KnownPrefix( "skos", URI.create( SKOS.getURI() ) );
 
-    public static final KnownPrefix PREFIX_EX = new KnownPrefix( URI.create( "http://example.org/" ), "ex" );
+    public static final KnownPrefix PREFIX_EX = new KnownPrefix( "ex", URI.create( "http://example.org/" ) );
 
     public static Try<FormattingStyle> fromModel( final Model model ) {
         return null;
