@@ -29,9 +29,9 @@ import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.shared.PrefixMapping;
-import org.apache.jena.util.PrintUtil;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.XSD;
 import org.slf4j.Logger;
@@ -107,16 +107,18 @@ public class TurtleFormatter implements Function<Model, String> {
             .foldLeft( new State( model, predicateOrder, prefixMapping ), ( state, entry ) ->
                 state.withIdentifiedAnonymousResource( entry._1(), entry._2() ) );
 
-        PrintUtil.registerPrefixMap( prefixMapping.getNsPrefixMap() );
         final State prefixesWritten = writePrefixes( prefixMapping, initialState );
 
         final Comparator<Statement> subjectComparator =
             Comparator.comparing( statement -> statement.getSubject().isURIResource() ?
                 prefixMapping.shortForm( statement.getSubject().getURI() ) : statement.getSubject().toString() );
 
-        final Stream<Statement> statements = Stream.ofAll( style.subjectOrder ).flatMap( subjectType ->
-            statements( model, null, RDF.type, subjectType ).sorted( subjectComparator )
-                .appendAll( statements( model ).filter( statement -> !statement.getPredicate().equals( RDF.type ) ) ) );
+        final Stream<Statement> wellKnownSubjects = Stream.ofAll( style.subjectOrder ).flatMap( subjectType ->
+            statements( model, null, RDF.type, subjectType ).sorted( subjectComparator ) );
+        final Stream<Statement> otherSubjects = statements( model )
+            .filter( statement -> !statement.getPredicate().equals( RDF.type ) )
+            .sorted( subjectComparator );
+        final Stream<Statement> statements = wellKnownSubjects.appendAll( otherSubjects );
 
         final State finalState = statements
             .map( Statement::getSubject )
@@ -247,21 +249,25 @@ public class TurtleFormatter implements Function<Model, String> {
     }
 
     private State writeLiteral( final Literal literal, final State state ) {
-        if ( literal.getDatatype().getURI().equals( XSD.xboolean.getURI() ) ) {
-            return writeBooleanLiteral( literal, state );
+        if ( literal.getDatatypeURI().equals( XSD.xboolean.getURI() ) ) {
+            return state.write( literal.getBoolean() ? "true" : "false" );
         }
-        if ( literal.getDatatype().getURI().equals( XSD.integer.getURI() ) ) {
-            return writeInteger( literal, state );
+        if ( literal.getDatatypeURI().equals( XSD.xstring.getURI() ) ) {
+            return state.write( "\"" + literal.getValue().toString() + "\"" );
         }
-        return state.write( PrintUtil.print( literal ) );
-    }
+        if ( literal.getDatatypeURI().equals( XSD.decimal.getURI() ) ) {
+            return state.write( literal.getLexicalForm() );
+        }
+        if ( literal.getDatatypeURI().equals( XSD.integer.getURI() ) ) {
+            return state.write( literal.getValue().toString() );
+        }
+        if ( literal.getDatatypeURI().equals( XSD.xdouble.getURI() ) ) {
+            return state.write( "" + literal.getDouble() );
+        }
 
-    private State writeInteger( final Literal literal, final State state ) {
-        return state.write( literal.getValue().toString() );
-    }
-
-    private State writeBooleanLiteral( final Literal literal, final State state ) {
-        return state.write( literal.getBoolean() ? "true" : "false" );
+        final Resource typeResource = ResourceFactory.createResource( literal.getDatatypeURI() );
+        final State literalWritten = state.write( "\"" + literal.getLexicalForm() + "\"^^" );
+        return writeUriResource( typeResource, literalWritten );
     }
 
     private State writeRdfNode( final RDFNode node, final State state ) {
