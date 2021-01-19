@@ -318,15 +318,13 @@ public class TurtleFormatter implements Function<Model, String> {
     private State writeProperty( final Resource subject, final Property predicate, final boolean firstProperty,
                                  final boolean lastProperty, final State state ) {
         final Set<RDFNode> objects =
-            Stream.ofAll( () -> subject.listProperties( predicate ) )
-                .map( Statement::getObject ).toSet();
+            Stream.ofAll( () -> subject.listProperties( predicate ) ).map( Statement::getObject ).toSet();
 
         final boolean useComma = ( style.useCommaByDefault && !style.noCommaForPredicate.contains( predicate ) )
             || ( !style.useCommaByDefault && style.commaForPredicate.contains( predicate ) );
 
-        final State wrappedPredicate =
-            ( predicate.equals( RDF.type ) && style.rdfTypeInNewLine ) || ( firstProperty && style.alignPredicates ) ?
-                state.write( endOfLine ).write( indent( state.indentationLevel ) ) : state;
+        final State wrappedPredicate = firstProperty && style.firstPredicateInNewLIne ?
+            state.write( endOfLine ).write( indent( state.indentationLevel ) ) : state;
 
         final State predicateWrittenOnce = useComma ?
             writeProperty( predicate, wrappedPredicate ).write( " " ) : wrappedPredicate;

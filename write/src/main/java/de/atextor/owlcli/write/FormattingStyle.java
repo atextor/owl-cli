@@ -104,7 +104,7 @@ public class FormattingStyle {
     WrappingStyle wrapListItems = WrappingStyle.FOR_LONG_LINES;
 
     @Builder.Default
-    boolean rdfTypeInNewLine = false;
+    boolean firstPredicateInNewLIne = false;
 
     @Builder.Default
     boolean useAForRdfType = true;
