@@ -107,7 +107,7 @@ public class TurtleFormatter implements Function<Model, String> {
             .foldLeft( new State( model, predicateOrder, prefixMapping ), ( state, entry ) ->
                 state.withIdentifiedAnonymousResource( entry._1(), entry._2() ) );
 
-        final State prefixesWritten = writePrefixes( prefixMapping, initialState );
+        final State prefixesWritten = writePrefixes( initialState );
 
         final Comparator<Statement> subjectComparator =
             Comparator.comparing( statement -> statement.getSubject().isURIResource() ?
@@ -155,8 +155,8 @@ public class TurtleFormatter implements Function<Model, String> {
             .setNsPrefixes( prefixMap.toJavaMap() );
     }
 
-    private State writePrefixes( final PrefixMapping prefixMapping, final State state ) {
-        final Map<String, String> prefixes = HashMap.ofAll( prefixMapping.getNsPrefixMap() );
+    private State writePrefixes( final State state ) {
+        final Map<String, String> prefixes = HashMap.ofAll( state.prefixMapping.getNsPrefixMap() );
         final int maxPrefixLength = prefixes.keySet().map( String::length ).max().getOrElse( 0 );
         final String prefixFormat = switch ( style.alignPrefixes ) {
             case OFF -> "@prefix %s: <%s>" + beforeDot + ".%n";
@@ -167,7 +167,7 @@ public class TurtleFormatter implements Function<Model, String> {
         final State prefixesWritten = prefixes.toStream().sorted( prefixOrder ).foldLeft( state,
             ( newState, entry ) -> newState.write( String.format( prefixFormat, entry._1(), entry._2() ) ) );
 
-        return prefixesWritten.write( endOfLine );
+        return prefixesWritten.newLine();
     }
 
     private String indent( final int level ) {
@@ -192,13 +192,13 @@ public class TurtleFormatter implements Function<Model, String> {
         final State beforeState = switch ( before ) {
             case SPACE -> state.write( " " );
             case NOTHING -> state;
-            case NEWLINE -> state.write( endOfLine ).write( indentation );
+            case NEWLINE -> state.newLine().write( indentation );
         };
 
         return switch ( after ) {
             case SPACE -> beforeState.write( delimiter + " " );
             case NOTHING -> beforeState.write( delimiter );
-            case NEWLINE -> beforeState.write( delimiter + endOfLine ).write( indentation );
+            case NEWLINE -> beforeState.write( delimiter ).newLine().write( indentation );
         };
     }
 
@@ -209,7 +209,7 @@ public class TurtleFormatter implements Function<Model, String> {
 
     private State writeSemicolon( final State state ) {
         return writeDelimiter( ";", style.beforeSemicolon, style.afterSemicolon,
-            indent( state.indentationLevel ), state );
+            style.alignPredicates ? "" : indent( state.indentationLevel ), state );
     }
 
     private State writeDot( final State state ) {
@@ -295,8 +295,10 @@ public class TurtleFormatter implements Function<Model, String> {
         final State indentedSubject = state.write( indent( state.indentationLevel ) );
         // subject
         final State stateWithSubject = writeResource( resource, indentedSubject )
-            .withVisitedResource( resource )
-            .write( " " );
+            .withVisitedResource( resource );
+        final State gapAfterSubject = style.firstPredicateInNewLine ? stateWithSubject : stateWithSubject.write( " " );
+
+        final int predicateAlignment = style.firstPredicateInNewLine ? style.indentSize : gapAfterSubject.alignment;
 
         // predicates and objects
         final Set<Property> properties = Stream.ofAll( resource::listProperties )
@@ -311,23 +313,27 @@ public class TurtleFormatter implements Function<Model, String> {
                 final int index = indexedProperty._2();
                 final boolean firstProperty = index == 0;
                 final boolean lastProperty = index == properties.size() - 1;
-                return writeProperty( resource, property, firstProperty, lastProperty, currentState );
+                return writeProperty( resource, property, firstProperty, lastProperty, predicateAlignment,
+                    currentState );
             } );
     }
 
     private State writeProperty( final Resource subject, final Property predicate, final boolean firstProperty,
-                                 final boolean lastProperty, final State state ) {
+                                 final boolean lastProperty, final int alignment, final State state ) {
         final Set<RDFNode> objects =
             Stream.ofAll( () -> subject.listProperties( predicate ) ).map( Statement::getObject ).toSet();
 
         final boolean useComma = ( style.useCommaByDefault && !style.noCommaForPredicate.contains( predicate ) )
             || ( !style.useCommaByDefault && style.commaForPredicate.contains( predicate ) );
 
-        final State wrappedPredicate = firstProperty && style.firstPredicateInNewLIne ?
-            state.write( endOfLine ).write( indent( state.indentationLevel ) ) : state;
+        final State wrappedPredicate = firstProperty && style.firstPredicateInNewLine ?
+            state.newLine().write( indent( state.indentationLevel ) ) : state;
+
+        final State predicateAlignment = !firstProperty && style.alignPredicates ?
+            wrappedPredicate.write( " ".repeat( alignment ) ) : wrappedPredicate;
 
         final State predicateWrittenOnce = useComma ?
-            writeProperty( predicate, wrappedPredicate ).write( " " ) : wrappedPredicate;
+            writeProperty( predicate, predicateAlignment ).write( " " ) : predicateAlignment;
 
         return Stream
             .ofAll( objects )
@@ -347,7 +353,7 @@ public class TurtleFormatter implements Function<Model, String> {
 
                 }
                 if ( lastProperty && lastObject ) {
-                    return writeDot( objectWritten ).write( endOfLine );
+                    return writeDot( objectWritten ).newLine();
                 }
                 return writeSemicolon( objectWritten );
             } );
@@ -356,7 +362,7 @@ public class TurtleFormatter implements Function<Model, String> {
     @Value
     @With
     @AllArgsConstructor
-    private static class State {
+    private class State {
         StringBuffer buffer;
 
         Model model;
@@ -371,9 +377,11 @@ public class TurtleFormatter implements Function<Model, String> {
 
         int indentationLevel;
 
+        int alignment;
+
         public State( final Model model, final Comparator<Property> predicateOrder,
                       final PrefixMapping prefixMapping ) {
-            this( new StringBuffer(), model, HashSet.empty(), HashMap.empty(), predicateOrder, prefixMapping, 0 );
+            this( new StringBuffer(), model, HashSet.empty(), HashMap.empty(), predicateOrder, prefixMapping, 0, 0 );
         }
 
         public State withIdentifiedAnonymousResource( final Resource anonymousResource, final String id ) {
@@ -388,11 +396,15 @@ public class TurtleFormatter implements Function<Model, String> {
             return withIndentationLevel( indentationLevel + 1 );
         }
 
+        public State newLine() {
+            return write( endOfLine ).withAlignment( 0 );
+        }
+
         public State write( final String content ) {
             // Interface pretends to use immutable data structures, while the implementation actually reuses the
             // same StringBuffer
             buffer.append( content );
-            return withBuffer( buffer );
+            return withAlignment( alignment + content.length() );
         }
 
         public String print() {
