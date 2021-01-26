@@ -18,6 +18,7 @@ package de.atextor.owlcli.write;
 import io.vavr.Tuple2;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.HashSet;
+import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.collection.Set;
 import io.vavr.collection.Stream;
@@ -81,13 +82,13 @@ public class TurtleFormatter implements Function<Model, String> {
         ).thenComparing( RDFNode::toString );
     }
 
-    private static Stream<Statement> statements( final Model model ) {
-        return Stream.ofAll( model::listStatements );
+    private static List<Statement> statements( final Model model ) {
+        return List.ofAll( model.listStatements().toList() );
     }
 
-    private static Stream<Statement> statements( final Model model, final Resource subject, final Property predicate,
-                                                 final RDFNode object ) {
-        return Stream.ofAll( () -> model.listStatements( subject, predicate, object ) );
+    private static List<Statement> statements( final Model model, final Resource subject, final Property predicate,
+                                               final RDFNode object ) {
+        return List.ofAll( model.listStatements( subject, predicate, object ).toList() );
     }
 
     @Override
@@ -113,17 +114,20 @@ public class TurtleFormatter implements Function<Model, String> {
             Comparator.comparing( statement -> statement.getSubject().isURIResource() ?
                 prefixMapping.shortForm( statement.getSubject().getURI() ) : statement.getSubject().toString() );
 
-        final Stream<Statement> wellKnownSubjects = Stream.ofAll( style.subjectOrder ).flatMap( subjectType ->
+        final List<Statement> wellKnownSubjects = List.ofAll( style.subjectOrder ).flatMap( subjectType ->
             statements( model, null, RDF.type, subjectType ).sorted( subjectComparator ) );
-        final Stream<Statement> otherSubjects = statements( model )
+        final List<Statement> otherSubjects = statements( model )
             .filter( statement -> !statement.getPredicate().equals( RDF.type ) )
             .sorted( subjectComparator );
-        final Stream<Statement> statements = wellKnownSubjects.appendAll( otherSubjects );
+        final List<Statement> statements = wellKnownSubjects.appendAll( otherSubjects )
+            .filter( statement -> !( statement.getSubject().isAnon()
+                && model.contains( null, null, statement.getSubject() ) ) );
 
         final State finalState = statements
             .map( Statement::getSubject )
             .foldLeft( prefixesWritten, ( state, resource ) ->
-                writeSubject( resource, state.withIndentationLevel( 0 ) ) );
+                resource.isURIResource() ? writeSubject( resource, state.withIndentationLevel( 0 ) ) :
+                    writeAnonymousResource( resource, state.withIndentationLevel( 0 ) ) );
 
         LOG.debug( "Written {} resources, with {} named anonymous resources", finalState.visitedResources.size(),
             finalState.identifiedAnonymousResources.size() );
@@ -207,28 +211,51 @@ public class TurtleFormatter implements Function<Model, String> {
             continuationIndent( state.indentationLevel ), state );
     }
 
-    private State writeSemicolon( final State state ) {
-        return writeDelimiter( ";", style.beforeSemicolon, style.afterSemicolon,
+    private State writeSemicolon( final State state, final boolean omitLineBreak,
+                                  final boolean omitSpaceBeforeSemicolon ) {
+        final FormattingStyle.GapStyle beforeSemicolon = omitSpaceBeforeSemicolon ? FormattingStyle.GapStyle.NOTHING :
+            style.beforeSemicolon;
+        final FormattingStyle.GapStyle afterSemicolon = omitLineBreak ? FormattingStyle.GapStyle.NOTHING :
+            style.afterSemicolon;
+        return writeDelimiter( ";", beforeSemicolon, afterSemicolon,
             style.alignPredicates ? "" : indent( state.indentationLevel ), state );
     }
 
-    private State writeDot( final State state ) {
-        return writeDelimiter( ".", style.beforeDot, style.afterDot, "", state );
+    private State writeDot( final State state, final boolean omitSpaceBeforeDot ) {
+        final FormattingStyle.GapStyle beforeDot = omitSpaceBeforeDot ? FormattingStyle.GapStyle.NOTHING :
+            style.beforeDot;
+        return writeDelimiter( ".", beforeDot, style.afterDot, "", state );
+    }
+
+    private State writeOpeningSquareBracket( final State state ) {
+        final FormattingStyle.GapStyle beforeBracket = state.indentationLevel > 0 ? style.beforeOpeningSquareBracket :
+            FormattingStyle.GapStyle.NOTHING;
+        return writeDelimiter( "[", beforeBracket, style.afterOpeningSquareBracket,
+            indent( state.indentationLevel ), state );
+    }
+
+    private State writeClosingSquareBracket( final State state ) {
+        return writeDelimiter( "]", style.beforeClosingSquareBracket, style.afterClosingSquareBracket,
+            indent( state.indentationLevel ), state );
+    }
+
+    private boolean isList( final RDFNode node, final State state ) {
+        return node.equals( RDF.nil ) ||
+            ( node.isResource() && state.model.contains( node.asResource(), RDF.rest, (RDFNode) null ) );
     }
 
     private State writeResource( final Resource resource, final State state ) {
+        if ( isList( resource, state ) ) {
+            return writeList( resource, state );
+        }
         if ( resource.isURIResource() ) {
-            if ( resource.equals( RDF.nil ) || state.model.contains( resource, RDF.rest, (RDFNode) null ) ) {
-                return writeList( resource, state );
-            }
-
             return writeUriResource( resource, state );
         }
         return writeAnonymousResource( resource, state );
     }
 
     private State writeList( final Resource resource, final State state ) {
-        return state;
+        return state.write( "()" );
     }
 
     private State writeAnonymousResource( final Resource resource, final State state ) {
@@ -236,8 +263,9 @@ public class TurtleFormatter implements Function<Model, String> {
             return state.write( "[]" );
 
         }
-
-        return state.write( "[...]" );
+        final State afterOpeningSquareBracket = writeOpeningSquareBracket( state );
+        final State afterContent = writeSubject( resource, afterOpeningSquareBracket ).removeIndentationLevel();
+        return writeClosingSquareBracket( afterContent );
     }
 
     private State writeUriResource( final Resource resource, final State state ) {
@@ -297,9 +325,12 @@ public class TurtleFormatter implements Function<Model, String> {
         // indent
         final State indentedSubject = state.write( indent( state.indentationLevel ) );
         // subject
-        final State stateWithSubject = writeResource( resource, indentedSubject )
-            .withVisitedResource( resource );
-        final State gapAfterSubject = style.firstPredicateInNewLine ? stateWithSubject : stateWithSubject.write( " " );
+        final State stateWithSubject =
+            resource.isURIResource() ? writeResource( resource, indentedSubject ).withVisitedResource( resource ) :
+                indentedSubject.withVisitedResource( resource );
+
+        final State gapAfterSubject = style.firstPredicateInNewLine || resource.isAnon() ?
+            stateWithSubject : stateWithSubject.write( " " );
 
         final int predicateAlignment = style.firstPredicateInNewLine ? style.indentSize : gapAfterSubject.alignment;
 
@@ -311,7 +342,7 @@ public class TurtleFormatter implements Function<Model, String> {
             .ofAll( properties )
             .sorted( state.predicateOrder )
             .zipWithIndex()
-            .foldLeft( stateWithSubject.indentedOnce(), ( currentState, indexedProperty ) -> {
+            .foldLeft( stateWithSubject.addIndentationLevel(), ( currentState, indexedProperty ) -> {
                 final Property property = indexedProperty._1();
                 final int index = indexedProperty._2();
                 final boolean firstProperty = index == 0;
@@ -348,17 +379,21 @@ public class TurtleFormatter implements Function<Model, String> {
                 final boolean lastObject = index == objects.size() - 1;
 
                 final State predicateWritten = useComma ? currentState :
-                    writeProperty( predicate, currentState ).write( " " );
+                    writeProperty( predicate, currentState );
 
-                final State objectWritten = writeRdfNode( object, predicateWritten );
+                final State spaceWritten = ( !object.isAnon() || isList( object, predicateWritten ) ) && !useComma ?
+                    predicateWritten.write( " " ) :
+                    predicateWritten;
+
+                final State objectWritten = writeRdfNode( object, spaceWritten );
                 if ( useComma && !lastObject ) {
                     return writeComma( objectWritten );
+                }
 
+                if ( lastProperty && lastObject && objectWritten.indentationLevel == 1 ) {
+                    return writeDot( objectWritten, object.isAnon() ).newLine();
                 }
-                if ( lastProperty && lastObject ) {
-                    return writeDot( objectWritten ).newLine();
-                }
-                return writeSemicolon( objectWritten );
+                return writeSemicolon( objectWritten, lastProperty && lastObject, object.isAnon() );
             } );
     }
 
@@ -395,8 +430,12 @@ public class TurtleFormatter implements Function<Model, String> {
             return withVisitedResources( visitedResources.add( visitedResource ) );
         }
 
-        public State indentedOnce() {
+        public State addIndentationLevel() {
             return withIndentationLevel( indentationLevel + 1 );
+        }
+
+        public State removeIndentationLevel() {
+            return withIndentationLevel( indentationLevel - 1 );
         }
 
         public State newLine() {
