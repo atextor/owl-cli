@@ -108,6 +108,8 @@ public class TurtleFormatterTest {
             :foo6 :bar "2021-01-01"^^xsd:date .
 
             :foo7 :bar "something"^^:custom .
+
+            :foo8 :bar "something"@en .
             """;
         final Model model = modelFromString( modelString );
         final FormattingStyle style = FormattingStyle.builder()
