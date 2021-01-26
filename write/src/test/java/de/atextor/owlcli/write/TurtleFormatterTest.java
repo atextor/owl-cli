@@ -32,18 +32,19 @@ public class TurtleFormatterTest {
     @Test
     public void testPrefixAlignmentLeft() {
         final Model model = prefixModel();
-        final FormattingStyle offStyle = FormattingStyle.builder()
+        final FormattingStyle style = FormattingStyle.builder()
             .knownPrefixes( Set.of() )
             .beforeDot( FormattingStyle.GapStyle.SPACE )
             .alignPrefixes( FormattingStyle.Alignment.LEFT )
             .build();
-        final TurtleFormatter offFormatter = new TurtleFormatter( offStyle );
-        final String result = offFormatter.apply( model );
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
         final String expected = """
             @prefix       : <http://example.com/> .
             @prefix a     : <http://example.com/a> .
             @prefix abc   : <http://example.com/abc> .
             @prefix abcdef: <http://example.com/abc> .
+
             """;
         assertThat( result ).isEqualTo( expected );
     }
@@ -51,18 +52,19 @@ public class TurtleFormatterTest {
     @Test
     public void testPrefixAlignmentOff() {
         final Model model = prefixModel();
-        final FormattingStyle offStyle = FormattingStyle.builder()
+        final FormattingStyle style = FormattingStyle.builder()
             .knownPrefixes( Set.of() )
             .beforeDot( FormattingStyle.GapStyle.SPACE )
             .alignPrefixes( FormattingStyle.Alignment.OFF )
             .build();
-        final TurtleFormatter offFormatter = new TurtleFormatter( offStyle );
-        final String result = offFormatter.apply( model );
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
         final String expected = """
             @prefix : <http://example.com/> .
             @prefix a: <http://example.com/a> .
             @prefix abc: <http://example.com/abc> .
             @prefix abcdef: <http://example.com/abc> .
+
             """;
         assertThat( result ).isEqualTo( expected );
     }
@@ -70,47 +72,103 @@ public class TurtleFormatterTest {
     @Test
     public void testPrefixAlignmentRight() {
         final Model model = prefixModel();
-        final FormattingStyle offStyle = FormattingStyle.builder()
+        final FormattingStyle style = FormattingStyle.builder()
             .knownPrefixes( Set.of() )
             .beforeDot( FormattingStyle.GapStyle.SPACE )
             .alignPrefixes( FormattingStyle.Alignment.RIGHT )
             .build();
-        final TurtleFormatter offFormatter = new TurtleFormatter( offStyle );
-        final String result = offFormatter.apply( model );
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
         final String expected = """
             @prefix       : <http://example.com/> .
             @prefix      a: <http://example.com/a> .
             @prefix    abc: <http://example.com/abc> .
             @prefix abcdef: <http://example.com/abc> .
+
             """;
         assertThat( result ).isEqualTo( expected );
     }
 
     @Test
     public void testLiterals() {
-        final Model model = modelFromString( """
-                @prefix : <http://example.com/> .
-                @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-                :foo1 :bar 1 .
-                :foo2 :bar "2" .
-                :foo3 :bar true .
-                :foo4 :bar -5.0 .
-                :foo5 :bar 4.2E9 .
-                :foo6 :bar "2021-01-01"^^xsd:date .
-                :foo7 :bar "something"^^:custom .
-            """ );
+        final String modelString = """
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix : <http://example.com/> .
 
-        final FormattingStyle offStyle = FormattingStyle.builder()
+            :foo1 :bar 1 .
+
+            :foo2 :bar "2" .
+
+            :foo3 :bar true .
+
+            :foo4 :bar -5.0 .
+
+            :foo5 :bar 4.2E9 .
+
+            :foo6 :bar "2021-01-01"^^xsd:date .
+
+            :foo7 :bar "something"^^:custom .
+            """;
+        final Model model = modelFromString( modelString );
+        final FormattingStyle style = FormattingStyle.builder()
             .knownPrefixes( Set.of() )
             .build();
-        final TurtleFormatter offFormatter = new TurtleFormatter( offStyle );
-        final String result = offFormatter.apply( model );
-        System.out.println( result );
-        final Model model2 = modelFromString( result );
-        model.write( System.out, "TURTLE" );
-        System.out.println( "--" );
-        model2.write( System.out, "TURTLE" );
-        assertThat( model.isIsomorphicWith( model2 ) ).isTrue();
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
+        assertThat( result.trim() ).isEqualTo( modelString.trim() );
+    }
+
+    @Test
+    public void testPredicateAlignmentWithFirstPredicateInSameLine() {
+        final String modelString = """
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix : <http://example.com/> .
+
+            :foo1 :bar1 1 ;
+                  :bar2 2 ;
+                  :bar3 3 .
+
+            :something :bar1 1 ;
+                       :bar2 2 ;
+                       :bar3 3 .
+            """;
+        final Model model = modelFromString( modelString );
+
+        final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .alignPredicates( true )
+            .firstPredicateInNewLine( false )
+            .build();
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
+        assertThat( result.trim() ).isEqualTo( modelString.trim() );
+    }
+
+    @Test
+    public void testPredicateAlignmentWithFirstPredicateInNewLine() {
+        final String modelString = """
+            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+            @prefix : <http://example.com/> .
+
+            :foo1
+              :bar1 1 ;
+              :bar2 2 ;
+              :bar3 3 .
+
+            :something
+              :bar1 1 ;
+              :bar2 2 ;
+              :bar3 3 .
+            """;
+        final Model model = modelFromString( modelString );
+
+        final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .firstPredicateInNewLine( true )
+            .build();
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
+        assertThat( result.trim() ).isEqualTo( modelString.trim() );
     }
 
     @Test
