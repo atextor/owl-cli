@@ -264,6 +264,9 @@ public class TurtleFormatter implements Function<Model, String> {
         if ( literal.getDatatypeURI().equals( XSD.xdouble.getURI() ) ) {
             return state.write( "" + literal.getDouble() );
         }
+        if ( literal.getDatatypeURI().equals( RDF.langString.getURI() ) ) {
+            return state.write( "\"" + literal.getLexicalForm() + "\"@" + literal.getLanguage() );
+        }
 
         final Resource typeResource = ResourceFactory.createResource( literal.getDatatypeURI() );
         final State literalWritten = state.write( "\"" + literal.getLexicalForm() + "\"^^" );
