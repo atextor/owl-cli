@@ -17,6 +17,8 @@ package de.atextor.owlcli.write;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.ResourceFactory;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -24,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -167,6 +170,33 @@ public class TurtleFormatterTest {
         final FormattingStyle style = FormattingStyle.builder()
             .knownPrefixes( Set.of() )
             .firstPredicateInNewLine( true )
+            .build();
+        final TurtleFormatter formatter = new TurtleFormatter( style );
+        final String result = formatter.apply( model );
+        assertThat( result.trim() ).isEqualTo( modelString.trim() );
+    }
+
+    @Test
+    public void testMultipleReferencedAnonNodes() {
+        // Note how the anonymous node can not be serialized using [ ] because it is referenced multiple times.
+        final String modelString = """
+            @prefix : <http://example.com/> .
+
+            :a :foo _:gen0 ;
+              :bar 1 .
+
+            :b :foo _:gen0 .
+
+            _:gen0 :bar 2 .
+            """;
+        final Model model = modelFromString( modelString );
+
+        final String ex = "http://example.com/";
+        final Property foo = ResourceFactory.createProperty( ex + "foo" );
+        final Property bar = ResourceFactory.createProperty( ex + "bar" );
+        final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .predicateOrder( List.of( foo, bar ) )
             .build();
         final TurtleFormatter formatter = new TurtleFormatter( style );
         final String result = formatter.apply( model );
