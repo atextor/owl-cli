@@ -123,11 +123,15 @@ public class TurtleFormatter implements Function<Model, String> {
             .filter( statement -> !( statement.getSubject().isAnon()
                 && model.contains( null, null, statement.getSubject() ) ) );
 
-        final State finalState = statements
+        final State namedResourcesWritten = statements
             .map( Statement::getSubject )
             .foldLeft( prefixesWritten, ( state, resource ) ->
                 resource.isURIResource() ? writeSubject( resource, state.withIndentationLevel( 0 ) ) :
                     writeAnonymousResource( resource, state.withIndentationLevel( 0 ) ) );
+
+        final State finalState = List.ofAll( namedResourcesWritten.identifiedAnonymousResources.keySet() )
+            .foldLeft( namedResourcesWritten, ( state, resource ) ->
+                writeSubject( resource, state.withIndentationLevel( 0 ) ) );
 
         LOG.debug( "Written {} resources, with {} named anonymous resources", finalState.visitedResources.size(),
             finalState.identifiedAnonymousResources.size() );
@@ -143,7 +147,7 @@ public class TurtleFormatter implements Function<Model, String> {
      * @return the set of anonymous resources that are referred to more than once
      */
     private Set<Resource> anonymousResourcesThatNeedAnId( final Model model ) {
-        return Stream.ofAll( model::listObjects )
+        return List.ofAll( model::listObjects )
             .filter( RDFNode::isResource )
             .map( RDFNode::asResource )
             .filter( RDFNode::isAnon )
@@ -259,6 +263,10 @@ public class TurtleFormatter implements Function<Model, String> {
     }
 
     private State writeAnonymousResource( final Resource resource, final State state ) {
+        if ( state.identifiedAnonymousResources.keySet().contains( resource ) ) {
+            return state.write( state.identifiedAnonymousResources.getOrElse( resource, "" ) );
+        }
+
         if ( !state.model.contains( resource, null, (RDFNode) null ) ) {
             return state.write( "[]" );
 
@@ -325,11 +333,12 @@ public class TurtleFormatter implements Function<Model, String> {
         // indent
         final State indentedSubject = state.write( indent( state.indentationLevel ) );
         // subject
-        final State stateWithSubject =
-            resource.isURIResource() ? writeResource( resource, indentedSubject ).withVisitedResource( resource ) :
-                indentedSubject.withVisitedResource( resource );
+        final boolean isIdentifiedAnon = state.identifiedAnonymousResources.keySet().contains( resource );
+        final State stateWithSubject = resource.isURIResource() || isIdentifiedAnon ?
+            writeResource( resource, indentedSubject ).withVisitedResource( resource ) :
+            indentedSubject.withVisitedResource( resource );
 
-        final State gapAfterSubject = style.firstPredicateInNewLine || resource.isAnon() ?
+        final State gapAfterSubject = style.firstPredicateInNewLine || ( resource.isAnon() && !isIdentifiedAnon ) ?
             stateWithSubject : stateWithSubject.write( " " );
 
         final int predicateAlignment = style.firstPredicateInNewLine ? style.indentSize : gapAfterSubject.alignment;
@@ -381,7 +390,9 @@ public class TurtleFormatter implements Function<Model, String> {
                 final State predicateWritten = useComma ? currentState :
                     writeProperty( predicate, currentState );
 
-                final State spaceWritten = ( !object.isAnon() || isList( object, predicateWritten ) ) && !useComma ?
+                final boolean isAnonWithBrackets = object.isAnon()
+                    && !predicateWritten.identifiedAnonymousResources.keySet().contains( object.asResource() );
+                final State spaceWritten = ( !isAnonWithBrackets || isList( object, predicateWritten ) ) && !useComma ?
                     predicateWritten.write( " " ) :
                     predicateWritten;
 
@@ -390,10 +401,12 @@ public class TurtleFormatter implements Function<Model, String> {
                     return writeComma( objectWritten );
                 }
 
+                final boolean omitSpaceBeforeDelimiter = object.isResource() && object.isAnon()
+                    && !currentState.identifiedAnonymousResources.keySet().contains( object.asResource() );
                 if ( lastProperty && lastObject && objectWritten.indentationLevel == 1 ) {
-                    return writeDot( objectWritten, object.isAnon() ).newLine();
+                    return writeDot( objectWritten, omitSpaceBeforeDelimiter ).newLine();
                 }
-                return writeSemicolon( objectWritten, lastProperty && lastObject, object.isAnon() );
+                return writeSemicolon( objectWritten, lastProperty && lastObject, omitSpaceBeforeDelimiter );
             } );
     }
 

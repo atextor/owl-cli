@@ -189,7 +189,7 @@ public class FormattingStyle {
     );
 
     @Builder.Default
-    BiFunction<Resource, Integer, String> anonymousNodeIdGenerator = ( resource, integer ) -> "_:genId" + integer;
+    BiFunction<Resource, Integer, String> anonymousNodeIdGenerator = ( resource, integer ) -> "_:gen" + integer;
 
     public enum Alignment {
         LEFT,
