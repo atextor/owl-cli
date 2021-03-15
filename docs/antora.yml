@@ -1,5 +1,9 @@
 name: main
 title: owl-cli
 version: snapshot
+asciidoc:
+  attributes:
+    page-component-version: snapshot
 nav:
 - modules/ROOT/nav.adoc
+
