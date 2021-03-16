@@ -41,6 +41,8 @@ jobs:
           echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
           source $HOME/.sdkman/bin/sdkman-init.sh
           sdk update
+          ls /etc/apt/sources.list.d
+          find /etc/apt -type f -name '*.list' -exec sed -i -e '/dl.bintray.com\/sbt/d' "{}" \;
           sudo apt-get update
           echo msttcorefonts msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
           sudo apt-get install ttf-mscorefonts-installer
