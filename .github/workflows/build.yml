@@ -60,7 +60,9 @@ jobs:
           java -version
           rm -rf .cache
       - name: Gradle build
-        run: ./gradlew clean test check jacocoTestReport antora --stacktrace
+        run: |-
+          ./gradlew --stop
+          ./gradlew clean test check jacocoTestReport antora --stacktrace --no-daemon
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
