@@ -54,6 +54,9 @@ jobs:
           sdk use java 21.0.0.2.r11-grl
           gu install native-image
           unset _JAVA_OPTIONS
+          echo Path settings: $PATH
+          which native-image
+          which java
           java -version
           rm -rf .cache
       - name: Gradle build
