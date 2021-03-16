@@ -22,8 +22,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,14 +50,19 @@ public class RdfWriterTest {
         return new ByteArrayInputStream( turtleDocument.getBytes() );
     }
 
-    private boolean canBeParsedAs( final String document, final String format, final int expectedNumberOfStatements ) {
+    private Model parseModel( final String document, final String format ) {
         final Model model = ModelFactory.createDefaultModel();
         try {
             model.read( new StringReader( document ), "", format );
+            return model;
         } catch ( final Throwable t ) {
-            return false;
+            return null;
         }
-        return model.listStatements().toList().size() == expectedNumberOfStatements;
+    }
+
+    private boolean canBeParsedAs( final String document, final String format, final int expectedNumberOfStatements ) {
+        final Model model = parseModel( document, format );
+        return model != null && model.listStatements().toList().size() == expectedNumberOfStatements;
     }
 
     @Test
@@ -102,5 +109,19 @@ public class RdfWriterTest {
         assertThat( canBeParsedAs( out.toString(), "TURTLE", 8 ) ).isFalse();
         assertThat( canBeParsedAs( out.toString(), "N-TRIPLE", 8 ) ).isFalse();
         assertThat( canBeParsedAs( out.toString(), "RDF/XML", 8 ) ).isTrue();
+    }
+
+    @Test
+    public void testReadFromUrl() throws IOException {
+        final URL url = new URL( "http://purl.org/atextor/ontology/turtle-formatting" );
+        final Configuration configuration = Configuration.builder()
+            .inputFormat( Configuration.Format.TURTLE )
+            .outputFormat( Configuration.Format.TURTLE ).build();
+
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final Try<Void> result = writer.write( url, out, configuration );
+
+        assertThat( result ).hasSize( 1 );
+        assertThat( parseModel( out.toString(), "TURTLE" ) ).isNotNull();
     }
 }
