@@ -21,23 +21,38 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class RdfWriter {
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
 
     private static final Logger LOG = LoggerFactory.getLogger( RdfWriter.class );
 
-    public Try<Void> write( final String inputUrl, final OutputStream output, final Configuration configuration ) {
-        final Model model = ModelFactory.createDefaultModel();
+    public Try<Void> write( final URL inputUrl, final OutputStream output, final Configuration configuration ) {
         try {
-            model.read( inputUrl, configurationFormatToJenaFormat( configuration.inputFormat ) );
-            model.write( output, configurationFormatToJenaFormat( configuration.outputFormat ) );
-        } catch ( final Throwable t ) {
-            return Try.failure( t );
+            final HttpClient client = HttpClient.newBuilder()
+                .followRedirects( HttpClient.Redirect.ALWAYS )
+                .build();
+            final HttpRequest request = HttpRequest.newBuilder()
+                .uri( inputUrl.toURI() )
+                .build();
+            final HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
+            if ( response.statusCode() == HttpURLConnection.HTTP_OK ) {
+                final ByteArrayInputStream inputStream = new ByteArrayInputStream( response.body().getBytes() );
+                return write( inputStream, output, configuration );
+            }
+            return Try.failure( new RuntimeException( "Got unexpected HTTP response: " + response.statusCode() ) );
+        } catch ( final Exception exception ) {
+            LOG.debug( "Failure during reading from URL: {}", inputUrl );
+            return Try.failure( exception );
         }
-        return Try.success( null );
     }
 
     public Try<Void> write( final InputStream input, final OutputStream output, final Configuration configuration ) {
@@ -46,8 +61,9 @@ public class RdfWriter {
         try {
             model.read( input, configuration.base, configurationFormatToJenaFormat( configuration.inputFormat ) );
             model.write( output, configurationFormatToJenaFormat( configuration.outputFormat ) );
-        } catch ( final Throwable t ) {
-            return Try.failure( t );
+        } catch ( final Exception exception ) {
+            LOG.debug( "Failure during RDF I/O", exception );
+            return Try.failure( exception );
         }
         return Try.success( null );
     }

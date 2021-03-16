@@ -21,6 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @CommandLine.Command( name = "write",
     description = "Read a given RDF document and write it out, possibly in a different format",
     descriptionHeading = "%n@|bold Description|@:%n%n",
@@ -66,10 +69,15 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
         if ( input.toLowerCase().startsWith( "http:" ) || input.toLowerCase().startsWith( "https:" ) ) {
             final Configuration configuration = configurationBuilder.build();
-            openOutput( input, output != null ? output : "-", "ttl" )
-                .map( outputStream -> writer.write( input, outputStream, configuration ) )
-                .onFailure( this::exitWithErrorMessage );
-            return;
+            try {
+                final URL inputUrl = new URL( input );
+                openOutput( input, output != null ? output : "-", "ttl" )
+                    .map( outputStream -> writer.write( inputUrl, outputStream, configuration ) )
+                    .onFailure( this::exitWithErrorMessage );
+                return;
+            } catch ( final MalformedURLException exception ) {
+                exitWithErrorMessage( exception );
+            }
         }
 
         openInput( input ).flatMap( inputStream -> {
