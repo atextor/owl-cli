@@ -1,0 +1,86 @@
+name: build
+
+on:
+  push:
+    branches: 'main'
+    tags-ignore:
+      - 'v**'
+  pull_request:
+    branches: '*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os: [ ubuntu ]
+    env:
+      OS: ${{ matrix.os }}
+    name: On ${{ matrix.os }}
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup environment
+        # - Install SDKMAN
+        # - Install msttcorefonts, so we have the Verdana font available for diagram generation
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Clean Antora cache
+        run: |-
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          sudo apt-get update
+          echo msttcorefonts msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+          sudo apt-get install ttf-mscorefonts-installer
+          sudo apt-get install -y graphviz
+          sudo apt-get install -y build-essential libz-dev
+          sdk list java
+          sdk install java 15.0.2-open || true
+          sdk install java 21.0.0.2.r11-grl || true
+          sdk use java 21.0.0.2.r11-grl
+          gu install native-image
+          unset _JAVA_OPTIONS
+          java -version
+          rm -rf .cache
+      - name: Gradle build
+        run: ./gradlew clean test check jacocoTestReport antora --stacktrace
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          name: codecov-umbrella
+          env_vars: OS,USED_JAVA
+      - name: Push snapshot release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "snapshot"
+          prerelease: true
+          title: "Snapshot Build"
+          files: |-
+            cli/build/libs/owl-cli.jar
+            cli/build/bin/owl
+      - name: Deploy GH Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build/site
+
+  buildDone:
+    name: Build Ok
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Ok
+        run: echo 'all builds passed'
