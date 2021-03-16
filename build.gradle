@@ -17,7 +17,11 @@ allprojects {
 def currentTag = {
     def grgit = grgit.open{ dir = "${projectDir}" }
     def tag = grgit.describe{ tags = true }
-    tag.startsWith('snapshot') ? 'snapshot' : tag.replace('v', '')
+    if (tag != null) {
+        tag.startsWith('snapshot') ? 'snapshot' : tag.replace('v', '')
+    } else {
+        'snapshot'
+    }
 }
 
 subprojects {
