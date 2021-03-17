@@ -51,21 +51,24 @@ shadowJar {
     archiveClassifier = null
 }
 
-def nativeImageCommandLine = ['native-image', '--verbose', '-jar', "${buildDir}/libs/owl-cli-${version}.jar", "${buildDir}/bin/owl"]
+def nativeImageBinary = file("${homeDir}/.sdkman/candidates/java/21.0.0.2.r11-grl/lib/svm/bin/native-image")
+def nativeImageArgs = ['--verbose', '-jar', "${buildDir}/libs/owl-cli-${version}.jar", "${buildDir}/bin/owl"]
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     doFirst {
-        println nativeImageCommandLine.join(' ')
+        println nativeImageArgs.join(' ')
     }
-    commandLine nativeImageCommandLine
+    executable nativeImageBinary
+    args nativeImageArgs
     inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
     outputs.file file("${buildDir}/bin/owl")
 }
 
 task nativeImagePass2(type: Exec, dependsOn: "nativeImage") {
     doFirst {
-        println nativeImageCommandLine.join(' ')
+        println nativeImageArgs.join(' ')
     }
-    commandLine nativeImageCommandLine
+    executable nativeImageBinary
+    args nativeImageArgs
     inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
     outputs.file file("${buildDir}/bin/owl")
 }
