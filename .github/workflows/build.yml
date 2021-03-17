@@ -58,11 +58,11 @@ jobs:
           which native-image
           which java
           java -version
+          file `which native-image`
+          native-image --version
           rm -rf .cache
       - name: Gradle build
-        run: |-
-          ./gradlew --stop
-          ./gradlew clean test check jacocoTestReport antora --stacktrace --no-daemon
+        run: ./gradlew clean test check jacocoTestReport antora --stacktrace --no-daemon
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
