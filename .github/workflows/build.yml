@@ -62,7 +62,7 @@ jobs:
           native-image --version
           rm -rf .cache
       - name: Gradle build
-        run: ./gradlew clean test check jacocoTestReport antora --stacktrace --no-daemon
+        run: ./gradlew clean test check jacocoRootReport antora --stacktrace --no-daemon
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
