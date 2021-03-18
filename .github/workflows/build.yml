@@ -67,15 +67,15 @@ jobs:
           env_vars: OS
       - name: Prepare Artifacts
         run: |-
-          mv cli/build/bin/owl owl-x86_64-linux
-          mv cli/build/libs/owl-cli.jar .
+          mv cli/build/bin/owl owl-x86_64-linux-snapshot
+          mv cli/build/libs/owl-cli-snapshot.jar .
       - name: Upload Linux Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-linux
           path: |
-            owl-x86_64-linux
-            owl-cli.jar
+            owl-x86_64-linux-snapshot
+            owl-cli-snapshot.jar
       - name: Deploy GH Pages
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
@@ -125,12 +125,12 @@ jobs:
       - name: Gradle Build
         run: ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
       - name: Prepare Artifacts
-        run: mv cli/build/bin/owl owl-x86_64-apple-darwin
+        run: mv cli/build/bin/owl owl-x86_64-apple-darwin-snapshot
       - name: Upload Macos Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-macos
-          path: owl-x86_64-apple-darwin
+          path: owl-x86_64-apple-darwin-snapshot
 
   publish:
     needs: [build-linux, build-macos]
@@ -156,9 +156,9 @@ jobs:
           prerelease: true
           title: "Snapshot Build"
           files: |-
-            owl-cli.jar
-            owl-x86_64-linux
-            owl-x86_64-apple-darwin
+            owl-cli-snapshot.jar
+            owl-x86_64-linux-snapshot
+            owl-x86_64-apple-darwin-snapshot
 
   buildDone:
     name: Build Ok
