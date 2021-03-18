@@ -9,17 +9,14 @@ on:
     branches: '*'
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}-latest
+  build-linux:
+    runs-on: ubuntu-latest
     timeout-minutes: 30
-    strategy:
-      matrix:
-        os: [ ubuntu ]
     env:
-      OS: ${{ matrix.os }}
-    name: On ${{ matrix.os }}
+      OS: Ubuntu
+    name: ubuntu
     steps:
-      - name: Check out repo
+      - name: Check Out Repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
@@ -29,7 +26,7 @@ jobs:
           path: ~/.gradle/caches/
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: ${{ runner.os }}-gradle-
-      - name: Setup environment
+      - name: Setup Environment
         # - Install SDKMAN
         # - Install msttcorefonts, so we have the Verdana font available for diagram generation
         # - Install graphviz, so we have the dot binary available for diagram generation
@@ -61,14 +58,97 @@ jobs:
           file `which native-image`
           native-image --version
           rm -rf .cache
-      - name: Gradle build
+      - name: Gradle Build
         run: ./gradlew clean test check jacocoRootReport antora --stacktrace --no-daemon
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           name: codecov-umbrella
-          env_vars: OS,USED_JAVA
-      - name: Push snapshot release
+          env_vars: OS
+      - name: Prepare Artifacts
+        run: |-
+          mv cli/build/bin/owl owl-x86_64-linux
+          mv cli/build/libs/owl-cli.jar .
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-linux
+          path: |
+            owl-x86_64-linux
+            owl-cli.jar
+      - name: Deploy GH Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: build/site
+
+  build-macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      OS: Macos
+    name: macos
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup Environment
+        # - Install SDKMAN
+        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Clean Antora cache
+        run: |-
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          sdk list java
+          sdk install java 15.0.2-open || true
+          sdk install java 21.0.0.2.r11-grl || true
+          sdk use java 21.0.0.2.r11-grl
+          gu install native-image
+          unset _JAVA_OPTIONS
+          echo Path settings: $PATH
+          which native-image
+          which java
+          java -version
+          file `which native-image`
+          native-image --version
+          rm -rf .cache
+      - name: Gradle Build
+        run: ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
+      - name: Prepare Artifacts
+        run: mv cli/build/bin/owl owl-x86_64-apple-darwin
+      - name: Upload Macos Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-macos
+          path: owl-x86_64-apple-darwin
+
+  publish:
+    needs: [build-linux, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fetch Linux Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-linux
+      - name: Fetch Macos Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-macos
+      - name: Push Snapshot Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -76,17 +156,13 @@ jobs:
           prerelease: true
           title: "Snapshot Build"
           files: |-
-            cli/build/libs/owl-cli.jar
-            cli/build/bin/owl
-      - name: Deploy GH Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
-        with:
-          branch: gh-pages
-          folder: build/site
+            owl-cli.jar
+            owl-x86_64-linux
+            owl-x86_64-apple-darwin
 
   buildDone:
     name: Build Ok
-    needs: build
+    needs: publish
     runs-on: ubuntu-latest
     steps:
       - name: Build Ok
