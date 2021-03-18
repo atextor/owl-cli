@@ -59,7 +59,9 @@ jobs:
           native-image --version
           rm -rf .cache
       - name: Gradle Build
-        run: ./gradlew clean test check jacocoRootReport antora --stacktrace --no-daemon
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check jacocoRootReport antora --stacktrace --no-daemon
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
@@ -123,7 +125,9 @@ jobs:
           native-image --version
           rm -rf .cache
       - name: Gradle Build
-        run: ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
       - name: Prepare Artifacts
         run: mv cli/build/bin/owl owl-x86_64-apple-darwin-snapshot
       - name: Upload Macos Artifacts
