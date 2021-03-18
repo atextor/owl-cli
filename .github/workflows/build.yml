@@ -103,6 +103,7 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle-
       - name: Setup Environment
         # - Install SDKMAN
+        # - Install graphviz, so we have the dot binary available for diagram generation
         # - Install JDK 15 and GraalVM 20.1 (JDK 11)
         # - Clean Antora cache
         run: |-
@@ -111,6 +112,7 @@ jobs:
           echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
           source $HOME/.sdkman/bin/sdkman-init.sh
           sdk update
+          brew install graphviz
           sdk list java
           sdk install java 15.0.2-open || true
           sdk install java 21.0.0.2.r11-grl || true
