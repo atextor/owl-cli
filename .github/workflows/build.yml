@@ -138,8 +138,65 @@ jobs:
           name: artifacts-macos
           path: owl-x86_64-apple-darwin-snapshot
 
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      OS: Windows
+    name: windows
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup Environment
+        # - Install SDKMAN
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Clean Antora cache
+        run: |-
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          choco install graphviz
+          sdk list java
+          sdk install java 15.0.2-open || true
+          sdk install java 21.0.0.2.r11-grl || true
+          sdk use java 21.0.0.2.r11-grl
+          gu install native-image
+          unset _JAVA_OPTIONS
+          echo Path settings: $PATH
+          which native-image
+          which java
+          java -version
+          file `which native-image`
+          native-image --version
+          rm -rf .cache
+        shell: bash
+      - name: Gradle Build
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
+        shell: bash
+      - name: Prepare Artifacts
+        run: mv cli/build/bin/owl owl-x86_64-windows-snapshot.exe
+        shell: bash
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-windows
+          path: owl-x86_64-windows-snapshot.exe
+
   publish:
-    needs: [build-linux, build-macos]
+    needs: [build-linux, build-macos, build-windows]
     runs-on: ubuntu-latest
     steps:
       - name: Check Out Repo
@@ -154,6 +211,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts-macos
+      - name: Fetch Windows Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-windows
       - name: Push Snapshot Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -165,6 +226,7 @@ jobs:
             owl-cli-snapshot.jar
             owl-x86_64-linux-snapshot
             owl-x86_64-apple-darwin-snapshot
+            owl-x86_64-windows-snapshot.exe
 
   buildDone:
     name: Build Ok
