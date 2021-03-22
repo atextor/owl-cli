@@ -173,8 +173,9 @@ jobs:
           sdk install java 15.0.2-open || true
           sdk install java 21.0.0.2.r11-grl || true
           sdk use java 21.0.0.2.r11-grl
-          export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
           echo Path settings: $PATH
+          export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
+          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/21.0.0.2.r11-grl
           gu install native-image
           unset _JAVA_OPTIONS
           which native-image
