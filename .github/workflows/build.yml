@@ -161,12 +161,14 @@ jobs:
         # - Install JDK 15 and GraalVM 20.1 (JDK 11)
         # - Clean Antora cache
         run: |-
+          choco install zip
+          choco install unzip
+          choco install graphviz
           curl -sL https://get.sdkman.io | bash
           echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
           echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
           source $HOME/.sdkman/bin/sdkman-init.sh
           sdk update
-          choco install graphviz
           sdk list java
           sdk install java 15.0.2-open || true
           sdk install java 21.0.0.2.r11-grl || true
