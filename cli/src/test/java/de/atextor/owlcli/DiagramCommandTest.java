@@ -17,7 +17,6 @@ package de.atextor.owlcli;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
@@ -32,8 +31,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 public class DiagramCommandTest {
-    @TempDir
-    File tempDir;
 
     private byte[] fileContent( final File file ) {
         try {
@@ -67,8 +64,10 @@ public class DiagramCommandTest {
     @ParameterizedTest
     @ArgumentsSource( ResourceArgumentsProvider.class )
     public void testDiagramGeneration( final String testFileName ) throws IOException {
+        final Path tempDir = Files.createTempDirectory( "owldiagram" );
+
         final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
-        final File output = tempDir.toPath().resolve( testFileName + ".ttl" ).toFile();
+        final File output = tempDir.resolve( testFileName + ".ttl" ).toFile();
 
         FileUtils.copyURLToFile( input, output );
         assertThat( output ).isFile();
@@ -84,15 +83,15 @@ public class DiagramCommandTest {
         assertThat( result.getStdOut() ).isEmpty();
         assertThat( result.getStdErr() ).isEmpty();
 
-        final Path workingDirectory = tempDir.toPath();
-        final Path resourceDirectory = workingDirectory.resolve( "static" );
-        assertThat( resourceDirectory.toFile().isDirectory() ).isTrue();
-
-        final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
+        final File writtenFile = tempDir.resolve( testFileName + ".svg" ).toFile();
         assertThat( writtenFile ).isFile();
         assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
 
-        Files.delete( output.toPath() );
-        Files.delete( writtenFile.toPath() );
+        try {
+            FileUtils.deleteDirectory( tempDir.toFile() );
+        } catch ( final Exception e ) {
+            e.printStackTrace();
+            fail( "Could not delete temp directory " + tempDir );
+        }
     }
 }
