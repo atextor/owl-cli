@@ -24,6 +24,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static de.atextor.owlcli.MainClassRunner.run;
@@ -85,10 +86,13 @@ public class DiagramCommandTest {
 
         final Path workingDirectory = tempDir.toPath();
         final Path resourceDirectory = workingDirectory.resolve( "static" );
-        assertThat( resourceDirectory.toFile().isDirectory() );
+        assertThat( resourceDirectory.toFile().isDirectory() ).isTrue();
 
         final File writtenFile = workingDirectory.resolve( testFileName + ".svg" ).toFile();
         assertThat( writtenFile ).isFile();
         assertThat( fileContent( writtenFile ) ).contains( "<svg".getBytes() );
+
+        Files.delete( output.toPath() );
+        Files.delete( writtenFile.toPath() );
     }
 }
