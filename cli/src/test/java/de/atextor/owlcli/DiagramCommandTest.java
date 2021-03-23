@@ -73,6 +73,7 @@ public class DiagramCommandTest {
         assertThat( output ).isFile();
         assertThat( fileContent( output ) ).isNotEmpty();
 
+        System.out.println( "Running: diagram " + output.getAbsolutePath() );
         final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", output.getAbsolutePath() } );
         final MainClassRunner.ExecutionResult result = run( command );
 
