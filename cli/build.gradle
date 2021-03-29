@@ -31,9 +31,6 @@ dependencies {
     // Override transitive dependency versions due to vulns
     implementation(deps.guava)
     implementation(deps.jackson_databind)
-    implementation(deps.rdf4j_util)
-    implementation(deps.rdf4j_rio_rdfxml)
-    implementation(deps.rdf4j_rio_trix)
     implementation(deps.httpclient)
     implementation(deps.commons_codec)
 
@@ -44,6 +41,24 @@ dependencies {
     testImplementation(deps.assertj)
     testImplementation(deps.classgraph)
     testRuntimeOnly(deps.junit_jupiter_engine)
+}
+
+configurations.all {
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-model"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-api"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-languages"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-datatypes"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-binary"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-n3"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-nquads"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-ntriples"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-rdfjson"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-jsonld"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-rdfxml"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-trix"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-trig"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-rio-turtle"
+    exclude group: "org.eclipse.rdf4j", module: "rdf4j-util"
 }
 
 shadowJar {

@@ -25,9 +25,6 @@ dependencies {
 
     // Override transitive dependency versions due to vulns
     implementation(deps.jackson_databind)
-    implementation(deps.rdf4j_util)
-    implementation(deps.rdf4j_rio_rdfxml)
-    implementation(deps.rdf4j_rio_trix)
     implementation(deps.httpclient)
     implementation(deps.commons_codec)
 

@@ -13,9 +13,6 @@ ext.deps = [
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.16',
     picocli:                 'info.picocli:picocli:4.5.1',
     picocli_codegen:         'info.picocli:picocli-codegen:4.5.1',
-    rdf4j_rio_rdfxml:        'org.eclipse.rdf4j:rdf4j-rio-rdfxml:3.4.2',
-    rdf4j_rio_trix:          'org.eclipse.rdf4j:rdf4j-rio-trix:3.4.2',
-    rdf4j_util:              'org.eclipse.rdf4j:rdf4j-util:3.4.2',
     slf4j_api:               'org.slf4j:slf4j-api:1.7.30',
     vavr:                    'io.vavr:vavr:0.10.3',
 
