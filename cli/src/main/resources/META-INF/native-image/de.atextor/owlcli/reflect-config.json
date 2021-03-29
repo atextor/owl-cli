@@ -1,23 +1,28 @@
 [
 {
   "name": "ch.qos.logback.classic.pattern.DateConverter",
-  "allDeclaredConstructors": true
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.pattern.LevelConverter",
-  "allDeclaredConstructors": true
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.pattern.LineSeparatorConverter",
-  "allDeclaredConstructors": true
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.pattern.LoggerConverter",
-  "allDeclaredConstructors": true
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"ch.qos.logback.classic.pattern.MessageConverter",
-  "allDeclaredConstructors": true
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name": "ch.qos.logback.classic.pattern.ThrowableProxyConverter",
@@ -221,6 +226,14 @@
   "fields":[{"name":"tableBusy", "allowUnsafeAccess":true}]
 },
 {
+  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.datatype.DatatypeFactoryImpl",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"de.atextor.owlcli.AbstractCommand",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
@@ -249,13 +262,29 @@
   "allDeclaredMethods":true
 },
 {
+  "name":"java.io.FilePermission"
+},
+{
   "name":"java.lang.Object",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
 {
+  "name":"java.lang.RuntimePermission"
+},
+{
   "name":"java.lang.Thread",
   "fields":[{"name":"threadLocalRandomProbe", "allowUnsafeAccess":true}]
+},
+{
+  "name":"java.net.NetPermission"
+},
+{
+  "name":"java.net.SocketPermission"
+},
+{
+  "name":"java.net.URLPermission",
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String"] }]
 },
 {
   "name":"java.nio.file.Path"
@@ -263,6 +292,12 @@
 {
   "name":"java.nio.file.Paths",
   "methods":[{"name":"get","parameterTypes":["java.lang.String","java.lang.String[]"] }]
+},
+{
+  "name":"java.security.AllPermission"
+},
+{
+  "name":"java.security.SecurityPermission"
 },
 {
   "name":"java.sql.Connection"
@@ -340,6 +375,9 @@
 {
   "name":"java.time.ZonedDateTime",
   "methods":[{"name":"parse","parameterTypes":["java.lang.CharSequence"] }]
+},
+{
+  "name":"java.util.PropertyPermission"
 },
 {
   "name":"org.apache.jena.ext.com.google.common.cache.Striped64",
