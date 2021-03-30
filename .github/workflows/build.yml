@@ -189,7 +189,7 @@ jobs:
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
-          ./gradlew clean test check nativeImagePass2 --stacktrace --no-daemon
+          ./gradlew clean test check nativeImagePass2 --info --stacktrace --no-daemon
         shell: bash
       - name: Prepare Artifacts
         run: mv cli/build/bin/owl owl-x86_64-windows-snapshot.exe

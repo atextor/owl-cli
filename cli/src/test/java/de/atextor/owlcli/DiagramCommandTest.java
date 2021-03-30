@@ -80,6 +80,13 @@ public class DiagramCommandTest {
         System.out.println( result.getStdOut() );
         System.out.println( result.getStdErr() );
 
+        if ( result.getExitStatus() != 0 ) {
+            System.out.println( "Something went wrong:" );
+            System.out.println( "=== stdout ===" );
+            System.out.println( result.getStdOut() );
+            System.out.println( "=== stderr ===" );
+            System.out.println( result.getStdErr() );
+        }
         assertThat( result.getExitStatus() ).isEqualTo( 0 );
         assertThat( result.getStdOut() ).isEmpty();
         assertThat( result.getStdErr() ).isEmpty();
