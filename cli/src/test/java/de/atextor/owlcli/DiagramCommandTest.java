@@ -98,8 +98,7 @@ public class DiagramCommandTest {
         try {
             FileUtils.deleteDirectory( tempDir.toFile() );
         } catch ( final Exception e ) {
-            e.printStackTrace();
-            fail( "Could not delete temp directory " + tempDir );
+            System.err.println( "Warning: Could not delete temp directory " + tempDir );
         }
     }
 }
