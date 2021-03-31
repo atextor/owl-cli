@@ -3,6 +3,7 @@ title: owl-cli
 version: snapshot
 asciidoc:
   attributes:
+    release-version: snapshot
     page-component-version: snapshot
 nav:
 - modules/ROOT/nav.adoc

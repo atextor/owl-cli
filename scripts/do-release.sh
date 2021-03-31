@@ -43,6 +43,7 @@ git add docs/modules/ROOT/assets/images/*.svg
 # Set versions
 sed -i -e 's/version: snapshot/version: '$version'/g' docs/antora.yml
 sed -i -e 's/page-component-version: snapshot/page-component-version: '$tag'/g' docs/antora.yml
+sed -i -e 's/release-version: snapshot/release-version: '$version'/g' docs/antora.yml
 sed -i -e 's/snapshot/'$version'/g' gradle.properties
 git add docs/antora.yml
 git add gradle.properties

@@ -18,14 +18,32 @@ image::splash.svg[width=75%]
 
 Things you will need to have installed to run *owl-cli*:
 
-* Java (OpenJDK) *11* or newer
-* https://www.graphviz.org/[Graphviz] for the generation of diagrams. Note that this is a common
-  package that can be installed via all popular package managers, for example `apt-get`, `brew` or
-  `rpm`.
+* https://www.graphviz.org/[Graphviz] for the generation of diagrams.
+** Install in Windows (using https://chocolatey.org/[Chocolatey]): `choco install graphviz`
+** Install in MacOs (using https://brew.sh/[Brew]): `brew install graphviz`
+** Install in Ubuntu/Debian Linux: `apt install graphviz`
 
-=== Download and install
+* If using the executable .jar file: Java (OpenJDK) *11* or newer
 
-Open your favorite terminal emulator and execute the following commands:
+=== Download and Install `owl-cli`
+
+Download the pre-built binary for your platform:
+
+* Windows (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-windows-{release-version}.exe[owl-x86_64-windows-{release-version}.exe]
+* MacOs (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-apple-darwin-{release-version}[owl-x86_64-apple-darwin-{release-version}]
+* Linux (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-linux-{release-version}[owl-x86_64-linux-{release-version}]
+* Other platforms or architectures: Please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]
+
+Rename the binary to `owl.exe` (Windows) or `owl` (MacOs/Linux), put it in your favorite directory
+and add this directory to the PATH environment variable:
+
+* Windows: `setx /M path "%path%;C:\your\path\here\"`
+* MacOs/Linux: `echo 'export PATH=/your/path/here:$PATH' >> ~/.bashrc; source ~/.bashrc`
+
+[NOTE]
+====
+If using the executable .jar file, the following commands will make the jar available as `owl`
+command as well. This works in MacOs and Linux.
 
 [source,shell]
 ----
@@ -33,10 +51,11 @@ curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/a
 echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
+====
 
 After installation, you can use the `owl` command: See xref:usage.adoc[] for more information.
 
-== Building from source
+== Building from Source
 
 [[building-executable-jar]]
 === Building the executable JAR from source
@@ -102,8 +121,8 @@ source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDKs
 sdk install java 15.0.2-open
-sdk install java 20.1.0.r11-grl
-sdk use java 20.1.0.r11-grl
+sdk install java 21.0.0.2.r11-grl
+sdk use java 21.0.0.2.r11-grl
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
