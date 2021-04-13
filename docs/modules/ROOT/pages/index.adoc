@@ -23,8 +23,6 @@ Things you will need to have installed to run *owl-cli*:
 ** Install in MacOs (using https://brew.sh/[Brew]): `brew install graphviz`
 ** Install in Ubuntu/Debian Linux: `apt install graphviz`
 
-* If using the executable .jar file: Java (OpenJDK) *11* or newer
-
 === Download and Install `owl-cli`
 
 Download the pre-built binary for your platform:
@@ -32,7 +30,8 @@ Download the pre-built binary for your platform:
 * Windows (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-windows-{release-version}.exe[owl-x86_64-windows-{release-version}.exe]
 * MacOs (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-apple-darwin-{release-version}[owl-x86_64-apple-darwin-{release-version}]
 * Linux (x86_64): https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-linux-{release-version}[owl-x86_64-linux-{release-version}]
-* Other platforms or architectures: Please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]
+* Other platforms or architectures: Please use the executable .jar file:
+  https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]. This requires Java (OpenJDK) *11* or newer.
 
 Rename the binary to `owl.exe` (Windows) or `owl` (MacOs/Linux), put it in your favorite directory
 and add this directory to the PATH environment variable:
@@ -100,19 +99,25 @@ After that, you can use the `owl` command: See xref:usage.adoc[] for more inform
 [[building-native-image]]
 === Building the native image (executable binary) from source
 
-NOTE: The following steps have only been tested on Linux, as of now
-
 *owl-cli* uses Java 15 source features, but the build generates a Java 11-compatible JAR file, which
- is required for the generation of the native image using https://www.graalvm.org/[GraalVM], as
- GraalVM currently does not support Java 15 class files. This means, for building the native image,
- you need both Java *11* (i.e. GraalVM JDK) *and* Java *15*. In particular, the `gradle` build must
- be executed using Java 11, while Java 15 is installed in a certain place where the build can
- find it. We rely on the locations as used by https://sdkman.io/[SDKMAN!].
+is required for the generation of the native image using https://www.graalvm.org/[GraalVM], as
+GraalVM currently does not support Java 15 class files. This means, for building the native image,
+you need both Java *11* (i.e. GraalVM JDK) *and* Java *15*. In particular, the `gradle` build must
+be executed using Java 11, while Java 15 is installed in a certain place where the build can
+find it. We rely on the locations as used by https://sdkman.io/[SDKMAN!].
+
+The following instructions assume a BASH shell. On MacOs and Linux this is the default shell; on
+Windows you would have to use e.g. https://gitforwindows.org/[Git Bash] or
+https://docs.microsoft.com/en-us/windows/wsl/install-win10[WSL2].
 
 Run the following commands:
 
 [source,shell]
 ----
+# Windows only: SDKMAN! installation requires zip/unzip:
+choco install zip
+choco install unzip
+
 # The following commands install SDKMAN!. If you have it installed already, you can skip it.
 curl -sL https://get.sdkman.io | bash
 echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
@@ -123,6 +128,11 @@ source $HOME/.sdkman/bin/sdkman-init.sh
 sdk install java 15.0.2-open
 sdk install java 21.0.0.2.r11-grl
 sdk use java 21.0.0.2.r11-grl
+# Use GraalVM's update tool to install the native-image command
+gu install native-image
+
+# Ubuntu only: Install build dependencies
+sudo apt-get install -y build-essential libz-dev
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
