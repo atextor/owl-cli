@@ -110,15 +110,21 @@ The following instructions assume a BASH shell. On MacOs and Linux this is the d
 Windows you would have to use e.g. https://gitforwindows.org/[Git Bash] or
 https://docs.microsoft.com/en-us/windows/wsl/install-win10[WSL2].
 
+Also on Windows, you will need to install Microsoft Visual C++. Please follow the
+https://www.graalvm.org/docs/getting-started/windows/[GraalVM installation instructions].
+
 Run the following commands:
 
 [source,shell]
 ----
+# The following commands install SDKMAN!. If you have it installed already,
+# you can skip it.
+# Ubuntu only: SDKMAN! installation requires zip/unzip:
+sudo apt-get install zip unzip
 # Windows only: SDKMAN! installation requires zip/unzip:
 choco install zip
 choco install unzip
-
-# The following commands install SDKMAN!. If you have it installed already, you can skip it.
+# Install SDKMAN!
 curl -sL https://get.sdkman.io | bash
 echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
 echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
@@ -128,7 +134,7 @@ source $HOME/.sdkman/bin/sdkman-init.sh
 sdk install java 15.0.2-open
 sdk install java 21.0.0.2.r11-grl
 sdk use java 21.0.0.2.r11-grl
-# Use GraalVM's update tool to install the native-image command
+# Use GraalVMs update tool to install the native-image command
 gu install native-image
 
 # Ubuntu only: Install build dependencies
