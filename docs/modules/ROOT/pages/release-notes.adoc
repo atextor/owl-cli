@@ -1,0 +1,7 @@
+// -*- fill-column: 100; -*-
+= Release Notes
+
+== Version 1.0.0
+
+* This is the first released version.
+* It supports the xref:usage.adoc#diagram-command[diagram] command to automatically generate diagrams from OWL ontologies.
