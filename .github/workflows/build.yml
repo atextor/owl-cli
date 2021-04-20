@@ -199,15 +199,15 @@ jobs:
           source $HOME/.sdkman/bin/sdkman-init.sh
           ./gradlew clean test check nativeImagePass2 --info --stacktrace --no-daemon
         shell: bash
+      - name: Prepare Artifacts
+        run: mv cli/build/bin/owl owl-x86_64-windows-snapshot.exe
+        shell: bash
       - name: Run UPX
         uses: crazy-max/ghaction-upx@v1.4.0
         with:
           version: latest
-          files: cli/build/bin/owl
+          files: ./cli/build/bin/*.exe
           args: -9
-      - name: Prepare Artifacts
-        run: mv cli/build/bin/owl owl-x86_64-windows-snapshot.exe
-        shell: bash
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v2
         with:
