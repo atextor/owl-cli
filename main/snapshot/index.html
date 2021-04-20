@@ -45,7 +45,7 @@
     <a class="nav-link" href="usage.html">Usage</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="#release-notes.adoc">Release Notes</a>
+    <a class="nav-link" href="release-notes.html">Release Notes</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="diagram-notation.html">Diagram Notation</a>
@@ -130,20 +130,73 @@ generation of automatically layed out diagrams for an OWL ontology.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Java (OpenJDK) <strong>11</strong> or newer</p>
+<p><a href="https://www.graphviz.org/">Graphviz</a> for the generation of diagrams.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Install in Windows (using <a href="https://chocolatey.org/">Chocolatey</a>): <code>choco install graphviz</code></p>
 </li>
 <li>
-<p><a href="https://www.graphviz.org/">Graphviz</a> for the generation of diagrams. Note that this is a common
-package that can be installed via all popular package managers, for example <code>apt-get</code>, <code>brew</code> or
-<code>rpm</code>.</p>
+<p>Install in MacOs (using <a href="https://brew.sh/">Brew</a>): <code>brew install graphviz</code></p>
+</li>
+<li>
+<p>Install in Ubuntu/Debian Linux: <code>apt install graphviz</code></p>
+</li>
+</ul>
+</div>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="download-and-install"><a class="anchor" href="#download-and-install"></a>Download and install</h3>
+<h3 id="download-and-install-owl-cli"><a class="anchor" href="#download-and-install-owl-cli"></a>Download and Install <code>owl-cli</code></h3>
 <div class="paragraph">
-<p>Open your favorite terminal emulator and execute the following commands:</p>
+<p>Download the pre-built binary for your platform:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><a class="image" href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-windows-snapshot.exe"><img src="_images/icon-windows.png" alt="icon windows" width="70"></a></span></p>
+<p class="tableblock"><a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-windows-snapshot.exe">owl-x86_64-windows-snapshot.exe</a></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><a class="image" href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-apple-darwin-snapshot"><img src="_images/icon-apple.png" alt="icon apple" width="70"></a></span></p>
+<p class="tableblock"><a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-apple-darwin-snapshot">owl-x86_64-apple-darwin-snapshot</a></p></td>
+<td class="tableblock halign-center valign-middle"><p class="tableblock"><span class="image"><a class="image" href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-linux-snapshot"><img src="_images/icon-linux.png" alt="icon linux" width="70"></a></span></p>
+<p class="tableblock"><a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-x86_64-linux-snapshot">owl-x86_64-linux-snapshot</a></p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>For other platforms or architectures, please use the executable .jar file: <a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar">owl-cli-snapshot.jar</a>. This requires Java (OpenJDK) <strong>11</strong> or newer.</p>
+</div>
+<div class="paragraph">
+<p>Rename the binary to <code>owl.exe</code> (Windows) or <code>owl</code> (MacOs/Linux), put it in your favorite directory
+and add this directory to the PATH environment variable:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Windows: <code>setx /M path "%path%;C:\your\path\here\"</code></p>
+</li>
+<li>
+<p>MacOs/Linux: <code>echo 'export PATH=/your/path/here:$PATH' &gt;&gt; ~/.bashrc; source ~/.bashrc</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>If using the executable .jar file, the following commands will make the jar available as <code>owl</code>
+command as well. This works in MacOs and Linux.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -152,6 +205,10 @@ echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' &gt;&
 source ~/.bashrc</code></pre>
 </div>
 </div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>After installation, you can use the <code>owl</code> command: See <a href="usage.html" class="page">Usage</a> for more information.</p>
 </div>
@@ -159,7 +216,7 @@ source ~/.bashrc</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="building-from-source"><a class="anchor" href="#building-from-source"></a>Building from source</h2>
+<h2 id="building-from-source"><a class="anchor" href="#building-from-source"></a>Building from Source</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="building-executable-jar"><a class="anchor" href="#building-executable-jar"></a>Building the executable JAR from source</h3>
@@ -207,32 +264,36 @@ source ~/.bashrc</code></pre>
 </div>
 <div class="sect2">
 <h3 id="building-native-image"><a class="anchor" href="#building-native-image"></a>Building the native image (executable binary) from source</h3>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The following steps have only been tested on Linux, as of now
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p><strong>owl-cli</strong> uses Java 15 source features, but the build generates a Java 11-compatible JAR file, which
- is required for the generation of the native image using <a href="https://www.graalvm.org/">GraalVM</a>, as
- GraalVM currently does not support Java 15 class files. This means, for building the native image,
- you need both Java <strong>11</strong> (i.e. GraalVM JDK) <strong>and</strong> Java <strong>15</strong>. In particular, the <code>gradle</code> build must
- be executed using Java 11, while Java 15 is installed in a certain place where the build can
- find it. We rely on the locations as used by <a href="https://sdkman.io/">SDKMAN!</a>.</p>
+is required for the generation of the native image using <a href="https://www.graalvm.org/">GraalVM</a>, as
+GraalVM currently does not support Java 15 class files. This means, for building the native image,
+you need both Java <strong>11</strong> (i.e. GraalVM JDK) <strong>and</strong> Java <strong>15</strong>. In particular, the <code>gradle</code> build must
+be executed using Java 11, while Java 15 is installed in a certain place where the build can
+find it. We rely on the locations as used by <a href="https://sdkman.io/">SDKMAN!</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following instructions assume a BASH shell. On MacOs and Linux this is the default shell; on
+Windows you would have to use e.g. <a href="https://gitforwindows.org/">Git Bash</a> or
+<a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">WSL2</a>.</p>
+</div>
+<div class="paragraph">
+<p>Also on Windows, you will need to install Microsoft Visual C++. Please follow the
+<a href="https://www.graalvm.org/docs/getting-started/windows/">GraalVM installation instructions</a>.</p>
 </div>
 <div class="paragraph">
 <p>Run the following commands:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># The following commands install SDKMAN!. If you have it installed already, you can skip it.
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># The following commands install SDKMAN!. If you have it installed already,
+# you can skip it.
+# Ubuntu only: SDKMAN! installation requires zip/unzip:
+sudo apt-get install zip unzip
+# Windows only: SDKMAN! installation requires zip/unzip:
+choco install zip
+choco install unzip
+# Install SDKMAN!
 curl -sL https://get.sdkman.io | bash
 echo sdkman_auto_answer=true &gt; $HOME/.sdkman/etc/config
 echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
@@ -240,8 +301,13 @@ source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDKs
 sdk install java 15.0.2-open
-sdk install java 20.1.0.r11-grl
-sdk use java 20.1.0.r11-grl
+sdk install java 21.0.0.2.r11-grl
+sdk use java 21.0.0.2.r11-grl
+# Use GraalVMs update tool to install the native-image command
+gu install native-image
+
+# Ubuntu only: Install build dependencies
+sudo apt-get install -y build-essential libz-dev
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
