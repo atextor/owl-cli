@@ -7,13 +7,14 @@ ext.deps = [
     httpclient:              'org.apache.httpcomponents:httpclient:4.5.12',
     jabel:                   'com.github.bsideup.jabel:jabel-javac-plugin:0.3.0',
     jackson_databind:        'com.fasterxml.jackson.core:jackson-databind:2.11.2',
-    jena:                    'org.apache.jena:jena:3.16.0',
-    jena_core:               'org.apache.jena:jena-core:3.16.0',
+    jena:                    'org.apache.jena:jena:3.17.0',
+    jena_core:               'org.apache.jena:jena-core:3.17.0',
     logback:                 'ch.qos.logback:logback-classic:1.2.3',
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.16',
     picocli:                 'info.picocli:picocli:4.5.1',
     picocli_codegen:         'info.picocli:picocli-codegen:4.5.1',
     slf4j_api:               'org.slf4j:slf4j-api:1.7.30',
+    turtle_formatter:        'de.atextor:turtle-formatter:1.1.0',
     vavr:                    'io.vavr:vavr:0.10.3',
 
     // Test

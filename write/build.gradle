@@ -14,6 +14,7 @@ dependencies {
     implementation(deps.jena)
     implementation(deps.jena_core)
     implementation(deps.slf4j_api)
+    implementation(deps.turtle_formatter)
     implementation(deps.vavr)
     annotationProcessor(deps.jabel)
 

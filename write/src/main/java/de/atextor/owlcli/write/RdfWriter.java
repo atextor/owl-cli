@@ -15,6 +15,8 @@
 
 package de.atextor.owlcli.write;
 
+import de.atextor.turtle.formatter.FormattingStyle;
+import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -60,11 +62,20 @@ public class RdfWriter {
 
         try {
             model.read( input, configuration.base, configurationFormatToJenaFormat( configuration.inputFormat ) );
+            if ( configuration.outputFormat == Configuration.Format.TURTLE ) {
+                return writeTurtle( model, output );
+            }
             model.write( output, configurationFormatToJenaFormat( configuration.outputFormat ) );
         } catch ( final Exception exception ) {
             LOG.debug( "Failure during RDF I/O", exception );
             return Try.failure( exception );
         }
+        return Try.success( null );
+    }
+
+    public Try<Void> writeTurtle( final Model model, final OutputStream output ) {
+        final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+        formatter.accept( model, output );
         return Try.success( null );
     }
 

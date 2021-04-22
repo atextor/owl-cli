@@ -387,11 +387,7 @@
   ]
 },
 {
-  "name":"org.apache.jena.n3.N3TurtleJenaWriter",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
-  "name":"org.apache.jena.n3.turtle.TurtleReader",
+  "name":"org.apache.jena.ttl.turtle.TurtleReader",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
