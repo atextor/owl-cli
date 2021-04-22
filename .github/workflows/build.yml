@@ -206,7 +206,7 @@ jobs:
         uses: crazy-max/ghaction-upx@v1.4.0
         with:
           version: latest
-          files: ./cli/build/bin/*.exe
+          files: ./*.exe
           args: -9
       - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v2
