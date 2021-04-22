@@ -1,10 +1,10 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'com.github.ben-manes.versions' version "0.33.0"
-    id 'com.adarshr.test-logger' version '2.1.0' apply false
+    id 'com.github.ben-manes.versions' version '0.38.0'
+    id 'com.adarshr.test-logger' version '3.0.0' apply false
     id 'io.franzbecker.gradle-lombok' version '4.0.0' apply false
-    id 'com.github.johnrengelman.shadow' version '6.0.0' apply false
+    id 'com.github.johnrengelman.shadow' version '6.1.0' apply false
     id 'org.ajoberstar.grgit' version '4.1.0'
 }
 
