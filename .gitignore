@@ -18,3 +18,5 @@ docs/modules/ROOT/assets/images/*.svg
 **/.jqwik-database
 
 **/src/generated/java
+
+*/lombok.config

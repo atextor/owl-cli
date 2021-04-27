@@ -3,7 +3,7 @@ plugins {
     id 'application'
     id 'jacoco'
     id 'com.github.johnrengelman.shadow'
-    id 'io.franzbecker.gradle-lombok'
+    id 'io.freefair.lombok'
     id 'com.adarshr.test-logger'
 }
 
@@ -23,7 +23,6 @@ dependencies {
     implementation(deps.picocli)
     implementation(deps.logback)
     annotationProcessor(deps.picocli_codegen)
-    annotationProcessor(deps.jabel)
 
     // Override transitive dependency versions due to features
     implementation(deps.caffeine)
@@ -66,7 +65,7 @@ shadowJar {
     archiveClassifier = null
 }
 
-def nativeImageBinary = file("${homeDir}/.sdkman/candidates/java/21.0.0.2.r11-grl/lib/svm/bin/native-image")
+def nativeImageBinary = file("${homeDir}/.sdkman/candidates/java/21.1.0.r16-grl/lib/svm/bin/native-image")
 def nativeImageArgs = ['--verbose', '-jar', "${buildDir}/libs/owl-cli-${version}.jar", "${buildDir}/bin/owl"]
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     doFirst {
@@ -117,18 +116,14 @@ sourceSets {
 }
 
 compileJava {
-    options.fork = true
-    options.forkOptions.javaHome = file("${homeDir}/.sdkman/candidates/java/15.0.2-open")
-    options.compilerArgs += ["--release", "11", "-processor", "${lombokAnnotationProcessor},${lombokClaimingProcessor},${picocliProcessor}"]
-    sourceCompatibility = 15
-    targetCompatibility = 11
+    sourceCompatibility = 16
+    targetCompatibility = 16
     dependsOn(generateStaticProperties)
 }
 
 compileTestJava {
-    options.compilerArgs += ["--release", "11"]
-    sourceCompatibility = 15
-    targetCompatibility = 11
+    sourceCompatibility = 16
+    targetCompatibility = 16
 }
 
 test {
