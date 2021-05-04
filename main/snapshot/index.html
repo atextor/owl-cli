@@ -200,7 +200,7 @@ command as well. This works in MacOs and Linux.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli.jar
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar
 echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' &gt;&gt; ~/.bashrc
 source ~/.bashrc</code></pre>
 </div>
@@ -221,10 +221,8 @@ source ~/.bashrc</code></pre>
 <div class="sect2">
 <h3 id="building-executable-jar"><a class="anchor" href="#building-executable-jar"></a>Building the executable JAR from source</h3>
 <div class="paragraph">
-<p><strong>owl-cli</strong> uses Java 15 source features, but the build generates a Java 11-compatible JAR file. This
- means, for building the executable JAR file, you need Java <strong>15</strong>. The <code>gradle</code> build forks jobs
- where it expects Java 15 to be installed in a certain place (see <a href="#building-native-image">Building the native image (executable binary) from source</a> for an
- explanation). We rely on the locations as used by <a href="https://sdkman.io/">SDKMAN!</a>.</p>
+<p>For building the executable JAR file for <strong>owl-cli</strong>, you need Java <strong>16</strong>. We recommend installation
+of the GraalVM-based JDK 16 using <a href="https://sdkman.io/">SDKMAN!</a>.</p>
 </div>
 <div class="paragraph">
 <p>Run the following commands:</p>
@@ -238,8 +236,8 @@ echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 15.0.2-open
-sdk use java 15.0.2-open
+sdk install java 21.1.0.r16-grl
+sdk use java 21.1.0.r16-grl
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -265,12 +263,10 @@ source ~/.bashrc</code></pre>
 <div class="sect2">
 <h3 id="building-native-image"><a class="anchor" href="#building-native-image"></a>Building the native image (executable binary) from source</h3>
 <div class="paragraph">
-<p><strong>owl-cli</strong> uses Java 15 source features, but the build generates a Java 11-compatible JAR file, which
-is required for the generation of the native image using <a href="https://www.graalvm.org/">GraalVM</a>, as
-GraalVM currently does not support Java 15 class files. This means, for building the native image,
-you need both Java <strong>11</strong> (i.e. GraalVM JDK) <strong>and</strong> Java <strong>15</strong>. In particular, the <code>gradle</code> build must
-be executed using Java 11, while Java 15 is installed in a certain place where the build can
-find it. We rely on the locations as used by <a href="https://sdkman.io/">SDKMAN!</a>.</p>
+<p>For building the <strong>owl-cli</strong> native binary, <a href="https://www.graalvm.org/">GraalVM</a> is used. As Java 15+
+source features are used, a JDK 16-based GraalVM version is required. For calling GraalVM&#8217;s
+<code>native-image</code> command, the <code>gradle</code> build relies on the install locations as used by
+<a href="https://sdkman.io/">SDKMAN!</a>.</p>
 </div>
 <div class="paragraph">
 <p>The following instructions assume a BASH shell. On MacOs and Linux this is the default shell; on
@@ -299,10 +295,9 @@ echo sdkman_auto_answer=true &gt; $HOME/.sdkman/etc/config
 echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
-# Use SDKMAN! to install JDKs
-sdk install java 15.0.2-open
-sdk install java 21.0.0.2.r11-grl
-sdk use java 21.0.0.2.r11-grl
+# Use SDKMAN! to install JDK
+sdk install java 21.1.0.r16-grl
+sdk use java 21.1.0.r16-grl
 # Use GraalVMs update tool to install the native-image command
 gu install native-image
 
