@@ -104,8 +104,11 @@ public class AbstractCommand {
             .add( new org.semanticweb.owlapi.krss2.parser.KRSS2OWLParserFactory() )
             .add( new org.semanticweb.owlapi.rdf.turtle.parser.TurtleOntologyParserFactory() )
             .add( new org.semanticweb.owlapi.functional.parser.OWLFunctionalSyntaxOWLParserFactory() )
+            /*
+            java.xml based parsers are not currently working with GraalVM 21.1.0.r16
             .add( new org.semanticweb.owlapi.owlxml.parser.OWLXMLParserFactory() )
             .add( new org.semanticweb.owlapi.rdf.rdfxml.parser.RDFXMLParserFactory() )
+             */
             .add( new org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParserFactory() )
             .add( new org.semanticweb.owlapi.oboformat.OBOFormatOWLAPIParserFactory() )
             .build();
