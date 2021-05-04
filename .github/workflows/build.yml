@@ -30,7 +30,7 @@ jobs:
         # - Install SDKMAN
         # - Install msttcorefonts, so we have the Verdana font available for diagram generation
         # - Install graphviz, so we have the dot binary available for diagram generation
-        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Install GraalVM 21.1.0.r16 (JDK 16)
         # - Clean Antora cache
         run: |-
           curl -sL https://get.sdkman.io | bash
@@ -46,9 +46,8 @@ jobs:
           sudo apt-get install -y graphviz
           sudo apt-get install -y build-essential libz-dev
           sdk list java
-          sdk install java 15.0.2-open || true
-          sdk install java 21.0.0.2.r11-grl || true
-          sdk use java 21.0.0.2.r11-grl
+          sdk install java 21.1.0.r16-grl || true
+          sdk use java 21.1.0.r16-grl
           gu install native-image
           unset _JAVA_OPTIONS
           echo Path settings: $PATH
@@ -110,7 +109,7 @@ jobs:
       - name: Setup Environment
         # - Install SDKMAN
         # - Install graphviz, so we have the dot binary available for diagram generation
-        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Install GraalVM 21.1.0.r16 (JDK 16)
         # - Clean Antora cache
         run: |-
           curl -sL https://get.sdkman.io | bash
@@ -120,9 +119,8 @@ jobs:
           sdk update
           brew install graphviz
           sdk list java
-          sdk install java 15.0.2-open || true
-          sdk install java 21.0.0.2.r11-grl || true
-          sdk use java 21.0.0.2.r11-grl
+          sdk install java 21.1.0.r16-grl || true
+          sdk use java 21.1.0.r16-grl
           gu install native-image
           unset _JAVA_OPTIONS
           echo Path settings: $PATH
@@ -166,7 +164,7 @@ jobs:
       - name: Setup Environment
         # - Install SDKMAN
         # - Install graphviz, so we have the dot binary available for diagram generation
-        # - Install JDK 15 and GraalVM 20.1 (JDK 11)
+        # - Install GraalVM 21.1.0.r16 (JDK 16)
         # - Clean Antora cache
         run: |-
           choco install zip
@@ -178,15 +176,14 @@ jobs:
           source $HOME/.sdkman/bin/sdkman-init.sh
           sdk update
           sdk list java
-          sdk install java 15.0.2-open || true
-          sdk install java 21.0.0.2.r11-grl || true
-          sdk use java 21.0.0.2.r11-grl
+          sdk install java 21.1.0.r16-grl || true
+          sdk use java 21.1.0.r16-grl
           echo Path settings: $PATH
           export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
-          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/21.0.0.2.r11-grl
+          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/21.1.0.r16-grl
           gu install native-image
           unset _JAVA_OPTIONS
-          export PATH=$HOME/.sdkman/candidates/java/21.0.0.2.r11-grl/lib/svm/bin:$PATH
+          export PATH=$HOME/.sdkman/candidates/java/21.1.0.r16-grl/lib/svm/bin:$PATH
           which native-image
           which java
           java -version
