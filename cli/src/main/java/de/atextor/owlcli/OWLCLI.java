@@ -74,6 +74,4 @@ public class OWLCLI implements Runnable {
 
         System.out.println( commandLine.getHelp().fullSynopsis() );
     }
-
-
 }

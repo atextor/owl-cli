@@ -15,17 +15,11 @@
 
 package de.atextor.owlcli;
 
-import lombok.Value;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class MainClassRunner {
-    @Value
-    static class ExecutionResult {
-        int exitStatus;
-        String stdOut;
-        String stdErr;
+    record ExecutionResult(int exitStatus, String stdOut, String stdErr) {
     }
 
     public static ExecutionResult run( final Runnable runnable ) {

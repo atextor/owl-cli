@@ -26,9 +26,9 @@ public class CommandLineTest {
         final Runnable command = () -> OWLCLI.main( new String[]{} );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        assertThat( result.getExitStatus() ).isEqualTo( 0 );
-        assertThat( result.getStdOut() ).contains( "Usage: " );
-        assertThat( result.getStdErr() ).isEmpty();
+        assertThat( result.exitStatus() ).isEqualTo( 0 );
+        assertThat( result.stdOut() ).contains( "Usage: " );
+        assertThat( result.stdErr() ).isEmpty();
     }
 
     @Test
@@ -36,9 +36,9 @@ public class CommandLineTest {
         final Runnable command = () -> OWLCLI.main( new String[]{ "--help" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        assertThat( result.getExitStatus() ).isEqualTo( 0 );
-        assertThat( result.getStdOut() ).contains( "Usage: " );
-        assertThat( result.getStdErr() ).isEmpty();
+        assertThat( result.exitStatus() ).isEqualTo( 0 );
+        assertThat( result.stdOut() ).contains( "Usage: " );
+        assertThat( result.stdErr() ).isEmpty();
     }
 
     @Test
@@ -46,8 +46,8 @@ public class CommandLineTest {
         final Runnable command = () -> OWLCLI.main( new String[]{ "definitelynotavalidargument" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        assertThat( result.getExitStatus() ).isEqualTo( 1 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).contains( "Error: " );
+        assertThat( result.exitStatus() ).isEqualTo( 1 );
+        assertThat( result.stdOut() ).isEmpty();
+        assertThat( result.stdErr() ).contains( "Error: " );
     }
 }

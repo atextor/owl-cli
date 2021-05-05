@@ -46,9 +46,9 @@ public class DiagramCommandTest {
         final Runnable command = () -> OWLCLI.main( new String[]{ "diagram" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        assertThat( result.getExitStatus() ).isEqualTo( 1 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).contains( "Error: " );
+        assertThat( result.exitStatus() ).isEqualTo( 1 );
+        assertThat( result.stdOut() ).isEmpty();
+        assertThat( result.stdErr() ).contains( "Error: " );
     }
 
     @Test
@@ -56,9 +56,9 @@ public class DiagramCommandTest {
         final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", "definitelynotexistingfile" } );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        assertThat( result.getExitStatus() ).isEqualTo( 1 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).contains( "Error: " );
+        assertThat( result.exitStatus() ).isEqualTo( 1 );
+        assertThat( result.stdOut() ).isEmpty();
+        assertThat( result.stdErr() ).contains( "Error: " );
     }
 
     @ParameterizedTest
@@ -77,19 +77,19 @@ public class DiagramCommandTest {
         final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", output.getAbsolutePath() } );
         final MainClassRunner.ExecutionResult result = run( command );
 
-        System.out.println( result.getStdOut() );
-        System.out.println( result.getStdErr() );
+        System.out.println( result.stdOut() );
+        System.out.println( result.stdErr() );
 
-        if ( result.getExitStatus() != 0 ) {
+        if ( result.exitStatus() != 0 ) {
             System.out.println( "Something went wrong:" );
             System.out.println( "=== stdout ===" );
-            System.out.println( result.getStdOut() );
+            System.out.println( result.stdOut() );
             System.out.println( "=== stderr ===" );
-            System.out.println( result.getStdErr() );
+            System.out.println( result.stdErr() );
         }
-        assertThat( result.getExitStatus() ).isEqualTo( 0 );
-        assertThat( result.getStdOut() ).isEmpty();
-        assertThat( result.getStdErr() ).isEmpty();
+        assertThat( result.exitStatus() ).isEqualTo( 0 );
+        assertThat( result.stdOut() ).isEmpty();
+        assertThat( result.stdErr() ).isEmpty();
 
         final File writtenFile = tempDir.resolve( testFileName + ".svg" ).toFile();
         assertThat( writtenFile ).isFile();
