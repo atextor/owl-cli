@@ -73,10 +73,10 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
                 final URL inputUrl = new URL( input );
                 openOutput( input, output != null ? output : "-", "ttl" )
                     .map( outputStream -> writer.write( inputUrl, outputStream, configuration ) )
-                    .onFailure( this::exitWithErrorMessage );
+                    .onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
                 return;
             } catch ( final MalformedURLException exception ) {
-                exitWithErrorMessage( exception );
+                exitWithErrorMessage( LOG, loggingMixin, exception );
             }
         }
 
@@ -85,15 +85,6 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
                 return openOutput( input, output != null ? output : "-", "ttl" )
                     .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
             }
-        ).onFailure( this::exitWithErrorMessage );
-    }
-
-    protected void exitWithErrorMessage( final Throwable throwable ) {
-        if ( loggingMixin.getVerbosity().length == 0 ) {
-            System.err.println( "Error: " + throwable.getMessage() );
-        } else {
-            LOG.warn( "Error: " + throwable.getMessage() );
-        }
-        commandFailed();
+        ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
     }
 }

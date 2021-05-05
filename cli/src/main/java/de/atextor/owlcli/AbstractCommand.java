@@ -25,6 +25,7 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyFactory;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLStorerFactory;
+import org.slf4j.Logger;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
@@ -162,5 +163,17 @@ public class AbstractCommand {
     protected void initJena() {
         JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
         JenaSystem.init();
+    }
+
+    protected void exitWithErrorMessage( final Logger logger, final LoggingMixin loggingMixin,
+                                         final Throwable throwable ) {
+        if ( loggingMixin.getVerbosity().length == 0 ) {
+            System.err.println( "Error: " + throwable.getMessage() );
+        } else if ( loggingMixin.getVerbosity().length == 1 ) {
+            logger.warn( "Error: " + throwable.getMessage() );
+        } else {
+            throwable.printStackTrace();
+        }
+        commandFailed();
     }
 }

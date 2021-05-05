@@ -103,17 +103,6 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLIComma
                 openOutput( input, output, format.toString() ).flatMap( outputStream ->
                     new DiagramGenerator( configuration, mappingConfig )
                         .generate( ontology, outputStream, configuration ) ) )
-        ).onFailure( this::exitWithErrorMessage );
-    }
-
-    protected void exitWithErrorMessage( final Throwable throwable ) {
-        if ( loggingMixin.getVerbosity().length == 0 ) {
-            System.err.println( "Error: " + throwable.getMessage() );
-        } else if ( loggingMixin.getVerbosity().length == 1 ) {
-            LOG.warn( "Error: " + throwable.getMessage() );
-        } else {
-            throwable.printStackTrace();
-        }
-        commandFailed();
+        ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
     }
 }
