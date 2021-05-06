@@ -40,7 +40,7 @@ https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_6
 https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-linux-{release-version}[owl-x86_64-linux-{release-version}]
 |===
 
-For other platforms or architectures, please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]. This requires Java (OpenJDK) *11* or newer.
+For other platforms or architectures, please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]. This requires Java (OpenJDK) *16* or newer.
 
 Rename the binary to `owl.exe` (Windows) or `owl` (MacOs/Linux), put it in your favorite directory
 and add this directory to the PATH environment variable:
