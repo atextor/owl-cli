@@ -124,7 +124,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
      * @return the id as escaped string
      */
     private static String escapeNodeId( final Node.Id id ) {
-        return id.getId().replace( "-", "_" );
+        return id.id().replace( "-", "_" );
     }
 
     private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {

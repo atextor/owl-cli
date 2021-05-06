@@ -18,7 +18,6 @@ package de.atextor.owlcli.diagram.diagram;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Collections;
@@ -61,10 +60,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
         }
         """ );
 
-    @Value
-    static class Statement {
-        String content;
-
+    record Statement(String content) {
         String toFragment() {
             return content + "\n";
         }

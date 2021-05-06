@@ -57,14 +57,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class GraphvizGeneratorTest {
     final GraphvizGenerator generator = new GraphvizGenerator( Configuration.builder().build() );
+
     final Node.Id from1 = new Node.Id( "foo" );
+
     final Node.Id to1 = new Node.Id( "bar" );
+
     final String name1 = "baz";
+
     final int cardinality1 = 5;
+
     final String value1 = "theValue";
 
     Predicate<GraphvizDocument.Statement> contains( final String needle ) {
-        return statement -> statement.getContent().contains( needle );
+        return statement -> statement.content().contains( needle );
     }
 
     @Test
@@ -98,7 +103,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getEdgeStatements() ).isEmpty();
 
         assertThat( result.getNodeStatements() ).hasSize( 1 );
-        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.getId() ) );
+        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.id() ) );
     }
 
     private void testNamedNode( final Node.NamedNode node ) {
@@ -107,7 +112,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getEdgeStatements() ).isEmpty();
 
         assertThat( result.getNodeStatements() ).hasSize( 1 );
-        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.getId() ) );
+        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.id() ) );
         assertThat( result.getNodeStatements() ).anyMatch( contains( name1 ) );
     }
 
@@ -117,7 +122,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getEdgeStatements() ).isEmpty();
 
         assertThat( result.getNodeStatements() ).hasSize( 1 );
-        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.getId() ) );
+        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.id() ) );
         assertThat( result.getNodeStatements() ).anyMatch( contains( "" + cardinality1 ) );
     }
 
@@ -127,7 +132,7 @@ public class GraphvizGeneratorTest {
         assertThat( result.getEdgeStatements() ).isEmpty();
 
         assertThat( result.getNodeStatements() ).hasSize( 1 );
-        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.getId() ) );
+        assertThat( result.getNodeStatements() ).anyMatch( contains( from1.id() ) );
         assertThat( result.getNodeStatements() ).anyMatch( contains( value1 ) );
     }
 

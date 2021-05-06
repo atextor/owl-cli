@@ -59,7 +59,7 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     public static final Predicate<GraphElement> IS_RULE_SYNTAX_PART =
         graphElement -> graphElement.is( Literal.class ) &&
-            graphElement.as( Literal.class ).getId().getIri().map( iri -> iri.equals( LITERAL_ID ) ).orElse( false );
+            graphElement.as( Literal.class ).getId().iri().map( iri -> iri.equals( LITERAL_ID ) ).orElse( false );
 
     private final MappingConfiguration mappingConfig;
 

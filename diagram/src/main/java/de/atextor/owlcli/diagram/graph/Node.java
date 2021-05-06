@@ -148,20 +148,13 @@ public abstract class Node implements GraphElement {
      * Id of a node that has the (unique) internal identifier string, and if present, the {@link IRI} of the
      * ontology element that is represented by the node having this Id.
      */
-    @Getter
-    @EqualsAndHashCode
-    public static class Id {
-        String id;
-        Optional<IRI> iri;
-
+    public static record Id(String id, Optional<IRI> iri) {
         public Id( final String id, final IRI iri ) {
-            this.id = id;
-            this.iri = Optional.of( iri );
+            this( id, Optional.of( iri ) );
         }
 
         public Id( final String id ) {
-            this.id = id;
-            iri = Optional.empty();
+            this( id, Optional.empty() );
         }
 
         @Override
