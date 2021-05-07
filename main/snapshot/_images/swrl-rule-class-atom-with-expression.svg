@@ -9,47 +9,9 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 156)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-156 337,-156 337,4 -4,4"/>
-<!-- _57218aa3f7ab4ababde3b4c739194b1c -->
+<!-- _cf137de28d13411999f4ed40eaf0541a -->
 <g id="node1" class="node">
-<title>_57218aa3f7ab4ababde3b4c739194b1c</title>
-<path fill="none" stroke="black" d="M131.17,-93C131.17,-93 69.83,-93 69.83,-93 66.17,-93 62.5,-89.33 62.5,-85.67 62.5,-85.67 62.5,-78.33 62.5,-78.33 62.5,-74.67 66.17,-71 69.83,-71 69.83,-71 131.17,-71 131.17,-71 134.83,-71 138.5,-74.67 138.5,-78.33 138.5,-78.33 138.5,-85.67 138.5,-85.67 138.5,-89.33 134.83,-93 131.17,-93"/>
-<text text-anchor="start" x="66.5" y="-79.9" font-family="Verdana" font-size="12.00">P </text>
-<text text-anchor="start" x="79.5" y="-79.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#b200b2">min</text>
-<text text-anchor="start" x="104.5" y="-79.9" font-family="Verdana" font-size="12.00"> &#160;1 C</text>
-</g>
-<!-- Person -->
-<g id="node2" class="node">
-<title>Person</title>
-<path fill="none" stroke="black" d="M192.67,-22C192.67,-22 140.33,-22 140.33,-22 136.67,-22 133,-18.33 133,-14.67 133,-14.67 133,-7.33 133,-7.33 133,-3.67 136.67,0 140.33,0 140.33,0 192.67,0 192.67,0 196.33,0 200,-3.67 200,-7.33 200,-7.33 200,-14.67 200,-14.67 200,-18.33 196.33,-22 192.67,-22"/>
-<text text-anchor="start" x="137" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
-<text text-anchor="start" x="151" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="156" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">Person</text>
-</g>
-<!-- _57218aa3f7ab4ababde3b4c739194b1c&#45;&gt;Person -->
-<g id="edge5" class="edge">
-<title>_57218aa3f7ab4ababde3b4c739194b1c&#45;&gt;Person</title>
-<path fill="none" stroke="black" d="M110.24,-70.82C120.57,-60.02 137.1,-42.74 149.57,-29.7"/>
-<polygon fill="black" stroke="black" points="152.34,-31.87 156.72,-22.22 147.28,-27.03 152.34,-31.87"/>
-<text text-anchor="middle" x="143" y="-43.4" font-family="Verdana" font-size="12.00">C</text>
-</g>
-<!-- hasChild -->
-<g id="node4" class="node">
-<title>hasChild</title>
-<path fill="none" stroke="black" d="M107.17,-22C107.17,-22 41.83,-22 41.83,-22 38.17,-22 34.5,-18.33 34.5,-14.67 34.5,-14.67 34.5,-7.33 34.5,-7.33 34.5,-3.67 38.17,0 41.83,0 41.83,0 107.17,0 107.17,0 110.83,0 114.5,-3.67 114.5,-7.33 114.5,-7.33 114.5,-14.67 114.5,-14.67 114.5,-18.33 110.83,-22 107.17,-22"/>
-<text text-anchor="start" x="38.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
-<text text-anchor="start" x="54.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="59.5" y="-8.2" font-family="Verdana" font-size="12.00" fill="#000000">hasChild</text>
-</g>
-<!-- _57218aa3f7ab4ababde3b4c739194b1c&#45;&gt;hasChild -->
-<g id="edge4" class="edge">
-<title>_57218aa3f7ab4ababde3b4c739194b1c&#45;&gt;hasChild</title>
-<path fill="none" stroke="black" d="M96.66,-70.82C92.82,-60.63 86.81,-44.67 82.02,-31.95"/>
-<polygon fill="black" stroke="black" points="85.15,-30.35 78.35,-22.22 78.6,-32.81 85.15,-30.35"/>
-<text text-anchor="middle" x="94.5" y="-43.4" font-family="Verdana" font-size="12.00">P</text>
-</g>
-<!-- _c7fa66e948f647d39cca7dd94bb02818 -->
-<g id="node3" class="node">
-<title>_c7fa66e948f647d39cca7dd94bb02818</title>
+<title>_cf137de28d13411999f4ed40eaf0541a</title>
 <path fill="none" stroke="black" d="M325.67,-152C325.67,-152 7.33,-152 7.33,-152 3.67,-152 0,-148.33 0,-144.67 0,-144.67 0,-137.33 0,-137.33 0,-133.67 3.67,-130 7.33,-130 7.33,-130 325.67,-130 325.67,-130 329.33,-130 333,-133.67 333,-137.33 333,-137.33 333,-144.67 333,-144.67 333,-148.33 329.33,-152 325.67,-152"/>
 <text text-anchor="start" x="4" y="-138.9" font-family="Verdana" font-size="12.00" fill="#000000">Person(?p) ∧ hasChild min 1 Person(?p)</text>
 <text text-anchor="start" x="245" y="-138.9" font-family="Verdana" font-size="12.00"> </text>
@@ -57,31 +19,69 @@
 <text text-anchor="start" x="260" y="-138.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="265" y="-138.9" font-family="Verdana" font-size="12.00" fill="#000000">Parent(?p)</text>
 </g>
-<!-- _c7fa66e948f647d39cca7dd94bb02818&#45;&gt;_57218aa3f7ab4ababde3b4c739194b1c -->
-<g id="edge1" class="edge">
-<title>_c7fa66e948f647d39cca7dd94bb02818&#45;&gt;_57218aa3f7ab4ababde3b4c739194b1c</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M154.7,-129.81C145.03,-121.46 131.16,-109.48 119.87,-99.72"/>
-<polygon fill="black" stroke="black" points="122.05,-96.99 112.2,-93.1 117.48,-102.29 122.05,-96.99"/>
+<!-- Person -->
+<g id="node2" class="node">
+<title>Person</title>
+<path fill="none" stroke="black" d="M126.67,-22C126.67,-22 74.33,-22 74.33,-22 70.67,-22 67,-18.33 67,-14.67 67,-14.67 67,-7.33 67,-7.33 67,-3.67 70.67,0 74.33,0 74.33,0 126.67,0 126.67,0 130.33,0 134,-3.67 134,-7.33 134,-7.33 134,-14.67 134,-14.67 134,-18.33 130.33,-22 126.67,-22"/>
+<text text-anchor="start" x="71" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
+<text text-anchor="start" x="85" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="90" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">Person</text>
 </g>
-<!-- _c7fa66e948f647d39cca7dd94bb02818&#45;&gt;Person -->
+<!-- _cf137de28d13411999f4ed40eaf0541a&#45;&gt;Person -->
 <g id="edge3" class="edge">
-<title>_c7fa66e948f647d39cca7dd94bb02818&#45;&gt;Person</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M166.5,-129.96C166.5,-109.03 166.5,-60.4 166.5,-32.55"/>
-<polygon fill="black" stroke="black" points="170,-32.35 166.5,-22.35 163,-32.35 170,-32.35"/>
+<title>_cf137de28d13411999f4ed40eaf0541a&#45;&gt;Person</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M152.9,-129.93C142.22,-121.3 127.81,-107.92 119.5,-93 108.9,-73.95 104.19,-49.21 102.12,-32.1"/>
+<polygon fill="black" stroke="black" points="105.59,-31.7 101.1,-22.11 98.63,-32.41 105.59,-31.7"/>
+</g>
+<!-- _ef7aa77ba7b540d7b4a1e05a9d6dbd8e -->
+<g id="node3" class="node">
+<title>_ef7aa77ba7b540d7b4a1e05a9d6dbd8e</title>
+<path fill="none" stroke="black" d="M197.17,-93C197.17,-93 135.83,-93 135.83,-93 132.17,-93 128.5,-89.33 128.5,-85.67 128.5,-85.67 128.5,-78.33 128.5,-78.33 128.5,-74.67 132.17,-71 135.83,-71 135.83,-71 197.17,-71 197.17,-71 200.83,-71 204.5,-74.67 204.5,-78.33 204.5,-78.33 204.5,-85.67 204.5,-85.67 204.5,-89.33 200.83,-93 197.17,-93"/>
+<text text-anchor="start" x="132.5" y="-79.9" font-family="Verdana" font-size="12.00">P </text>
+<text text-anchor="start" x="145.5" y="-79.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#b200b2">min</text>
+<text text-anchor="start" x="170.5" y="-79.9" font-family="Verdana" font-size="12.00"> &#160;1 C</text>
+</g>
+<!-- _cf137de28d13411999f4ed40eaf0541a&#45;&gt;_ef7aa77ba7b540d7b4a1e05a9d6dbd8e -->
+<g id="edge5" class="edge">
+<title>_cf137de28d13411999f4ed40eaf0541a&#45;&gt;_ef7aa77ba7b540d7b4a1e05a9d6dbd8e</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M166.5,-129.81C166.5,-122.43 166.5,-112.22 166.5,-103.21"/>
+<polygon fill="black" stroke="black" points="170,-103.1 166.5,-93.1 163,-103.1 170,-103.1"/>
 </g>
 <!-- Parent -->
 <g id="node5" class="node">
 <title>Parent</title>
-<path fill="none" stroke="black" d="M253.17,-93C253.17,-93 201.83,-93 201.83,-93 198.17,-93 194.5,-89.33 194.5,-85.67 194.5,-85.67 194.5,-78.33 194.5,-78.33 194.5,-74.67 198.17,-71 201.83,-71 201.83,-71 253.17,-71 253.17,-71 256.83,-71 260.5,-74.67 260.5,-78.33 260.5,-78.33 260.5,-85.67 260.5,-85.67 260.5,-89.33 256.83,-93 253.17,-93"/>
-<text text-anchor="start" x="198.5" y="-79.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
-<text text-anchor="start" x="212.5" y="-79.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="217.5" y="-79.9" font-family="Verdana" font-size="12.00" fill="#000000">Parent</text>
+<path fill="none" stroke="black" d="M281.17,-93C281.17,-93 229.83,-93 229.83,-93 226.17,-93 222.5,-89.33 222.5,-85.67 222.5,-85.67 222.5,-78.33 222.5,-78.33 222.5,-74.67 226.17,-71 229.83,-71 229.83,-71 281.17,-71 281.17,-71 284.83,-71 288.5,-74.67 288.5,-78.33 288.5,-78.33 288.5,-85.67 288.5,-85.67 288.5,-89.33 284.83,-93 281.17,-93"/>
+<text text-anchor="start" x="226.5" y="-79.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
+<text text-anchor="start" x="240.5" y="-79.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="245.5" y="-79.9" font-family="Verdana" font-size="12.00" fill="#000000">Parent</text>
 </g>
-<!-- _c7fa66e948f647d39cca7dd94bb02818&#45;&gt;Parent -->
+<!-- _cf137de28d13411999f4ed40eaf0541a&#45;&gt;Parent -->
+<g id="edge4" class="edge">
+<title>_cf137de28d13411999f4ed40eaf0541a&#45;&gt;Parent</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M182.41,-129.81C195.95,-121.14 215.62,-108.54 231.14,-98.6"/>
+<polygon fill="black" stroke="black" points="233.19,-101.44 239.73,-93.1 229.42,-95.55 233.19,-101.44"/>
+</g>
+<!-- _ef7aa77ba7b540d7b4a1e05a9d6dbd8e&#45;&gt;Person -->
 <g id="edge2" class="edge">
-<title>_c7fa66e948f647d39cca7dd94bb02818&#45;&gt;Parent</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M177.41,-129.81C186.25,-121.54 198.92,-109.71 209.3,-100.01"/>
-<polygon fill="black" stroke="black" points="211.77,-102.49 216.69,-93.1 206.99,-97.37 211.77,-102.49"/>
+<title>_ef7aa77ba7b540d7b4a1e05a9d6dbd8e&#45;&gt;Person</title>
+<path fill="none" stroke="black" d="M156.76,-70.82C146.43,-60.02 129.9,-42.74 117.43,-29.7"/>
+<polygon fill="black" stroke="black" points="119.72,-27.03 110.28,-22.22 114.66,-31.87 119.72,-27.03"/>
+<text text-anchor="middle" x="144" y="-43.4" font-family="Verdana" font-size="12.00">C</text>
+</g>
+<!-- hasChild -->
+<g id="node4" class="node">
+<title>hasChild</title>
+<path fill="none" stroke="black" d="M225.17,-22C225.17,-22 159.83,-22 159.83,-22 156.17,-22 152.5,-18.33 152.5,-14.67 152.5,-14.67 152.5,-7.33 152.5,-7.33 152.5,-3.67 156.17,0 159.83,0 159.83,0 225.17,0 225.17,0 228.83,0 232.5,-3.67 232.5,-7.33 232.5,-7.33 232.5,-14.67 232.5,-14.67 232.5,-18.33 228.83,-22 225.17,-22"/>
+<text text-anchor="start" x="156.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
+<text text-anchor="start" x="172.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="177.5" y="-8.2" font-family="Verdana" font-size="12.00" fill="#000000">hasChild</text>
+</g>
+<!-- _ef7aa77ba7b540d7b4a1e05a9d6dbd8e&#45;&gt;hasChild -->
+<g id="edge1" class="edge">
+<title>_ef7aa77ba7b540d7b4a1e05a9d6dbd8e&#45;&gt;hasChild</title>
+<path fill="none" stroke="black" d="M170.34,-70.82C174.18,-60.63 180.19,-44.67 184.98,-31.95"/>
+<polygon fill="black" stroke="black" points="188.4,-32.81 188.65,-22.22 181.85,-30.35 188.4,-32.81"/>
+<text text-anchor="middle" x="186.5" y="-43.4" font-family="Verdana" font-size="12.00">P</text>
 </g>
 </g>
 </svg>
