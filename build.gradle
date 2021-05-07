@@ -58,6 +58,11 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
         xml.destination(file("${buildDir}/reports/jacoco/report.xml"))
         csv.enabled = false
     }
+
+    dependsOn ':test'
+    dependsOn ':cli:test'
+    dependsOn ':diagram:test'
+    dependsOn ':write:test'
 }
 
 defaultTasks 'test', 'shadowJar'
