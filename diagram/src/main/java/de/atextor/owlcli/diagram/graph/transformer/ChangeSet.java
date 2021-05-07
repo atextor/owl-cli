@@ -17,15 +17,19 @@ package de.atextor.owlcli.diagram.graph.transformer;
 
 import com.google.common.collect.Sets;
 import de.atextor.owlcli.diagram.graph.GraphElement;
+import lombok.Value;
 
 import java.util.Set;
 
 /**
  * Represents additions and deletions to perform on a set of {@link GraphElement}s
  */
-record ChangeSet(Set<GraphElement> additions,
-                 Set<GraphElement> deletions) {
+@Value
+class ChangeSet {
     public static final ChangeSet EMPTY = new ChangeSet( Set.of(), Set.of() );
+
+    Set<GraphElement> additions;
+    Set<GraphElement> deletions;
 
     /**
      * Create a new ChangeSet from this and another given ChangeSet

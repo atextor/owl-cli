@@ -57,7 +57,7 @@ public class MapperTestBase {
         .map( decoratedEdge -> decoratedEdge.getLabel().equals( Edge.Decorated.Label.RANGE ) )
         .findFirst()
         .orElse( false );
-    final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().id().equals( "bar" );
+    final Predicate<Edge> hasFromBar = edge -> edge.getFrom().getId().getId().equals( "bar" );
 
     protected MappingConfiguration createTestMappingConfiguration() {
         return DefaultMappingConfiguration.builder()
@@ -142,7 +142,7 @@ public class MapperTestBase {
     }
 
     protected Predicate<Node> isNodeWithId( final String targetId ) {
-        return node -> node.getId().id().equals( targetId );
+        return node -> node.getId().getId().equals( targetId );
     }
 
     protected final Predicate<Node> isInvisible = node -> node.is( Invisible.class );
@@ -150,30 +150,30 @@ public class MapperTestBase {
     protected final Predicate<Node> isComplement = node -> node.is( Complement.class );
 
     protected Predicate<Node> isNodeWithId( final Node.Id targetId ) {
-        return isNodeWithId( targetId.id() );
+        return isNodeWithId( targetId.getId() );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final String fromId, final String toId ) {
-        return edge -> edge.getFrom().getId().id().equals( fromId )
-            && edge.getTo().getId().id().equals( toId );
+        return edge -> edge.getFrom().getId().getId().equals( fromId )
+            && edge.getTo().getId().getId().equals( toId );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndToAndLabel( final String fromId, final String toId,
                                                            final Edge.Decorated.Label label ) {
-        return edge -> edge.getFrom().getId().id().equals( fromId )
-            && edge.getTo().getId().id().equals( toId )
+        return edge -> edge.getFrom().getId().getId().equals( fromId )
+            && edge.getTo().getId().getId().equals( toId )
             && ( (Edge.Decorated) edge ).getLabel().equals( label );
     }
 
     protected Predicate<Edge> isEdgeWithFromAndTo( final Node.Id fromId, final Node.Id toId ) {
-        return isEdgeWithFromAndTo( fromId.id(), toId.id() );
+        return isEdgeWithFromAndTo( fromId.getId(), toId.getId() );
     }
 
     protected Predicate<Edge> isEdgeWithFrom( final String iri ) {
-        return edge -> edge.getFrom().getId().iri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
+        return edge -> edge.getFrom().getId().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
     }
 
     protected Predicate<Edge> isEdgeWithTo( final String iri ) {
-        return edge -> edge.getTo().getId().iri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
+        return edge -> edge.getTo().getId().getIri().map( theIri -> theIri.equals( iri( iri ) ) ).orElse( false );
     }
 }

@@ -60,8 +60,8 @@ public class PunningRemover extends GraphTransformer {
         final Set<GraphElement> result = graph.stream()
             .filter( GraphElement::isNode )
             .map( GraphElement::asNode )
-            .filter( node -> node.getId().iri().isPresent() )
-            .collect( Collectors.groupingBy( node -> node.getId().iri().get(), Collectors.counting() ) )
+            .filter( node -> node.getId().getIri().isPresent() )
+            .collect( Collectors.groupingBy( node -> node.getId().getIri().get(), Collectors.counting() ) )
             .entrySet().stream()
             .filter( entry -> entry.getValue() > 1 )
             .map( Map.Entry::getKey )
@@ -80,7 +80,7 @@ public class PunningRemover extends GraphTransformer {
     }
 
     private Node.Id buildNewNodeId( final Node.Id original ) {
-        return original.iri().map( iri ->
+        return original.getIri().map( iri ->
             mappingConfiguration.getIdentifierMapper().getSyntheticIdForIri( iri ) )
             .orElseGet( () -> mappingConfiguration.getIdentifierMapper().getSyntheticId() );
     }

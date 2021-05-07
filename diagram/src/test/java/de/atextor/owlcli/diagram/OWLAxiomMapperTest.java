@@ -896,7 +896,7 @@ public class OWLAxiomMapperTest extends MapperTestBase {
         assertThat( nodes ).anyMatch( isNodeWithId( "bar" ) );
         assertThat( nodes ).anyMatch( isNodeWithId( "baz" ) );
         assertThat( nodes ).anyMatch( node -> node.is( PropertyChain.class )
-            && node.getId().id().equals( chainId ) );
+            && node.getId().getId().equals( chainId ) );
 
         final List<Edge> edges = edges( result );
         assertThat( edges ).hasSize( 3 );
