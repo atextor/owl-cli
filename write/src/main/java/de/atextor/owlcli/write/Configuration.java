@@ -15,6 +15,7 @@
 
 package de.atextor.owlcli.write;
 
+import de.atextor.turtle.formatter.FormattingStyle;
 import lombok.Builder;
 
 @Builder
@@ -27,6 +28,9 @@ public class Configuration {
 
     @Builder.Default
     public String base = "urn:owlcli#";
+
+    @Builder.Default
+    public FormattingStyle formattingStyle = FormattingStyle.DEFAULT;
 
     public enum Format {
         TURTLE,

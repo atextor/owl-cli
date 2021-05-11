@@ -26,6 +26,7 @@ import org.semanticweb.owlapi.model.OWLOntologyFactory;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.OWLStorerFactory;
 import org.slf4j.Logger;
+import picocli.CommandLine;
 import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyFactoryImpl;
 import uk.ac.manchester.cs.owl.owlapi.OWLOntologyManagerImpl;
@@ -175,5 +176,9 @@ public class AbstractCommand {
             throwable.printStackTrace();
         }
         commandFailed();
+    }
+
+    public void registerTypeConverters( CommandLine commandLine ) {
+
     }
 }

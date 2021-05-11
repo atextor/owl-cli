@@ -15,6 +15,7 @@
 
 package de.atextor.owlcli;
 
+import io.vavr.collection.List;
 import picocli.CommandLine;
 
 import java.io.PrintWriter;
@@ -30,9 +31,6 @@ import java.util.logging.LogManager;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
-    @CommandLine.Mixin
-    LoggingMixin loggingMixin;
-
     private static final CommandLine.IParameterExceptionHandler exceptionHandler =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
@@ -44,6 +42,9 @@ public class OWLCLI implements Runnable {
 
     private final CommandLine commandLine = new CommandLine( this );
 
+    @CommandLine.Mixin
+    LoggingMixin loggingMixin;
+
     @CommandLine.Option( names = { "--help" }, usageHelp = true, description = "Show short help" )
     private boolean helpRequested;
 
@@ -52,13 +53,12 @@ public class OWLCLI implements Runnable {
 
     public static void main( final String[] args ) {
         LogManager.getLogManager().reset();
-        final int exitCode = new OWLCLI().commandLine
-            .addSubcommand( new OWLCLIDiagramCommand() )
-            .addSubcommand( new OWLCLIWriteCommand() )
+        final List<AbstractCommand> commands = List.of( new OWLCLIDiagramCommand(), new OWLCLIWriteCommand() );
+        final CommandLine cmd = commands.foldLeft( new OWLCLI().commandLine, CommandLine::addSubcommand )
             .setParameterExceptionHandler( exceptionHandler )
-            .setExecutionStrategy( LoggingMixin::executionStrategy )
-            .execute( args );
-        System.exit( exitCode );
+            .setExecutionStrategy( LoggingMixin::executionStrategy );
+        commands.forEach( command -> command.registerTypeConverters( cmd ) );
+        System.exit( cmd.execute( args ) );
     }
 
     @Override
