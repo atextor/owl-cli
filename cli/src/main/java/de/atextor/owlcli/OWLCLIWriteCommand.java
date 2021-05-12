@@ -19,6 +19,7 @@ import de.atextor.owlcli.write.Configuration;
 import de.atextor.owlcli.write.RdfWriter;
 import de.atextor.turtle.formatter.FormattingStyle;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,9 @@ import java.net.URI;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,9 +61,11 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private Configuration.Format inputFormat = config.inputFormat;
 
     @CommandLine.Option( names = { "-p", "--prefix" },
-        description = "Prefixes to add as @prefix. (Default: ${DEFAULT-VALUE})" )
-    private Map<String, URI> prefixMap = FormattingStyle.DEFAULT.knownPrefixes.stream().collect( Collectors.toMap(
-        FormattingStyle.KnownPrefix::getPrefix, FormattingStyle.KnownPrefix::getIri ) );
+        description = "Prefixes to add as @prefix. (Default: ${DEFAULT-VALUE})",
+        mapFallbackValue = CommandLine.Option.NULL_VALUE )
+    private Map<String, Optional<URI>> prefixMap =
+        FormattingStyle.DEFAULT.knownPrefixes.stream().collect( Collectors.toMap(
+            FormattingStyle.KnownPrefix::getPrefix, knownPrefix -> Optional.of( knownPrefix.getIri() ) ) );
 
     @CommandLine.Option( names = { "--prefixalign" },
         description = "Alignment of @prefix statements, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
@@ -98,6 +103,46 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Use commas for multiple objects (Default: ${DEFAULT-VALUE})" )
     private Set<Property> commaForPredicate = FormattingStyle.DEFAULT.commaForPredicate;
 
+    @CommandLine.Option( names = { "--noCommaForPredicate" },
+        description = "Use no commas for multiple objects (Default: ${DEFAULT-VALUE})" )
+    private Set<Property> noCommaForPredicate = FormattingStyle.DEFAULT.noCommaForPredicate;
+
+    @CommandLine.Option( names = { "--useShortLiterals" },
+        description = "Use short form for literals where possible (Default: ${DEFAULT-VALUE})" )
+    private boolean useShortLiterals = FormattingStyle.DEFAULT.useShortLiterals;
+
+    @CommandLine.Option( names = { "--alignObjects" },
+        description = "Align objects for same predicates (Default: ${DEFAULT-VALUE})" )
+    private boolean alignObjects = FormattingStyle.DEFAULT.alignObjects;
+
+    @CommandLine.Option( names = { "--alignPredicates" },
+        description = "Align predicates for same subjects (Default: ${DEFAULT-VALUE})" )
+    private boolean alignPredicates = FormattingStyle.DEFAULT.alignPredicates;
+
+    @CommandLine.Option( names = { "--continuationIndentSize" },
+        description = "Indentation width after forced line wraps (Default: ${DEFAULT-VALUE})" )
+    private int continuationIndentSize = FormattingStyle.DEFAULT.continuationIndentSize;
+
+    @CommandLine.Option( names = { "--insertFinalNewline" },
+        description = "Insert newline at end of file (Default: ${DEFAULT-VALUE})" )
+    private boolean insertFinalNewline = FormattingStyle.DEFAULT.insertFinalNewline;
+
+    @CommandLine.Option( names = { "--indentSize" },
+        description = "Indentation width (Default: ${DEFAULT-VALUE})" )
+    private int indentSize = FormattingStyle.DEFAULT.indentSize;
+
+    @CommandLine.Option( names = { "--keepUnusedPrefixes" },
+        description = "Keeps prefixes that are not part of any statement (Default: ${DEFAULT-VALUE})" )
+    private boolean keepUnusedPrefixes = FormattingStyle.DEFAULT.keepUnusedPrefixes;
+
+    @CommandLine.Option( names = { "--prefixOrder" },
+        description = "Sort order for prefixes (Default: ${DEFAULT-VALUE})" )
+    private List<String> prefixOrder = FormattingStyle.DEFAULT.prefixOrder;
+
+    @CommandLine.Option( names = { "--subjectOrder" },
+        description = "Sort order for subjects by type (Default: ${DEFAULT-VALUE})" )
+    private List<Resource> subjectOrder = FormattingStyle.DEFAULT.subjectOrder;
+
     @CommandLine.Parameters( paramLabel = "INPUT", description = "File name, URL, or - for stdin", arity = "1",
         index = "0" )
     private String input;
@@ -109,10 +154,32 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
     @Override
     public void run() {
+        final FormattingStyle style = FormattingStyle.builder()
+            .alignPrefixes( alignPrefixes )
+            .charset( encoding )
+            .doubleFormat( doubleFormat )
+            .endOfLine( endOfLineStyle )
+            .indentStyle( indentStyle )
+            .firstPredicateInNewLine( firstPredicateInNewLine )
+            .useAForRdfType( useAForRdfType )
+            .useCommaByDefault( useCommaByDefault )
+            .commaForPredicate( commaForPredicate )
+            .noCommaForPredicate( noCommaForPredicate )
+            .useShortLiterals( useShortLiterals )
+            .alignObjects( alignObjects )
+            .alignPredicates( alignPredicates )
+            .continuationIndentSize( continuationIndentSize )
+            .insertFinalNewline( insertFinalNewline )
+            .indentSize( indentSize )
+            .keepUnusedPrefixes( keepUnusedPrefixes )
+            .prefixOrder( prefixOrder )
+            .subjectOrder( subjectOrder )
+            .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()
             .outputFormat( outputFormat )
-            .inputFormat( inputFormat );
+            .inputFormat( inputFormat )
+            .formattingStyle( style );
 
         initJena();
 
@@ -143,24 +210,52 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     public void registerTypeConverters( final CommandLine commandLine ) {
         commandLine.registerConverter( NumberFormat.class, new NumberFormatConverter() );
         commandLine.registerConverter( Property.class, new PropertyConverter() );
+        commandLine.registerConverter( Resource.class, new ResourceConverter() );
     }
 
-    static class NumberFormatConverter implements CommandLine.ITypeConverter<NumberFormat> {
+    private static class NumberFormatConverter implements CommandLine.ITypeConverter<NumberFormat> {
         @Override
         public NumberFormat convert( final String value ) throws Exception {
             return new DecimalFormat( value );
         }
     }
 
-    class PropertyConverter implements CommandLine.ITypeConverter<Property> {
+    private abstract class AbstractResourceConverter {
+        private Optional<URI> wellKnownUriByPrefix( String prefix ) {
+            return FormattingStyle.DEFAULT.knownPrefixes.stream()
+                .filter( knownPrefix -> knownPrefix.getPrefix().equals( prefix ) )
+                .findAny()
+                .map( FormattingStyle.KnownPrefix::getIri );
+        }
+
+        protected String buildResourceUri( String resourceUri ) throws Exception {
+            for ( Map.Entry<String, Optional<URI>> entry : OWLCLIWriteCommand.this.prefixMap.entrySet() ) {
+                final URI uri = entry.getValue().isEmpty() ?
+                    wellKnownUriByPrefix( entry.getKey() )
+                        .orElseThrow( () -> new Exception( "Used prefix " + entry.getKey() + " is not well-known" ) ) :
+                    entry.getValue().get();
+                if ( resourceUri.startsWith( entry.getKey() ) ) {
+                    return uri.toString() + resourceUri.substring( ( entry.getKey() + ":" ).length() );
+                }
+            }
+            LOG.debug( "No prefix declaration matched URI {}, keeping as-is", resourceUri );
+            return resourceUri;
+        }
+    }
+
+    private class PropertyConverter extends AbstractResourceConverter implements CommandLine.ITypeConverter<Property> {
         @Override
         public Property convert( final String value ) throws Exception {
-            final String propertyUri = OWLCLIWriteCommand.this.prefixMap.entrySet().stream()
-                .filter( entry -> value.startsWith( entry.getKey() + ":" ) )
-                .findAny()
-                .map( entry -> entry.getValue().toString() + value.substring( ( entry.getKey() + ":" ).length() ) )
-                .orElse( value );
+            final String propertyUri = buildResourceUri( value );
             return ResourceFactory.createProperty( propertyUri );
+        }
+    }
+
+    private class ResourceConverter extends AbstractResourceConverter implements CommandLine.ITypeConverter<Resource> {
+        @Override
+        public Resource convert( final String value ) throws Exception {
+            final String propertyUri = buildResourceUri( value );
+            return ResourceFactory.createResource( propertyUri );
         }
     }
 }

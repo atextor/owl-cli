@@ -19,6 +19,7 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }
     implementation(deps.jena_core)
+    implementation(deps.turtle_formatter)
     implementation(deps.vavr)
     implementation(deps.picocli)
     implementation(deps.logback)
