@@ -61,13 +61,13 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private Configuration.Format inputFormat = config.inputFormat;
 
     @CommandLine.Option( names = { "-p", "--prefix" },
-        description = "Prefixes to add as @prefix. (Default: ${DEFAULT-VALUE})",
+        description = "Known prefixes to add as @prefix when used. (Default: ${DEFAULT-VALUE})",
         mapFallbackValue = CommandLine.Option.NULL_VALUE )
-    private Map<String, Optional<URI>> prefixMap =
+    private Map<String, URI> prefixMap =
         FormattingStyle.DEFAULT.knownPrefixes.stream().collect( Collectors.toMap(
-            FormattingStyle.KnownPrefix::getPrefix, knownPrefix -> Optional.of( knownPrefix.getIri() ) ) );
+            FormattingStyle.KnownPrefix::getPrefix, FormattingStyle.KnownPrefix::getIri ) );
 
-    @CommandLine.Option( names = { "--prefixalign" },
+    @CommandLine.Option( names = { "--prefixAlign" },
         description = "Alignment of @prefix statements, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.Alignment alignPrefixes = FormattingStyle.DEFAULT.alignPrefixes;
 
@@ -79,7 +79,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Defines how double numbers are formatted (Default: ${DEFAULT-VALUE})" )
     private NumberFormat doubleFormat = FormattingStyle.DEFAULT.doubleFormat;
 
-    @CommandLine.Option( names = { "--endofline" },
+    @CommandLine.Option( names = { "--endOfLine" },
         description = "End of line style, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.EndOfLineStyle endOfLineStyle = FormattingStyle.DEFAULT.endOfLine;
 
@@ -120,7 +120,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private boolean alignPredicates = FormattingStyle.DEFAULT.alignPredicates;
 
     @CommandLine.Option( names = { "--continuationIndentSize" },
-        description = "Indentation width after forced line wraps (Default: ${DEFAULT-VALUE})" )
+        description = "Indentation size after forced line wraps (Default: ${DEFAULT-VALUE})" )
     private int continuationIndentSize = FormattingStyle.DEFAULT.continuationIndentSize;
 
     @CommandLine.Option( names = { "--insertFinalNewline" },
@@ -128,7 +128,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private boolean insertFinalNewline = FormattingStyle.DEFAULT.insertFinalNewline;
 
     @CommandLine.Option( names = { "--indentSize" },
-        description = "Indentation width (Default: ${DEFAULT-VALUE})" )
+        description = "Indentation size in spaces (Default: ${DEFAULT-VALUE})" )
     private int indentSize = FormattingStyle.DEFAULT.indentSize;
 
     @CommandLine.Option( names = { "--keepUnusedPrefixes" },
@@ -229,11 +229,11 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         }
 
         protected String buildResourceUri( String resourceUri ) throws Exception {
-            for ( Map.Entry<String, Optional<URI>> entry : OWLCLIWriteCommand.this.prefixMap.entrySet() ) {
-                final URI uri = entry.getValue().isEmpty() ?
+            for ( Map.Entry<String, URI> entry : OWLCLIWriteCommand.this.prefixMap.entrySet() ) {
+                final URI uri = entry.getValue() == null ?
                     wellKnownUriByPrefix( entry.getKey() )
                         .orElseThrow( () -> new Exception( "Used prefix " + entry.getKey() + " is not well-known" ) ) :
-                    entry.getValue().get();
+                    entry.getValue();
                 if ( resourceUri.startsWith( entry.getKey() ) ) {
                     return uri.toString() + resourceUri.substring( ( entry.getKey() + ":" ).length() );
                 }
