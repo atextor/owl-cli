@@ -143,6 +143,10 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Sort order for subjects by type (Default: ${DEFAULT-VALUE})" )
     private List<Resource> subjectOrder = FormattingStyle.DEFAULT.subjectOrder;
 
+    @CommandLine.Option( names = { "--predicateOrder" },
+        description = "Sort order for predicates (Default: ${DEFAULT-VALUE})" )
+    private List<Property> predicateOrder = FormattingStyle.DEFAULT.predicateOrder;
+
     @CommandLine.Parameters( paramLabel = "INPUT", description = "File name, URL, or - for stdin", arity = "1",
         index = "0" )
     private String input;
@@ -174,6 +178,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .keepUnusedPrefixes( keepUnusedPrefixes )
             .prefixOrder( prefixOrder )
             .subjectOrder( subjectOrder )
+            .predicateOrder( predicateOrder )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()
