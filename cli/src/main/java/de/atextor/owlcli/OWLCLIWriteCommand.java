@@ -85,7 +85,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
     @CommandLine.Option( names = { "--doubleFormat" },
         description = "Defines how double numbers are formatted (Default: ${DEFAULT-VALUE})" )
-    private NumberFormat doubleFormat = FormattingStyle.DEFAULT.doubleFormat;
+    private String doubleFormatPattern = ( (DecimalFormat) FormattingStyle.DEFAULT.doubleFormat ).toPattern();
 
     @CommandLine.Option( names = { "--endOfLine" },
         description = "End of line style, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
@@ -99,9 +99,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Write first predicate in new line of block (Default: ${DEFAULT-VALUE})" )
     private boolean firstPredicateInNewLine = FormattingStyle.DEFAULT.firstPredicateInNewLine;
 
-    @CommandLine.Option( names = { "--useAForRdfType" },
-        description = "Write 'a' instead of 'rdf:type' (Default: ${DEFAULT-VALUE})" )
-    private boolean useAForRdfType = FormattingStyle.DEFAULT.useAForRdfType;
+    @CommandLine.Option( names = { "--writeRdfType" },
+        description = "Write 'rdf:type' instead of 'a' (Default: ${DEFAULT-VALUE})" )
+    private boolean writeRdfType = !FormattingStyle.DEFAULT.useAForRdfType;
 
     @CommandLine.Option( names = { "--useCommaByDefault" },
         description = "Use commas for multiple objects (Default: ${DEFAULT-VALUE})" )
@@ -115,9 +115,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Use no commas for multiple objects (Default: ${DEFAULT-VALUE})" )
     private Set<Property> noCommaForPredicate = FormattingStyle.DEFAULT.noCommaForPredicate;
 
-    @CommandLine.Option( names = { "--useShortLiterals" },
-        description = "Use short form for literals where possible (Default: ${DEFAULT-VALUE})" )
-    private boolean useShortLiterals = FormattingStyle.DEFAULT.useShortLiterals;
+    @CommandLine.Option( names = { "--useLongLiterals" },
+        description = "Use long form for literals where possible (Default: ${DEFAULT-VALUE})" )
+    private boolean useLongLiterals = !FormattingStyle.DEFAULT.useShortLiterals;
 
     @CommandLine.Option( names = { "--alignObjects" },
         description = "Align objects for same predicates (Default: ${DEFAULT-VALUE})" )
@@ -131,9 +131,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Indentation size after forced line wraps (Default: ${DEFAULT-VALUE})" )
     private int continuationIndentSize = FormattingStyle.DEFAULT.continuationIndentSize;
 
-    @CommandLine.Option( names = { "--insertFinalNewline" },
-        description = "Insert newline at end of file (Default: ${DEFAULT-VALUE})" )
-    private boolean insertFinalNewline = FormattingStyle.DEFAULT.insertFinalNewline;
+    @CommandLine.Option( names = { "--doNotInsertFinalNewline" },
+        description = "Do not insert newline at end of file (Default: ${DEFAULT-VALUE})" )
+    private boolean doNotInsertFinalNewline = !FormattingStyle.DEFAULT.insertFinalNewline;
 
     @CommandLine.Option( names = { "--indentSize" },
         description = "Indentation size in spaces (Default: ${DEFAULT-VALUE})" )
@@ -178,19 +178,19 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         final FormattingStyle style = FormattingStyle.builder()
             .alignPrefixes( alignPrefixes )
             .charset( encoding )
-            .doubleFormat( doubleFormat )
+            .doubleFormat( new DecimalFormat( doubleFormatPattern ) )
             .endOfLine( endOfLineStyle )
             .indentStyle( indentStyle )
             .firstPredicateInNewLine( firstPredicateInNewLine )
-            .useAForRdfType( useAForRdfType )
+            .useAForRdfType( !writeRdfType )
             .useCommaByDefault( useCommaByDefault )
             .commaForPredicate( commaForPredicate )
             .noCommaForPredicate( noCommaForPredicate )
-            .useShortLiterals( useShortLiterals )
+            .useShortLiterals( !useLongLiterals )
             .alignObjects( alignObjects )
             .alignPredicates( alignPredicates )
             .continuationIndentSize( continuationIndentSize )
-            .insertFinalNewline( insertFinalNewline )
+            .insertFinalNewline( !doNotInsertFinalNewline )
             .indentSize( indentSize )
             .keepUnusedPrefixes( keepUnusedPrefixes )
             .prefixOrder( prefixOrder )
@@ -248,15 +248,15 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     }
 
     private abstract class AbstractResourceConverter {
-        private Optional<URI> wellKnownUriByPrefix( String prefix ) {
+        private Optional<URI> wellKnownUriByPrefix( final String prefix ) {
             return FormattingStyle.DEFAULT.knownPrefixes.stream()
                 .filter( knownPrefix -> knownPrefix.getPrefix().equals( prefix ) )
                 .findAny()
                 .map( FormattingStyle.KnownPrefix::getIri );
         }
 
-        protected String buildResourceUri( String resourceUri ) throws Exception {
-            for ( Map.Entry<String, URI> entry : OWLCLIWriteCommand.this.prefixMap.entrySet() ) {
+        protected String buildResourceUri( final String resourceUri ) throws Exception {
+            for ( final Map.Entry<String, URI> entry : prefixMap.entrySet() ) {
                 final URI uri = entry.getValue() == null ?
                     wellKnownUriByPrefix( entry.getKey() )
                         .orElseThrow( () -> new Exception( "Used prefix " + entry.getKey() + " is not well-known" ) ) :
