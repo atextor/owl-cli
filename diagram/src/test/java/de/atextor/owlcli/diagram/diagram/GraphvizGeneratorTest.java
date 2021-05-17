@@ -64,7 +64,7 @@ public class GraphvizGeneratorTest {
     final String value1 = "theValue";
 
     Predicate<GraphvizDocument.Statement> contains( final String needle ) {
-        return statement -> statement.getContent().contains( needle );
+        return statement -> statement.content().contains( needle );
     }
 
     @Test
