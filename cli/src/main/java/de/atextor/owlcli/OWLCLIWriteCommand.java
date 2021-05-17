@@ -52,11 +52,6 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
     private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
 
-    static {
-        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
-        JenaSystem.init();
-    }
-
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 

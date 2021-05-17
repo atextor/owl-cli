@@ -16,6 +16,7 @@
 package de.atextor.owlcli;
 
 import io.vavr.collection.List;
+import org.apache.jena.sys.JenaSystem;
 import picocli.CommandLine;
 
 import java.io.PrintWriter;
@@ -31,6 +32,11 @@ import java.util.logging.LogManager;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
+    static {
+        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
+        JenaSystem.init();
+    }
+
     private static final CommandLine.IParameterExceptionHandler exceptionHandler =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
