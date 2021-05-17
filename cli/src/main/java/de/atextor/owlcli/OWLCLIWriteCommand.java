@@ -21,6 +21,7 @@ import de.atextor.turtle.formatter.FormattingStyle;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.sys.JenaSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -45,6 +46,11 @@ import java.util.stream.Collectors;
         "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#write-command"
 )
 public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
+    static {
+        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
+        JenaSystem.init();
+    }
+
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );
 
     private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
@@ -185,8 +191,6 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .outputFormat( outputFormat )
             .inputFormat( inputFormat )
             .formattingStyle( style );
-
-        initJena();
 
         final RdfWriter writer = new RdfWriter();
 

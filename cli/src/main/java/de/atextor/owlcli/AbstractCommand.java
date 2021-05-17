@@ -161,11 +161,6 @@ public class AbstractCommand {
         }
     }
 
-    protected void initJena() {
-        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
-        JenaSystem.init();
-    }
-
     protected void exitWithErrorMessage( final Logger logger, final LoggingMixin loggingMixin,
                                          final Throwable throwable ) {
         if ( loggingMixin.getVerbosity().length == 0 ) {
