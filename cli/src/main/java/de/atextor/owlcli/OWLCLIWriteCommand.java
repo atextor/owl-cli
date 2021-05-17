@@ -19,6 +19,7 @@ import de.atextor.owlcli.write.Configuration;
 import de.atextor.owlcli.write.RdfWriter;
 import de.atextor.turtle.formatter.FormattingStyle;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.sys.JenaSystem;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @CommandLine.Command( name = "write",
@@ -46,14 +48,14 @@ import java.util.stream.Collectors;
         "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#write-command"
 )
 public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
+    private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );
+
+    private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
+
     static {
         JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
         JenaSystem.init();
     }
-
-    private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );
-
-    private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
 
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
@@ -153,6 +155,15 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         description = "Sort order for predicates (Default: ${DEFAULT-VALUE})" )
     private List<Property> predicateOrder = FormattingStyle.DEFAULT.predicateOrder;
 
+    @CommandLine.Option( names = { "--objectOrder" },
+        description = "Sort order for objects (Default: ${DEFAULT-VALUE})" )
+    private List<RDFNode> objectOrder = FormattingStyle.DEFAULT.objectOrder;
+
+    @CommandLine.Option( names = { "--anonymousNodeIdPattern" },
+        description = "Name pattern for blank node IDs (Default: ${DEFAULT-VALUE})" )
+    private String anonymousNodeIdPattern =
+        FormattingStyle.DEFAULT.anonymousNodeIdGenerator.apply( ResourceFactory.createResource(), 0 );
+
     @CommandLine.Parameters( paramLabel = "INPUT", description = "File name, URL, or - for stdin", arity = "1",
         index = "0" )
     private String input;
@@ -185,6 +196,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .prefixOrder( prefixOrder )
             .subjectOrder( subjectOrder )
             .predicateOrder( predicateOrder )
+            .objectOrder( objectOrder )
+            .anonymousNodeIdGenerator( buildAnonymousNodeIdGenerator( anonymousNodeIdPattern ) )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()
@@ -220,6 +233,11 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         commandLine.registerConverter( NumberFormat.class, new NumberFormatConverter() );
         commandLine.registerConverter( Property.class, new PropertyConverter() );
         commandLine.registerConverter( Resource.class, new ResourceConverter() );
+        commandLine.registerConverter( RDFNode.class, new RDFNodeConverter() );
+    }
+
+    private BiFunction<Resource, Integer, String> buildAnonymousNodeIdGenerator( final String pattern ) {
+        return ( resource, integer ) -> pattern.replace( "0", "" + integer );
     }
 
     private static class NumberFormatConverter implements CommandLine.ITypeConverter<NumberFormat> {
@@ -267,4 +285,13 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             return ResourceFactory.createResource( propertyUri );
         }
     }
+
+    private class RDFNodeConverter extends AbstractResourceConverter implements CommandLine.ITypeConverter<RDFNode> {
+        @Override
+        public RDFNode convert( final String value ) throws Exception {
+            final String propertyUri = buildResourceUri( value );
+            return ResourceFactory.createResource( propertyUri );
+        }
+    }
+
 }
