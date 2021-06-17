@@ -11,6 +11,11 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+configurations {
+    integrationTestImplementation.extendsFrom implementation
+    integrationTestRuntimeOnly.extendsFrom runtimeOnly
+}
+
 apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation project(':diagram')
@@ -41,6 +46,12 @@ dependencies {
     testImplementation(deps.assertj)
     testImplementation(deps.classgraph)
     testRuntimeOnly(deps.junit_jupiter_engine)
+
+    // Integration test
+    integrationTestImplementation(deps.junit_jupiter_api)
+    integrationTestImplementation(deps.junit_jupiter_params)
+    integrationTestImplementation(deps.assertj)
+    integrationTestRuntimeOnly(deps.junit_jupiter_engine)
 }
 
 configurations.all {
@@ -106,12 +117,29 @@ public class ${appConfigClass} {
     }
 }
 
+tasks.register("integrationTest", Test) {
+    description = 'Runs integration tests.'
+    group = 'verification'
+    outputs.upToDateWhen { false }
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    dependsOn shadowJar
+
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
 sourceSets {
     generated {
         java.srcDir "${genSrc}"
     }
     main {
-        compileClasspath += generated.output
+        compileClasspath += sourceSets.generated.output
+    }
+    integrationTest {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
     }
 }
 
@@ -134,6 +162,25 @@ test {
 
     filter {
         includeTestsMatching "*Test"
+    }
+
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
+integrationTest {
+    useJUnitPlatform()
+    maxHeapSize = '1G'
+    ignoreFailures = false
+    failFast = true
+
+    filter {
+        includeTestsMatching "*Test"
+    }
+
+    testLogging {
+        showStandardStreams = true
     }
 }
 
