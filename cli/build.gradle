@@ -124,6 +124,8 @@ tasks.register("integrationTest", Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     dependsOn shadowJar
+    shouldRunAfter nativeImagePass2
+    onlyIf { project(':cli').file('build/bin/owl').exists() }
 
     testLogging {
         showStandardStreams = true
@@ -182,6 +184,8 @@ integrationTest {
     testLogging {
         showStandardStreams = true
     }
+
+    systemProperty "owlBinary", project(':cli').file('build/bin/owl').getCanonicalPath()
 }
 
 mainClassName = 'de.atextor.owlcli.OWLCLI'

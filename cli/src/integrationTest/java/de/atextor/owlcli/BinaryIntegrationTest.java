@@ -15,14 +15,31 @@
 
 package de.atextor.owlcli;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BinaryIntegrationTest {
+    static String owl;
+
+    @BeforeAll
+    public static void setup() {
+        owl = System.getProperty( "owlBinary" );
+    }
 
     @Test
-    public void testBinary() {
-        assertThat( true ).isEqualTo( true );
+    public void testBinary() throws IOException {
+        final Runtime runtime = Runtime.getRuntime();
+        final Process p = runtime.exec( owl );
+
+        final byte[] stdout = IOUtils.toByteArray( p.getInputStream() );
+        final String output = new String( stdout, StandardCharsets.UTF_8 );
+
+        assertThat( output ).contains( "Usage: owl [-v] [--help] [--version] [COMMAND]" );
     }
 }
