@@ -167,9 +167,9 @@ jobs:
         # - Install GraalVM 21.1.0.r16 (JDK 16)
         # - Clean Antora cache
         run: |-
-          choco install zip
-          choco install unzip
-          choco install graphviz
+          choco install zip --execution-timeout=600
+          choco install unzip --execution-timeout=600
+          choco install graphviz --execution-timeout=600
           curl -sL https://get.sdkman.io | bash
           echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
           echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
