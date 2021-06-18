@@ -60,7 +60,7 @@ jobs:
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
-          ./gradlew clean test check jacocoRootReport antora --stacktrace --no-daemon
+          ./gradlew clean test check jacocoRootReport nativeImagePass2 antora --stacktrace --no-daemon
       - name: Run UPX
         uses: crazy-max/ghaction-upx@v1.4.0
         with:
