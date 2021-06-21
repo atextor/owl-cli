@@ -1,6 +1,6 @@
 # owl-cli
 
-[![build](https://github.com/atextor/owl-cli/actions/workflows/build.yml/badge.svg)](https://github.com/atextor/owl-cli/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/atextor/owl-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/atextor/owl-cli) [![Known Vulnerabilities](https://snyk.io/test/github/atextor/owl-cli/badge.svg)](https://snyk.io/test/github/atextor/owl-cli) [![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0) [![](https://tokei.rs/b1/github/atextor/owl-cli)](https://github.com/Aaronepower/tokei)
+[![build](https://github.com/atextor/owl-cli/actions/workflows/build.yml/badge.svg)](https://github.com/atextor/owl-cli/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/atextor/owl-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/atextor/owl-cli) [![Known Vulnerabilities](https://snyk.io/test/github/atextor/owl-cli/badge.svg)](https://snyk.io/test/github/atextor/owl-cli) [![License: Apache 2.0](https://img.shields.io/badge/License-Apache-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![](https://tokei.rs/b1/github/atextor/owl-cli)](https://github.com/Aaronepower/tokei)
 
 
 **owl-cli** is a command line tool for ontology engineering. It targets the [Web Ontology
