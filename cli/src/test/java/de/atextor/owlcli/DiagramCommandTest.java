@@ -70,11 +70,11 @@ public class DiagramCommandTest {
         final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
         final File output = tempDir.resolve( testFileName + ".ttl" ).toFile();
 
+        assertThat( input ).isNotNull();
         FileUtils.copyURLToFile( input, output );
         assertThat( output ).isFile();
         assertThat( fileContent( output ) ).isNotEmpty();
 
-        System.out.println( "Running: diagram " + output.getAbsolutePath() );
         final Runnable command = () -> OWLCLI.main( new String[]{ "diagram", output.getAbsolutePath() } );
         final MainClassRunner.ExecutionResult result = run( command );
 
@@ -82,7 +82,7 @@ public class DiagramCommandTest {
         System.out.println( result.stdErr() );
 
         if ( result.exitStatus() != 0 ) {
-            System.out.println( "Something went wrong:" );
+            System.out.println( "Something went wrong for diagram " + output.getAbsolutePath() );
             System.out.println( "=== stdout ===" );
             System.out.println( result.stdOut() );
             System.out.println( "=== stderr ===" );

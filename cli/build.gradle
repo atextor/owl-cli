@@ -67,6 +67,7 @@ dependencies {
     integrationTestImplementation(deps.junit_jupiter_api)
     integrationTestImplementation(deps.junit_jupiter_params)
     integrationTestImplementation(deps.assertj)
+    integrationTestImplementation(deps.classgraph)
     integrationTestRuntimeOnly(deps.junit_jupiter_engine)
 }
 
@@ -156,8 +157,8 @@ sourceSets {
         compileClasspath += sourceSets.generated.output
     }
     integrationTest {
-        compileClasspath += sourceSets.main.output
-        runtimeClasspath += sourceSets.main.output
+        compileClasspath += sourceSets.main.output + sourceSets.test.output
+        runtimeClasspath += sourceSets.main.output + sourceSets.test.output
     }
 }
 
