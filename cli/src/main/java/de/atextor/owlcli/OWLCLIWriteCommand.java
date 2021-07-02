@@ -23,7 +23,6 @@ import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
-import org.apache.jena.sys.JenaSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -217,7 +216,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         }
 
         openInput( input ).flatMap( inputStream -> {
-                final Configuration configuration = configurationBuilder.base( "file://" + input ).build();
+                final Configuration configuration = input.equals( "-" ) ?
+                    configurationBuilder.build() :
+                    configurationBuilder.base( "file://" + input ).build();
                 return openOutput( input, output != null ? output : "-", "ttl" )
                     .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
             }
