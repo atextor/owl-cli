@@ -402,6 +402,10 @@
   ]
 },
 {
+  "name":"org.apache.jena.rdfxml.xmloutput.impl.Basic",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParserFactory",
   "allPublicConstructors":true
 },

@@ -18,13 +18,20 @@ package de.atextor.owlcli;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -43,6 +50,10 @@ public class BinaryIntegrationTest {
 
     static String owl;
 
+    /**
+     * This is set by the gradle build. If you want to run the tests in the IDE, you need to add
+     * -DowlBinary=/path/to/owl to the VM arguments.
+     */
     @BeforeAll
     public static void setup() {
         owl = System.getProperty( "owlBinary" );
@@ -130,7 +141,7 @@ public class BinaryIntegrationTest {
         final URL input = DiagramCommandTest.class.getResource( "/" + testFileName + ".ttl" );
         final File output = tempDir.resolve( testFileName + ".ttl" ).toFile();
 
-        assertThat(input).isNotNull();
+        assertThat( input ).isNotNull();
         FileUtils.copyURLToFile( input, output );
         assertThat( output ).isFile();
         assertThat( fileContent( output ) ).isNotEmpty();
@@ -163,6 +174,31 @@ public class BinaryIntegrationTest {
         }
     }
 
+    @Test
+    public void testHelpWrite() throws IOException, InterruptedException {
+        final Process process = runtime.exec( owl + " help write" );
+        final String stdout = IOUtils.toString( process.getInputStream(), StandardCharsets.UTF_8 );
+        final String stderr = IOUtils.toString( process.getErrorStream(), StandardCharsets.UTF_8 );
+        process.waitFor();
+
+        assertThat( process.exitValue() ).isEqualTo( 0 );
+        assertThat( stdout ).contains( "Usage: owl write" );
+        assertThat( stdout ).contains( "--alignObjects" );
+        assertThat( stderr ).isEmpty();
+    }
+
+    @Test
+    public void testWriteWithoutArguments() throws IOException, InterruptedException {
+        final Process process = runtime.exec( owl + " write" );
+        final String stdout = IOUtils.toString( process.getInputStream(), StandardCharsets.UTF_8 );
+        final String stderr = IOUtils.toString( process.getErrorStream(), StandardCharsets.UTF_8 );
+        process.waitFor();
+
+        assertThat( process.exitValue() ).isEqualTo( 1 );
+        assertThat( stdout ).isEmpty();
+        assertThat( stderr ).contains( "Error: " );
+    }
+
     private byte[] fileContent( final File file ) {
         try {
             return FileUtils.readFileToByteArray( file );
@@ -170,5 +206,73 @@ public class BinaryIntegrationTest {
             fail( "", exception );
         }
         return null;
+    }
+
+    private InputStream turtleInputStream() {
+        final String turtleDocument = """
+            @prefix : <http://test.de#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+            :Person a rdfs:Class .
+            :name a rdfs:Property .
+            :address a rdfs:Property .
+            :city a rdfs:Property .
+            :Max a :Person ;
+                :name "Max" ;
+                :address [
+                    :city "City Z"
+                ] .
+            """;
+        return new ByteArrayInputStream( turtleDocument.getBytes() );
+    }
+
+    private Model parseModel( final String document, final String format ) {
+        final Model model = ModelFactory.createDefaultModel();
+        try {
+            model.read( new StringReader( document ), "", format );
+            return model;
+        } catch ( final Throwable t ) {
+            return null;
+        }
+    }
+
+    private boolean canBeParsedAs( final String document, final String format, final int expectedNumberOfStatements ) {
+        final Model model = parseModel( document, format );
+        return model != null && model.listStatements().toList().size() == expectedNumberOfStatements;
+    }
+
+
+    @Test
+    public void testWriteTurtle() throws InterruptedException, IOException {
+        final Process process = runtime.exec( owl + " write -" );
+        final BufferedReader stdoutReader = new BufferedReader( new InputStreamReader( process.getInputStream() ) );
+        final BufferedReader stderrReader = new BufferedReader( new InputStreamReader( process.getErrorStream() ) );
+        IOUtils.copy( turtleInputStream(), process.getOutputStream() );
+        process.getOutputStream().close();
+        process.waitFor();
+
+        final String stdout = IOUtils.toString( stdoutReader );
+        final String stderr = IOUtils.toString( stderrReader );
+
+        assertThat( process.exitValue() ).isEqualTo( 0 );
+        assertThat( canBeParsedAs( stdout, "TURTLE", 8 ) ).isTrue();
+        assertThat( stderr ).isEmpty();
+    }
+
+    @Test
+    public void testWriteRdfXml() throws InterruptedException, IOException {
+        final Process process = runtime.exec( owl + " write -o rdfxml -" );
+        final BufferedReader stdoutReader = new BufferedReader( new InputStreamReader( process.getInputStream() ) );
+        final BufferedReader stderrReader = new BufferedReader( new InputStreamReader( process.getErrorStream() ) );
+        IOUtils.copy( turtleInputStream(), process.getOutputStream() );
+        process.getOutputStream().close();
+        process.waitFor();
+
+        final String stdout = IOUtils.toString( stdoutReader );
+        final String stderr = IOUtils.toString( stderrReader );
+
+        assertThat( process.exitValue() ).isEqualTo( 0 );
+        assertThat( canBeParsedAs( stdout, "RDF/XML", 8 ) ).isTrue();
+        assertThat( stderr ).isEmpty();
     }
 }
