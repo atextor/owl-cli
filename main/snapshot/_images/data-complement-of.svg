@@ -9,40 +9,40 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 28)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-28 303,-28 303,4 -4,4"/>
-<!-- _640b00debfbd4e1cad7cde86d0451a5a -->
-<g id="node1" class="node">
-<title>_640b00debfbd4e1cad7cde86d0451a5a</title>
-<path fill="none" stroke="black" d="M130.67,-22C130.67,-22 115.33,-22 115.33,-22 111.67,-22 108,-18.33 108,-14.67 108,-14.67 108,-7.33 108,-7.33 108,-3.67 111.67,0 115.33,0 115.33,0 130.67,0 130.67,0 134.33,0 138,-3.67 138,-7.33 138,-7.33 138,-14.67 138,-14.67 138,-18.33 134.33,-22 130.67,-22"/>
-<text text-anchor="start" x="112" y="-8.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#00b2b2">not</text>
-</g>
-<!-- negativeInteger -->
-<g id="node3" class="node">
-<title>negativeInteger</title>
-<path fill="none" stroke="black" d="M291.67,-22C291.67,-22 182.33,-22 182.33,-22 178.67,-22 175,-18.33 175,-14.67 175,-14.67 175,-7.33 175,-7.33 175,-3.67 178.67,0 182.33,0 182.33,0 291.67,0 291.67,0 295.33,0 299,-3.67 299,-7.33 299,-7.33 299,-14.67 299,-14.67 299,-18.33 295.33,-22 291.67,-22"/>
-<text text-anchor="start" x="179" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#ad3b45">⬤</text>
-<text text-anchor="start" x="193" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="198" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">negativeInteger</text>
-</g>
-<!-- _640b00debfbd4e1cad7cde86d0451a5a&#45;&gt;negativeInteger -->
-<g id="edge2" class="edge">
-<title>_640b00debfbd4e1cad7cde86d0451a5a&#45;&gt;negativeInteger</title>
-<path fill="none" stroke="black" d="M138.18,-11C145.38,-11 154.72,-11 164.76,-11"/>
-<polygon fill="black" stroke="black" points="164.99,-14.5 174.99,-11 164.99,-7.5 164.99,-14.5"/>
-</g>
 <!-- P -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>P</title>
 <path fill="none" stroke="black" d="M29.67,-22C29.67,-22 7.33,-22 7.33,-22 3.67,-22 0,-18.33 0,-14.67 0,-14.67 0,-7.33 0,-7.33 0,-3.67 3.67,0 7.33,0 7.33,0 29.67,0 29.67,0 33.33,0 37,-3.67 37,-7.33 37,-7.33 37,-14.67 37,-14.67 37,-18.33 33.33,-22 29.67,-22"/>
 <text text-anchor="start" x="4" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#38a14a">▬</text>
 <text text-anchor="start" x="20" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="25" y="-8.2" font-family="Verdana" font-size="12.00" fill="#000000">P</text>
 </g>
-<!-- P&#45;&gt;_640b00debfbd4e1cad7cde86d0451a5a -->
+<!-- _565896dd68d64c9ab0e5d9d18a427a27 -->
+<g id="node3" class="node">
+<title>_565896dd68d64c9ab0e5d9d18a427a27</title>
+<path fill="none" stroke="black" d="M130.67,-22C130.67,-22 115.33,-22 115.33,-22 111.67,-22 108,-18.33 108,-14.67 108,-14.67 108,-7.33 108,-7.33 108,-3.67 111.67,0 115.33,0 115.33,0 130.67,0 130.67,0 134.33,0 138,-3.67 138,-7.33 138,-7.33 138,-14.67 138,-14.67 138,-18.33 134.33,-22 130.67,-22"/>
+<text text-anchor="start" x="112" y="-8.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#00b2b2">not</text>
+</g>
+<!-- P&#45;&gt;_565896dd68d64c9ab0e5d9d18a427a27 -->
 <g id="edge1" class="edge">
-<title>P&#45;&gt;_640b00debfbd4e1cad7cde86d0451a5a</title>
+<title>P&#45;&gt;_565896dd68d64c9ab0e5d9d18a427a27</title>
 <path fill="none" stroke="black" d="M37.35,-11C54.14,-11 79.38,-11 97.93,-11"/>
 <polygon fill="black" stroke="black" points="97.97,-14.5 107.97,-11 97.97,-7.5 97.97,-14.5"/>
 <text text-anchor="middle" x="72.5" y="-14.4" font-family="Verdana" font-size="12.00">range</text>
+</g>
+<!-- negativeInteger -->
+<g id="node2" class="node">
+<title>negativeInteger</title>
+<path fill="none" stroke="black" d="M291.67,-22C291.67,-22 182.33,-22 182.33,-22 178.67,-22 175,-18.33 175,-14.67 175,-14.67 175,-7.33 175,-7.33 175,-3.67 178.67,0 182.33,0 182.33,0 291.67,0 291.67,0 295.33,0 299,-3.67 299,-7.33 299,-7.33 299,-14.67 299,-14.67 299,-18.33 295.33,-22 291.67,-22"/>
+<text text-anchor="start" x="179" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#ad3b45">⬤</text>
+<text text-anchor="start" x="193" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="198" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">negativeInteger</text>
+</g>
+<!-- _565896dd68d64c9ab0e5d9d18a427a27&#45;&gt;negativeInteger -->
+<g id="edge2" class="edge">
+<title>_565896dd68d64c9ab0e5d9d18a427a27&#45;&gt;negativeInteger</title>
+<path fill="none" stroke="black" d="M138.18,-11C145.38,-11 154.72,-11 164.76,-11"/>
+<polygon fill="black" stroke="black" points="164.99,-14.5 174.99,-11 164.99,-7.5 164.99,-14.5"/>
 </g>
 </g>
 </svg>
