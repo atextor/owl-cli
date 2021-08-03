@@ -68,6 +68,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Set;
 
 public class DiagramGeneratorTest {
@@ -90,10 +91,11 @@ public class DiagramGeneratorTest {
 
     @Provide
     Arbitrary<Node.Id> anyId() {
-        return Arbitraries.oneOf(
+        return Arbitraries.oneOf( List.of(
             Arbitraries.of( identifierMapper.getSyntheticId() ),
             anyIRI().map( identifierMapper::getSyntheticIdForIri ),
-            anyIRI().map( identifierMapper::getIdForIri ) );
+            anyIRI().map( identifierMapper::getIdForIri )
+        ) );
     }
 
     @Provide
@@ -103,7 +105,7 @@ public class DiagramGeneratorTest {
 
     @Provide
     Arbitrary<Node> anyNamedNode() {
-        return Arbitraries.oneOf(
+        return Arbitraries.oneOf( List.of(
             Combinators.combine( anyId(), anyName() ).as( Class::new ),
             Combinators.combine( anyId(), anyName() ).as( DataProperty::new ),
             Combinators.combine( anyId(), anyName() ).as( ObjectProperty::new ),
@@ -111,12 +113,12 @@ public class DiagramGeneratorTest {
             Combinators.combine( anyId(), anyName() ).as( Individual::new ),
             Combinators.combine( anyId(), anyName() ).as( Datatype::new ),
             Combinators.combine( anyId(), anyName() ).as( Literal::new )
-        );
+        ) );
     }
 
     @Provide
     Arbitrary<Node> anyCardinalityNode() {
-        return Arbitraries.oneOf(
+        return Arbitraries.oneOf( List.of(
             Combinators.combine( anyId(), Arbitraries.integers() ).as( DataExactCardinality::new ),
             Combinators.combine( anyId(), Arbitraries.integers() ).as( DataMaximalCardinality::new ),
             Combinators.combine( anyId(), Arbitraries.integers() ).as( DataMinimalCardinality::new ),
@@ -125,11 +127,12 @@ public class DiagramGeneratorTest {
             Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectMinimalCardinality::new ),
             Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedExactCardinality::new ),
             Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedMaximalCardinality::new ),
-            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedMinimalCardinality::new ) );
+            Combinators.combine( anyId(), Arbitraries.integers() ).as( ObjectQualifiedMinimalCardinality::new )
+        ) );
     }
 
     Arbitrary<Node> anyOnlyIdentifiedNode() {
-        return Arbitraries.oneOf(
+        return Arbitraries.oneOf( List.of(
             anyId().map( ExistentialRestriction::new ),
             anyId().map( ValueRestriction::new ),
             anyId().map( UniversalRestriction::new ),
@@ -143,7 +146,8 @@ public class DiagramGeneratorTest {
             anyId().map( ClosedClass::new ),
             anyId().map( Complement::new ),
             anyId().map( Self::new ),
-            anyId().map( Invisible::new ) );
+            anyId().map( Invisible::new )
+        ) );
     }
 
     @Provide
@@ -161,12 +165,13 @@ public class DiagramGeneratorTest {
 
     @Provide
     Arbitrary<Node> anyNode() {
-        return Arbitraries.oneOf(
+        return Arbitraries.oneOf( List.of(
             anyNamedNode(),
             anyCardinalityNode(),
             anyOnlyIdentifiedNode(),
             anyPropertyChain(),
-            anyPropertyMarker() );
+            anyPropertyMarker()
+        ) );
     }
 
     @Provide
@@ -188,13 +193,13 @@ public class DiagramGeneratorTest {
 
     @Provide
     Arbitrary<Edge> anyEdge() {
-        return Arbitraries.oneOf( anyPlainEdge(), anyDecoratedEdge() );
+        return Arbitraries.oneOf( List.of( anyPlainEdge(), anyDecoratedEdge() ) );
     }
 
     @Provide
     Arbitrary<Set<GraphElement>> anyGraph() {
         // Create singleton sets of elements to reduce size of value space
-        return Arbitraries.oneOf( anyNode(), anyEdge() ).map( Set::of );
+        return Arbitraries.oneOf( List.of( anyNode(), anyEdge() ) ).map( Set::of );
     }
 
     @Property
