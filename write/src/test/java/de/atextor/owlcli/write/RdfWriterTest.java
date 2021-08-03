@@ -19,6 +19,7 @@ package de.atextor.owlcli.write;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -113,6 +114,7 @@ public class RdfWriterTest {
     }
 
     @Test
+    @Disabled("purl.org seems unreliable, disable flaky test until better solution is found")
     public void testReadFromUrl() throws IOException {
         final URL url = new URL( "http://purl.org/atextor/ontology/turtle-formatting" );
         final Configuration configuration = Configuration.builder()
