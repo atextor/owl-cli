@@ -189,10 +189,6 @@
   "fields":[{"name":"producerIndex", "allowUnsafeAccess":true}]
 },
 {
-  "name":"com.github.benmanes.caffeine.cache.BoundedLocalCache",
-  "fields":[{"name":"refreshes", "allowUnsafeAccess":true}]
-},
-{
   "name":"com.github.benmanes.caffeine.cache.CacheLoader",
   "methods":[{"name":"loadAll","parameterTypes":["java.lang.Iterable"] }]
 },
@@ -240,6 +236,18 @@
 },
 {
   "name":"com.github.benmanes.caffeine.cache.WSMS",
+  "allDeclaredConstructors" : true,
+  "allDeclaredMethods":true,
+  "allDeclaredFields":true
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.WSSMW",
+  "allDeclaredConstructors" : true,
+  "allDeclaredMethods":true,
+  "allDeclaredFields":true
+},
+{
+  "name":"com.github.benmanes.caffeine.cache.FSMW",
   "allDeclaredConstructors" : true,
   "allDeclaredMethods":true,
   "allDeclaredFields":true
