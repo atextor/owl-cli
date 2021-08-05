@@ -82,8 +82,8 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.1.0.r16-grl
-sdk use java 21.1.0.r16-grl
+sdk install java 21.2.0.r16-grl
+sdk use java 21.2.0.r16-grl
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -136,8 +136,8 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.1.0.r16-grl
-sdk use java 21.1.0.r16-grl
+sdk install java 21.2.0.r16-grl
+sdk use java 21.2.0.r16-grl
 # Use GraalVMs update tool to install the native-image command
 gu install native-image
 
