@@ -33,7 +33,7 @@ import picocli.CommandLine;
     footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#diagram-command"
 )
-public class OWLCLIDiagramCommand extends AbstractCommand implements OWLCLICommand, Runnable {
+public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIDiagramCommand.class );
 
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
