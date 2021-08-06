@@ -88,8 +88,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String label = edge.getLabel().getLabel();
             final String edgeStyle =
                 edgeTypeToGraphviz( edge.getType() )
-                    .map( style -> String.format( "%s, fontsize=%d fontname=\"%s\"", style, configuration.fontsize,
-                        configuration.fontname ) )
+                    .map( style -> String.format( "%s, fontsize=%d, fontname=\"%s\", color=\"%s\", fontcolor=\"%s\"",
+                        style, configuration.fontsize, configuration.fontname, configuration.fgColor,
+                        configuration.fgColor ) )
                     .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [label=\"%s\", %s]", escapeNodeId( edge.getFrom().getId() ),
@@ -98,7 +99,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
 
         final Function<Edge.Plain, GraphvizDocument> plainEdgeToGraphviz = edge -> {
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() )
-                .map( style -> style + ", fontsize=" + configuration.fontsize )
+                .map( style -> String.format( "%s, fontsize=%d, fontname=\"%s\", color=\"%s\", fontcolor=\"%s\"",
+                    style, configuration.fontsize, configuration.fontname, configuration.fgColor,
+                    configuration.fgColor )  )
                 .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [%s]", escapeNodeId( edge.getFrom().getId() ),
@@ -189,8 +192,9 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
              */
             String getNodeValue( final String elementName, final Configuration configuration ) {
                 return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"owlcli\"><B>%s</B></FONT> " +
-                        "<FONT POINT-SIZE=\"%s\" COLOR=\"#000000\" FACE=\"%s\">%s</FONT>",
-                    symbolSize, color, symbol, configuration.fontsize, configuration.fontname, elementName );
+                        "<FONT POINT-SIZE=\"%s\" COLOR=\"%s\" FACE=\"%s\">%s</FONT>",
+                    symbolSize, color, symbol, configuration.fontsize, configuration.fgColor, configuration.fontname,
+                    elementName );
             }
         }
 
@@ -251,7 +255,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String[] parts = propertyChain.getValue().split( " " + PropertyChain.OPERATOR_SYMBOL + " " );
             final String label = Arrays.stream( parts )
                 .filter( part -> !part.isEmpty() )
-                .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
+                .map( part -> String.format( "<FONT COLOR=\"%s\">%s</FONT>", configuration.fgColor, part ) )
                 .collect( Collectors.joining( operator ) );
             return generateHtmlLabelNode( propertyChain.getId(), label );
         }
@@ -445,7 +449,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String[] parts = rule.getValue().split( " " + Rule.IMPLICATION_SYMBOL + " " );
             final String label = Arrays.stream( parts )
                 .map( GraphvizGenerator::escape )
-                .map( part -> String.format( "<FONT COLOR=\"#000000\">%s</FONT>", part ) )
+                .map( part -> String.format( "<FONT COLOR=\"%s\">%s</FONT>", configuration.fgColor, part ) )
                 .collect( Collectors.joining( operator ) );
             return generateHtmlLabelNode( rule.getId(), label );
         }

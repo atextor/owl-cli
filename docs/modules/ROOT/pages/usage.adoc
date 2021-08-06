@@ -123,6 +123,11 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |rounded
 |See the https://www.graphviz.org/docs/attrs/style/[Graphviz documentation] for more information
 
+|`--fgcolor`
+|Color for boxes, fonts and edges
+|white
+|See the https://www.graphviz.org/docs/attrs/bgcolor/[Graphviz documentation] for more information
+
 |`--bgcolor`
 |Background color for the generated diagram
 |white

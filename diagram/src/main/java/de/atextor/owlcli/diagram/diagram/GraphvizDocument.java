@@ -16,6 +16,7 @@
 
 package de.atextor.owlcli.diagram.diagram;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,18 +45,22 @@ public class GraphvizDocument implements Function<Configuration, String> {
           rankdir = ${rankdir}
 
           bgcolor = "${bgcolor}"
+          color = "${fgcolor}"
 
           fontname = "${fontname}"
           fontsize = ${fontsize}
+          fontcolor = "${fgcolor}"
 
           node [
             fontname = "${nodeFontname}"
             fontsize = ${nodeFontsize}
+            fontcolor = "${fgcolor}"
             shape = "${nodeShape}"
             margin = "${nodeMargin}"
             style = "${nodeStyle}"
             height = 0.3
             width = 0.2
+            color = "${fgcolor}"
             bgcolor = "${bgcolor}"
           ]
 
@@ -98,19 +103,23 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     @Override
     public String apply( final Configuration configuration ) {
-        return GRAPHVIZ_TEMPLATE.apply( Map.of(
-            "rankdir", configuration.layoutDirection == Configuration.LayoutDirection.TOP_TO_BOTTOM ? "TB" : "LR",
-            "fontname", configuration.fontname,
-            "fontsize", configuration.fontsize,
-            "nodeFontname", configuration.nodeFontname,
-            "nodeFontsize", configuration.nodeFontsize,
-            "nodeShape", configuration.nodeShape,
-            "nodeMargin", configuration.nodeMargin,
-            "nodeStyle", configuration.nodeStyle,
-            "bgColor", configuration.bgColor,
-            "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
+        final Map<String, Object> templateMap = new ImmutableMap.Builder<String, Object>()
+            .put( "rankdir", configuration.layoutDirection == Configuration.LayoutDirection.TOP_TO_BOTTOM ? "TB" :
+                "LR" )
+            .put( "fontname", configuration.fontname )
+            .put( "fontsize", configuration.fontsize )
+            .put( "nodeFontname", configuration.nodeFontname )
+            .put( "nodeFontsize", configuration.nodeFontsize )
+            .put( "nodeShape", configuration.nodeShape )
+            .put( "nodeMargin", configuration.nodeMargin )
+            .put( "nodeStyle", configuration.nodeStyle )
+            .put( "bgcolor", configuration.bgColor )
+            .put( "fgcolor", configuration.fgColor )
+            .put( "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
                 .map( Statement::toFragment )
-                .collect( Collectors.joining( "   \n" ) ) ) );
+                .collect( Collectors.joining( "   \n" ) ) )
+            .build();
+        return GRAPHVIZ_TEMPLATE.apply( templateMap );
     }
 
     @Override

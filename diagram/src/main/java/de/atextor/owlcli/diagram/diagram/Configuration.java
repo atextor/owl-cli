@@ -51,6 +51,9 @@ public class Configuration {
     public String bgColor = "white";
 
     @Builder.Default
+    public String fgColor = "black";
+
+    @Builder.Default
     public Format format = Format.SVG;
 
     @Builder.Default

@@ -73,6 +73,9 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
     @CommandLine.Option( names = { "--dotbinary" }, description = "Path to dot binary (Default: ${DEFAULT-VALUE})" )
     private String dotBinary = config.dotBinary;
 
+    @CommandLine.Option( names = { "--fgcolor" }, description = "Foreground color (Default: ${DEFAULT-VALUE})" )
+    private String fgColor = config.fgColor;
+
     @CommandLine.Option( names = { "--bgcolor" }, description = "Background color (Default: ${DEFAULT-VALUE})" )
     private String bgColor = config.bgColor;
 
@@ -99,6 +102,7 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
             .format( format )
             .layoutDirection( layoutDirection )
             .dotBinary( dotBinary )
+            .fgColor( fgColor )
             .bgColor( bgColor )
             .build();
 
