@@ -64,7 +64,7 @@ public class RdfWriter {
         try {
             model.read( input, configuration.base, configurationFormatToJenaFormat( configuration.inputFormat ) );
             if ( configuration.outputFormat == Configuration.Format.TURTLE ) {
-                return writeTurtle( model, output );
+                return writeTurtle( model, output, configuration.formattingStyle );
             }
             model.write( output, configurationFormatToJenaFormat( configuration.outputFormat ) );
         } catch ( final Exception exception ) {
@@ -74,8 +74,8 @@ public class RdfWriter {
         return Try.success( null );
     }
 
-    public Try<Void> writeTurtle( final Model model, final OutputStream output ) {
-        final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+    public Try<Void> writeTurtle( final Model model, final OutputStream output, final FormattingStyle style ) {
+        final TurtleFormatter formatter = new TurtleFormatter( style );
         formatter.accept( model, output );
         return Try.success( null );
     }
