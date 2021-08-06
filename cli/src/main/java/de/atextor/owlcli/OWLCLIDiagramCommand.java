@@ -73,6 +73,9 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
     @CommandLine.Option( names = { "--dotbinary" }, description = "Path to dot binary (Default: ${DEFAULT-VALUE})" )
     private String dotBinary = config.dotBinary;
 
+    @CommandLine.Option( names = { "--bgcolor" }, description = "Background color (Default: ${DEFAULT-VALUE})" )
+    private String bgColor = config.bgColor;
+
     @CommandLine.Parameters( paramLabel = "INPUT", description = "File name or - for stdin", arity = "1",
         index = "0" )
     private String input;
@@ -96,6 +99,7 @@ public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
             .format( format )
             .layoutDirection( layoutDirection )
             .dotBinary( dotBinary )
+            .bgColor( bgColor )
             .build();
 
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();

@@ -124,6 +124,11 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |See the https://www.graphviz.org/doc/info/attrs.html#k:style[Graphviz
  documentation] for more information
 
+|`--bgcolor`
+|Background color for the generated diagram
+|white
+|See the https://www.graphviz.org/docs/attrs/bgcolor/[Graphviz documentation] for more information
+
 |===
 
 [#diagram-example-usage]

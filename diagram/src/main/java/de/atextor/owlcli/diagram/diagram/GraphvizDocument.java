@@ -43,6 +43,8 @@ public class GraphvizDocument implements Function<Configuration, String> {
         digraph G {
           rankdir = ${rankdir}
 
+          bgcolor = "${bgcolor}"
+
           fontname = "${fontname}"
           fontsize = ${fontsize}
 
@@ -54,6 +56,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
             style = "${nodeStyle}"
             height = 0.3
             width = 0.2
+            bgcolor = "${bgcolor}"
           ]
 
           ${statements}
@@ -104,6 +107,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
             "nodeShape", configuration.nodeShape,
             "nodeMargin", configuration.nodeMargin,
             "nodeStyle", configuration.nodeStyle,
+            "bgColor", configuration.bgColor,
             "statements", Stream.concat( nodeStatements.stream(), edgeStatements.stream() )
                 .map( Statement::toFragment )
                 .collect( Collectors.joining( "   \n" ) ) ) );

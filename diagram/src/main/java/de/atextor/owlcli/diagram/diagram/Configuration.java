@@ -48,6 +48,9 @@ public class Configuration {
     public String nodeStyle = "rounded";
 
     @Builder.Default
+    public String bgColor = "white";
+
+    @Builder.Default
     public Format format = Format.SVG;
 
     @Builder.Default
