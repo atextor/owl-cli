@@ -109,7 +109,7 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |`--nodemargin`
 |The margin to render inside of nodes
 |0.05,0.0
-|See the https://www.graphviz.org/doc/info/attrs.html#d:margin[Graphviz
+|See the https://www.graphviz.org/docs/attrs/margin/[Graphviz
  documentation] for more information
 
 |`--nodeshape`
@@ -121,8 +121,7 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |`--nodestyle`
 |Node style
 |rounded
-|See the https://www.graphviz.org/doc/info/attrs.html#k:style[Graphviz
- documentation] for more information
+|See the https://www.graphviz.org/docs/attrs/style/[Graphviz documentation] for more information
 
 |`--bgcolor`
 |Background color for the generated diagram
