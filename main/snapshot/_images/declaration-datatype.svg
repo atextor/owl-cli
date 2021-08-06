@@ -15,7 +15,7 @@
 <path fill="none" stroke="black" d="M29.67,-22C29.67,-22 7.33,-22 7.33,-22 3.67,-22 0,-18.33 0,-14.67 0,-14.67 0,-7.33 0,-7.33 0,-3.67 3.67,0 7.33,0 7.33,0 29.67,0 29.67,0 33.33,0 37,-3.67 37,-7.33 37,-7.33 37,-14.67 37,-14.67 37,-18.33 33.33,-22 29.67,-22"/>
 <text text-anchor="start" x="4" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#ad3b45">⬤</text>
 <text text-anchor="start" x="18" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="23" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">D</text>
+<text text-anchor="start" x="23" y="-8.9" font-family="Verdana" font-size="12.00">D</text>
 </g>
 </g>
 </svg>

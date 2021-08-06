@@ -15,7 +15,7 @@
 <path fill="none" stroke="black" d="M96.67,-22C96.67,-22 75.33,-22 75.33,-22 71.67,-22 68,-18.33 68,-14.67 68,-14.67 68,-7.33 68,-7.33 68,-3.67 71.67,0 75.33,0 75.33,0 96.67,0 96.67,0 100.33,0 104,-3.67 104,-7.33 104,-7.33 104,-14.67 104,-14.67 104,-18.33 100.33,-22 96.67,-22"/>
 <text text-anchor="start" x="72" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
 <text text-anchor="start" x="86" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="91" y="-8.9" font-family="Verdana" font-size="12.00" fill="#000000">C</text>
+<text text-anchor="start" x="91" y="-8.9" font-family="Verdana" font-size="12.00">C</text>
 </g>
 <!-- o -->
 <g id="node2" class="node">
@@ -23,7 +23,7 @@
 <path fill="none" stroke="black" d="M24.67,-22C24.67,-22 7.33,-22 7.33,-22 3.67,-22 0,-18.33 0,-14.67 0,-14.67 0,-7.33 0,-7.33 0,-3.67 3.67,0 7.33,0 7.33,0 24.67,0 24.67,0 28.33,0 32,-3.67 32,-7.33 32,-7.33 32,-14.67 32,-14.67 32,-18.33 28.33,-22 24.67,-22"/>
 <text text-anchor="start" x="4" y="-8.3" font-family="owlcli" font-weight="bold" font-size="14.00" fill="#874b82">◆</text>
 <text text-anchor="start" x="15" y="-8.3" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="20" y="-8.3" font-family="Verdana" font-size="12.00" fill="#000000">o</text>
+<text text-anchor="start" x="20" y="-8.3" font-family="Verdana" font-size="12.00">o</text>
 </g>
 <!-- o&#45;&gt;C -->
 <g id="edge1" class="edge">
