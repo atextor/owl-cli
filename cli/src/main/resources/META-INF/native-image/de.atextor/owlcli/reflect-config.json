@@ -418,7 +418,19 @@
   ]
 },
 {
+  "name":"org.apache.jena.rdfxml.xmlinput.JenaReader",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"org.apache.jena.ttl.turtle.TurtleReader",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.jena.rdf.model.impl.NTripleReader",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"org.apache.jena.rdf.model.impl.NTripleWriter",
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
