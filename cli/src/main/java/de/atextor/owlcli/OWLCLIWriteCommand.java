@@ -55,7 +55,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
-    @CommandLine.Option( names = { "-o", "--out" },
+    @CommandLine.Option( names = { "-o", "--output" },
         description = "Output file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private Configuration.Format outputFormat = config.outputFormat;
 
@@ -193,6 +193,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .predicateOrder( predicateOrder )
             .objectOrder( objectOrder )
             .anonymousNodeIdGenerator( buildAnonymousNodeIdGenerator( anonymousNodeIdPattern ) )
+            .knownPrefixes( buildKnownPrefixes( prefixMap ) )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()

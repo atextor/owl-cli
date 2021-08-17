@@ -74,6 +74,7 @@ public class LoggingMixin {
         final ConsoleAppender<ILoggingEvent> appender = new ConsoleAppender<>();
         appender.setName( "ConsoleLogger" );
         appender.setContext( loggerContext );
+        appender.setTarget( "System.err" );
 
         final ThresholdFilter filter = new ThresholdFilter();
         filter.setLevel( level.toString() );
