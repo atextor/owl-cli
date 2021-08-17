@@ -34,7 +34,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -52,6 +51,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
     private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
 
+    private final String fallbackUri = "urn:owl-cli:empty";
+
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
@@ -65,7 +66,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
 
     @CommandLine.Option( names = { "-p", "--prefix" },
         description = "Known prefixes to add as @prefix when used. (Default: ${DEFAULT-VALUE})",
-        mapFallbackValue = CommandLine.Option.NULL_VALUE )
+        mapFallbackValue = fallbackUri )
     private Map<String, URI> prefixMap =
         FormattingStyle.DEFAULT.knownPrefixes.stream().collect( Collectors.toMap(
             FormattingStyle.KnownPrefix::getPrefix, FormattingStyle.KnownPrefix::getIri ) );
@@ -234,6 +235,26 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         commandLine.registerConverter( RDFNode.class, new RDFNodeConverter() );
     }
 
+    private URI wellKnownUriByPrefixOrElse( final String prefix, final URI uri ) {
+        if ( !uri.toString().equals( fallbackUri ) ) {
+            return uri;
+        }
+        return FormattingStyle.DEFAULT.knownPrefixes.stream()
+            .filter( knownPrefix -> knownPrefix.getPrefix().equals( prefix ) )
+            .findAny()
+            .map( FormattingStyle.KnownPrefix::getIri )
+            .orElseThrow( () -> new RuntimeException( "Used prefix " + prefix + " is not well-known" ) );
+    }
+
+    private Set<FormattingStyle.KnownPrefix> buildKnownPrefixes( final Map<String, URI> prefixes ) {
+        final Set<FormattingStyle.KnownPrefix> result = prefixes.entrySet().stream().map( entry -> {
+            final URI uri = wellKnownUriByPrefixOrElse( entry.getKey(), entry.getValue() );
+            return new FormattingStyle.KnownPrefix( entry.getKey(), uri );
+        } ).collect( Collectors.toSet() );
+        LOG.debug( "Known prefixes: {}", result );
+        return result;
+    }
+
     private BiFunction<Resource, Integer, String> buildAnonymousNodeIdGenerator( final String pattern ) {
         return ( resource, integer ) -> pattern.replace( "0", "" + integer );
     }
@@ -246,19 +267,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     }
 
     private abstract class AbstractResourceConverter {
-        private Optional<URI> wellKnownUriByPrefix( final String prefix ) {
-            return FormattingStyle.DEFAULT.knownPrefixes.stream()
-                .filter( knownPrefix -> knownPrefix.getPrefix().equals( prefix ) )
-                .findAny()
-                .map( FormattingStyle.KnownPrefix::getIri );
-        }
-
         protected String buildResourceUri( final String resourceUri ) throws Exception {
             for ( final Map.Entry<String, URI> entry : prefixMap.entrySet() ) {
-                final URI uri = entry.getValue() == null ?
-                    wellKnownUriByPrefix( entry.getKey() )
-                        .orElseThrow( () -> new Exception( "Used prefix " + entry.getKey() + " is not well-known" ) ) :
-                    entry.getValue();
+                final URI uri = wellKnownUriByPrefixOrElse( entry.getKey(), entry.getValue() );
                 if ( resourceUri.startsWith( entry.getKey() ) ) {
                     return uri.toString() + resourceUri.substring( ( entry.getKey() + ":" ).length() );
                 }
