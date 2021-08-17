@@ -18,6 +18,8 @@ package de.atextor.owlcli;
 
 import io.vavr.collection.List;
 import org.apache.jena.sys.JenaSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 import java.io.PrintWriter;
@@ -38,12 +40,23 @@ public class OWLCLI implements Runnable {
         JenaSystem.init();
     }
 
-    private static final CommandLine.IParameterExceptionHandler exceptionHandler =
+    private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
+
+    private static final CommandLine.IParameterExceptionHandler PARAMETER_EXCEPTION_HANDLER =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
             final PrintWriter writer = cmd.getErr();
             writer.println( "Error: " + exception.getMessage() );
+            LOG.debug( "Error", exception );
             cmd.getErr().println( cmd.getHelp().fullSynopsis() );
+            return 1;
+        };
+
+    private static final CommandLine.IExecutionExceptionHandler EXECUTION_EXCEPTION_HANDLER =
+        ( exception, commandLine, parseResult ) -> {
+            final PrintWriter writer = commandLine.getErr();
+            writer.println( "Error: " + exception.getMessage() );
+            LOG.debug( "Error", exception );
             return 1;
         };
 
@@ -52,7 +65,7 @@ public class OWLCLI implements Runnable {
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
-    @CommandLine.Option( names = { "--help" }, usageHelp = true, description = "Show short help" )
+    @CommandLine.Option( names = { "-h", "--help" }, usageHelp = true, description = "Show short help" )
     private boolean helpRequested;
 
     @CommandLine.Option( names = { "--version" }, description = "Show current version" )
@@ -62,7 +75,8 @@ public class OWLCLI implements Runnable {
         LogManager.getLogManager().reset();
         final List<AbstractCommand> commands = List.of( new OWLCLIDiagramCommand(), new OWLCLIWriteCommand() );
         final CommandLine cmd = commands.foldLeft( new OWLCLI().commandLine, CommandLine::addSubcommand )
-            .setParameterExceptionHandler( exceptionHandler )
+            .setParameterExceptionHandler( PARAMETER_EXCEPTION_HANDLER )
+            .setExecutionExceptionHandler( EXECUTION_EXCEPTION_HANDLER )
             .setExecutionStrategy( LoggingMixin::executionStrategy );
         commands.forEach( command -> command.registerTypeConverters( cmd ) );
         System.exit( cmd.execute( args ) );
