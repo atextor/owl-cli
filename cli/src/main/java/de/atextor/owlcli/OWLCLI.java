@@ -77,6 +77,7 @@ public class OWLCLI implements Runnable {
         final CommandLine cmd = commands.foldLeft( new OWLCLI().commandLine, CommandLine::addSubcommand )
             .setParameterExceptionHandler( PARAMETER_EXCEPTION_HANDLER )
             .setExecutionExceptionHandler( EXECUTION_EXCEPTION_HANDLER )
+            .setCaseInsensitiveEnumValuesAllowed( true )
             .setExecutionStrategy( LoggingMixin::executionStrategy );
         commands.forEach( command -> command.registerTypeConverters( cmd ) );
         System.exit( cmd.execute( args ) );
