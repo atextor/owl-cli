@@ -54,7 +54,7 @@ public class LoggingMixin {
         return getTopLevelCommandLoggingMixin( mixee ).verbosity;
     }
 
-    private Level calcLogLevel() {
+    public Level calcLogLevel() {
         return switch ( getVerbosity().length ) {
             case 0:
                 yield Level.WARN;

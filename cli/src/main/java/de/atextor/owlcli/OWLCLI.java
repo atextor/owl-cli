@@ -16,6 +16,7 @@
 
 package de.atextor.owlcli;
 
+import ch.qos.logback.classic.Level;
 import io.vavr.collection.List;
 import org.apache.jena.sys.JenaSystem;
 import org.slf4j.Logger;
@@ -42,19 +43,27 @@ public class OWLCLI implements Runnable {
 
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
 
+    private static void printError( final CommandLine commandLine, final Exception exception ) {
+        final Level logLevel = ( (LoggingMixin) commandLine.getMixins().values().iterator().next() ).calcLogLevel();
+        if ( logLevel.equals( Level.DEBUG ) || logLevel.equals( Level.TRACE ) ) {
+            LOG.debug( exception.getMessage(), exception );
+        } else {
+            final PrintWriter writer = commandLine.getErr();
+            writer.println( "Error: " + exception.getMessage() );
+        }
+    }
+
     private static final CommandLine.IParameterExceptionHandler PARAMETER_EXCEPTION_HANDLER =
         ( exception, args ) -> {
             final CommandLine cmd = exception.getCommandLine();
-            final PrintWriter writer = cmd.getErr();
-            writer.println( "Error: " + exception.getMessage() );
+            printError( cmd, exception );
             cmd.getErr().println( cmd.getHelp().fullSynopsis() );
             return 1;
         };
 
     private static final CommandLine.IExecutionExceptionHandler EXECUTION_EXCEPTION_HANDLER =
         ( exception, commandLine, parseResult ) -> {
-            final PrintWriter writer = commandLine.getErr();
-            writer.println( "Error: " + exception.getMessage() );
+            printError( commandLine, exception );
             return 1;
         };
 
