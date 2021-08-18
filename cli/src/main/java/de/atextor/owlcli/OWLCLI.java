@@ -47,7 +47,6 @@ public class OWLCLI implements Runnable {
             final CommandLine cmd = exception.getCommandLine();
             final PrintWriter writer = cmd.getErr();
             writer.println( "Error: " + exception.getMessage() );
-            LOG.debug( "Error", exception );
             cmd.getErr().println( cmd.getHelp().fullSynopsis() );
             return 1;
         };
@@ -56,7 +55,6 @@ public class OWLCLI implements Runnable {
         ( exception, commandLine, parseResult ) -> {
             final PrintWriter writer = commandLine.getErr();
             writer.println( "Error: " + exception.getMessage() );
-            LOG.debug( "Error", exception );
             return 1;
         };
 
