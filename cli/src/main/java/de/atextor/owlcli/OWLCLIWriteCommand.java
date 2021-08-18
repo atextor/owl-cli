@@ -104,7 +104,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private boolean useCommaByDefault = FormattingStyle.DEFAULT.useCommaByDefault;
 
     @CommandLine.Option( names = { "--commaForPredicate" },
-        description = "Use commas for multiple objects (Default: ${DEFAULT-VALUE})" )
+        description = "A set of predicates that, when used multiple times, are separated by commas, even when " +
+            "useCommaByDefault is false (Default: ${DEFAULT-VALUE})" )
     private Set<Property> commaForPredicate = FormattingStyle.DEFAULT.commaForPredicate;
 
     @CommandLine.Option( names = { "--noCommaForPredicate" },
