@@ -67,7 +67,7 @@ public class BinaryIntegrationTest {
         process.waitFor();
 
         assertThat( process.exitValue() ).isEqualTo( 0 );
-        assertThat( stdout ).contains( "Usage: owl [-v] [--help] [--version] [COMMAND]" );
+        assertThat( stdout ).contains( "Usage: owl [-hv] [--version] [COMMAND]" );
         assertThat( stderr ).isEmpty();
     }
 
@@ -79,7 +79,7 @@ public class BinaryIntegrationTest {
         process.waitFor();
 
         assertThat( process.exitValue() ).isEqualTo( 0 );
-        assertThat( stdout ).contains( "Usage: owl [-v] [--help] [--version] [COMMAND]" );
+        assertThat( stdout ).contains( "Usage: owl [-hv] [--version] [COMMAND]" );
         assertThat( stdout ).contains( "See the online documentation" );
         assertThat( stderr ).isEmpty();
     }
