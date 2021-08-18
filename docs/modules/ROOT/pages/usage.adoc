@@ -74,7 +74,7 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |`--direction`
 |Diagram layout direction
 |left_to_right
-|Possible Values: [top_to_bottom, left_to_right]
+|Possible values: [top_to_bottom, left_to_right]
 
 |`--dotbinary`
 |Path to `dot` binary
@@ -94,7 +94,7 @@ extension changed, e.g. myontology.ttl -> myontology.svg. If `input` is `-` and
 |`--format`
 |Output file format
 |svg
-|Possible Values: [png, svg]
+|Possible values: [png, svg]
 
 |`--nodefontname`
 |Font for nodes
@@ -160,4 +160,187 @@ piped to owl diagram:
 ----
 curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
 grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg
+----
+
+[#write-command]
+== `write` Command
+
+
+[#write-usage]
+=== General Usage
+
+The `write` command takes any RDF file in
+https://www.w3.org/TR/turtle/[RDF/Turtle],
+https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
+https://www.w3.org/TR/n-triples/[RDF N-Triples] or
+https://www.w3.org/TeamSubmission/n3/[N3] format as input and writes it out in any of those formats.
+When writing RDF/Turtle, the formatting of the resulting output can be configured extensively.
+
+[#write-options]
+=== Options
+
+.write Command Options
+[cols="<,<,<,<", options="header"]
+|===
+|Option|Description|Default|Notes
+
+|`-o`, `--output`
+|Output file format
+|turtle
+|Possible values: [turtle, rdfxml, ntriple, n3]
+
+|`-i`, `--input`
+|Input file format
+|turtle
+|Possible values: [turtle, rdfxml, ntriple, n3]
+
+|`-p`, `--prefix`
+|Known prefix with corresponding URI to add as `@prefix` when serializing Turtle.
+|[rdf, rdfs, xsd, owl, dcterms]
+|This can be given multiple times, for multiple prefixes. You can specify a well-known prefix
+ (currently: rdf, rdfs, xsd, owl, dcterms), e.g. `-prdf` or `--prefix=rdf` or any other prefix with its url:
+ `-pfoo=http://example.com/` or `--prefix=foo=http://example.com/`. To set the empty prefix, use
+ `-p==http://example.com/` or `--prefix==http://example.com`.
+
+|`--prefixAlign`
+|Alignment of `@prefix` statements
+|off
+|Possible values: [left, off, right]
+
+|`--encoding`
+|Output encoding
+|utf_8
+|Possible values: [latin1, utf_16_be, utf_16_le, utf_8, utf_8_bom]
+
+|`--doubleFormat`
+|Defines how double numbers are formatted
+|`0.####E0`
+| See
+  https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html[here]
+  for more information on the format
+
+|`--endOfLine`
+|End of line style
+|lf
+|Possible values: [cr, crlf, lf]
+
+|`--indent`
+|Indent style
+|space
+|Possible values: [tab, space]. Note that when choosing `tab`, `alignPredicates` and `alignObjects`
+ are automatically treated as `false`.
+
+|`--firstPredicateInNewLine`
+|Write first predicate in new line of block
+|
+|Switched off by default
+
+|`--writeRdfType`
+|Write `rdf:type` instead of `a`
+|
+|Switched off by default
+
+|`--useCommaByDefault`
+|Use commas for multiple objects
+|
+|Switched off by default
+
+|`--noCommaForPredicate`
+|Use no commas for multiple objects for this predicate
+|
+|This can be given multiple times.
+
+|`--useLongLiterals`
+|Use long form for literals, e.g. `"5"^^xsd:integer` instead of `5`
+|
+|Switched off by default
+
+|`--alignObjects`
+|Align objects for same predicates
+|
+|Switched off by default
+
+|`--alignPredicates`
+|Align predicates for same subjects
+|
+|Switched off by default
+
+|`--continuationIndentSize`
+|Indentation size after forced line wraps
+|4
+|
+
+|`--doNotInsertFinalNewline`
+|Do not insert newline at end of file
+|
+|Switched off by default
+
+|`--indentSize`
+|Indentation size in spaces
+|2
+|
+
+|`--keepUnusedPrefixes`
+|Keeps prefixes that are not part of any statement
+|
+|Switched off by default
+
+|`--prefixOrder`
+|Sort order for prefixes (if they appear in a model)
+|[rdf, rdfs, xsd, owl]
+|Add this switch multiple times, once for each prefix, in the desired order
+
+|`--subjectOrder`
+|Sort order for subjects by type (if they appear in a model)
+|[`rdfs:Class`, `owl:Ontology`, `owl:Class`, `rdf:Property`, `owl:ObjectProperty`, `owl:DatatypeProperty`, `owl:AnnotationProperty`, `owl:NamedIndividual`, `owl:AllDifferent`, `owl:Axiom`]
+|Add this switch multiple times, once for each subject type, in the desired order
+
+|`--predicateOrder`
+|Sort order for predicates (if they appear on a subject)
+|[`rdf:type`, `rdfs:label`, `rdfs:comment`, `dcterms:description`]
+|Add this switch multiple times, once for each predicate, in the desired order
+
+|`--objectOrder`
+|Sort order for objects
+| [`owl:NamedIndividual`, `owl:ObjectProperty`, `owl:DatatypeProperty`, `owl:AnnotationProperty`,
+  `owl:FunctionalProperty`, `owl:InverseFunctionalProperty`, `owl:TransitiveProperty`,
+  `owl:SymmetricProperty`, `owl:AsymmetricProperty`, `owl:ReflexiveProperty`, `owl:IrreflexiveProperty`]
+|Add this switch multiple times, once for each object type, in the desired order
+
+|`--anonymousNodeIdPattern`
+|Name pattern for blank node IDs
+|`_:gen0`
+|A `0` inside the pattern will be replace with the index of the respective blank node
+
+|===
+
+
+[#write-example-usage]
+=== Example Usage
+
+Simple invocation with default arguments:
+
+[source,shell]
+----
+# Will read myontology.ttl and print it in formatted Turtle format
+owl write myontology.ttl
+
+# Will read myontology.owl in RDF/XML (-i rdfxml) format and print it in formatted Turtle format
+# into the file output.ttl
+# This also works for the other input formats, i.e., N3 (-i n3) and N-Triple (-i ntriple).
+owl write -i rdfxml -o turtle myontology.owl output.ttl
+----
+
+Read an N-Triples file and write formatted Turtle, while also configuring which prefixes should be used:
+
+[source,shell]
+----
+owl write -prdf -powl -pxsd -p'ex=http://example.com#' myontology.nt
+----
+
+Read a Turtle file and print it out, while configuring the output's formatting and prefix order:
+
+[source,shell]
+----
+owl write --indentSize 4 --writeRdfType --prefixOrder owl --prefixOrder rdf myontology.turtle
 ----
