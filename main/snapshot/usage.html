@@ -328,7 +328,16 @@ grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg</code></pr
 <a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>,
 <a href="https://www.w3.org/TR/n-triples/">RDF N-Triples</a> or
 <a href="https://www.w3.org/TeamSubmission/n3/">N3</a> format as input and writes it out in any of those formats.
-When writing RDF/Turtle, the formatting of the resulting output can be configured extensively.</p>
+When writing RDF/Turtle, the formatting of the resulting output can be configured extensively, as
+this makes use of the <a href="https://github.com/atextor/turtle-formatter">turtle-formatter library</a>.</p>
+</div>
+<div class="paragraph">
+<p>General usage: <code>owl write [options] input [output]</code>, where <code>input</code> can be either an RDF file, a URL
+(starting with <code>http</code> or <code>https</code>) or <code>-</code> (which means: read from standard in) and <code>output</code> can be
+either an RDF file or <code>-</code> (which means: write to standard out). If
+<code>output</code> is not given, the output filename is the input filename with its file
+extension changed, e.g. myontology.nt &#8594; myontology.ttl. If <code>input</code> is <code>-</code> or a URL and
+<code>output</code> is not given, the output is set to standard out.</p>
 </div>
 </div>
 <div class="sect2">
@@ -386,7 +395,7 @@ When writing RDF/Turtle, the formatting of the resulting output can be configure
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>--doubleFormat</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Defines how double numbers are formatted</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.<mark>#</mark>#E0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.####E0</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">See
   <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html">here</a>
   for more information on the format</p></td>
@@ -512,13 +521,17 @@ When writing RDF/Turtle, the formatting of the resulting output can be configure
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># Will read myontology.ttl and print it in formatted Turtle format
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># Read myontology.ttl and print it in formatted Turtle format
 owl write myontology.ttl
 
-# Will read myontology.owl in RDF/XML (-i rdfxml) format and print it in formatted Turtle format
-# into the file output.ttl
-# This also works for the other input formats, i.e., N3 (-i n3) and N-Triple (-i ntriple).
-owl write -i rdfxml -o turtle myontology.owl output.ttl</code></pre>
+# Read myontology.owl in RDF/XML format and print it in formatted Turtle format, writing output.ttl
+owl write -i rdfxml myontology.owl output.ttl
+
+# Read myontology.n3 in N3 format and print it in formatted Turtle format to stdout
+owl write -i n3 myontology.n3
+
+# Read myontology.nt in N-Triples format and print it in RDF/XML format to stdout
+owl write -i ntriple -o rdfxml myontology.nt</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -526,7 +539,7 @@ owl write -i rdfxml -o turtle myontology.owl output.ttl</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -prdf -powl -pxsd -p'ex=http://example.com#' myontology.nt</code></pre>
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -prdf -powl -pxsd -p'ex=http://example.com#' -i ntriple myontology.nt</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -535,6 +548,14 @@ owl write -i rdfxml -o turtle myontology.owl output.ttl</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write --indentSize 4 --writeRdfType --prefixOrder owl --prefixOrder rdf myontology.turtle</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Read a remote ontology in RDF/XML format and print it in formatted Turtle format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'</code></pre>
 </div>
 </div>
 </div>
