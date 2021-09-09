@@ -174,7 +174,15 @@ https://www.w3.org/TR/turtle/[RDF/Turtle],
 https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
 https://www.w3.org/TR/n-triples/[RDF N-Triples] or
 https://www.w3.org/TeamSubmission/n3/[N3] format as input and writes it out in any of those formats.
-When writing RDF/Turtle, the formatting of the resulting output can be configured extensively.
+When writing RDF/Turtle, the formatting of the resulting output can be configured extensively, as
+this makes use of the https://github.com/atextor/turtle-formatter[turtle-formatter library].
+
+General usage: `owl write [options] input [output]`, where `input` can be either an RDF file, a URL
+(starting with `http` or `https`) or `-` (which means: read from standard in) and `output` can be
+either an RDF file or `-` (which means: write to standard out). If
+`output` is not given, the output filename is the input filename with its file
+extension changed, e.g. myontology.nt -> myontology.ttl. If `input` is `-` or a URL and
+`output` is not given, the output is set to standard out.
 
 [#write-options]
 === Options
@@ -214,7 +222,7 @@ When writing RDF/Turtle, the formatting of the resulting output can be configure
 
 |`--doubleFormat`
 |Defines how double numbers are formatted
-|`0.####E0`
+|`0.\####E0`
 | See
   https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html[here]
   for more information on the format
@@ -322,20 +330,24 @@ Simple invocation with default arguments:
 
 [source,shell]
 ----
-# Will read myontology.ttl and print it in formatted Turtle format
+# Read myontology.ttl and print it in formatted Turtle format
 owl write myontology.ttl
 
-# Will read myontology.owl in RDF/XML (-i rdfxml) format and print it in formatted Turtle format
-# into the file output.ttl
-# This also works for the other input formats, i.e., N3 (-i n3) and N-Triple (-i ntriple).
-owl write -i rdfxml -o turtle myontology.owl output.ttl
+# Read myontology.owl in RDF/XML format and print it in formatted Turtle format, writing output.ttl
+owl write -i rdfxml myontology.owl output.ttl
+
+# Read myontology.n3 in N3 format and print it in formatted Turtle format to stdout
+owl write -i n3 myontology.n3
+
+# Read myontology.nt in N-Triples format and print it in RDF/XML format to stdout
+owl write -i ntriple -o rdfxml myontology.nt
 ----
 
 Read an N-Triples file and write formatted Turtle, while also configuring which prefixes should be used:
 
 [source,shell]
 ----
-owl write -prdf -powl -pxsd -p'ex=http://example.com#' myontology.nt
+owl write -prdf -powl -pxsd -p'ex=http://example.com#' -i ntriple myontology.nt
 ----
 
 Read a Turtle file and print it out, while configuring the output's formatting and prefix order:
@@ -343,4 +355,10 @@ Read a Turtle file and print it out, while configuring the output's formatting a
 [source,shell]
 ----
 owl write --indentSize 4 --writeRdfType --prefixOrder owl --prefixOrder rdf myontology.turtle
+----
+
+Read a remote ontology in RDF/XML format and print it in formatted Turtle format:
+[source,shell]
+----
+owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'
 ----
