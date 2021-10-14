@@ -9,37 +9,37 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 66)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-66 186,-66 186,4 -4,4"/>
-<!-- _e437c4b2fc814573aa58c2aea5351ba9 -->
-<g id="node1" class="node">
-<title>_e437c4b2fc814573aa58c2aea5351ba9</title>
-<path fill="none" stroke="black" d="M98.67,-42C98.67,-42 83.33,-42 83.33,-42 79.67,-42 76,-38.33 76,-34.67 76,-34.67 76,-27.33 76,-27.33 76,-23.67 79.67,-20 83.33,-20 83.33,-20 98.67,-20 98.67,-20 102.33,-20 106,-23.67 106,-27.33 106,-27.33 106,-34.67 106,-34.67 106,-38.33 102.33,-42 98.67,-42"/>
-<text text-anchor="start" x="80" y="-28.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#00b2b2">not</text>
-</g>
 <!-- o2 -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>o2</title>
 <path fill="none" stroke="black" d="M174.67,-62C174.67,-62 149.33,-62 149.33,-62 145.67,-62 142,-58.33 142,-54.67 142,-54.67 142,-47.33 142,-47.33 142,-43.67 145.67,-40 149.33,-40 149.33,-40 174.67,-40 174.67,-40 178.33,-40 182,-43.67 182,-47.33 182,-47.33 182,-54.67 182,-54.67 182,-58.33 178.33,-62 174.67,-62"/>
 <text text-anchor="start" x="146" y="-48.3" font-family="owlcli" font-weight="bold" font-size="14.00" fill="#874b82">◆</text>
 <text text-anchor="start" x="157" y="-48.3" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="162" y="-48.3" font-family="Verdana" font-size="12.00">o2</text>
 </g>
-<!-- _e437c4b2fc814573aa58c2aea5351ba9&#45;&gt;o2 -->
-<g id="edge3" class="edge">
-<title>_e437c4b2fc814573aa58c2aea5351ba9&#45;&gt;o2</title>
-<path fill="none" stroke="black" d="M106.3,-35.14C113.75,-37.31 123.15,-40.03 132.05,-42.61"/>
-<polygon fill="black" stroke="black" points="131.17,-46 141.75,-45.42 133.12,-39.27 131.17,-46"/>
-</g>
 <!-- P -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>P</title>
 <path fill="none" stroke="black" d="M173.17,-22C173.17,-22 150.83,-22 150.83,-22 147.17,-22 143.5,-18.33 143.5,-14.67 143.5,-14.67 143.5,-7.33 143.5,-7.33 143.5,-3.67 147.17,0 150.83,0 150.83,0 173.17,0 173.17,0 176.83,0 180.5,-3.67 180.5,-7.33 180.5,-7.33 180.5,-14.67 180.5,-14.67 180.5,-18.33 176.83,-22 173.17,-22"/>
 <text text-anchor="start" x="147.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
 <text text-anchor="start" x="163.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="168.5" y="-8.2" font-family="Verdana" font-size="12.00">P</text>
 </g>
-<!-- _e437c4b2fc814573aa58c2aea5351ba9&#45;&gt;P -->
-<g id="edge1" class="edge">
-<title>_e437c4b2fc814573aa58c2aea5351ba9&#45;&gt;P</title>
+<!-- _125321cbcdc5446bb80f9c927df17485 -->
+<g id="node3" class="node">
+<title>_125321cbcdc5446bb80f9c927df17485</title>
+<path fill="none" stroke="black" d="M98.67,-42C98.67,-42 83.33,-42 83.33,-42 79.67,-42 76,-38.33 76,-34.67 76,-34.67 76,-27.33 76,-27.33 76,-23.67 79.67,-20 83.33,-20 83.33,-20 98.67,-20 98.67,-20 102.33,-20 106,-23.67 106,-27.33 106,-27.33 106,-34.67 106,-34.67 106,-38.33 102.33,-42 98.67,-42"/>
+<text text-anchor="start" x="80" y="-28.9" font-family="Verdana" font-weight="bold" font-size="12.00" fill="#00b2b2">not</text>
+</g>
+<!-- _125321cbcdc5446bb80f9c927df17485&#45;&gt;o2 -->
+<g id="edge2" class="edge">
+<title>_125321cbcdc5446bb80f9c927df17485&#45;&gt;o2</title>
+<path fill="none" stroke="black" d="M106.3,-35.14C113.75,-37.31 123.15,-40.03 132.05,-42.61"/>
+<polygon fill="black" stroke="black" points="131.17,-46 141.75,-45.42 133.12,-39.27 131.17,-46"/>
+</g>
+<!-- _125321cbcdc5446bb80f9c927df17485&#45;&gt;P -->
+<g id="edge3" class="edge">
+<title>_125321cbcdc5446bb80f9c927df17485&#45;&gt;P</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M106.3,-26.86C114.18,-24.57 124.24,-21.65 133.58,-18.95"/>
 <polygon fill="black" stroke="black" points="134.66,-22.28 143.29,-16.13 132.71,-15.56 134.66,-22.28"/>
 </g>
@@ -51,9 +51,9 @@
 <text text-anchor="start" x="15" y="-28.3" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="20" y="-28.3" font-family="Verdana" font-size="12.00">o1</text>
 </g>
-<!-- o1&#45;&gt;_e437c4b2fc814573aa58c2aea5351ba9 -->
-<g id="edge2" class="edge">
-<title>o1&#45;&gt;_e437c4b2fc814573aa58c2aea5351ba9</title>
+<!-- o1&#45;&gt;_125321cbcdc5446bb80f9c927df17485 -->
+<g id="edge1" class="edge">
+<title>o1&#45;&gt;_125321cbcdc5446bb80f9c927df17485</title>
 <path fill="none" stroke="black" d="M40.22,-31C48.09,-31 57.3,-31 65.64,-31"/>
 <polygon fill="black" stroke="black" points="65.91,-34.5 75.91,-31 65.91,-27.5 65.91,-34.5"/>
 </g>
