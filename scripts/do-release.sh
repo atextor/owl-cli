@@ -25,7 +25,7 @@ fi
 
 release_notes=docs/modules/ROOT/pages/release-notes.adoc
 branchname=release
-latest_version_from_release_notes=$(grep '^==' ${release_notes} | cut -d' ' -f3)
+latest_version_from_release_notes=$(grep '^==' ${release_notes} | cut -d' ' -f3 | head -1)
 
 git tag -d snapshot
 git fetch --tags
@@ -43,6 +43,7 @@ fi
 
 echo Releasing version $version
 tag="v${version}"
+git branch -D $branchname 2>/dev/null || true
 git checkout -b $branchname
 
 # Generate documentation images. The generated images that are not present in
@@ -67,7 +68,8 @@ git add gradle.properties
 git commit -m "Release version $version"
 git tag ${tag}
 echo Pushing branch
+git push origin --delete ${branchname} 2>/dev/null || true
 git push -u origin ${branchname}
 echo Pushing tag ${tag}
 git push origin ${tag}
-git checkout master
+git checkout main
