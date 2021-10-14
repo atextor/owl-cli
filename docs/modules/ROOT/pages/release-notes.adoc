@@ -1,6 +1,12 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.1.0
+
+* Adds the xref:usage.adoc#write-command[write] command to read RDF files in multiple formats and
+  write them out. When choosing RDF/Turtle as output format, the output is pretty-printed and
+  formatting can be controlled.
+
 == Version 1.0.0
 
 * This is the first released version.
