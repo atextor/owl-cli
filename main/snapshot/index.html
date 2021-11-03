@@ -188,7 +188,7 @@ RDF/Turtle or one of the other formats using the <a href="usage.html#write-comma
 </tbody>
 </table>
 <div class="paragraph">
-<p>For other platforms or architectures, please use the executable .jar file: <a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar">owl-cli-snapshot.jar</a>. This requires Java (OpenJDK) <strong>16</strong> or newer.</p>
+<p>For other platforms or architectures, please use the executable .jar file: <a href="https://github.com/atextor/owl-cli/releases/download/snapshot/owl-cli-snapshot.jar">owl-cli-snapshot.jar</a>. This requires Java (OpenJDK) <strong>17</strong> or newer.</p>
 </div>
 <div class="paragraph">
 <p>Rename the binary to <code>owl.exe</code> (Windows) or <code>owl</code> (MacOs/Linux), put it in your favorite directory
@@ -238,8 +238,8 @@ source ~/.bashrc</code></pre>
 <div class="sect2">
 <h3 id="building-executable-jar"><a class="anchor" href="#building-executable-jar"></a>Building the executable JAR from source</h3>
 <div class="paragraph">
-<p>For building the executable JAR file for <strong>owl-cli</strong>, you need Java <strong>16</strong>. We recommend installation
-of the GraalVM-based JDK 16 using <a href="https://sdkman.io/">SDKMAN!</a>.</p>
+<p>For building the executable JAR file for <strong>owl-cli</strong>, you need Java <strong>17</strong>. We recommend installation
+of the GraalVM-based JDK 17 using <a href="https://sdkman.io/">SDKMAN!</a>.</p>
 </div>
 <div class="paragraph">
 <p>Run the following commands:</p>
@@ -253,8 +253,8 @@ echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.2.0.r16-grl
-sdk use java 21.2.0.r16-grl
+sdk install java 21.3.0.r17-grl
+sdk use java 21.3.0.r17-grl
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -281,7 +281,7 @@ source ~/.bashrc</code></pre>
 <h3 id="building-native-image"><a class="anchor" href="#building-native-image"></a>Building the native image (executable binary) from source</h3>
 <div class="paragraph">
 <p>For building the <strong>owl-cli</strong> native binary, <a href="https://www.graalvm.org/">GraalVM</a> is used. As Java 15+
-source features are used, a JDK 16-based GraalVM version is required. For calling GraalVM&#8217;s
+source features are used, a JDK 17-based GraalVM version is required. For calling GraalVM&#8217;s
 <code>native-image</code> command, the <code>gradle</code> build relies on the install locations as used by
 <a href="https://sdkman.io/">SDKMAN!</a>.</p>
 </div>
@@ -313,8 +313,8 @@ echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.2.0.r16-grl
-sdk use java 21.2.0.r16-grl
+sdk install java 21.3.0.r17-grl
+sdk use java 21.2.0.r17-grl
 # Use GraalVMs update tool to install the native-image command
 gu install native-image
 
@@ -324,7 +324,7 @@ sudo apt-get install -y build-essential libz-dev
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
 cd owl-cli
-./gradlew nativeImagePass2</code></pre>
+./gradlew nativeImage</code></pre>
 </div>
 </div>
 <div class="paragraph">
