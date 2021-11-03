@@ -46,7 +46,7 @@ https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_6
 https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-x86_64-linux-{release-version}[owl-x86_64-linux-{release-version}]
 |===
 
-For other platforms or architectures, please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]. This requires Java (OpenJDK) *16* or newer.
+For other platforms or architectures, please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar[owl-cli-{release-version}.jar]. This requires Java (OpenJDK) *17* or newer.
 
 Rename the binary to `owl.exe` (Windows) or `owl` (MacOs/Linux), put it in your favorite directory
 and add this directory to the PATH environment variable:
@@ -74,8 +74,8 @@ After installation, you can use the `owl` command: See xref:usage.adoc[] for mor
 [[building-executable-jar]]
 === Building the executable JAR from source
 
-For building the executable JAR file for *owl-cli*, you need Java *16*. We recommend installation
-of the GraalVM-based JDK 16 using https://sdkman.io/[SDKMAN!].
+For building the executable JAR file for *owl-cli*, you need Java *17*. We recommend installation
+of the GraalVM-based JDK 17 using https://sdkman.io/[SDKMAN!].
 
 Run the following commands:
 
@@ -88,8 +88,8 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.2.0.r16-grl
-sdk use java 21.2.0.r16-grl
+sdk install java 21.3.0.r17-grl
+sdk use java 21.3.0.r17-grl
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -113,7 +113,7 @@ After that, you can use the `owl` command: See xref:usage.adoc[] for more inform
 === Building the native image (executable binary) from source
 
 For building the *owl-cli* native binary, https://www.graalvm.org/[GraalVM] is used. As Java 15+
-source features are used, a JDK 16-based GraalVM version is required. For calling GraalVM's
+source features are used, a JDK 17-based GraalVM version is required. For calling GraalVM's
 `native-image` command, the `gradle` build relies on the install locations as used by
 https://sdkman.io/[SDKMAN!].
 
@@ -142,8 +142,8 @@ echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 21.2.0.r16-grl
-sdk use java 21.2.0.r16-grl
+sdk install java 21.3.0.r17-grl
+sdk use java 21.2.0.r17-grl
 # Use GraalVMs update tool to install the native-image command
 gu install native-image
 

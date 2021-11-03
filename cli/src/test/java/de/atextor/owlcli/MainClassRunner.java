@@ -23,6 +23,14 @@ public class MainClassRunner {
     record ExecutionResult(int exitStatus, String stdOut, String stdErr) {
     }
 
+    /**
+     * This method uses {@link System#getSecurityManager()} and {@link System#setSecurityManager(SecurityManager)} that
+     * are deprecated as of Java 17. However, until https://bugs.openjdk.java.net/browse/JDK-8199704 is addressed,
+     * we have still to rely on it.
+     *
+     * @param runnable the runnable to execute
+     * @return the {@link ExecutionResult} of the runnable
+     */
     public static ExecutionResult run( final Runnable runnable ) {
         final SecurityManager originalSecurityManager = System.getSecurityManager();
 
