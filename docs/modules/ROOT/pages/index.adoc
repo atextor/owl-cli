@@ -153,7 +153,7 @@ sudo apt-get install -y build-essential libz-dev
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
 cd owl-cli
-./gradlew nativeImagePass2
+./gradlew nativeImage
 ----
 
 This will build `cli/build/bin/owl`, which you can put anywhere on your `PATH`.

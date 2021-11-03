@@ -106,16 +106,6 @@ task nativeImage(type: Exec, dependsOn: "shadowJar") {
     outputs.file file("${buildDir}/bin/owl")
 }
 
-task nativeImagePass2(type: Exec, dependsOn: "nativeImage") {
-    doFirst {
-        println nativeImageArgs.join(' ')
-    }
-    executable nativeImageBinary
-    args nativeImageArgs
-    inputs.file file("${buildDir}/libs/owl-cli-${version}.jar")
-    outputs.file file("${buildDir}/bin/owl")
-}
-
 def appConfigClass = "OWLCLIConfig"
 def genSrc = "${project.projectDir}/src/generated/java"
 def genPackage = "${genSrc}/de/atextor/owlcli"
@@ -141,7 +131,7 @@ tasks.register("integrationTest", Test) {
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     dependsOn shadowJar
-    shouldRunAfter nativeImagePass2
+    shouldRunAfter nativeImage
     onlyIf { project(':cli').file('build/bin/owl').exists() }
 
     testLogging {

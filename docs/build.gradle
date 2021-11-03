@@ -82,7 +82,7 @@ project.fileTree(dir: ontologyDir, include: '*.ttl').files.each { ttlFile ->
         outputs.file file(imageFile)
         doLast {
             if( !project(':cli').file('build/bin/owl').exists() ) {
-                ant.fail("owlcli binary is not present. Run gradlew nativeImagePass2")
+                ant.fail("owlcli binary is not present. Run gradlew nativeImage")
             }
         }
     }
