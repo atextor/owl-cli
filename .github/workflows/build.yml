@@ -184,7 +184,7 @@ jobs:
           gu install native-image
           find $HOME/.sdkman -type f -name '*native-image*'
           unset _JAVA_OPTIONS
-          export PATH=$HOME/.sdkman/candidates/java/21.3.0.r17-grl/lib/svm/bin:$PATH
+          export PATH=$HOME/.sdkman/candidates/java/current/lib/svm/bin:$PATH
           which native-image
           which java
           java -version
