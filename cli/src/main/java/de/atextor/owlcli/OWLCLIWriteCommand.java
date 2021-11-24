@@ -241,9 +241,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             return uri;
         }
         return FormattingStyle.DEFAULT.knownPrefixes.stream()
-            .filter( knownPrefix -> knownPrefix.getPrefix().equals( prefix ) )
+            .filter( knownPrefix -> knownPrefix.prefix().equals( prefix ) )
             .findAny()
-            .map( FormattingStyle.KnownPrefix::getIri )
+            .map( FormattingStyle.KnownPrefix::iri )
             .orElseThrow( () -> new RuntimeException( "Used prefix " + prefix + " is not well-known" ) );
     }
 
