@@ -114,9 +114,8 @@ public class RdfWriterTest {
     }
 
     @Test
-    @Disabled("purl.org seems unreliable, disable flaky test until better solution is found")
     public void testReadFromUrl() throws IOException {
-        final URL url = new URL( "http://purl.org/atextor/ontology/turtle-formatting" );
+        final URL url = new URL( "https://raw.githubusercontent.com/atextor/turtle-formatting/main/turtle-formatting.ttl" );
         final Configuration configuration = Configuration.builder()
             .inputFormat( Configuration.Format.TURTLE )
             .outputFormat( Configuration.Format.TURTLE ).build();
