@@ -1,0 +1,240 @@
+name: release
+
+on:
+  push:
+    branches:
+      - 'release'
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OS: Ubuntu
+    name: ubuntu
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup Environment
+        # - Install SDKMAN
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        # - Install GraalVM 21.3.0.r17 (JDK 17)
+        run: |-
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          ls /etc/apt/sources.list.d
+          find /etc/apt -type f -name '*.list' -exec sed -i -e '/dl.bintray.com\/sbt/d' "{}" \;
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+          sudo apt-get install -y build-essential libz-dev
+          sdk list java
+          sdk install java 21.3.0.r17-grl || true
+          sdk use java 21.3.0.r17-grl
+          gu install native-image
+          unset _JAVA_OPTIONS
+          echo Path settings: $PATH
+          which native-image
+          which java
+          java -version
+          file `which native-image`
+          native-image --version
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Gradle Build
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check nativeImage integrationTest --stacktrace --no-daemon
+      - name: Run UPX
+        uses: crazy-max/ghaction-upx@v1.4.0
+        with:
+          version: latest
+          files: cli/build/bin/owl
+          args: -9
+      - name: Prepare Artifacts
+        run: |-
+          mv cli/build/bin/owl owl-x86_64-linux-${RELEASE_VERSION}
+          mv cli/build/libs/owl-cli-${RELEASE_VERSION}.jar .
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-linux
+          path: |
+            owl-x86_64-linux-${RELEASE_VERSION}
+            owl-cli-${RELEASE_VERSION}.jar
+
+  build-macos:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    env:
+      OS: Macos
+    name: macos
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup Environment
+        # - Install SDKMAN
+        # - Install GraalVM 21.3.0.r17 (JDK 17)
+        run: |-
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          brew install graphviz
+          sdk list java
+          sdk install java 21.3.0.r17-grl || true
+          sdk use java 21.3.0.r17-grl
+          gu install native-image
+          unset _JAVA_OPTIONS
+          echo Path settings: $PATH
+          which native-image
+          which java
+          java -version
+          file `which native-image`
+          native-image --version
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Gradle Build
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check nativeImage integrationTest --stacktrace --no-daemon
+      - name: Prepare Artifacts
+        run: mv cli/build/bin/owl owl-x86_64-apple-darwin-${RELEASE_VERSION}
+      - name: Upload Macos Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-macos
+          path: owl-x86_64-apple-darwin-${RELEASE_VERSION}
+
+  build-windows:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      OS: Windows
+    name: windows
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ilammy/msvc-dev-cmd@v1.10.0
+      - uses: microsoft/setup-msbuild@v1.1
+      - name: Cache Gradle
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches/
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-
+      - name: Setup Environment
+        # - Install SDKMAN
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        # - Install GraalVM 21.3.0.r17 (JDK 17)
+        run: |-
+          choco install zip --execution-timeout=600
+          choco install unzip --execution-timeout=600
+          choco install graphviz --execution-timeout=600
+          curl -sL https://get.sdkman.io | bash
+          echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+          echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          sdk update
+          sdk list java
+          sdk install java 21.3.0.r17-grl || true
+          sdk use java 21.3.0.r17-grl
+          echo Path settings: $PATH
+          export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
+          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/21.3.0.r17-grl
+          gu install native-image
+          find $HOME/.sdkman -type f -name '*native-image*'
+          unset _JAVA_OPTIONS
+          export PATH=$HOME/.sdkman/candidates/java/current/lib/svm/bin:$PATH
+          which native-image
+          which java
+          java -version
+          file `which native-image`
+          native-image --version
+        shell: bash
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Gradle Build
+        run: |-
+          source $HOME/.sdkman/bin/sdkman-init.sh
+          ./gradlew clean test check nativeImage integrationTest --info --stacktrace --no-daemon
+        shell: bash
+      - name: Prepare Artifacts
+        run: mv cli/build/bin/owl owl-x86_64-windows-${RELEASE-VERSION}.exe
+        shell: bash
+      - name: Run UPX
+        uses: crazy-max/ghaction-upx@v1.4.0
+        with:
+          version: latest
+          files: ./*.exe
+          args: -9
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifacts-windows
+          path: owl-x86_64-windows-${RELEASE-VERSION}.exe
+
+  publish:
+    needs: [build-linux, build-macos, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Fetch Linux Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-linux
+      - name: Fetch Macos Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-macos
+      - name: Fetch Windows Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts-windows
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Push Release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          title: "Release ${RELEASE_VERSION}"
+          files: |-
+            owl-cli-${RELEASE_VERSION}.jar
+            owl-x86_64-linux-${RELEASE_VERSION}
+            owl-x86_64-apple-darwin-${RELEASE_VERSION}
+            owl-x86_64-windows-${RELEASE_VERSION}.exe
+
+  buildDone:
+    name: Build Ok
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Ok
+        run: echo 'all builds passed'
