@@ -371,4 +371,27 @@ public class BinaryIntegrationTest {
         assertThat( canBeParsedAs( stdout, "TURTLE", 8 ) ).isTrue();
         assertThat( stderr ).isEmpty();
     }
+
+    @Test
+    public void testWriteTurtleWithEmptyBase() throws InterruptedException, IOException {
+        final String turtleDocument = """
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix : <http://test.de#> .
+
+            :Person a rdfs:Class ;
+                :foo <> .
+            """;
+
+        final Process process = runtime.exec( owl + " write -" );
+        final BufferedReader stdoutReader = new BufferedReader( new InputStreamReader( process.getInputStream() ) );
+        final BufferedReader stderrReader = new BufferedReader( new InputStreamReader( process.getErrorStream() ) );
+        IOUtils.write( turtleDocument, process.getOutputStream(), StandardCharsets.UTF_8 );
+        process.getOutputStream().close();
+        process.waitFor();
+
+        final String stdout = IOUtils.toString( stdoutReader );
+        final String stderr = IOUtils.toString( stderrReader );
+
+        assertThat( stdout ).isEqualToIgnoringWhitespace( turtleDocument );
+    }
 }
