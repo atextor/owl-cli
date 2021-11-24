@@ -203,8 +203,8 @@ extension changed, e.g. myontology.nt -> myontology.ttl. If `input` is `-` or a 
 |Possible values: [turtle, rdfxml, ntriple, n3]
 
 |`-p`, `--prefix`
-|Known prefix with corresponding URI to add as `@prefix` when serializing Turtle.
-|[rdf, rdfs, xsd, owl, dcterms]
+|Prefix with corresponding URI to add as `@prefix` when serializing Turtle.
+|
 |This can be given multiple times, for multiple prefixes. You can specify a well-known prefix
  (currently: rdf, rdfs, xsd, owl, dcterms), e.g. `-prdf` or `--prefix=rdf` or any other prefix with its url:
  `-pfoo=http://example.com/` or `--prefix=foo=http://example.com/`. To set the empty prefix, use

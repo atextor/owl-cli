@@ -32,6 +32,7 @@ import java.net.URI;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,11 +66,9 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private Configuration.Format inputFormat = config.inputFormat;
 
     @CommandLine.Option( names = { "-p", "--prefix" },
-        description = "Known prefixes to add as @prefix when used. (Default: ${DEFAULT-VALUE})",
+        description = "Prefix to add as @prefix when used.",
         mapFallbackValue = fallbackUri )
-    private Map<String, URI> prefixMap =
-        FormattingStyle.DEFAULT.knownPrefixes.stream().collect( Collectors.toMap(
-            FormattingStyle.KnownPrefix::getPrefix, FormattingStyle.KnownPrefix::getIri ) );
+    private Map<String, URI> prefixMap = new HashMap<>();
 
     @CommandLine.Option( names = { "--prefixAlign" },
         description = "Alignment of @prefix statements, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
@@ -238,6 +237,8 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
         if ( !uri.toString().equals( fallbackUri ) ) {
             return uri;
         }
+        // When we end up here, a prefix was given without a URI, i.e., this is supposed to be a
+        // "well known" prefix.
         return FormattingStyle.DEFAULT.knownPrefixes.stream()
             .filter( knownPrefix -> knownPrefix.prefix().equals( prefix ) )
             .findAny()
