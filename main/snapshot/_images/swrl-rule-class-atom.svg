@@ -17,9 +17,17 @@
 <text text-anchor="start" x="23.5" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="28.5" y="-8.9" font-family="Verdana" font-size="12.00">Person</text>
 </g>
-<!-- _075e25c3ecff4c759407f564e5bcc940 -->
+<!-- Student -->
 <g id="node2" class="node">
-<title>_075e25c3ecff4c759407f564e5bcc940</title>
+<title>Student</title>
+<path fill="none" stroke="black" d="M158.17,-22C158.17,-22 97.83,-22 97.83,-22 94.17,-22 90.5,-18.33 90.5,-14.67 90.5,-14.67 90.5,-7.33 90.5,-7.33 90.5,-3.67 94.17,0 97.83,0 97.83,0 158.17,0 158.17,0 161.83,0 165.5,-3.67 165.5,-7.33 165.5,-7.33 165.5,-14.67 165.5,-14.67 165.5,-18.33 161.83,-22 158.17,-22"/>
+<text text-anchor="start" x="94.5" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
+<text text-anchor="start" x="108.5" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="113.5" y="-8.9" font-family="Verdana" font-size="12.00">Student</text>
+</g>
+<!-- _12fe8be20867469387f9ddbed60871be -->
+<g id="node3" class="node">
+<title>_12fe8be20867469387f9ddbed60871be</title>
 <path fill="none" stroke="black" d="M158.67,-80C158.67,-80 7.33,-80 7.33,-80 3.67,-80 0,-76.33 0,-72.67 0,-72.67 0,-65.33 0,-65.33 0,-61.67 3.67,-58 7.33,-58 7.33,-58 158.67,-58 158.67,-58 162.33,-58 166,-61.67 166,-65.33 166,-65.33 166,-72.67 166,-72.67 166,-76.33 162.33,-80 158.67,-80"/>
 <text text-anchor="start" x="4" y="-66.9" font-family="Verdana" font-size="12.00">Student(?a)</text>
 <text text-anchor="start" x="77" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
@@ -27,23 +35,15 @@
 <text text-anchor="start" x="92" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="97" y="-66.9" font-family="Verdana" font-size="12.00">Person(?a)</text>
 </g>
-<!-- _075e25c3ecff4c759407f564e5bcc940&#45;&gt;Person -->
+<!-- _12fe8be20867469387f9ddbed60871be&#45;&gt;Person -->
 <g id="edge2" class="edge">
-<title>_075e25c3ecff4c759407f564e5bcc940&#45;&gt;Person</title>
+<title>_12fe8be20867469387f9ddbed60871be&#45;&gt;Person</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M75.13,-57.99C69.08,-50.28 60.54,-39.42 53.29,-30.19"/>
 <polygon fill="black" stroke="black" points="56.03,-28 47.1,-22.3 50.52,-32.33 56.03,-28"/>
 </g>
-<!-- Student -->
-<g id="node3" class="node">
-<title>Student</title>
-<path fill="none" stroke="black" d="M158.17,-22C158.17,-22 97.83,-22 97.83,-22 94.17,-22 90.5,-18.33 90.5,-14.67 90.5,-14.67 90.5,-7.33 90.5,-7.33 90.5,-3.67 94.17,0 97.83,0 97.83,0 158.17,0 158.17,0 161.83,0 165.5,-3.67 165.5,-7.33 165.5,-7.33 165.5,-14.67 165.5,-14.67 165.5,-18.33 161.83,-22 158.17,-22"/>
-<text text-anchor="start" x="94.5" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
-<text text-anchor="start" x="108.5" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="113.5" y="-8.9" font-family="Verdana" font-size="12.00">Student</text>
-</g>
-<!-- _075e25c3ecff4c759407f564e5bcc940&#45;&gt;Student -->
+<!-- _12fe8be20867469387f9ddbed60871be&#45;&gt;Student -->
 <g id="edge1" class="edge">
-<title>_075e25c3ecff4c759407f564e5bcc940&#45;&gt;Student</title>
+<title>_12fe8be20867469387f9ddbed60871be&#45;&gt;Student</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M91.05,-57.99C97.24,-50.28 105.97,-39.42 113.39,-30.19"/>
 <polygon fill="black" stroke="black" points="116.18,-32.29 119.72,-22.3 110.73,-27.91 116.18,-32.29"/>
 </g>
