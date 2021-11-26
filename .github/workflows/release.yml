@@ -72,8 +72,8 @@ jobs:
         with:
           name: artifacts-linux
           path: |
-            owl-x86_64-linux-${RELEASE_VERSION}
-            owl-cli-${RELEASE_VERSION}.jar
+            owl-x86_64-linux-${{ env.RELEASE_VERSION }}
+            owl-cli-${{ env.RELEASE_VERSION }}.jar
 
   build-macos:
     runs-on: macos-latest
@@ -125,7 +125,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-macos
-          path: owl-x86_64-apple-darwin-${RELEASE_VERSION}
+          path: owl-x86_64-apple-darwin-${{ env.RELEASE_VERSION }}
 
   build-windows:
     runs-on: windows-latest
@@ -183,7 +183,7 @@ jobs:
           ./gradlew clean test check nativeImage integrationTest --info --stacktrace --no-daemon
         shell: bash
       - name: Prepare Artifacts
-        run: mv cli/build/bin/owl owl-x86_64-windows-${RELEASE-VERSION}.exe
+        run: mv cli/build/bin/owl owl-x86_64-windows-${RELEASE_VERSION}.exe
         shell: bash
       - name: Run UPX
         uses: crazy-max/ghaction-upx@v1.4.0
@@ -195,7 +195,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifacts-windows
-          path: owl-x86_64-windows-${RELEASE-VERSION}.exe
+          path: owl-x86_64-windows-${{ env.RELEASE_VERSION }}.exe
 
   publish:
     needs: [build-linux, build-macos, build-windows]
@@ -226,10 +226,10 @@ jobs:
           prerelease: false
           title: "Release v${RELEASE_VERSION}"
           files: |-
-            owl-cli-${RELEASE_VERSION}.jar
-            owl-x86_64-linux-${RELEASE_VERSION}
-            owl-x86_64-apple-darwin-${RELEASE_VERSION}
-            owl-x86_64-windows-${RELEASE_VERSION}.exe
+            owl-cli-${{ env.RELEASE_VERSION }}.jar
+            owl-x86_64-linux-${{ env.RELEASE_VERSION }}
+            owl-x86_64-apple-darwin-${{ env.RELEASE_VERSION }}
+            owl-x86_64-windows-${{ env.RELEASE_VERSION }}.exe
 
   buildDone:
     name: Build Ok
