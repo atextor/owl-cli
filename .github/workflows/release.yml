@@ -50,7 +50,7 @@ jobs:
           file `which native-image`
           native-image --version
       - name: Set env
-        run: echo "RELEASE_VERSION=$(sed -n -e '/version=/{s/version=//g;p}' gradle.properties)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(grep version= gradle.properties | sed 's/.*=//')" >> $GITHUB_ENV
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
@@ -112,7 +112,7 @@ jobs:
           file `which native-image`
           native-image --version
       - name: Set env
-        run: echo "RELEASE_VERSION=$(sed -n -e '/version=/{s/version=//g;p}' gradle.properties)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(grep version= gradle.properties | sed 's/.*=//')" >> $GITHUB_ENV
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
@@ -174,7 +174,7 @@ jobs:
           native-image --version
         shell: bash
       - name: Set env
-        run: echo "RELEASE_VERSION=$(sed -n -e '/version=/{s/version=//g;p}' gradle.properties)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(grep version= gradle.properties | sed 's/.*=//')" >> $GITHUB_ENV
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
@@ -216,7 +216,7 @@ jobs:
         with:
           name: artifacts-windows
       - name: Set env
-        run: echo "RELEASE_VERSION=$(sed -n -e '/version=/{s/version=//g;p}' gradle.properties)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(grep version= gradle.properties | sed 's/.*=//')" >> $GITHUB_ENV
       - name: Push Release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
