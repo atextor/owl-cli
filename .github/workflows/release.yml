@@ -222,7 +222,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          title: "Release v${RELEASE_VERSION}"
+          title: "Release v${{ env.RELEASE_VERSION }}"
           files: |-
             owl-cli-${{ env.RELEASE_VERSION }}.jar
             owl-x86_64-linux-${{ env.RELEASE_VERSION }}
