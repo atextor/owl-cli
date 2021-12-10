@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-rootProject.name = 'owl-cli'
-include ':diagram'
-include ':write'
-include ':infer'
-include ':cli'
-include ':docs'
+package de.atextor.owlcli.infer;
+
+import lombok.Builder;
+
+@Builder
+public class Configuration {
+    @Builder.Default
+    public boolean test = true;
+}

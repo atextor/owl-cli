@@ -60,11 +60,13 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
         "${projectDir}/cli/build/classes/java/main",
         "${projectDir}/diagram/build/classes/java/main",
         "${projectDir}/write/build/classes/java/main",
+        "${projectDir}/infer/build/classes/java/main",
     ]
     sourceDirectories.from = [
         "${projectDir}/cli/src/main/java",
         "${projectDir}/diagram/src/main/java",
         "${projectDir}/write/src/main/java",
+        "${projectDir}/infer/src/main/java",
     ]
 
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
@@ -79,6 +81,7 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     dependsOn ':cli:test'
     dependsOn ':diagram:test'
     dependsOn ':write:test'
+    dependsOn ':infer:test'
 }
 
 defaultTasks 'test', 'shadowJar'

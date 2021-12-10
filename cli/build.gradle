@@ -37,6 +37,7 @@ apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation project(':diagram')
     implementation project(':write')
+    implementation project(':infer')
     implementation(deps.owlapi) {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }

@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-rootProject.name = 'owl-cli'
-include ':diagram'
-include ':write'
-include ':infer'
-include ':cli'
-include ':docs'
+package de.atextor.owlcli.infer;
+
+import org.junit.jupiter.api.Test;
+
+public class InferrerTest {
+    private final Inferrer writer = new Inferrer();
+
+    @Test
+    public void testFoo() {
+
+    }
+}

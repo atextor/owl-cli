@@ -80,7 +80,11 @@ public class OWLCLI implements Runnable {
 
     public static void main( final String[] args ) {
         LogManager.getLogManager().reset();
-        final List<AbstractCommand> commands = List.of( new OWLCLIDiagramCommand(), new OWLCLIWriteCommand() );
+        final List<AbstractCommand> commands = List.of(
+            new OWLCLIDiagramCommand(),
+            new OWLCLIWriteCommand(),
+            new OWLCLIInferCommand()
+        );
         final CommandLine cmd = commands.foldLeft( new OWLCLI().commandLine, CommandLine::addSubcommand )
             .setParameterExceptionHandler( PARAMETER_EXCEPTION_HANDLER )
             .setExecutionExceptionHandler( EXECUTION_EXCEPTION_HANDLER )
