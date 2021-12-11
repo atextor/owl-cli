@@ -22,8 +22,8 @@ ext.deps = [
     guava:                   'com.google.guava:guava:31.0.1-jre',
     httpclient:              'org.apache.httpcomponents:httpclient:4.5.13',
     jackson_databind:        'com.fasterxml.jackson.core:jackson-databind:2.13.0',
-    jena:                    'org.apache.jena:jena:4.2.0',
-    jena_core:               'org.apache.jena:jena-core:4.2.0',
+    jena:                    'org.apache.jena:jena:4.3.0',
+    jena_core:               'org.apache.jena:jena-core:4.3.0',
     logback:                 'ch.qos.logback:logback-classic:1.2.7',
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.19',
     picocli:                 'info.picocli:picocli:4.6.2',
@@ -33,12 +33,12 @@ ext.deps = [
     vavr:                    'io.vavr:vavr:0.10.4',
 
     // Test
-    junit_jupiter_api:       'org.junit.jupiter:junit-jupiter-api:5.8.1',
-    junit_jupiter_params:    'org.junit.jupiter:junit-jupiter-params:5.8.1',
-    junit_jupiter_engine:    'org.junit.jupiter:junit-jupiter-engine:5.8.1',
+    junit_jupiter_api:       'org.junit.jupiter:junit-jupiter-api:5.8.2',
+    junit_jupiter_params:    'org.junit.jupiter:junit-jupiter-params:5.8.2',
+    junit_jupiter_engine:    'org.junit.jupiter:junit-jupiter-engine:5.8.2',
     assertj:                 'org.assertj:assertj-core:3.21.0',
-    jqwik:                   'net.jqwik:jqwik:1.6.0',
-    classgraph:              'io.github.classgraph:classgraph:4.8.135',
+    jqwik:                   'net.jqwik:jqwik:1.6.1',
+    classgraph:              'io.github.classgraph:classgraph:4.8.137',
 
     // Documentation
     nodejs:                  '12.13.1',
