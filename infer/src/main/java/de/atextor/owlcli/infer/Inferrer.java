@@ -16,14 +16,19 @@
 
 package de.atextor.owlcli.infer;
 
+import de.atextor.turtle.formatter.FormattingStyle;
+import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
+import openllet.jena.PelletReasonerFactory;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.http.HttpClient;
@@ -56,6 +61,34 @@ public class Inferrer {
     }
 
     public Try<Void> infer( final InputStream input, final OutputStream output, final Configuration configuration ) {
+        final OntModel model = ModelFactory.createOntologyModel( PelletReasonerFactory.THE_SPEC );
+        try {
+            model.read( input, configuration.base, configurationFormatToJenaFormat( configuration.inputFormat ) );
+            return writeTurtle( model, output );
+        } catch ( final Exception exception ) {
+            LOG.debug( "Failure during RDF I/O", exception );
+            return Try.failure( exception );
+        }
+    }
+
+    public Try<Void> writeTurtle( final Model model, final OutputStream output ) {
+        final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+        formatter.accept( model, output );
         return Try.success( null );
+    }
+
+    /**
+     * Builds a RDF format string as expected by the lang parameter of {@link Model#read(InputStream, String, String)}
+     *
+     * @param format the format
+     * @return the format identifier for the Jena parser
+     */
+    private String configurationFormatToJenaFormat( final Configuration.Format format ) {
+        return switch ( format ) {
+            case TURTLE -> "TURTLE";
+            case RDFXML -> "RDF/XML";
+            case NTRIPLE -> "N-TRIPLE";
+            case N3 -> "N3";
+        };
     }
 }

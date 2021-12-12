@@ -16,10 +16,31 @@
 
 package de.atextor.owlcli.infer;
 
+import de.atextor.turtle.formatter.TurtleFormatter;
 import lombok.Builder;
 
 @Builder
 public class Configuration {
     @Builder.Default
-    public boolean test = true;
+    public Format inputFormat = Format.TURTLE;
+
+    @Builder.Default
+    public String base = TurtleFormatter.EMPTY_BASE;
+
+    public enum Format {
+        TURTLE,
+        RDFXML,
+        NTRIPLE,
+        N3;
+
+        @Override
+        public String toString() {
+            return switch ( this ) {
+                case TURTLE -> "turtle";
+                case RDFXML -> "rdfxml";
+                case NTRIPLE -> "ntriple";
+                case N3 -> "n3";
+            };
+        }
+    }
 }

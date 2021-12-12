@@ -25,6 +25,7 @@ ext.deps = [
     jena:                    'org.apache.jena:jena:4.3.0',
     jena_core:               'org.apache.jena:jena-core:4.3.0',
     logback:                 'ch.qos.logback:logback-classic:1.2.7',
+    openllet:                'com.github.galigator.openllet:openllet-jena:2.6.5',
     owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.1.19',
     picocli:                 'info.picocli:picocli:4.6.2',
     picocli_codegen:         'info.picocli:picocli-codegen:4.6.2',
