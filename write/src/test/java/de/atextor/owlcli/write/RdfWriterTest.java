@@ -16,10 +16,10 @@
 
 package de.atextor.owlcli.write;
 
+import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -28,8 +28,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 public class RdfWriterTest {
     private final RdfWriter writer = new RdfWriter();
@@ -115,7 +117,8 @@ public class RdfWriterTest {
 
     @Test
     public void testReadFromUrl() throws IOException {
-        final URL url = new URL( "https://raw.githubusercontent.com/atextor/turtle-formatting/main/turtle-formatting.ttl" );
+        final URL url = new URL( "https://raw.githubusercontent.com/atextor/turtle-formatting/main/turtle-formatting" +
+            ".ttl" );
         final Configuration configuration = Configuration.builder()
             .inputFormat( Configuration.Format.TURTLE )
             .outputFormat( Configuration.Format.TURTLE ).build();
@@ -125,5 +128,31 @@ public class RdfWriterTest {
 
         assertThat( result ).hasSize( 1 );
         assertThat( parseModel( out.toString(), "TURTLE" ) ).isNotNull();
+    }
+
+    @Test
+    public void testParsingEscapedUri() {
+        final String modelString = """
+            @prefix dc: <http://purl.org/spar/datacite/> .
+            @prefix doi: <https://doi.org/> .
+            @prefix : <http://example.org#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+            :something a :publication ;
+                rdfs:label "Paper title" ;
+                dc:hasIdentifier doi:10.1137\\/1.9781611970937 .
+            """;
+        assertThatCode( () -> {
+            final Model model = ModelFactory.createDefaultModel();
+            final InputStream stream = new ByteArrayInputStream( modelString.getBytes( StandardCharsets.UTF_8 ) );
+            model.read( stream, TurtleFormatter.EMPTY_BASE, "TURTLE" );
+        } ).doesNotThrowAnyException();
+    }
+
+    private Model modelFromString( final String content ) {
+        final Model model = ModelFactory.createDefaultModel();
+        final InputStream stream = new ByteArrayInputStream( content.getBytes( StandardCharsets.UTF_8 ) );
+        model.read( stream, TurtleFormatter.EMPTY_BASE, "TURTLE" );
+        return model;
     }
 }
