@@ -42,6 +42,7 @@ dependencies {
         exclude group: 'org.slf4j', module: 'slf4j-simple'
     }
     implementation(deps.jena_core)
+    implementation(deps.jena_arq)
     implementation(deps.turtle_formatter)
     implementation(deps.vavr)
     implementation(deps.picocli)
@@ -56,6 +57,9 @@ dependencies {
     implementation(deps.jackson_databind)
     implementation(deps.httpclient)
     implementation(deps.commons_codec)
+
+    // To support GraalVM substitution classes
+    compileOnly(deps.svm)
 
     // Test
     testImplementation(deps.junit_jupiter_api)

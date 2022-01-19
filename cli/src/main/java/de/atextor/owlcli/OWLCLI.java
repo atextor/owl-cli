@@ -36,11 +36,6 @@ import java.util.logging.LogManager;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
-    static {
-        JenaSystem.setSubsystemRegistry( new StaticJenaSubsystemRegistry() );
-        JenaSystem.init();
-    }
-
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
 
     private static void printError( final CommandLine commandLine, final Exception exception ) {
