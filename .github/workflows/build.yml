@@ -24,8 +24,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches/
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          key: ${{ runner.os }}-gradle-v2-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-v2-
       - name: Setup Environment
         # - Install SDKMAN
         # - Install msttcorefonts, so we have the Verdana font available for diagram generation
@@ -104,8 +104,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches/
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          key: ${{ runner.os }}-gradle-v2-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-v2-
       - name: Setup Environment
         # - Install SDKMAN
         # - Install graphviz, so we have the dot binary available for diagram generation
@@ -159,8 +159,8 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.gradle/caches/
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          key: ${{ runner.os }}-gradle-v2-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: ${{ runner.os }}-gradle-v2-
       - name: Setup Environment
         # - Install SDKMAN
         # - Install graphviz, so we have the dot binary available for diagram generation
