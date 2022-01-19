@@ -29,6 +29,7 @@ apply from: file("${rootDir}/dependencies.gradle")
 dependencies {
     implementation(deps.jena)
     implementation(deps.jena_core)
+    implementation(deps.jena_arq)
     implementation(deps.slf4j_api)
     implementation(deps.turtle_formatter)
     implementation(deps.vavr)
