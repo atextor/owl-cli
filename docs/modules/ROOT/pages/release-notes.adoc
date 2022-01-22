@@ -1,6 +1,14 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.2.0
+
+* Adds the xref:usage.adoc#infer-command[infer] command to perform OWL DL reasoning on an input
+  ontology.
+* Bugfixes in xref:usage.adoc#write-command[write] command: Local names (curies) with escaped
+  special characters are correctly parsed now; local names and literals are correctly escaped when
+  writing.
+
 == Version 1.1.0
 
 * Adds the xref:usage.adoc#write-command[write] command to read RDF files in multiple formats and
