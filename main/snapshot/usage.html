@@ -68,6 +68,9 @@
           <a href="index.html">snapshot</a>
         </li>
         <li class="version">
+          <a href="../1.2.0/index.html">1.2.0</a>
+        </li>
+        <li class="version">
           <a href="../1.1.0/index.html">1.1.0</a>
         </li>
         <li class="version">
@@ -94,6 +97,7 @@
   <button class="version-menu-toggle" title="Show other versions of page">snapshot</button>
   <div class="version-menu">
     <a class="version is-current" href="usage.html">snapshot</a>
+    <a class="version" href="../1.2.0/usage.html">1.2.0</a>
     <a class="version" href="../1.1.0/usage.html">1.1.0</a>
     <a class="version" href="../1.0.0/usage.html">1.0.0</a>
   </div>
@@ -560,6 +564,36 @@ owl write -i ntriple -o rdfxml myontology.nt</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="infer-command"><a class="anchor" href="#infer-command"></a><code>infer</code> Command</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="infer-usage"><a class="anchor" href="#infer-usage"></a>General Usage</h3>
+<div class="paragraph">
+<p>The <code>infer</code> command takes an OWL ontology as input and performs OWL 2 DL reasoning on it. Reasoning
+is done using the <a href="https://github.com/Galigator/openllet">Openllet</a> reasoner.</p>
+</div>
+<div class="paragraph">
+<p>General usage: <code>owl infer input [output]</code>, where <code>input</code> can be either an ontology file, an URL or
+<code>-</code> (which means: read from standard in) and <code>output</code> can be either an ontology file or <code>-</code> (which
+means: write to standard out). If <code>input</code> is a file and <code>output</code> is not given, the input file is
+overwritten with the inferenced result. If <code>input</code> is <code>-</code> and <code>output</code> is not given, the output is
+set to standard out.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="infer-example-usage"><a class="anchor" href="#infer-example-usage"></a>Example Usage</h3>
+<div class="paragraph">
+<p>Perform reasoning on the input ontology and write results to stdout:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl infer ontology.ttl -</code></pre>
 </div>
 </div>
 </div>
