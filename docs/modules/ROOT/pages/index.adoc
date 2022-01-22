@@ -13,6 +13,7 @@ https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
 https://www.w3.org/TR/n-triples/[RDF N-Triples] or
 https://www.w3.org/TeamSubmission/n3/[N3] format and write it in configurable, pretty-printed
 RDF/Turtle or one of the other formats using the xref:usage.adoc#write-command[write command]
+* perform OWL DL reasoning on an input ontology using the xref:usage.adoc#infer-command[infer command]
 
 You can find the source code on https://github.com/atextor/owl-cli[Github].
 

@@ -9,6 +9,7 @@ Language](https://en.wikipedia.org/wiki/Web_Ontology_Language) (OWL 2) and
 
 * generate a diagram for an OWL ontology with the `diagram command`
 * read any RDF document in [RDF/Turtle](https://www.w3.org/TR/turtle/), [RDF/XML](https://www.w3.org/TR/rdf-syntax-grammar/), [RDF N-Triples](https://www.w3.org/TR/n-triples/) or [N3](https://www.w3.org/TeamSubmission/n3/) format and write it in configurable, pretty-printed RDF/Turtle or one of the other formats using the `write command`
+* perform OWL DL reasoning on an input ontology using the `infer command`
 
 <img src="docs/modules/ROOT/assets/images/splash.svg" alt="owl diagram splash image" width="50%"/>
 

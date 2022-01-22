@@ -362,3 +362,28 @@ Read a remote ontology in RDF/XML format and print it in formatted Turtle format
 ----
 owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'
 ----
+
+[#infer-command]
+== `infer` Command
+
+
+[#infer-usage]
+=== General Usage
+
+The `infer` command takes an OWL ontology as input and performs OWL 2 DL reasoning on it. Reasoning
+is done using the https://github.com/Galigator/openllet[Openllet] reasoner.
+
+General usage: `owl infer input [output]`, where `input` can be either an ontology file, an URL or
+`-` (which means: read from standard in) and `output` can be either an ontology file or `-` (which
+means: write to standard out). If `input` is a file and `output` is not given, the input file is
+overwritten with the inferenced result. If `input` is `-` and `output` is not given, the output is
+set to standard out.
+
+[#infer-example-usage]
+=== Example Usage
+
+Perform reasoning on the input ontology and write results to stdout:
+[source,shell]
+----
+owl infer ontology.ttl -
+----
