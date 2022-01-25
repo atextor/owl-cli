@@ -4,6 +4,7 @@ version: 1.2.0
 asciidoc:
   attributes:
     release-version: 1.2.0
+    release-tag: v1.2.0
     page-component-version: 1.2.0
 nav:
 - modules/ROOT/nav.adoc
