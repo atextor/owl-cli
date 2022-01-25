@@ -60,9 +60,9 @@ and add this directory to the PATH environment variable:
 If using the executable .jar file, the following commands will make the jar available as `owl`
 command as well. This works in MacOs and Linux.
 
-[source,shell]
+[source,shell,subs="attributes+,+quotes"]
 ----
-curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/{release-version}/owl-cli-{release-version}.jar
+curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-cli-{release-version}.jar
 echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
 source ~/.bashrc
 ----
