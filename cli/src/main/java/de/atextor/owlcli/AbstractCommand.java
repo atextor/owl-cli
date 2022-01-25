@@ -18,7 +18,6 @@ package de.atextor.owlcli;
 
 import com.google.common.collect.ImmutableSet;
 import io.vavr.control.Try;
-import org.apache.jena.sys.JenaSystem;
 import org.semanticweb.owlapi.io.OWLParserFactory;
 import org.semanticweb.owlapi.model.OWLDataFactory;
 import org.semanticweb.owlapi.model.OWLOntology;
