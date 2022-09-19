@@ -1,6 +1,11 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.2.1
+
+* Bugfix in xref:usage.adoc#write-command[write] command: Dahes in the prefix part of local names
+  are not escaped any more
+
 == Version 1.2.0
 
 * Adds the xref:usage.adoc#infer-command[infer] command to perform OWL DL reasoning on an input
