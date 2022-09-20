@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Usage :: owl-cli Documentation</title>
+    <link rel="canonical" href="https://atextor.de/owl-cli/main/snapshot/usage.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://atextor.de/owl-cli">owl-cli Documentation</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+          <div class="navbar-item">
+            <input id="search-input" type="text" placeholder="Search docs">
+          </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="main" data-version="1.2.2">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">owl-cli</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">Getting Started</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="usage.html">Usage</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="release-notes.html">Release Notes</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="diagram-notation.html">Diagram Notation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">owl-cli</span>
+    <span class="version">1.2.2</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <span class="title">owl-cli</span>
+      <ul class="versions">
+        <li class="version is-latest">
+          <a href="../snapshot/index.html">snapshot</a>
+        </li>
+        <li class="version is-current">
+          <a href="index.html">1.2.2</a>
+        </li>
+        <li class="version">
+          <a href="../1.2.1/index.html">1.2.1</a>
+        </li>
+        <li class="version">
+          <a href="../1.2.0/index.html">1.2.0</a>
+        </li>
+        <li class="version">
+          <a href="../1.1.0/index.html">1.1.0</a>
+        </li>
+        <li class="version">
+          <a href="../1.0.0/index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../snapshot/index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">owl-cli</a></li>
+    <li><a href="usage.html">Usage</a></li>
+  </ul>
+</nav>
+<div class="page-versions">
+  <button class="version-menu-toggle" title="Show other versions of page">1.2.2</button>
+  <div class="version-menu">
+    <a class="version" href="../snapshot/usage.html">snapshot</a>
+    <a class="version is-current" href="usage.html">1.2.2</a>
+    <a class="version" href="../1.2.1/usage.html">1.2.1</a>
+    <a class="version" href="../1.2.0/usage.html">1.2.0</a>
+    <a class="version" href="../1.1.0/usage.html">1.1.0</a>
+    <a class="version" href="../1.0.0/usage.html">1.0.0</a>
+  </div>
+</div>
+</div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Usage</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Although the package is called <strong>owl-cli</strong>, the command you invoke is called <code>owl</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You can call the built-in overview of commands and arguments via <code>--help</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">Usage:
+
+Usage: owl [-v] [--help] [--version] [COMMAND]
+
+Description:
+
+Command line tool for ontology engineering
+
+Options:
+      --help      Show short help
+  -v, --verbose   Specify multiple -v options to increase verbosity,
+                  e.g. use `-v`, `-vv` or `-vvv` for more details
+      --version   Show current version
+Commands:
+  ...</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Other than the general help, you give one argument, the <em>command</em>, which will
+take its own arguments, for example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl diagram --format png</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Commands that take ontology files as an input support all formats that are
+supported by <a href="https://github.com/owlcs/owlapi">OWL API</a>, notably
+<a href="https://www.w3.org/TR/turtle/">RDF/Turtle</a>,
+<a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>,
+<a href="https://www.w3.org/TR/owl-xml-serialization/">OWL/XML</a> and
+<a href="https://www.w3.org/TR/owl2-syntax/">OWL Functional Syntax</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="diagram-command"><a class="anchor" href="#diagram-command"></a><code>diagram</code> Command</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>diagram</code> command takes an OWL ontology as input and generates an
+automatically layouted diagram for it in the SVG or PNG format. This is
+implemented by mapping the ontology&#8217;s axioms into a graph description in the
+<a href="https://www.graphviz.org/">Graphviz</a> language, which is passed to its <code>dot</code>
+layouting engine. Attributes such as fonts can be customized using arguments.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+As no standardized graphical notation for OWL exists, the diagram notation
+used here is described in detail on a separate page:
+<a href="diagram-notation.html" class="page">Diagram Notation</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="diagram-usage"><a class="anchor" href="#diagram-usage"></a>General Usage</h3>
+<div class="paragraph">
+<p>General usage: <code>owl diagram [options] input [output]</code>, where <code>input</code> can be
+either an ontology file or <code>-</code> (which means: read from standard in) and <code>output</code>
+can be either an ontology file or <code>-</code> (which means: write to standard out). If
+<code>output</code> is not given, the output filename is the input filename with its file
+extension changed, e.g. myontology.ttl &#8594; myontology.svg. If <code>input</code> is <code>-</code> and
+<code>output</code> is not given, the output is set to standard out.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="diagram-options"><a class="anchor" href="#diagram-options"></a>Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. diagram Command Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--direction</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Diagram layout direction</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">left_to_right</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [top_to_bottom, left_to_right]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--dotbinary</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Path to <code>dot</code> binary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">By default, <code>dot</code> is searched for in your <code>$PATH</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--fontname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default font</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verdana</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--fontsize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Default font size</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--format</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output file format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">svg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [png, svg]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--nodefontname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Font for nodes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verdana</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--nodefontsize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Font size for nodes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verdana</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--nodemargin</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The margin to render inside of nodes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0.05,0.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the <a href="https://www.graphviz.org/docs/attrs/margin/">Graphviz
+ documentation</a> for more information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--nodeshape</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node shape</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">box</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the <a href="https://www.graphviz.org/doc/info/shapes.html">Graphviz documentation</a>
+ for more information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--nodestyle</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node style</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rounded</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the <a href="https://www.graphviz.org/docs/attrs/style/">Graphviz documentation</a> for more information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--fgcolor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Color for boxes, fonts and edges</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">white</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the <a href="https://www.graphviz.org/docs/attrs/bgcolor/">Graphviz documentation</a> for more information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--bgcolor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Background color for the generated diagram</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">white</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See the <a href="https://www.graphviz.org/docs/attrs/bgcolor/">Graphviz documentation</a> for more information</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="diagram-example-usage"><a class="anchor" href="#diagram-example-usage"></a>Example Usage</h3>
+<div class="paragraph">
+<p>Simple invocation with default arguments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># Will create myontology.svg
+owl diagram myontology.ttl</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Invocation where the output is specified as standard out and piped to
+<a href="https://imagemagick.org/script/convert.php">convert</a> to create a different format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl diagram myontology.ttl - | convert - myontology.jpg</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Invocation where an ontology is downloaded, some terms are filtered and then
+piped to owl diagram:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
+grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="write-command"><a class="anchor" href="#write-command"></a><code>write</code> Command</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="write-usage"><a class="anchor" href="#write-usage"></a>General Usage</h3>
+<div class="paragraph">
+<p>The <code>write</code> command takes any RDF file in
+<a href="https://www.w3.org/TR/turtle/">RDF/Turtle</a>,
+<a href="https://www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>,
+<a href="https://www.w3.org/TR/n-triples/">RDF N-Triples</a> or
+<a href="https://www.w3.org/TeamSubmission/n3/">N3</a> format as input and writes it out in any of those formats.
+When writing RDF/Turtle, the formatting of the resulting output can be configured extensively, as
+this makes use of the <a href="https://github.com/atextor/turtle-formatter">turtle-formatter library</a>.</p>
+</div>
+<div class="paragraph">
+<p>General usage: <code>owl write [options] input [output]</code>, where <code>input</code> can be either an RDF file, a URL
+(starting with <code>http</code> or <code>https</code>) or <code>-</code> (which means: read from standard in) and <code>output</code> can be
+either an RDF file or <code>-</code> (which means: write to standard out). If
+<code>output</code> is not given, the output filename is the input filename with its file
+extension changed, e.g. myontology.nt &#8594; myontology.ttl. If <code>input</code> is <code>-</code> or a URL and
+<code>output</code> is not given, the output is set to standard out.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="write-options"><a class="anchor" href="#write-options"></a>Options</h3>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. write Command Options</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-o</code>, <code>--output</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output file format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">turtle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [turtle, rdfxml, ntriple, n3]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-i</code>, <code>--input</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Input file format</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">turtle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [turtle, rdfxml, ntriple, n3]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-p</code>, <code>--prefix</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Prefix with corresponding URI to add as <code>@prefix</code> when serializing Turtle.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This can be given multiple times, for multiple prefixes. You can specify a well-known prefix
+ (currently: rdf, rdfs, xsd, owl, dcterms), e.g. <code>-prdf</code> or <code>--prefix=rdf</code> or any other prefix with its url:
+ <code>-pfoo=http://example.com/</code> or <code>--prefix=foo=http://example.com/</code>. To set the empty prefix, use
+ <code>-p==http://example.com/</code> or <code>--prefix==http://example.com</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--prefixAlign</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Alignment of <code>@prefix</code> statements</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">off</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [left, off, right]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--encoding</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output encoding</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">utf_8</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [latin1, utf_16_be, utf_16_le, utf_8, utf_8_bom]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--doubleFormat</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines how double numbers are formatted</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>0.####E0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">See
+  <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html">here</a>
+  for more information on the format</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--endOfLine</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">End of line style</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">lf</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [cr, crlf, lf]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--indent</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indent style</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">space</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Possible values: [tab, space]. Note that when choosing <code>tab</code>, <code>alignPredicates</code> and <code>alignObjects</code>
+ are automatically treated as <code>false</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--firstPredicateInNewLine</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Write first predicate in new line of block</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--writeRdfType</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Write <code>rdf:type</code> instead of <code>a</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--useCommaByDefault</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use commas for multiple objects</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--noCommaForPredicate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use no commas for multiple objects for this predicate</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This can be given multiple times.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--useLongLiterals</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Use long form for literals, e.g. <code>"5"^^xsd:integer</code> instead of <code>5</code></p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--alignObjects</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Align objects for same predicates</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--alignPredicates</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Align predicates for same subjects</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--continuationIndentSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indentation size after forced line wraps</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--doNotInsertFinalNewline</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Do not insert newline at end of file</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--indentSize</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Indentation size in spaces</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--keepUnusedPrefixes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Keeps prefixes that are not part of any statement</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Switched off by default</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--prefixOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sort order for prefixes (if they appear in a model)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[rdf, rdfs, xsd, owl]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add this switch multiple times, once for each prefix, in the desired order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--subjectOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sort order for subjects by type (if they appear in a model)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[<code>rdfs:Class</code>, <code>owl:Ontology</code>, <code>owl:Class</code>, <code>rdf:Property</code>, <code>owl:ObjectProperty</code>, <code>owl:DatatypeProperty</code>, <code>owl:AnnotationProperty</code>, <code>owl:NamedIndividual</code>, <code>owl:AllDifferent</code>, <code>owl:Axiom</code>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add this switch multiple times, once for each subject type, in the desired order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--predicateOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sort order for predicates (if they appear on a subject)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[<code>rdf:type</code>, <code>rdfs:label</code>, <code>rdfs:comment</code>, <code>dcterms:description</code>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add this switch multiple times, once for each predicate, in the desired order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--objectOrder</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sort order for objects</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">[<code>owl:NamedIndividual</code>, <code>owl:ObjectProperty</code>, <code>owl:DatatypeProperty</code>, <code>owl:AnnotationProperty</code>,
+  <code>owl:FunctionalProperty</code>, <code>owl:InverseFunctionalProperty</code>, <code>owl:TransitiveProperty</code>,
+  <code>owl:SymmetricProperty</code>, <code>owl:AsymmetricProperty</code>, <code>owl:ReflexiveProperty</code>, <code>owl:IrreflexiveProperty</code>]</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add this switch multiple times, once for each object type, in the desired order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>--anonymousNodeIdPattern</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name pattern for blank node IDs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_:gen0</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A <code>0</code> inside the pattern will be replace with the index of the respective blank node</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="write-example-usage"><a class="anchor" href="#write-example-usage"></a>Example Usage</h3>
+<div class="paragraph">
+<p>Simple invocation with default arguments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell"># Read myontology.ttl and print it in formatted Turtle format
+owl write myontology.ttl
+
+# Read myontology.owl in RDF/XML format and print it in formatted Turtle format, writing output.ttl
+owl write -i rdfxml myontology.owl output.ttl
+
+# Read myontology.n3 in N3 format and print it in formatted Turtle format to stdout
+owl write -i n3 myontology.n3
+
+# Read myontology.nt in N-Triples format and print it in RDF/XML format to stdout
+owl write -i ntriple -o rdfxml myontology.nt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Read an N-Triples file and write formatted Turtle, while also configuring which prefixes should be used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -prdf -powl -pxsd -p'ex=http://example.com#' -i ntriple myontology.nt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Read a Turtle file and print it out, while configuring the output&#8217;s formatting and prefix order:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write --indentSize 4 --writeRdfType --prefixOrder owl --prefixOrder rdf myontology.turtle</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Read a remote ontology in RDF/XML format and print it in formatted Turtle format:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="infer-command"><a class="anchor" href="#infer-command"></a><code>infer</code> Command</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="infer-usage"><a class="anchor" href="#infer-usage"></a>General Usage</h3>
+<div class="paragraph">
+<p>The <code>infer</code> command takes an OWL ontology as input and performs OWL 2 DL reasoning on it. Reasoning
+is done using the <a href="https://github.com/Galigator/openllet">Openllet</a> reasoner.</p>
+</div>
+<div class="paragraph">
+<p>General usage: <code>owl infer input [output]</code>, where <code>input</code> can be either an ontology file, an URL or
+<code>-</code> (which means: read from standard in) and <code>output</code> can be either an ontology file or <code>-</code> (which
+means: write to standard out). If <code>input</code> is a file and <code>output</code> is not given, the input file is
+overwritten with the inferenced result. If <code>input</code> is <code>-</code> and <code>output</code> is not given, the output is
+set to standard out.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="infer-example-usage"><a class="anchor" href="#infer-example-usage"></a>Example Usage</h3>
+<div class="paragraph">
+<p>Perform reasoning on the input ontology and write results to stdout:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">owl infer ontology.ttl -</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script type="text/javascript">
+  window.antora = window.antora || {}
+  window.antora.basePath = '../..'
+  window.antora.pagePath = '/main/1.2.2/usage.html'
+</script>
+<script src="../../_/js/site.js"></script>
+  <script src="../../_/js/vendor/lunr.js"></script>
+  <script src="../../_/js/vendor/search.js"></script>
+  <script async src="../../_/../search-index.js"></script>
+<script src="../../_/js/vendor/highlight.js"></script>
+<script>hljs.initHighlighting()</script>
+  </body>
+</html>
