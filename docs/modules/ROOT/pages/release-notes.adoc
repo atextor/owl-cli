@@ -3,7 +3,13 @@
 
 == Version 1.2.1
 
-* Bugfix in xref:usage.adoc#write-command[write] command: Dahes in the prefix part of local names
+* Change in xref:usage.adoc#write-command[write] command: Dashes, underscores and full stops in the
+  name part of local names are not escaped any more. Both variants are valid, but reading RDF/Turtle
+  is easier without the escapes.
+
+== Version 1.2.1
+
+* Bugfix in xref:usage.adoc#write-command[write] command: Dashes in the prefix part of local names
   are not escaped any more
 
 == Version 1.2.0
