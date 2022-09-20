@@ -1,7 +1,7 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
-== Version 1.2.1
+== Version 1.2.2
 
 * Change in xref:usage.adoc#write-command[write] command: Dashes, underscores and full stops in the
   name part of local names are not escaped any more. Both variants are valid, but reading RDF/Turtle
