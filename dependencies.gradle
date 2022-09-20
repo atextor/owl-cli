@@ -32,7 +32,7 @@ ext.deps = [
     picocli_codegen:         'info.picocli:picocli-codegen:4.6.2',
     slf4j_api:               'org.slf4j:slf4j-api:1.7.32',
     svm:                     'org.graalvm.nativeimage:svm:21.3.0',
-    turtle_formatter:        'de.atextor:turtle-formatter:1.2.4',
+    turtle_formatter:        'de.atextor:turtle-formatter:1.2.5',
     vavr:                    'io.vavr:vavr:0.10.4',
 
     // Test
