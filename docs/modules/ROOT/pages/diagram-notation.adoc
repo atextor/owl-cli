@@ -57,32 +57,32 @@ file it was generated from.
 
 |Class(latexmath:[C])
 |latexmath:[C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-class.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-class.ttl]
 image::declaration-class.svg[Class Declaration]
 
 |ObjectProperty(latexmath:[P])
 |latexmath:[P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-object-property.ttl]
 image::declaration-object-property.svg[Object Property Declaration]
 
 |DataProperty(latexmath:[P])
 |latexmath:[P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-data-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-data-property.ttl]
 image::declaration-data-property.svg[Data Property Declaration]
 
 |AnnotationProperty(latexmath:[P])
 |_no notation_
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-annotation-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-annotation-property.ttl]
 image::declaration-annotation-property.svg[Annotation Property Declaration]
 
 |NamedIndividual(latexmath:[o])
 |latexmath:[o]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-individual.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-individual.ttl]
 image::declaration-individual.svg[Named Individual Declaration]
 
 |Datatype(latexmath:[D])
 |_no notation_
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/declaration-datatype.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-datatype.ttl]
 image::declaration-datatype.svg[Datatype Declaration]
 
 |===
@@ -98,27 +98,27 @@ NOTE: This section is aligned to the https://www.w3.org/TR/owl2-syntax/#Data_Ran
 
 |https://www.w3.org/TR/owl2-syntax/#Intersection_of_Data_Ranges[DataIntersectionOf](latexmath:[U_1\,\dots\,U_n])
 |latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-intersection-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-intersection-of.ttl]
 image::data-intersection-of.svg[Intersection of Data Ranges]
 
 |https://www.w3.org/TR/owl2-syntax/#Union_of_Data_Ranges[DataUnionOf](latexmath:[U_1\,\dots\,U_n])
 |latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-union-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-union-of.ttl]
 image::data-union-of.svg[Union of Data Ranges]
 
 |https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[DataComplementOf](latexmath:[U])
 |latexmath:[\neg\,U]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-complement-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-complement-of.ttl]
 image::data-complement-of.svg[Complement of Data Ranges]
 
 |https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Literals[DataOneOf](latexmath:[v_1\,\dots\,v_n])
 |latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-one-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-one-of.ttl]
 image::data-one-of.svg[Enumeration of Literals]
 
 |https://www.w3.org/TR/owl2-syntax/#Datatype_Restrictions[DatatypeRestriction]( int minExclusive 4 maxInclusive 10 )
 |_no notation_
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/datarange-expression.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/datarange-expression.ttl]
 image::datarange-expression.svg[Data Range with Numeric Restriction]
 
 |===
@@ -136,22 +136,22 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 
 |https://www.w3.org/TR/owl2-syntax/#Intersection_of_Class_Expressions[ObjectIntersectionOf](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\sqcap\,\cdots\,\sqcap\,C_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/class-intersection.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-intersection.ttl]
 image::class-intersection.svg[Class Intersection]
 
 |https://www.w3.org/TR/owl2-syntax/#Union_of_Class_Expressions[ObjectUnionOf](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\sqcup\,\cdots\,\sqcup\,C_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/class-union.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-union.ttl]
 image::class-union.svg[Class Union]
 
 |https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[ObjectComplementOf](latexmath:[C])
 |latexmath:[\neg\,C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-complement-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-complement-of.ttl]
 image::object-complement-of.svg[Complement of a Class Expression]
 
 |https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals[ObjectOneOf](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-one-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-one-of.ttl]
 image::object-one-of.svg[Enumeration of Individuals]
 
 |===
@@ -165,27 +165,27 @@ image::object-one-of.svg[Enumeration of Individuals]
 
 |https://www.w3.org/TR/owl2-syntax/#Existential_Quantification[ObjectSomeValuesFrom](latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-some-values-from.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-some-values-from.ttl]
 image::object-some-values-from.svg[Object Some-Values-From Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Universal_Quantification[ObjectAllValuesFrom](latexmath:[P\,C])
 |latexmath:[\forall\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-all-values-from.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-all-values-from.ttl]
 image::object-all-values-from.svg[Object All-Values-From Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Individual_Value_Restriction[ObjectHasValue](latexmath:[P\,o])
 |latexmath:[P\,\ni\,o]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-has-value.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-has-value.ttl]
 image::object-has-value.svg[Object Has-Value Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties[ObjectInverseOf](latexmath:[P])
 |latexmath:[P^{-}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-inverse-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-inverse-of.ttl]
 image::object-inverse-of.svg[Object Inverse-Of Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Self-Restriction[ObjectHasSelf](latexmath:[P])
 |latexmath:[\text{Self}(P)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-has-self.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-has-self.ttl]
 image::object-has-self.svg[Object Has-Self Property Restriction]
 |===
 
@@ -198,32 +198,32 @@ image::object-has-self.svg[Object Has-Self Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P])
 |latexmath:[\geq\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-min-cardinality-unqualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-min-cardinality-unqualified.ttl]
 image::object-min-cardinality-unqualified.svg[Object Mininum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P\,C])
 |latexmath:[\geq\,n\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-min-cardinality-qualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-min-cardinality-qualified.ttl]
 image::object-min-cardinality-qualified.svg[Object Qualified Mininum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P])
 |latexmath:[\leq\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-max-cardinality-unqualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-max-cardinality-unqualified.ttl]
 image::object-max-cardinality-unqualified.svg[Object Maximum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P\,C])
 |latexmath:[\leq\,n\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-max-cardinality-qualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-max-cardinality-qualified.ttl]
 image::object-max-cardinality-qualified.svg[Object Qualified Maximum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P])
 |latexmath:[=\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-exact-cardinality-unqualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-exact-cardinality-unqualified.ttl]
 image::object-exact-cardinality-unqualified.svg[Object Exact Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P\,C])
 |latexmath:[=\,n\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-exact-cardinality-qualified.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-exact-cardinality-qualified.ttl]
 image::object-exact-cardinality-qualified.svg[Object Qualified Exact Cardinality Restriction]
 
 |===
@@ -237,17 +237,17 @@ image::object-exact-cardinality-qualified.svg[Object Qualified Exact Cardinality
 
 |https://www.w3.org/TR/owl2-syntax/#Existential_Quantification_2[DataSomeValuesFrom](latexmath:[P\,C])
 |latexmath:[\exists\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-some-values-from.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-some-values-from.ttl]
 image::data-some-values-from.svg[Data Some-Values-From Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Universal_Quantification_2[DataAllValuesFrom](latexmath:[P\,C])
 |latexmath:[\forall\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-all-values-from.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-all-values-from.ttl]
 image::data-all-values-from.svg[Data All-Values-From Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Literal_Value_Restriction[DataHasValue](latexmath:[P\,v])
 |latexmath:[P\,\ni\,v]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-has-value.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-has-value.ttl]
 image::data-has-value.svg[Data Has-Value Property Restriction]
 
 |===
@@ -261,17 +261,17 @@ image::data-has-value.svg[Data Has-Value Property Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality_2[DataMinCardinality](latexmath:[n\,P])
 |latexmath:[\geq\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-min-cardinality.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-min-cardinality.ttl]
 image::data-min-cardinality.svg[Data Minimum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality_2[DataMaxCardinality](latexmath:[n\,P])
 |latexmath:[\leq\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-max-cardinality.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-max-cardinality.ttl]
 image::data-max-cardinality.svg[Data Maximum Cardinality Restriction]
 
 |https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality_2[DataExactCardinality](latexmath:[n\,P])
 |latexmath:[=\,n\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-exact-cardinality.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-exact-cardinality.ttl]
 image::data-exact-cardinality.svg[Data Exact Cardinality Restriction]
 
 |===
@@ -289,23 +289,23 @@ NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-s
 
 |https://www.w3.org/TR/owl2-syntax/#Subclass_Axioms[SubClassOf](latexmath:[C_1\,C_2])
 |latexmath:[C_1\,\sqsubseteq\,C_2]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/subclassof.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/subclassof.ttl]
 image::subclassof.svg[Subclasses]
 
 |https://www.w3.org/TR/owl2-syntax/#Equivalent_Classes[EquivalentClasses](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_1\,\equiv\,\cdots\,\equiv\,C_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/equivalent-classes.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-classes.ttl]
 image::equivalent-classes.svg[Equivalent Classes]
 
 |https://www.w3.org/TR/owl2-syntax/#Disjoint_Classes[DisjointClasses](latexmath:[C_1\,\dots\,C_n])
 |latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/disjoint-classes.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-classes.ttl]
 image::disjoint-classes.svg[Disjoint Classes]
 
 |https://www.w3.org/TR/owl2-syntax/#Disjoint_Union_of_Class_Expressions[DisjointUnion](latexmath:[C\,C_1\,\dots\,C_n])
 a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
 latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/disjoint-union.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-union.ttl]
 image::disjoint-union.svg[Disjoint Union]
 
 |===
@@ -319,72 +319,72 @@ image::disjoint-union.svg[Disjoint Union]
 
 |https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[SubObjectPropertyOf](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\sqsubseteq\,P_2]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/sub-object-property-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/sub-object-property-of.ttl]
 image::sub-object-property-of.svg[Sub-Object-Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[ObjectPropertyChain](latexmath:[P_1\,\dots\,P_n])
 |latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-property-chain.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-chain.ttl]
 image::object-property-chain.svg[Object Property Chains]
 
 |https://www.w3.org/TR/owl2-syntax/#Equivalent_Object_Properties[EquivalentObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/equivalent-object-properties.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-object-properties.ttl]
 image::equivalent-object-properties.svg[Equivalent Object Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Disjoint_Object_Properties[DisjointObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[\text{Disjoint}(P_1,P_2)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/disjoint-object-properties.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-object-properties.ttl]
 image::disjoint-object-properties.svg[Disjoint Object Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties_2[InverseObjectProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2^{-}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/inverse-object-properties.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/inverse-object-properties.ttl]
 image::inverse-object-properties.svg[Inverse Object Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Object_Property_Domain[ObjectPropertyDomain](latexmath:[C\,P])
 |latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-property-domain.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-domain.ttl]
 image::object-property-domain.svg[Object Property Domain]
 
 |https://www.w3.org/TR/owl2-syntax/#Object_Property_Range[ObjectPropertyRange](latexmath:[C\,P])
 |latexmath:[\top\,\sqsubseteq\,\forall\,P.C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-property-range.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-range.ttl]
 image::object-property-range.svg[Object Property Range]
 
 |https://www.w3.org/TR/owl2-syntax/#Functional_Object_Properties[FunctionalObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/functional-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/functional-object-property.ttl]
 image::functional-object-property.svg[Functional Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Inverse-Functional_Object_Properties[InverseFunctionalObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1\,P^{-}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/inverse-functional-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/inverse-functional-object-property.ttl]
 image::inverse-functional-object-property.svg[Inverse Functional Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Reflexive_Object_Properties[ReflexiveObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\exists\,P.\text{Self}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/reflexive-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/reflexive-object-property.ttl]
 image::reflexive-object-property.svg[Reflexive Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Irreflexive_Object_Properties[IrreflexiveObjectProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\neg\exists\,P.\text{Self}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/irreflexive-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/irreflexive-object-property.ttl]
 image::irreflexive-object-property.svg[Irreflexive Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Symmetric_Object_Properties[SymmetricObjectProperty](latexmath:[P])
 |latexmath:[P\,\equiv\,P^{-}]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/symmetric-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/symmetric-object-property.ttl]
 image::symmetric-object-property.svg[Symmetric Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Asymmetric_Object_Properties[AsymmetricObjectProperty](latexmath:[P])
 |latexmath:[\text{Disjoint}(P,P^{-})]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/asymmetric-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/asymmetric-object-property.ttl]
 image::asymmetric-object-property.svg[Symmetric Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Transitive_Object_Properties[TransitiveObjectProperty](latexmath:[P])
 |latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/transitive-object-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/transitive-object-property.ttl]
 image::transitive-object-property.svg[Transitive Object Property]
 
 |===
@@ -398,32 +398,32 @@ image::transitive-object-property.svg[Transitive Object Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Data_Subproperties[SubDataPropertyOf](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\sqsubseteq\,P_2]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/sub-data-property-of.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/sub-data-property-of.ttl]
 image::sub-data-property-of.svg[Sub-Data-Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Equivalent_Data_Properties[EquivalentDataProperties](latexmath:[P_1\,P_2])
 |latexmath:[P_1\,\equiv\,P_2]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/equivalent-data-properties.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-data-properties.ttl]
 image::equivalent-data-properties.svg[Equivalent Data Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Disjoint_Data_Properties[DisjointDataProperties](latexmath:[P_1\,P_2])
 |latexmath:[\text{Disjoint}(P_1,P_2)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/disjoint-data-properties.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-data-properties.ttl]
 image::disjoint-data-properties.svg[Disjoint Data Properties]
 
 |https://www.w3.org/TR/owl2-syntax/#Data_Property_Domain[DataPropertyDomain](latexmath:[C\,P])
 |latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-property-domain.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-domain.ttl]
 image::data-property-domain.svg[Data Property Domain]
 
 |https://www.w3.org/TR/owl2-syntax/#Data_Property_Range[DataPropertyRange](latexmath:[D\,P])
 |latexmath:[\top\,\sqsubseteq\,\forall\,P.D]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-property-range.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-range.ttl]
 image::data-property-range.svg[Data Property Range]
 
 |https://www.w3.org/TR/owl2-syntax/#Functional_Data_Properties[FunctionalDataProperty](latexmath:[P])
 |latexmath:[\top\,\sqsubseteq\,\leq\,1D]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/functional-data-property.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/functional-data-property.ttl]
 image::functional-data-property.svg[Functional Data Property]
 
 |===
@@ -437,7 +437,7 @@ image::functional-data-property.svg[Functional Data Property]
 
 |https://www.w3.org/TR/owl2-syntax/#Datatype_Definitions[DatatypeDefinition](latexmath:[D\,\text{range}])
 |_no notation_
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/datatype-definition.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/datatype-definition.ttl]
 image::datatype-definition.svg[Datatype Definition]
 
 |===
@@ -451,7 +451,7 @@ image::datatype-definition.svg[Datatype Definition]
 
 |https://www.w3.org/TR/owl2-syntax/#Keys[HasKeys](latexmath:[C\,P_1\,\dots\,P_n])
 |_no notation_
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/has-key.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/has-key.ttl]
 image::has-key.svg[Has Keys]
 
 |===
@@ -465,37 +465,37 @@ image::has-key.svg[Has Keys]
 
 |https://www.w3.org/TR/owl2-syntax/#Individual_Equality[SameIndividuals](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[o_i\,=\,o_j,1 \leq i \lt j \leq n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/same-individuals.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/same-individuals.ttl]
 image::same-individuals.svg[Same Individuals Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Individual_Inequality[DifferentIndividuals](latexmath:[o_1\,\dots\,o_n])
 |latexmath:[o_i\,\not=\,o_j,1 \leq i \lt j \leq n]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/different-individuals.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/different-individuals.ttl]
 image::different-individuals.svg[Different Individuals Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Class_Assertions[ClassAssertion](latexmath:[C\,o])
 |latexmath:[C(o)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/class-assertion.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-assertion.ttl]
 image::class-assertion.svg[Class Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Positive_Object_Property_Assertions[ObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
 |latexmath:[P(o_1,o_2)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/object-property-assertion.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-assertion.ttl]
 image::object-property-assertion.svg[Object Property Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Negative_Object_Property_Assertions[NegativeObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
 |latexmath:[(o_1,o_2):\neg\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/negative-object-property-assertion.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/negative-object-property-assertion.ttl]
 image::negative-object-property-assertion.svg[Negative Object Property Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Positive_Data_Property_Assertions[DataPropertyAssertion](latexmath:[P\,o\,v])
 |latexmath:[P(o,v)]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/data-property-assertion.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-assertion.ttl]
 image::data-property-assertion.svg[Data Property Assertion]
 
 |https://www.w3.org/TR/owl2-syntax/#Negative_Data_Property_Assertions[NegativeDataPropertyAssertion](latexmath:[P\,o\,v])
 |latexmath:[(o,v):\neg\,P]
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/negative-data-property-assertion.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/negative-data-property-assertion.ttl]
 image::negative-data-property-assertion.svg[Negative Data Property Assertion]
 
 |===
@@ -514,23 +514,23 @@ rule atoms.
 |Atom Type|Diagram
 
 |Class
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/swrl-rule-class-atom.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-class-atom.ttl]
 image::swrl-rule-class-atom.svg[SWRL Rule with Class Atoms]
 
 |Class with Expression
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/swrl-rule-class-atom-with-expression.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-class-atom-with-expression.ttl]
 image::swrl-rule-class-atom-with-expression.svg[SWRL Rule with Class Atoms with Class Expression]
 
 |Object Property
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/swrl-rule-object-property-atom.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-object-property-atom.ttl]
 image::swrl-rule-object-property-atom.svg[SWRL Rule with Object Property Atom]
 
 |Data Property, Data Range
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/swrl-rule-data-range-atom.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-data-range-atom.ttl]
 image::swrl-rule-data-range-atom.svg[SWRL Rule with Data Property Atom and Data Range Atom]
 
 |Data Property, Builtin
-|[link=https://github.com/atextor/owl-cli/blob/{page-component-version}/docs/modules/ROOT/examples/swrl-rule-builtin-atom.ttl]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-builtin-atom.ttl]
 image::swrl-rule-builtin-atom.svg[SWRL Rule with Data Property Atom and Builtin Atom]
 
 |===
