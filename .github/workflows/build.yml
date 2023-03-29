@@ -46,8 +46,8 @@ jobs:
           sudo apt-get install -y graphviz
           sudo apt-get install -y build-essential libz-dev
           sdk list java
-          sdk install java 21.3.0.r17-grl || true
-          sdk use java 21.3.0.r17-grl
+          sdk install java 22.3.1.r17-grl || true
+          sdk use java 22.3.1.r17-grl
           gu install native-image
           unset _JAVA_OPTIONS
           echo Path settings: $PATH
@@ -119,8 +119,8 @@ jobs:
           sdk update
           brew install graphviz
           sdk list java
-          sdk install java 21.3.0.r17-grl || true
-          sdk use java 21.3.0.r17-grl
+          sdk install java 22.3.1.r17-grl || true
+          sdk use java 22.3.1.r17-grl
           gu install native-image
           unset _JAVA_OPTIONS
           echo Path settings: $PATH
@@ -186,11 +186,11 @@ jobs:
           source $HOME/.sdkman/bin/sdkman-init.sh
           sdk update
           sdk list java
-          sdk install java 21.3.0.r17-grl || true
-          sdk use java 21.3.0.r17-grl
+          sdk install java 22.3.1.r17-grl || true
+          sdk use java 22.3.1.r17-grl
           echo Path settings: $PATH
           export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
-          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/21.3.0.r17-grl
+          export GRAALVM_HOME=$HOME/.sdkman/candidates/java/22.3.1.r17-grl
           gu install native-image
           find $HOME/.sdkman -type f -name '*native-image*'
           unset _JAVA_OPTIONS
