@@ -1,6 +1,12 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.2.3
+
+* Changes in xref:usage.adoc#write-command[write] command: Special characters in the URIs are
+  serialized correctly (using Jena RIOT); if characters are invalid in a local name, the full URI is
+  printed. The longest available prefixes are used.
+
 == Version 1.2.2
 
 * Change in xref:usage.adoc#write-command[write] command: Dashes, underscores and full stops in the
