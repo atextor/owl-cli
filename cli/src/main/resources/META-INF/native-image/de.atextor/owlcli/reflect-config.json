@@ -1,5 +1,10 @@
 [
 {
+  "name": "ch.qos.logback.core.util.StatusPrinter",
+  "allDeclaredConstructors": true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name": "ch.qos.logback.classic.pattern.DateConverter",
   "allDeclaredConstructors": true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
