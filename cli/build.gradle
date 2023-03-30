@@ -100,7 +100,7 @@ shadowJar {
     archiveClassifier = null
 }
 
-def nativeImageBinary = Os.isFamily(Os.FAMILY_WINDOWS) ? file("${homeDir}/.sdkman/candidates/java/current/lib/svm/bin/native-image") : file("${homeDir}/.sdkman/candidates/java/21.3.0.r17-grl/lib/svm/bin/native-image")
+def nativeImageBinary = Os.isFamily(Os.FAMILY_WINDOWS) ? file("${homeDir}/.sdkman/candidates/java/current/lib/svm/bin/native-image") : file("${homeDir}/.sdkman/candidates/java/22.3.1.r17-grl/lib/svm/bin/native-image")
 def nativeImageArgs = ['--verbose', '-jar', "${buildDir}/libs/owl-cli-${version}.jar", "${buildDir}/bin/owl"]
 task nativeImage(type: Exec, dependsOn: "shadowJar") {
     doFirst {
