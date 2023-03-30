@@ -60,7 +60,7 @@ jobs:
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
-          ./gradlew clean test check jacocoRootReport nativeImage integrationTest antora --stacktrace --no-daemon
+          ./gradlew clean generateStaticProperties test check jacocoRootReport nativeImage integrationTest antora --stacktrace --no-daemon
       - name: Run UPX
         uses: crazy-max/ghaction-upx@v1.4.0
         with:
@@ -133,7 +133,7 @@ jobs:
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
-          ./gradlew clean test check nativeImage integrationTest --stacktrace --no-daemon
+          ./gradlew clean generateStaticProperties test check nativeImage integrationTest --stacktrace --no-daemon
       - name: Prepare Artifacts
         run: mv cli/build/bin/owl owl-x86_64-apple-darwin-snapshot
       - name: Upload Macos Artifacts
@@ -205,7 +205,7 @@ jobs:
       - name: Gradle Build
         run: |-
           source $HOME/.sdkman/bin/sdkman-init.sh
-          ./gradlew clean test check nativeImage integrationTest --info --stacktrace --no-daemon
+          ./gradlew clean generateStaticProperties test check nativeImage integrationTest --info --stacktrace --no-daemon
         shell: bash
       - name: Prepare Artifacts
         run: mv cli/build/bin/owl owl-x86_64-windows-snapshot.exe
