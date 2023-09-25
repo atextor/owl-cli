@@ -195,6 +195,7 @@ public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
             .objectOrder( objectOrder )
             .anonymousNodeIdGenerator( buildAnonymousNodeIdGenerator( anonymousNodeIdPattern ) )
             .knownPrefixes( buildKnownPrefixes( prefixMap ) )
+            .emptyRdfBase( "https://github.com/atextor/owl-cli/internal" )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()

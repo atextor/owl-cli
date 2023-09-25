@@ -62,7 +62,8 @@ public class RdfWriter {
         final Model model = ModelFactory.createDefaultModel();
 
         try {
-            model.read( input, configuration.base, configurationFormatToJenaFormat( configuration.inputFormat ) );
+            model.read( input, configuration.formattingStyle.emptyRdfBase,
+                configurationFormatToJenaFormat( configuration.inputFormat ) );
             if ( configuration.outputFormat == Configuration.Format.TURTLE ) {
                 return writeTurtle( model, output, configuration.formattingStyle );
             }

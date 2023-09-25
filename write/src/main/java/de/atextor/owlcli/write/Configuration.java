@@ -29,9 +29,6 @@ public class Configuration {
     public Format inputFormat = Format.TURTLE;
 
     @Builder.Default
-    public String base = TurtleFormatter.EMPTY_BASE;
-
-    @Builder.Default
     public FormattingStyle formattingStyle = FormattingStyle.DEFAULT;
 
     public enum Format {

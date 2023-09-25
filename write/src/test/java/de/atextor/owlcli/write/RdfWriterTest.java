@@ -145,14 +145,14 @@ public class RdfWriterTest {
         assertThatCode( () -> {
             final Model model = ModelFactory.createDefaultModel();
             final InputStream stream = new ByteArrayInputStream( modelString.getBytes( StandardCharsets.UTF_8 ) );
-            model.read( stream, TurtleFormatter.EMPTY_BASE, "TURTLE" );
+            model.read( stream, TurtleFormatter.DEFAULT_EMPTY_BASE, "TURTLE" );
         } ).doesNotThrowAnyException();
     }
 
     private Model modelFromString( final String content ) {
         final Model model = ModelFactory.createDefaultModel();
         final InputStream stream = new ByteArrayInputStream( content.getBytes( StandardCharsets.UTF_8 ) );
-        model.read( stream, TurtleFormatter.EMPTY_BASE, "TURTLE" );
+        model.read( stream, TurtleFormatter.DEFAULT_EMPTY_BASE, "TURTLE" );
         return model;
     }
 }

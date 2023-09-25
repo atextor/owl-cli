@@ -33,6 +33,7 @@ ext.deps = [
     slf4j_api:               'org.slf4j:slf4j-api:2.0.7',
     svm:                     'org.graalvm.nativeimage:svm:22.3.1',
     turtle_formatter:        'de.atextor:turtle-formatter:1.2.7',
+    turtle_formatter:        'de.atextor:turtle-formatter:1.2.9',
     vavr:                    'io.vavr:vavr:0.10.4',
 
     // Test
