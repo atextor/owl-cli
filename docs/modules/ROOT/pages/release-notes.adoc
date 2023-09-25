@@ -1,6 +1,10 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.2.4
+* Changes in xref:usage.adoc#write-command[write] command: Triple-quotes strings that happen to end
+  with a quote are escaped correctly.
+
 == Version 1.2.3
 
 * Changes in xref:usage.adoc#write-command[write] command: Special characters in the URIs are
