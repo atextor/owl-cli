@@ -15,7 +15,7 @@
  */
 
 plugins {
-    id 'com.github.node-gradle.node' version '3.5.1'
+    id 'com.github.node-gradle.node' version '7.0.0'
 }
 
 apply from: file("${rootDir}/dependencies.gradle")
@@ -25,7 +25,7 @@ node {
     download = true
     workDir = file("${project.buildDir}/nodejs")
     npmWorkDir = file("${project.buildDir}/npm")
-    nodeModulesDir = file("${project.buildDir}")
+    nodeProjectDir = file("${project.buildDir}")
 }
 
 task installAntoraCli(type: NpmTask) {
