@@ -191,7 +191,7 @@ jobs:
           echo Path settings: $PATH
           export PATH=$HOME/.sdkman/candidates/java/current/lib/installer/bin:$PATH
           export GRAALVM_HOME=$HOME/.sdkman/candidates/java/17.0.8-graal
-          gu install native-image
+          gu.cmd install native-image
           find $HOME/.sdkman -type f -name '*native-image*'
           unset _JAVA_OPTIONS
           export PATH=$HOME/.sdkman/candidates/java/current/lib/svm/bin:$PATH
