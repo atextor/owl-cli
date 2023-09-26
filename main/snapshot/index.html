@@ -68,6 +68,9 @@
           <a href="index.html">snapshot</a>
         </li>
         <li class="version">
+          <a href="../1.2.3/index.html">1.2.3</a>
+        </li>
+        <li class="version">
           <a href="../1.2.2/index.html">1.2.2</a>
         </li>
         <li class="version">
@@ -103,6 +106,7 @@
   <button class="version-menu-toggle" title="Show other versions of page">snapshot</button>
   <div class="version-menu">
     <a class="version is-current" href="index.html">snapshot</a>
+    <a class="version" href="../1.2.3/index.html">1.2.3</a>
     <a class="version" href="../1.2.2/index.html">1.2.2</a>
     <a class="version" href="../1.2.1/index.html">1.2.1</a>
     <a class="version" href="../1.2.0/index.html">1.2.0</a>
@@ -268,8 +272,8 @@ echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 22.3.1.r17-grl
-sdk use java 22.3.1.r17-grl
+sdk install java 17.0.8-graal
+sdk use java 17.0.8-graal
 
 # Build the project
 git clone https://github.com/atextor/owl-cli.git
@@ -328,8 +332,8 @@ echo sdkman_auto_selfupdate=true &gt;&gt; $HOME/.sdkman/etc/config
 source $HOME/.sdkman/bin/sdkman-init.sh
 
 # Use SDKMAN! to install JDK
-sdk install java 22.3.1.r17-grl
-sdk use java 22.3.1.r17-grl
+sdk install java 17.0.8-graal
+sdk use java 17.0.8-graal
 # Use GraalVMs update tool to install the native-image command
 gu install native-image
 

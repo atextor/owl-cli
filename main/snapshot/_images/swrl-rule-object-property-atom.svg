@@ -17,9 +17,25 @@
 <text text-anchor="start" x="45" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="50" y="-8.2" font-family="Verdana" font-size="12.00">hasBrother</text>
 </g>
-<!-- _dd32d97c686c40e3a346cb56743de030 -->
+<!-- hasParent -->
 <g id="node2" class="node">
-<title>_dd32d97c686c40e3a346cb56743de030</title>
+<title>hasParent</title>
+<path fill="none" stroke="black" d="M221.17,-22C221.17,-22 146.83,-22 146.83,-22 143.17,-22 139.5,-18.33 139.5,-14.67 139.5,-14.67 139.5,-7.33 139.5,-7.33 139.5,-3.67 143.17,0 146.83,0 146.83,0 221.17,0 221.17,0 224.83,0 228.5,-3.67 228.5,-7.33 228.5,-7.33 228.5,-14.67 228.5,-14.67 228.5,-18.33 224.83,-22 221.17,-22"/>
+<text text-anchor="start" x="143.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
+<text text-anchor="start" x="159.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="164.5" y="-8.2" font-family="Verdana" font-size="12.00">hasParent</text>
+</g>
+<!-- hasUncle -->
+<g id="node3" class="node">
+<title>hasUncle</title>
+<path fill="none" stroke="black" d="M322.67,-22C322.67,-22 253.33,-22 253.33,-22 249.67,-22 246,-18.33 246,-14.67 246,-14.67 246,-7.33 246,-7.33 246,-3.67 249.67,0 253.33,0 253.33,0 322.67,0 322.67,0 326.33,0 330,-3.67 330,-7.33 330,-7.33 330,-14.67 330,-14.67 330,-18.33 326.33,-22 322.67,-22"/>
+<text text-anchor="start" x="250" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
+<text text-anchor="start" x="266" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="271" y="-8.2" font-family="Verdana" font-size="12.00">hasUncle</text>
+</g>
+<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2 -->
+<g id="node4" class="node">
+<title>_06436b61d4404a7a8af2e8ce6fa2f6e2</title>
 <path fill="none" stroke="black" d="M360.67,-80C360.67,-80 7.33,-80 7.33,-80 3.67,-80 0,-76.33 0,-72.67 0,-72.67 0,-65.33 0,-65.33 0,-61.67 3.67,-58 7.33,-58 7.33,-58 360.67,-58 360.67,-58 364.33,-58 368,-61.67 368,-65.33 368,-65.33 368,-72.67 368,-72.67 368,-76.33 364.33,-80 360.67,-80"/>
 <text text-anchor="start" x="4" y="-66.9" font-family="Verdana" font-size="12.00">hasParent(?a, ?b) ∧ hasBrother(?b, ?c)</text>
 <text text-anchor="start" x="243" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
@@ -27,37 +43,21 @@
 <text text-anchor="start" x="258" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="263" y="-66.9" font-family="Verdana" font-size="12.00">hasUncle(?a, ?c)</text>
 </g>
-<!-- _dd32d97c686c40e3a346cb56743de030&#45;&gt;hasBrother -->
+<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasBrother -->
 <g id="edge3" class="edge">
-<title>_dd32d97c686c40e3a346cb56743de030&#45;&gt;hasBrother</title>
+<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasBrother</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M164.16,-57.99C146.9,-49.28 121.67,-36.55 102.12,-26.69"/>
 <polygon fill="black" stroke="black" points="103.55,-23.49 93.05,-22.11 100.4,-29.74 103.55,-23.49"/>
 </g>
-<!-- hasParent -->
-<g id="node3" class="node">
-<title>hasParent</title>
-<path fill="none" stroke="black" d="M221.17,-22C221.17,-22 146.83,-22 146.83,-22 143.17,-22 139.5,-18.33 139.5,-14.67 139.5,-14.67 139.5,-7.33 139.5,-7.33 139.5,-3.67 143.17,0 146.83,0 146.83,0 221.17,0 221.17,0 224.83,0 228.5,-3.67 228.5,-7.33 228.5,-7.33 228.5,-14.67 228.5,-14.67 228.5,-18.33 224.83,-22 221.17,-22"/>
-<text text-anchor="start" x="143.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
-<text text-anchor="start" x="159.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="164.5" y="-8.2" font-family="Verdana" font-size="12.00">hasParent</text>
-</g>
-<!-- _dd32d97c686c40e3a346cb56743de030&#45;&gt;hasParent -->
+<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasParent -->
 <g id="edge1" class="edge">
-<title>_dd32d97c686c40e3a346cb56743de030&#45;&gt;hasParent</title>
+<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasParent</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M184,-57.99C184,-50.91 184,-41.17 184,-32.48"/>
 <polygon fill="black" stroke="black" points="187.5,-32.3 184,-22.3 180.5,-32.3 187.5,-32.3"/>
 </g>
-<!-- hasUncle -->
-<g id="node4" class="node">
-<title>hasUncle</title>
-<path fill="none" stroke="black" d="M322.67,-22C322.67,-22 253.33,-22 253.33,-22 249.67,-22 246,-18.33 246,-14.67 246,-14.67 246,-7.33 246,-7.33 246,-3.67 249.67,0 253.33,0 253.33,0 322.67,0 322.67,0 326.33,0 330,-3.67 330,-7.33 330,-7.33 330,-14.67 330,-14.67 330,-18.33 326.33,-22 322.67,-22"/>
-<text text-anchor="start" x="250" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#0079ba">▬</text>
-<text text-anchor="start" x="266" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="271" y="-8.2" font-family="Verdana" font-size="12.00">hasUncle</text>
-</g>
-<!-- _dd32d97c686c40e3a346cb56743de030&#45;&gt;hasUncle -->
+<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasUncle -->
 <g id="edge2" class="edge">
-<title>_dd32d97c686c40e3a346cb56743de030&#45;&gt;hasUncle</title>
+<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasUncle</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M202.59,-57.99C218.61,-49.36 241.97,-36.79 260.21,-26.96"/>
 <polygon fill="black" stroke="black" points="262.07,-29.94 269.22,-22.11 258.75,-23.77 262.07,-29.94"/>
 </g>
