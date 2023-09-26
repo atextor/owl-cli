@@ -1,11 +1,11 @@
 name: main
 title: owl-cli
-version: snapshot
+version: 1.2.4
 asciidoc:
   attributes:
-    release-version: snapshot
-    release-tag: snapshot
-    page-component-version: snapshot
+    release-version: 1.2.4
+    release-tag: v1.2.4
+    page-component-version: 1.2.4
 nav:
 - modules/ROOT/nav.adoc
 
