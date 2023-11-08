@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.infer;
+package de.atextor.ret.infer;
 
 import de.atextor.turtle.formatter.FormattingStyle;
 import de.atextor.turtle.formatter.TurtleFormatter;
@@ -78,7 +78,7 @@ public class Inferrer {
     }
 
     /**
-     * Builds a RDF format string as expected by the lang parameter of {@link Model#read(InputStream, String, String)}
+     * Builds an RDF format string as expected by the lang parameter of {@link Model#read(InputStream, String, String)}
      *
      * @param format the format
      * @return the format identifier for the Jena parser

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.infer;
+package de.atextor.ret.infer;
 
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +23,6 @@ public class InferrerTest {
 
     @Test
     public void testFoo() {
-
+        // TODO
     }
 }

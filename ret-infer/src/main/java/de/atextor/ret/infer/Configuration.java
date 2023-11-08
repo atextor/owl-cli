@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.infer;
+package de.atextor.ret.infer;
 
 import de.atextor.turtle.formatter.TurtleFormatter;
 import lombok.Builder;
 
 @Builder
 public class Configuration {
+    @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format inputFormat = Format.TURTLE;
 
+    @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String base = TurtleFormatter.DEFAULT_EMPTY_BASE;
 
