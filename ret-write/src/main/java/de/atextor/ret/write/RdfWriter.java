@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.write;
+package de.atextor.ret.write;
 
 import de.atextor.turtle.formatter.FormattingStyle;
 import de.atextor.turtle.formatter.TurtleFormatter;
@@ -82,7 +82,7 @@ public class RdfWriter {
     }
 
     /**
-     * Builds a RDF format string as expected by the lang parameter of {@link Model#read(InputStream, String, String)}
+     * Builds an RDF format string as expected by the lang parameter of {@link Model#read(InputStream, String, String)}
      *
      * @param format the format
      * @return the format identifier for the Jena parser

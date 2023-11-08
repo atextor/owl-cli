@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.write;
+package de.atextor.ret.write;
 
 import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;

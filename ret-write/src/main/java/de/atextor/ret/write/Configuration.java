@@ -14,17 +14,18 @@
  * limitations under the License.
  */
 
-package de.atextor.owlcli.write;
+package de.atextor.ret.write;
 
 import de.atextor.turtle.formatter.FormattingStyle;
-import de.atextor.turtle.formatter.TurtleFormatter;
 import lombok.Builder;
 
 @Builder
 public class Configuration {
+    @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format outputFormat = Format.TURTLE;
 
+    @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format inputFormat = Format.TURTLE;
 
