@@ -20,3 +20,7 @@ docs/modules/ROOT/assets/images/*.svg
 **/src/generated/java
 
 */lombok.config
+
+**/.flattened-pom.xml
+
+*/target
