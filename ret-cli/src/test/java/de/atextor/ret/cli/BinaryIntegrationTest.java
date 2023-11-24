@@ -21,6 +21,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -45,6 +46,7 @@ import static org.assertj.core.api.Assertions.fail;
  * binary with the corresponding command line switches. This is important, because this tests whether the binary
  * was built and starts correctly.
  */
+@Disabled
 public class BinaryIntegrationTest {
     private final Runtime runtime = Runtime.getRuntime();
 

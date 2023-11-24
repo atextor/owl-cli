@@ -17,6 +17,7 @@
 package de.atextor.ret.cli;
 
 import ch.qos.logback.classic.Level;
+import de.atextor.ret.core.Version;
 import io.vavr.collection.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,7 +96,7 @@ public class OWLCLI implements Runnable {
         }
 
         if ( version ) {
-            System.out.printf( "owl-cli version: %s build date: %s%n", OWLCLIConfig.VERSION, OWLCLIConfig.BUILD_DATE );
+            System.out.printf( "owl-cli version: %s build date: %s%n", Version.VERSION, Version.BUILD_DATE );
             System.exit( 0 );
         }
 

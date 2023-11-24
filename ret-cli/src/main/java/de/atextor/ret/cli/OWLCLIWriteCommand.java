@@ -16,6 +16,7 @@
 
 package de.atextor.ret.cli;
 
+import de.atextor.ret.core.Version;
 import de.atextor.ret.write.Configuration;
 import de.atextor.ret.write.RdfWriter;
 import de.atextor.turtle.formatter.FormattingStyle;
@@ -45,7 +46,7 @@ import java.util.stream.Collectors;
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation for details:%n" +
-        "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#write-command"
+        "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#write-command"
 )
 public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );

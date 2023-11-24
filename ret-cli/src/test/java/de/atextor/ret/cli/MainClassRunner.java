@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class MainClassRunner {
-    record ExecutionResult(int exitStatus, String stdOut, String stdErr) {
+    record ExecutionResult( int exitStatus, String stdOut, String stdErr ) {
     }
 
     /**

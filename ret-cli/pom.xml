@@ -21,6 +21,10 @@
         <!-- Module dependencies -->
         <dependency>
             <groupId>de.atextor.ret</groupId>
+            <artifactId>ret-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.atextor.ret</groupId>
             <artifactId>ret-diagram-owl</artifactId>
         </dependency>
         <dependency>
@@ -33,24 +37,16 @@
         </dependency>
 
         <!-- General dependencies -->
-<!--        <dependency>-->
-<!--            <groupId>net.sourceforge.owlapi</groupId>-->
-<!--            <artifactId>owlapi-distribution</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.slf4j</groupId>-->
-<!--                    <artifactId>slf4j-simple</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.jena</groupId>-->
-<!--            <artifactId>jena-core</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.jena</groupId>-->
-<!--            <artifactId>jena-arq</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
@@ -141,6 +137,36 @@
                         <arg>java.desktop/sun.font=ALL-UNNAMED</arg>
                     </compilerArgs>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- Do NOT wildcard include *Test.java, because then we would also run the IntegrationTests -->
+                    <includes>
+                        <include>**/CommandLineTest.java</include>
+                        <include>**/DiagramCommandTest.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>**/*IntegrationTest.java</include>
+                    </includes>
                 </configuration>
             </plugin>
         </plugins>

@@ -16,6 +16,7 @@
 
 package de.atextor.ret.cli;
 
+import de.atextor.ret.core.Version;
 import de.atextor.ret.diagram.owl.Configuration;
 import de.atextor.ret.diagram.owl.DiagramGenerator;
 import de.atextor.ret.diagram.owl.GraphvizDocument;
@@ -31,7 +32,7 @@ import picocli.CommandLine;
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation for details:%n" +
-        "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#diagram-command"
+        "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#diagram-command"
 )
 public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIDiagramCommand.class );

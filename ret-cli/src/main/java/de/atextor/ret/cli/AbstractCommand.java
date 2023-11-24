@@ -118,17 +118,17 @@ public class AbstractCommand {
 
         final Set<OWLStorerFactory> storerFactories =
             ImmutableSet.<OWLStorerFactory>builder()
-            .add( new org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorerFactory() )
-            .add( new org.semanticweb.owlapi.owlxml.renderer.OWLXMLStorerFactory() )
-            .add( new org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorerFactory() )
-            .add( new org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterSyntaxStorerFactory() )
-            .add( new org.semanticweb.owlapi.krss2.renderer.KRSS2OWLSyntaxStorerFactory() )
-            .add( new org.semanticweb.owlapi.rdf.turtle.renderer.TurtleStorerFactory() )
-            .add( new org.semanticweb.owlapi.latex.renderer.LatexStorerFactory() )
-            .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxHTMLStorerFactory() )
-            .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxStorerFactory() )
-            .add( new org.semanticweb.owlapi.oboformat.OBOFormatStorerFactory() )
-            .build();
+                .add( new org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorerFactory() )
+                .add( new org.semanticweb.owlapi.owlxml.renderer.OWLXMLStorerFactory() )
+                .add( new org.semanticweb.owlapi.functional.renderer.FunctionalSyntaxStorerFactory() )
+                .add( new org.semanticweb.owlapi.manchestersyntax.renderer.ManchesterSyntaxStorerFactory() )
+                .add( new org.semanticweb.owlapi.krss2.renderer.KRSS2OWLSyntaxStorerFactory() )
+                .add( new org.semanticweb.owlapi.rdf.turtle.renderer.TurtleStorerFactory() )
+                .add( new org.semanticweb.owlapi.latex.renderer.LatexStorerFactory() )
+                .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxHTMLStorerFactory() )
+                .add( new org.semanticweb.owlapi.dlsyntax.renderer.DLSyntaxStorerFactory() )
+                .add( new org.semanticweb.owlapi.oboformat.OBOFormatStorerFactory() )
+                .build();
 
         final OWLDataFactory dataFactory = new OWLDataFactoryImpl();
         final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();

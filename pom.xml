@@ -116,6 +116,11 @@
                 <artifactId>ret-write</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>de.atextor.ret</groupId>
+                <artifactId>ret-cli</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <!-- General dependencies -->
             <dependency>

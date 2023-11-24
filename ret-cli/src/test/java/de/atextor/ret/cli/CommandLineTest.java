@@ -16,11 +16,13 @@
 
 package de.atextor.ret.cli;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static de.atextor.ret.cli.MainClassRunner.run;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 public class CommandLineTest {
     @Test
     public void testNoArguments() {

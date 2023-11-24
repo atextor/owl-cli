@@ -16,6 +16,7 @@
 
 package de.atextor.ret.cli;
 
+import de.atextor.ret.core.Version;
 import de.atextor.ret.infer.Configuration;
 import de.atextor.ret.infer.Inferrer;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ import java.net.URL;
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation for details:%n" +
-        "https://atextor.de/owl-cli/main/" + OWLCLIConfig.VERSION + "/usage.html#infer-command"
+        "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#infer-command"
 )
 public class OWLCLIInferCommand extends AbstractCommand implements Runnable {
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIInferCommand.class );
