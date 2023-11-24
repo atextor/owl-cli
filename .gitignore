@@ -24,3 +24,5 @@ docs/modules/ROOT/assets/images/*.svg
 **/.flattened-pom.xml
 
 */target
+
+**/src-gen

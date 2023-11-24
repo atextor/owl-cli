@@ -75,6 +75,7 @@
     </properties>
 
     <modules>
+        <module>ret-core</module>
         <module>ret-diagram-owl</module>
         <module>ret-infer</module>
         <module>ret-write</module>
@@ -95,6 +96,11 @@
     <dependencyManagement>
         <dependencies>
             <!-- Modules of this project -->
+            <dependency>
+                <groupId>de.atextor.ret</groupId>
+                <artifactId>ret-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>de.atextor.ret</groupId>
                 <artifactId>ret-diagram-owl</artifactId>
