@@ -44,6 +44,7 @@ public class RetInfer extends AbstractCommand implements Runnable {
     @SuppressWarnings( "unused" )
     private static final Configuration config = Inferrer.DEFAULT_CONFIGURATION;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 

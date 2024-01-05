@@ -50,7 +50,7 @@ public class AbstractCommand {
     }
 
     protected Try<OutputStream> openOutput( final @Nonnull String input, final String output,
-                                            final String targetFileExtension ) {
+        final String targetFileExtension ) {
         if ( output != null ) {
             // Output is given as - --> write to stdout
             if ( output.equals( "-" ) ) {
@@ -116,7 +116,7 @@ public class AbstractCommand {
             .add( new OWLOntologyFactoryImpl( new NonConcurrentOWLOntologyBuilder() ) )
             .build();
 
-        final Set<OWLStorerFactory> storerFactories =
+        @SuppressWarnings( "SpellCheckingInspection" ) final Set<OWLStorerFactory> storerFactories =
             ImmutableSet.<OWLStorerFactory>builder()
                 .add( new org.semanticweb.owlapi.rdf.rdfxml.renderer.RDFXMLStorerFactory() )
                 .add( new org.semanticweb.owlapi.owlxml.renderer.OWLXMLStorerFactory() )
@@ -160,7 +160,7 @@ public class AbstractCommand {
     }
 
     protected void exitWithErrorMessage( final Logger logger, final LoggingMixin loggingMixin,
-                                         final Throwable throwable ) {
+        final Throwable throwable ) {
         if ( loggingMixin.getVerbosity().length == 0 ) {
             System.err.println( "Error: " + throwable.getMessage() );
         } else if ( loggingMixin.getVerbosity().length == 1 ) {

@@ -58,7 +58,7 @@ public class PunningRemover extends GraphTransformer {
     @Override
     public Set<GraphElement> apply( final Set<GraphElement> graph ) {
         LOG.debug( "Removing punning in {}", graph );
-        final Set<GraphElement> result = graph.stream()
+        @SuppressWarnings( "OptionalGetWithoutIsPresent" ) final Set<GraphElement> result = graph.stream()
             .filter( GraphElement::isNode )
             .map( GraphElement::asNode )
             .filter( node -> node.getId().getIri().isPresent() )

@@ -545,7 +545,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     @Override
-    public <T> Graph doDefault( final T object ) {
+    public <T> Graph doDefault( final @Nonnull T object ) {
         return TODO();
     }
 }

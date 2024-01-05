@@ -41,6 +41,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
 
+    @SuppressWarnings( "SpellCheckingInspection" )
     private static final StringTemplate GRAPHVIZ_TEMPLATE = new StringTemplate( """
         digraph G {
           rankdir = ${rankdir}
@@ -102,6 +103,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
                 .collect( Collectors.toList() ) );
     }
 
+    @SuppressWarnings( "SpellCheckingInspection" )
     @Override
     public String apply( final Configuration configuration ) {
         final Map<String, Object> templateMap = new ImmutableMap.Builder<String, Object>()

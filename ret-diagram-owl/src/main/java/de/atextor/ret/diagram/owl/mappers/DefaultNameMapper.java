@@ -23,13 +23,6 @@ import org.semanticweb.owlapi.model.IRI;
  * Default implementation for the {@link NameMapper}
  */
 class DefaultNameMapper implements NameMapper {
-    private final MappingConfiguration mappingConfig;
-
-    public DefaultNameMapper( final MappingConfiguration mappingConfig ) {
-        this.mappingConfig = mappingConfig;
-    }
-
-
     @Override
     public String getName( final HasIRI object ) {
         return getName( object.getIRI() );

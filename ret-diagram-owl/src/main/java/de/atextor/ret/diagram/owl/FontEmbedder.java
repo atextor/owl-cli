@@ -24,6 +24,7 @@ import java.util.function.Function;
  * SVG post processor that embeds the 'owlcli' font used for the element type and disjoint union symbols
  * as a data URI. This is to make sure that the symbols are rendered the same in all browsers.
  */
+@SuppressWarnings( "SpellCheckingInspection" )
 public class FontEmbedder implements Function<Try<String>, Try<String>> {
     /*
      * This is the encoded symbol font that contains exactly the glyphs used in the diagrams.
@@ -34,8 +35,10 @@ public class FontEmbedder implements Function<Try<String>, Try<String>> {
      * 3. Adjust the glyphs using fontforge, File->Generate Fonts... save as .woff
      * 4. cat owlcli.woff | base64 -w 0
      */
+    // @formatter:off
     private final static String FONT =
         "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";
+    // @formatter:on
 
     private final static String CSS_BLOCK =
         "<style>@font-face{font-family:\"owlcli\";src:url(\"data:application/font-woff;charset=utf-8;base64,"

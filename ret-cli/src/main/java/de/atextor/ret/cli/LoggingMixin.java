@@ -29,6 +29,7 @@ import picocli.CommandLine;
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
 public class LoggingMixin {
+    @SuppressWarnings( { "unused", "SpellCheckingInspection" } )
     private @CommandLine.Spec( MIXEE )
     CommandLine.Model.CommandSpec mixee;
 
@@ -43,6 +44,7 @@ public class LoggingMixin {
         return new CommandLine.RunLast().execute( parseResult );
     }
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Option( names = { "-v", "--verbose" }, description = {
         "Specify multiple -v options to increase verbosity,",
         "e.g. use `-v`, `-vv` or `-vvv` for more details" } )

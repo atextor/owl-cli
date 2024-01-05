@@ -24,11 +24,14 @@ import org.apache.jena.util.Locator;
 
 import java.util.List;
 
+@SuppressWarnings( "unused" )
 @TargetClass( FileManagerImpl.class )
 public final class Target_org_apache_jena_util_FileManagerImpl {
+    @SuppressWarnings( { "unused", "ProtectedMemberInFinalClass" } )
     @Alias
     protected List<Locator> fmHandlers;
 
+    @SuppressWarnings( "unused" )
     @Substitute
     public void addLocator( final Locator loc ) {
         fmHandlers.add( loc );

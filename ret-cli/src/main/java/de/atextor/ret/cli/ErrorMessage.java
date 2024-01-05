@@ -16,7 +16,10 @@
 
 package de.atextor.ret.cli;
 
+import java.io.Serial;
+
 public class ErrorMessage extends Exception {
+    @Serial
     private static final long serialVersionUID = 5086560337386407192L;
 
     public ErrorMessage( final String message ) {

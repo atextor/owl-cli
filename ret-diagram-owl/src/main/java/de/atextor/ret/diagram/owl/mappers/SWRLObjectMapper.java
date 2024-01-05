@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static io.vavr.API.TODO;
+
 public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
     /**
      * During traversal of the rule expression tree, both Literal nodes and other GraphElements
@@ -136,6 +138,7 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
         return visitPropertyAtom( atom, atom.getPredicate() );
     }
 
+    @SuppressWarnings( "SpellCheckingInspection" )
     @Override
     public Graph visit( final @Nonnull SWRLBuiltInAtom atom ) {
         final List<GraphElement> argumentGraphElements = argumentElements( atom );
@@ -148,6 +151,7 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
             label ) );
     }
 
+    @SuppressWarnings( "SpellCheckingInspection" )
     @Override
     public Graph visit( final @Nonnull SWRLVariable variable ) {
         // Do not call namemapper for variable IRI fragment: variable name is not subject to be
@@ -196,6 +200,6 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
 
     @Override
     public Graph visit( final @Nonnull SWRLDifferentIndividualsAtom node ) {
-        return null;
+        return TODO();
     }
 }

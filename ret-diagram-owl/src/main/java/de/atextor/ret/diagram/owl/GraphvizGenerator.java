@@ -16,7 +16,6 @@
 
 package de.atextor.ret.diagram.owl;
 
-import de.atextor.ret.diagram.owl.graph.node.Class;
 import com.google.common.collect.Ordering;
 import de.atextor.ret.core.util.StringTemplate;
 import de.atextor.ret.diagram.owl.graph.Edge;
@@ -24,6 +23,7 @@ import de.atextor.ret.diagram.owl.graph.GraphElement;
 import de.atextor.ret.diagram.owl.graph.GraphVisitor;
 import de.atextor.ret.diagram.owl.graph.Node;
 import de.atextor.ret.diagram.owl.graph.node.AnnotationProperty;
+import de.atextor.ret.diagram.owl.graph.node.Class;
 import de.atextor.ret.diagram.owl.graph.node.ClosedClass;
 import de.atextor.ret.diagram.owl.graph.node.Complement;
 import de.atextor.ret.diagram.owl.graph.node.DataExactCardinality;
@@ -82,6 +82,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
      *
      * @param configuration the given configuration
      */
+    @SuppressWarnings( "SpellCheckingInspection" )
     GraphvizGenerator( final Configuration configuration ) {
         final Node.Visitor<GraphvizDocument> nodeTypeToGraphviz = new GraphvizNodeVisitor( configuration );
 
@@ -132,6 +133,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
         return id.getId().replace( "-", "_" );
     }
 
+    @SuppressWarnings( "SpellCheckingInspection" )
     private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {
         return switch ( type ) {
             case DEFAULT_ARROW:
@@ -191,6 +193,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
              * @param configuration the diagram generation configuration
              * @return the dot fragment for this element
              */
+            @SuppressWarnings( "SpellCheckingInspection" )
             String getNodeValue( final String elementName, final Configuration configuration ) {
                 return String.format( "<FONT POINT-SIZE=\"%d\" COLOR=\"%s\" FACE=\"owlcli\"><B>%s</B></FONT> " +
                         "<FONT POINT-SIZE=\"%s\" COLOR=\"%s\" FACE=\"%s\">%s</FONT>",
@@ -199,12 +202,15 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             }
         }
 
+        @SuppressWarnings( "TrailingWhitespacesInTextBlock" )
         final StringTemplate literalNodeTemplate = new StringTemplate( """
             ${nodeId} [label="${value}"] """ );
 
+        @SuppressWarnings( "TrailingWhitespacesInTextBlock" )
         final StringTemplate htmlLabelNodeTemplate = new StringTemplate( """
             ${nodeId} [label=<${value}>] """ );
 
+        @SuppressWarnings( { "TrailingWhitespacesInTextBlock", "SpellCheckingInspection" } )
         final StringTemplate invisibleNodeTemplate = new StringTemplate( """
             ${nodeId} [label="", width="0", style="invis"] """ );
 
@@ -295,6 +301,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return generateHtmlLabelNode( union.getId(), "<FONT COLOR=\"#00B2B2\"><B>or</B></FONT>" );
         }
 
+        @SuppressWarnings( "SpellCheckingInspection" )
         @Override
         public GraphvizDocument visit( final Disjointness disjointness ) {
             final String label = """
@@ -306,6 +313,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             return generateHtmlLabelNode( disjointness.getId(), label );
         }
 
+        @SuppressWarnings( "SpellCheckingInspection" )
         @Override
         public GraphvizDocument visit( final DisjointUnion disjointUnion ) {
             final String label = """

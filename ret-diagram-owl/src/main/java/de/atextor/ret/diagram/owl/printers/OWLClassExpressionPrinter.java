@@ -185,7 +185,7 @@ public class OWLClassExpressionPrinter implements OWLClassExpressionVisitorEx<St
     }
 
     @Override
-    public String visit( final OWLClass classExpression ) {
+    public String visit( final @Nonnull OWLClass classExpression ) {
         return mappingConfig.getNameMapper().getName( classExpression );
     }
 }

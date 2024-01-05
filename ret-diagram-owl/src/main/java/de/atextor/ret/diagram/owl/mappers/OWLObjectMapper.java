@@ -179,42 +179,42 @@ public class OWLObjectMapper implements OWLObjectVisitorEx<Graph> {
     }
 
     @Override
-    public Graph visit( final OWLLiteral literal ) {
+    public Graph visit( final @Nonnull OWLLiteral literal ) {
         return mappingConfig.getOwlDataMapper().visit( literal );
     }
 
     @Override
-    public Graph visit( final OWLDatatype datatype ) {
+    public Graph visit( final @Nonnull OWLDatatype datatype ) {
         return mappingConfig.getOwlDataMapper().visit( datatype );
     }
 
     @Override
-    public Graph visit( final OWLDataComplementOf complement ) {
+    public Graph visit( final @Nonnull OWLDataComplementOf complement ) {
         return mappingConfig.getOwlDataMapper().visit( complement );
     }
 
     @Override
-    public Graph visit( final OWLDataOneOf oneOf ) {
+    public Graph visit( final @Nonnull OWLDataOneOf oneOf ) {
         return mappingConfig.getOwlDataMapper().visit( oneOf );
     }
 
     @Override
-    public Graph visit( final OWLDataIntersectionOf intersection ) {
+    public Graph visit( final @Nonnull OWLDataIntersectionOf intersection ) {
         return mappingConfig.getOwlDataMapper().visit( intersection );
     }
 
     @Override
-    public Graph visit( final OWLDataUnionOf union ) {
+    public Graph visit( final @Nonnull OWLDataUnionOf union ) {
         return mappingConfig.getOwlDataMapper().visit( union );
     }
 
     @Override
-    public Graph visit( final OWLDatatypeRestriction restriction ) {
+    public Graph visit( final @Nonnull OWLDatatypeRestriction restriction ) {
         return mappingConfig.getOwlDataMapper().visit( restriction );
     }
 
     @Override
-    public Graph visit( final OWLFacetRestriction restriction ) {
+    public Graph visit( final @Nonnull OWLFacetRestriction restriction ) {
         return mappingConfig.getOwlDataMapper().visit( restriction );
     }
 }

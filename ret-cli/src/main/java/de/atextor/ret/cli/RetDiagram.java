@@ -28,6 +28,7 @@ import picocli.CommandLine;
 
 import static de.atextor.ret.cli.RetDiagram.COMMAND_NAME;
 
+@SuppressWarnings( "SpellCheckingInspection" )
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Generate automatically-layouted diagrams for an ontology",
     descriptionHeading = "%n@|bold Description|@:%n%n",
@@ -43,56 +44,57 @@ public class RetDiagram extends AbstractCommand implements Runnable {
 
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--fontname" }, description = "The font to use (Default: ${DEFAULT-VALUE})" )
     private String fontname = config.fontname;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--fontsize" }, description = "Default font size (Default: ${DEFAULT-VALUE})" )
     private int fontsize = config.fontsize;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--nodefontname" }, description = "Font for nodes (Default: ${DEFAULT-VALUE})" )
     private String nodeFontName = config.nodeFontname;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--nodefontsize" }, description = "Font size for nodes (Default: ${DEFAULT-VALUE})" )
     private int nodeFontsize = config.nodeFontsize;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--nodeshape" }, description = "Node shape (Default: ${DEFAULT-VALUE})" )
     private String nodeShape = config.nodeShape;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--nodemargin" }, description = "Node margin (Default: ${DEFAULT-VALUE})" )
     private String nodeMargin = config.nodeMargin;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--nodestyle" }, description = "Node style (Default: ${DEFAULT-VALUE})" )
     private String nodeStyle = config.nodeStyle;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--format" },
         description = "Output file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private Configuration.Format format = config.format;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--direction" },
         description = "Diagram layout direction, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private Configuration.LayoutDirection layoutDirection = config.layoutDirection;
 
-    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal" } )
+    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--dotbinary" }, description = "Path to dot binary (Default: ${DEFAULT-VALUE})" )
     private String dotBinary = config.dotBinary;
 
-    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal" } )
+    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--fgcolor" }, description = "Foreground color (Default: ${DEFAULT-VALUE})" )
     private String fgColor = config.fgColor;
 
-    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal" } )
+    @SuppressWarnings( { "SpellCheckingInspection", "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--bgcolor" }, description = "Background color (Default: ${DEFAULT-VALUE})" )
     private String bgColor = config.bgColor;
 

@@ -218,6 +218,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         return new Builder();
     }
 
+    @SuppressWarnings( "unused" )
     public static class Builder {
         private Optional<OWLAxiomVisitorEx<Graph>> owlAxiomMapper = Optional.empty();
 
@@ -351,7 +352,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
             mappingConfig
                 .setSwrlObjectMapper( swrlObjectMapper.orElseGet( () -> new SWRLObjectMapper( mappingConfig ) ) );
             mappingConfig.setIdentifierMapper( identifierMapper.orElseGet( DefaultIdentifierMapper::new ) );
-            mappingConfig.setNameMapper( nameMapper.orElseGet( () -> new DefaultNameMapper( mappingConfig ) ) );
+            mappingConfig.setNameMapper( nameMapper.orElseGet( DefaultNameMapper::new ) );
             mappingConfig.setOwlDataPrinter( owlDataPrinter.orElseGet( () -> new OWLDataPrinter( mappingConfig ) ) );
             mappingConfig.setOwlPropertyExpressionPrinter( owlPropertyExpressionPrinter
                 .orElseGet( () -> new OWLPropertyExpressionPrinter( mappingConfig ) ) );

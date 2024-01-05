@@ -68,6 +68,7 @@ public class Ret implements Runnable {
 
     private final CommandLine commandLine = new CommandLine( this );
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 

@@ -59,132 +59,133 @@ public class RetWrite extends AbstractCommand implements Runnable {
 
     private final String fallbackUri = "urn:owl-cli:empty";
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "-o", "--output" },
         description = "Output file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private Configuration.Format outputFormat = config.outputFormat;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "-i", "--input" },
         description = "Input file format, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private Configuration.Format inputFormat = config.inputFormat;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "-p", "--prefix" },
         description = "Prefix to add as @prefix when used.",
         mapFallbackValue = fallbackUri )
     private Map<String, URI> prefixMap = new HashMap<>();
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--prefixAlign" },
         description = "Alignment of @prefix statements, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.Alignment alignPrefixes = FormattingStyle.DEFAULT.alignPrefixes;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--encoding" },
         description = "Output encoding, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.Charset encoding = FormattingStyle.DEFAULT.charset;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--doubleFormat" },
         description = "Defines how double numbers are formatted (Default: ${DEFAULT-VALUE})" )
     private String doubleFormatPattern = ( (DecimalFormat) FormattingStyle.DEFAULT.doubleFormat ).toPattern();
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--endOfLine" },
         description = "End of line style, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.EndOfLineStyle endOfLineStyle = FormattingStyle.DEFAULT.endOfLine;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--indent" },
         description = "Indent style, one of ${COMPLETION-CANDIDATES} (Default: ${DEFAULT-VALUE})" )
     private FormattingStyle.IndentStyle indentStyle = FormattingStyle.DEFAULT.indentStyle;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--firstPredicateInNewLine" },
         description = "Write first predicate in new line of block (Default: ${DEFAULT-VALUE})" )
     private boolean firstPredicateInNewLine = FormattingStyle.DEFAULT.firstPredicateInNewLine;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--writeRdfType" },
         description = "Write 'rdf:type' instead of 'a' (Default: ${DEFAULT-VALUE})" )
     private boolean writeRdfType = !FormattingStyle.DEFAULT.useAForRdfType;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--useCommaByDefault" },
         description = "Use commas for multiple objects (Default: ${DEFAULT-VALUE})" )
     private boolean useCommaByDefault = FormattingStyle.DEFAULT.useCommaByDefault;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--commaForPredicate" },
         description = "A set of predicates that, when used multiple times, are separated by commas, even when " +
             "useCommaByDefault is false (Default: ${DEFAULT-VALUE})" )
     private Set<Property> commaForPredicate = FormattingStyle.DEFAULT.commaForPredicate;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--noCommaForPredicate" },
         description = "Use no commas for multiple objects (Default: ${DEFAULT-VALUE})" )
     private Set<Property> noCommaForPredicate = FormattingStyle.DEFAULT.noCommaForPredicate;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--useLongLiterals" },
         description = "Use long form for literals where possible (Default: ${DEFAULT-VALUE})" )
     private boolean useLongLiterals = !FormattingStyle.DEFAULT.useShortLiterals;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--alignObjects" },
         description = "Align objects for same predicates (Default: ${DEFAULT-VALUE})" )
     private boolean alignObjects = FormattingStyle.DEFAULT.alignObjects;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--alignPredicates" },
         description = "Align predicates for same subjects (Default: ${DEFAULT-VALUE})" )
     private boolean alignPredicates = FormattingStyle.DEFAULT.alignPredicates;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--continuationIndentSize" },
         description = "Indentation size after forced line wraps (Default: ${DEFAULT-VALUE})" )
     private int continuationIndentSize = FormattingStyle.DEFAULT.continuationIndentSize;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--doNotInsertFinalNewline" },
         description = "Do not insert newline at end of file (Default: ${DEFAULT-VALUE})" )
     private boolean doNotInsertFinalNewline = !FormattingStyle.DEFAULT.insertFinalNewline;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--indentSize" },
         description = "Indentation size in spaces (Default: ${DEFAULT-VALUE})" )
     private int indentSize = FormattingStyle.DEFAULT.indentSize;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--keepUnusedPrefixes" },
         description = "Keeps prefixes that are not part of any statement (Default: ${DEFAULT-VALUE})" )
     private boolean keepUnusedPrefixes = FormattingStyle.DEFAULT.keepUnusedPrefixes;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--prefixOrder" },
         description = "Sort order for prefixes (Default: ${DEFAULT-VALUE})" )
     private List<String> prefixOrder = FormattingStyle.DEFAULT.prefixOrder;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--subjectOrder" },
         description = "Sort order for subjects by type (Default: ${DEFAULT-VALUE})" )
     private List<Resource> subjectOrder = FormattingStyle.DEFAULT.subjectOrder;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--predicateOrder" },
         description = "Sort order for predicates (Default: ${DEFAULT-VALUE})" )
     private List<Property> predicateOrder = FormattingStyle.DEFAULT.predicateOrder;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--objectOrder" },
         description = "Sort order for objects (Default: ${DEFAULT-VALUE})" )
     private List<RDFNode> objectOrder = FormattingStyle.DEFAULT.objectOrder;
 
-    @SuppressWarnings( "FieldMayBeFinal" )
+    @SuppressWarnings( { "FieldMayBeFinal", "CanBeFinal" } )
     @CommandLine.Option( names = { "--anonymousNodeIdPattern" },
         description = "Name pattern for blank node IDs (Default: ${DEFAULT-VALUE})" )
     private String anonymousNodeIdPattern =
