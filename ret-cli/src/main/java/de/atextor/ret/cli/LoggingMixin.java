@@ -56,14 +56,10 @@ public class LoggingMixin {
 
     public Level calcLogLevel() {
         return switch ( getVerbosity().length ) {
-            case 0:
-                yield Level.WARN;
-            case 1:
-                yield Level.INFO;
-            case 2:
-                yield Level.DEBUG;
-            default:
-                yield Level.TRACE;
+            case 0 -> Level.WARN;
+            case 1 -> Level.INFO;
+            case 2 -> Level.DEBUG;
+            default -> Level.TRACE;
         };
     }
 

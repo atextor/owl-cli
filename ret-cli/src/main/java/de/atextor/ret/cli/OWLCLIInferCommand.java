@@ -26,7 +26,9 @@ import picocli.CommandLine;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@CommandLine.Command( name = "infer",
+import static de.atextor.ret.cli.OWLCLIInferCommand.COMMAND_NAME;
+
+@CommandLine.Command( name = COMMAND_NAME,
     description = "Runs an OWL reasoner on an ontology",
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
@@ -35,6 +37,7 @@ import java.net.URL;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#infer-command"
 )
 public class OWLCLIInferCommand extends AbstractCommand implements Runnable {
+    public static final String COMMAND_NAME = "infer";
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIInferCommand.class );
 
     private static final Configuration config = Inferrer.DEFAULT_CONFIGURATION;

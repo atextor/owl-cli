@@ -17,6 +17,7 @@
 package de.atextor.ret.cli;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ScanResult;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
@@ -29,11 +30,13 @@ import java.util.stream.Stream;
 public class ResourceArgumentsProvider implements ArgumentsProvider {
     @Override
     public Stream<? extends Arguments> provideArguments( final ExtensionContext context ) {
-        return new ClassGraph().scan().getResourcesWithExtension( ".ttl" ).getPaths().stream()
-            .map( filename -> filename.replace( ".ttl", "" ) )
-            .filter( filename -> !filename.contains( "/" ) )
-            .sorted()
-            .map( FilenameArguments::new );
+        try ( final ScanResult scanResult = new ClassGraph().scan() ) {
+            return scanResult.getResourcesWithExtension( ".ttl" ).getPaths().stream()
+                .map( filename -> filename.replace( ".ttl", "" ) )
+                .filter( filename -> !filename.contains( "/" ) )
+                .sorted()
+                .map( FilenameArguments::new );
+        }
     }
 
     public static class FilenameArguments implements Arguments {
