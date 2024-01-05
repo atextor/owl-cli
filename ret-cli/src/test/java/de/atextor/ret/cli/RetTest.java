@@ -58,13 +58,13 @@ public class RetTest {
 
     @AfterEach
     void afterEach() throws IOException {
-//        FileUtils.deleteDirectory( tempDir.toFile() );
+        FileUtils.deleteDirectory( tempDir.toFile() );
     }
 
     @AfterAll
     static void afterAll() throws IOException {
         if ( tempDir != null && tempDir.toFile().exists() ) {
-//            FileUtils.deleteDirectory( tempDir.toFile() );
+            FileUtils.deleteDirectory( tempDir.toFile() );
         }
     }
 
