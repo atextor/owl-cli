@@ -210,6 +210,17 @@
                                     <exclude>org.graalvm.nativeimage:pointsto</exclude>
                                     <exclude>org.graalvm.nativeimage:objectfile</exclude>
                                     <exclude>org.graalvm.compiler:compiler</exclude>
+
+                                    <!-- OWL API components that contain identical classes to the ones -->
+                                    <!-- already given in owlapi-distribution -->
+                                    <exclude>net.sourceforge.owlapi:owlapi-api</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-apibinding</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-compatibility</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-impl</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-parsers</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-oboformat</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-rio</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-tools</exclude>
                                 </excludes>
                             </artifactSet>
                             <filters>
@@ -265,6 +276,20 @@
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
+                            <artifactSet>
+                                <excludes>
+                                    <!-- OWL API components that contain identical classes to the ones -->
+                                    <!-- already given in owlapi-distribution -->
+                                    <exclude>net.sourceforge.owlapi:owlapi-api</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-apibinding</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-compatibility</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-impl</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-parsers</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-oboformat</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-rio</exclude>
+                                    <exclude>net.sourceforge.owlapi:owlapi-tools</exclude>
+                                </excludes>
+                            </artifactSet>
                             <filters>
                                 <!-- Required to prevent overlapping resources -->
                                 <filter>
