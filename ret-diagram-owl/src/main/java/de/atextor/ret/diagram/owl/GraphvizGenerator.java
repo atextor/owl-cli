@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -101,7 +101,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             final String edgeStyle = edgeTypeToGraphviz( edge.getType() )
                 .map( style -> String.format( "%s, fontsize=%d, fontname=\"%s\", color=\"%s\", fontcolor=\"%s\"",
                     style, configuration.fontsize, configuration.fontname, configuration.fgColor,
-                    configuration.fgColor )  )
+                    configuration.fgColor ) )
                 .orElse( "" );
             return GraphvizDocument.withEdge( new GraphvizDocument.Statement(
                 String.format( "%s -> %s [%s]", escapeNodeId( edge.getFrom().getId() ),
@@ -186,7 +186,7 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
              * Returns a DOT fragment for an element with this symbol. Note that the referenced font 'owlcli'
              * is injected during rendering using the {@link FontEmbedder}.
              *
-             * @param elementName   the name of the element
+             * @param elementName the name of the element
              * @param configuration the diagram generation configuration
              * @return the dot fragment for this element
              */

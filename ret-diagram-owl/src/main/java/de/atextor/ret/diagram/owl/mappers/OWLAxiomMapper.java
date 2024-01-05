@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -126,7 +126,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
 
     private <P extends OWLPropertyExpression, O extends OWLPropertyAssertionObject> Stream<GraphElement>
     propertyStructure( final OWLPropertyAssertionAxiom<P, O> axiom, final Node thirdNode,
-                       final Edge.Type subjectToThirdNodeType ) {
+        final Edge.Type subjectToThirdNodeType ) {
 
         final Graph subjectGraph = axiom.getSubject().accept( mappingConfig.getOwlIndividualMapper() );
         final Graph propertyGraph = axiom.getProperty().accept( mappingConfig.getOwlPropertyExpressionMapper() );
@@ -249,7 +249,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private <T extends OWLObject> Graph linkNodeToMultipleOthers( final HasOperands<T> axiom,
-                                                                  final Node fromNode ) {
+        final Node fromNode ) {
         return axiom.operands().map( operand -> {
             final Graph operandGraph = operand.accept( mappingConfig.getOwlObjectMapper() );
             final Edge fromNodeToOperandEdge = new Edge.Plain( Edge.Type.DEFAULT_ARROW, fromNode, operandGraph
@@ -279,7 +279,7 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     }
 
     private Graph propertyMarker( final OWLPropertyExpression propertyExpression,
-                                  final PropertyMarker.Kind markerKind ) {
+        final PropertyMarker.Kind markerKind ) {
         final Node marker = new PropertyMarker( mappingConfig.getIdentifierMapper().getSyntheticId(),
             Set.of( markerKind ) );
         final Node propertyNode = propertyExpression.accept( mappingConfig.getOwlPropertyExpressionMapper() ).getNode();
@@ -296,11 +296,11 @@ public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
      * Shared logic for axioms that generate sets of nodes that are pairwise equivalent,
      * e.g. {@link org.semanticweb.owlapi.model.OWLEquivalentClassesAxiom}s.
      *
-     * @param axiom   The axiom to generate results for
+     * @param axiom The axiom to generate results for
      * @param visitor The visitor that handles the type of axiom
-     * @param <O>     The type of object the axiom describes
-     * @param <A>     The axiom type
-     * @param <V>     The type of visitor that handles the axiom type
+     * @param <O> The type of object the axiom describes
+     * @param <A> The axiom type
+     * @param <V> The type of visitor that handles the axiom type
      * @return the graph representing the equivalency
      */
     private <O extends OWLObject, A extends OWLNaryAxiom<O>, V extends OWLObjectVisitorEx<Graph>>

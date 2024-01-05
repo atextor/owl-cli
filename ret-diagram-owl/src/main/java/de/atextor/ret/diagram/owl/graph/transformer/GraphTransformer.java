@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -42,14 +42,12 @@ public abstract class GraphTransformer implements UnaryOperator<Set<GraphElement
         return updateEdge( graph, oldToNode, newToNode, Edge::getTo, Edge::setTo );
     }
 
-    protected ChangeSet updateEdgesFrom( final Set<GraphElement> graph, final Node oldFromNode,
-                                         final Node newFromNode ) {
+    protected ChangeSet updateEdgesFrom( final Set<GraphElement> graph, final Node oldFromNode, final Node newFromNode ) {
         return updateEdge( graph, oldFromNode, newFromNode, Edge::getFrom, Edge::setFrom );
     }
 
     private ChangeSet updateEdge( final Set<GraphElement> graph, final Node oldNode, final Node newNode,
-                                  final Function<Edge, Node> getter,
-                                  final BiFunction<Edge, Node, Edge> setter ) {
+        final Function<Edge, Node> getter, final BiFunction<Edge, Node, Edge> setter ) {
         return graph.stream()
             .filter( GraphElement::isEdge )
             .map( GraphElement::asEdge )

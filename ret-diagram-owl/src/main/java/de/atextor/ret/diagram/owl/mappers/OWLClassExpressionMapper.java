@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -82,7 +82,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     }
 
     private Stream<GraphElement> createEdgeToClassExpression( final Node sourceNode,
-                                                              final OWLClassExpression classExpression ) {
+        final OWLClassExpression classExpression ) {
         final Graph diagramPartsForClassExpression = classExpression.accept( this );
         final Node targetNode = diagramPartsForClassExpression.getNode();
         final Stream<GraphElement> remainingElements = diagramPartsForClassExpression.getOtherElements();
@@ -116,7 +116,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     }
 
     private Graph createPropertyAndObjectRangeEdges( final Node restrictionNode,
-                                                     final OWLQuantifiedObjectRestriction classExpression ) {
+        final OWLQuantifiedObjectRestriction classExpression ) {
         final OWLClassExpression c = classExpression.getFiller();
         final OWLObjectPropertyExpression r = classExpression.getProperty();
         final Graph cNodeGraph = c.accept( mappingConfig.getOwlClassExpressionMapper() );
@@ -130,7 +130,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     }
 
     private Graph createPropertyAndObjectRangeEdges( final Node restrictionNode,
-                                                     final OWLQuantifiedDataRestriction classExpression ) {
+        final OWLQuantifiedDataRestriction classExpression ) {
         final OWLDataRange u = classExpression.getFiller();
         final OWLDataPropertyExpression d = classExpression.getProperty();
         final Graph uNodeGraph = u.accept( mappingConfig.getOwlDataMapper() );
@@ -143,7 +143,7 @@ public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Gra
     }
 
     private Graph createPropertyEdge( final Node restrictionNode, final OWLRestriction classExpression,
-                                      final Edge.Decorated.Label edgeLabel ) {
+        final Edge.Decorated.Label edgeLabel ) {
         final OWLPropertyExpression property = classExpression.getProperty();
         final Graph rNodeGraph = property.accept( mappingConfig.getOwlPropertyExpressionMapper() );
         final Edge rEdge = new Edge.Decorated( Edge.Type.DEFAULT_ARROW, restrictionNode, rNodeGraph

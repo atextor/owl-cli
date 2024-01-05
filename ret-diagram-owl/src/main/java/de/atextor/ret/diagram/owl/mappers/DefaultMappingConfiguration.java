@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -36,20 +36,35 @@ import java.util.Optional;
 
 public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLAxiomVisitorEx<Graph> owlAxiomMapper;
+
     private OWLClassExpressionVisitorEx<Graph> owlClassExpressionMapper;
+
     private OWLIndividualVisitorEx<Graph> owlIndividualMapper;
+
     private OWLPropertyExpressionVisitorEx<Graph> owlPropertyExpressionMapper;
+
     private OWLObjectVisitorEx<Graph> owlObjectMapper;
+
     private OWLDataVisitorEx<Graph> owlDataMapper;
+
     private OWLEntityVisitorEx<Graph> owlEntityMapper;
+
     private OWLAnnotationObjectVisitorEx<Graph> owlAnnotationObjectMapper;
+
     private OWLAnnotationSubjectVisitorEx<Graph> owlAnnotationSubjectMapper;
+
     private SWRLObjectVisitorEx<Graph> swrlObjectMapper;
+
     private IdentifierMapper identifierMapper;
+
     private NameMapper nameMapper;
+
     private OWLDataVisitorEx<String> owlDataPrinter;
+
     private OWLPropertyExpressionVisitorEx<String> owlPropertyExpressionPrinter;
+
     private OWLIndividualVisitorEx<String> owlIndividualPrinter;
+
     private OWLClassExpressionVisitorEx<String> owlClassExpressionPrinter;
 
     private DefaultMappingConfiguration() {
@@ -205,20 +220,35 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
 
     public static class Builder {
         private Optional<OWLAxiomVisitorEx<Graph>> owlAxiomMapper = Optional.empty();
+
         private Optional<OWLClassExpressionVisitorEx<Graph>> owlClassExpressionMapper = Optional.empty();
+
         private Optional<OWLIndividualVisitorEx<Graph>> owlIndividualMapper = Optional.empty();
+
         private Optional<OWLPropertyExpressionVisitorEx<Graph>> owlPropertyExpressionMapper = Optional.empty();
+
         private Optional<OWLObjectVisitorEx<Graph>> owlObjectMapper = Optional.empty();
+
         private Optional<OWLDataVisitorEx<Graph>> owlDataMapper = Optional.empty();
+
         private Optional<OWLEntityVisitorEx<Graph>> owlEntityMapper = Optional.empty();
+
         private Optional<OWLAnnotationObjectVisitorEx<Graph>> owlAnnotationObjectMapper = Optional.empty();
+
         private Optional<OWLAnnotationSubjectVisitorEx<Graph>> owlAnnotationSubjectMapper = Optional.empty();
+
         private Optional<SWRLObjectVisitorEx<Graph>> swrlObjectMapper = Optional.empty();
+
         private Optional<IdentifierMapper> identifierMapper = Optional.empty();
+
         private Optional<NameMapper> nameMapper = Optional.empty();
+
         private Optional<OWLDataVisitorEx<String>> owlDataPrinter = Optional.empty();
+
         private Optional<OWLPropertyExpressionVisitorEx<String>> owlPropertyExpressionPrinter = Optional.empty();
+
         private Optional<OWLIndividualVisitorEx<String>> owlIndividualPrinter = Optional.empty();
+
         private Optional<OWLClassExpressionVisitorEx<String>> owlClassExpressionPrinter = Optional.empty();
 
         public Builder owlAxiomMapper( final OWLAxiomVisitorEx<Graph> mapper ) {

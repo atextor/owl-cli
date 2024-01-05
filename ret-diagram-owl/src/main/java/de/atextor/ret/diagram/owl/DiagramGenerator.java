@@ -1,11 +1,11 @@
 /*
- * Copyright 2021 Andreas Textor
+ * Copyright 2024 Andreas Textor
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -69,9 +69,9 @@ public class DiagramGenerator {
     }
 
     Try<Void> executeDot( final ThrowingConsumer<OutputStream, IOException> contentProvider,
-                          final OutputStream output,
-                          final File workingDir,
-                          final Configuration configuration ) {
+        final OutputStream output,
+        final File workingDir,
+        final Configuration configuration ) {
         final String command = configuration.dotBinary + " -T" + configuration.format.getExtension();
         final Process process;
         try {
@@ -129,13 +129,13 @@ public class DiagramGenerator {
      * Performs diagram generation for an input ontology. The result is either written to a given {@link OutputStream}
      * or a given {@link Path}.
      *
-     * @param ontology      the input ontology
-     * @param output        the output to write
+     * @param ontology the input ontology
+     * @param output the output to write
      * @param configuration the configuration for the diagram generation
      * @return {@link io.vavr.control.Try.Success} on success
      */
     public Try<Void> generate( final OWLOntology ontology, final OutputStream output,
-                               final Configuration configuration ) {
+        final Configuration configuration ) {
         LOG.info( "Applying ontology mappers" );
         final Stream<GraphElement> ontologyGraphRepresenation = ontologyMapper.apply( ontology ).stream();
         LOG.info( "Generating Graphviz document" );
