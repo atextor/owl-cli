@@ -28,7 +28,7 @@ import java.util.List;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @ExtendWith( TestExecutionLogger.class )
-public class ExecutableJarTest extends OwlCliTest {
+public class ExecutableJarTest extends RetTest {
     private static File executableJar;
 
     @BeforeAll

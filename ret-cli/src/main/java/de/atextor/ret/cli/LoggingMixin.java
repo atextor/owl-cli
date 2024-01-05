@@ -35,7 +35,7 @@ public class LoggingMixin {
     private boolean[] verbosity = new boolean[0];
 
     private static LoggingMixin getTopLevelCommandLoggingMixin( final CommandLine.Model.CommandSpec commandSpec ) {
-        return ( (OWLCLI) commandSpec.root().userObject() ).loggingMixin;
+        return ( (Ret) commandSpec.root().userObject() ).loggingMixin;
     }
 
     public static int executionStrategy( final CommandLine.ParseResult parseResult ) {

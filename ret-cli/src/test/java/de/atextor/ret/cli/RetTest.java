@@ -39,9 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith( TestExecutionLogger.class )
-public class OwlCliTest {
+public class RetTest {
     protected CliRunner.Result runCli( final CliRunner.ExecArguments arguments ) {
-        return CliRunner.runMainClass( OWLCLI.class, arguments );
+        return CliRunner.runMainClass( Ret.class, arguments );
     }
 
     private static Path tempDir;
@@ -94,27 +94,27 @@ public class OwlCliTest {
 
     @Test
     void testHelpDiagram() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", OWLCLIDiagramCommand.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().asString() ).as( "stdout" )
-            .contains( "Usage: " + OWLCLI.COMMAND_NAME + " " + OWLCLIDiagramCommand.COMMAND_NAME );
+            .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetDiagram.COMMAND_NAME );
         assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "--direction=" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
     @Test
     void testDiagramWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( OWLCLIDiagramCommand.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().asString() ).as( "stderr" )
-            .contains( "Usage: " + OWLCLI.COMMAND_NAME + " " + OWLCLIDiagramCommand.COMMAND_NAME );
+            .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetDiagram.COMMAND_NAME );
     }
 
     @Test
     void testDiagramWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( OWLCLIDiagramCommand.COMMAND_NAME, "invalid_argument" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME, "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
@@ -123,7 +123,7 @@ public class OwlCliTest {
     @ParameterizedTest
     @ArgumentsSource( ResourceArgumentsProvider.class )
     void testDiagramGeneration( final String testFileName ) throws IOException {
-        final URL input = OwlCliTest.class.getResource( "/" + testFileName + ".ttl" );
+        final URL input = RetTest.class.getResource( "/" + testFileName + ".ttl" );
         final File output = tempDir.resolve( testFileName + ".ttl" ).toFile();
 
         assertThat( input ).isNotNull();
@@ -131,7 +131,7 @@ public class OwlCliTest {
         assertThat( output ).isFile();
         assertThat( output ).content().isNotEmpty();
 
-        final List<String> arguments = List.of( OWLCLIDiagramCommand.COMMAND_NAME, output.getAbsolutePath() );
+        final List<String> arguments = List.of( RetDiagram.COMMAND_NAME, output.getAbsolutePath() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
@@ -143,27 +143,27 @@ public class OwlCliTest {
 
     @Test
     void testHelpWrite() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", OWLCLIWriteCommand.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().asString() ).as( "stdout" )
-            .contains( "Usage: " + OWLCLI.COMMAND_NAME + " " + OWLCLIWriteCommand.COMMAND_NAME );
+            .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetWrite.COMMAND_NAME );
         assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "--alignObjects" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
     @Test
     void testWriteWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( OWLCLIWriteCommand.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().asString() ).as( "stderr" )
-            .contains( "Usage: " + OWLCLI.COMMAND_NAME + " " + OWLCLIWriteCommand.COMMAND_NAME );
+            .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetWrite.COMMAND_NAME );
     }
 
     @Test
     void testWriteWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( OWLCLIWriteCommand.COMMAND_NAME, "invalid_argument" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME, "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
@@ -185,7 +185,7 @@ public class OwlCliTest {
                     :city "City Z"
                 ] .
             """;
-        final List<String> arguments = List.of( OWLCLIWriteCommand.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -222,7 +222,7 @@ public class OwlCliTest {
               </rdf:Description>
             </rdf:RDF>
             """;
-        final List<String> arguments = List.of( OWLCLIWriteCommand.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
+        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( rdfXmlDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -242,7 +242,7 @@ public class OwlCliTest {
             <http://test.de#Max> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://test.de#Person> .
             <http://test.de#city> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Property> .
             """;
-        final List<String> arguments = List.of( OWLCLIWriteCommand.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
+        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( ntripleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -259,7 +259,7 @@ public class OwlCliTest {
             :Person a rdfs:Class ;
                 :foo <> .
             """;
-        final List<String> arguments = List.of( OWLCLIWriteCommand.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );

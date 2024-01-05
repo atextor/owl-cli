@@ -281,22 +281,27 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"de.atextor.ret.cli.OWLCLI",
+  "name":"de.atextor.ret.cli.Ret",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allPublicMethods":true
 },
 {
-  "name":"de.atextor.ret.cli.OWLCLIDiagramCommand",
+  "name":"de.atextor.ret.cli.RetDiagram",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allPublicMethods":true
 },
 {
-  "name":"de.atextor.ret.cli.OWLCLIWriteCommand",
+  "name":"de.atextor.ret.cli.RetWrite",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
+  {
+    "name":"de.atextor.ret.cli.RetInfer",
+    "allDeclaredFields":true,
+    "allDeclaredMethods":true
+  },
 {
   "name":"java.io.FilePermission"
 },

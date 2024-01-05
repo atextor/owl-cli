@@ -24,7 +24,7 @@ import java.io.File;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @ExtendWith( TestExecutionLogger.class )
-public class BinaryTest extends OwlCliTest {
+public class BinaryTest extends RetTest {
     private static File binary;
 
     @BeforeAll

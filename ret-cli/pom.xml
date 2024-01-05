@@ -21,8 +21,8 @@
         <skip.native.build>false</skip.native.build>
         <regular-jar>${project.artifactId}-${project.version}</regular-jar>
         <native-image-jar>${project.artifactId}-${project.version}-for-native</native-image-jar>
-        <main-class>de.atextor.ret.cli.OWLCLI</main-class>
-        <binary-name>owl</binary-name>
+        <main-class>de.atextor.ret.cli.Ret</main-class>
+        <binary-name>ret</binary-name>
     </properties>
 
     <dependencies>
@@ -145,7 +145,7 @@
                     <reuseForks>false</reuseForks>
                     <skip>${skip.maven.surefire}</skip>
                     <includes>
-                        <include>**/OwlCliTest.java</include>
+                        <include>**/RetTest.java</include>
                     </includes>
                 </configuration>
             </plugin>

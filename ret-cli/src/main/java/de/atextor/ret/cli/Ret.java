@@ -26,7 +26,7 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.util.logging.LogManager;
 
-import static de.atextor.ret.cli.OWLCLI.COMMAND_NAME;
+import static de.atextor.ret.cli.Ret.COMMAND_NAME;
 
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Command line tool for ontology engineering",
@@ -37,10 +37,10 @@ import static de.atextor.ret.cli.OWLCLI.COMMAND_NAME;
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
-public class OWLCLI implements Runnable {
-    public static final String COMMAND_NAME = "owl";
+public class Ret implements Runnable {
+    public static final String COMMAND_NAME = "ret";
 
-    private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
+    private static final Logger LOG = LoggerFactory.getLogger( Ret.class );
 
     private static void printError( final CommandLine commandLine, final Exception exception ) {
         final Level logLevel = ( (LoggingMixin) commandLine.getMixins().values().iterator().next() ).calcLogLevel();
@@ -71,20 +71,22 @@ public class OWLCLI implements Runnable {
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Option( names = { "-h", "--help" }, usageHelp = true, description = "Show short help" )
     private boolean helpRequested;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Option( names = { "--version" }, description = "Show current version" )
     private boolean version;
 
     public static void main( final String[] args ) {
         LogManager.getLogManager().reset();
         final List<AbstractCommand> commands = List.of(
-            new OWLCLIDiagramCommand(),
-            new OWLCLIWriteCommand(),
-            new OWLCLIInferCommand()
+            new RetDiagram(),
+            new RetWrite(),
+            new RetInfer()
         );
-        final CommandLine cmd = commands.foldLeft( new OWLCLI().commandLine, CommandLine::addSubcommand )
+        final CommandLine cmd = commands.foldLeft( new Ret().commandLine, CommandLine::addSubcommand )
             .setParameterExceptionHandler( PARAMETER_EXCEPTION_HANDLER )
             .setExecutionExceptionHandler( EXECUTION_EXCEPTION_HANDLER )
             .setCaseInsensitiveEnumValuesAllowed( true )

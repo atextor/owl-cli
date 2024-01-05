@@ -26,7 +26,7 @@ import picocli.CommandLine;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static de.atextor.ret.cli.OWLCLIInferCommand.COMMAND_NAME;
+import static de.atextor.ret.cli.RetInfer.COMMAND_NAME;
 
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Runs an OWL reasoner on an ontology",
@@ -36,19 +36,23 @@ import static de.atextor.ret.cli.OWLCLIInferCommand.COMMAND_NAME;
     footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#infer-command"
 )
-public class OWLCLIInferCommand extends AbstractCommand implements Runnable {
+public class RetInfer extends AbstractCommand implements Runnable {
     public static final String COMMAND_NAME = "infer";
-    private static final Logger LOG = LoggerFactory.getLogger( OWLCLIInferCommand.class );
 
+    private static final Logger LOG = LoggerFactory.getLogger( RetInfer.class );
+
+    @SuppressWarnings( "unused" )
     private static final Configuration config = Inferrer.DEFAULT_CONFIGURATION;
 
     @CommandLine.Mixin
     LoggingMixin loggingMixin;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Parameters( paramLabel = "INPUT", description = "File name, URL, or - for stdin", arity = "1",
         index = "0" )
     private String input;
 
+    @SuppressWarnings( "unused" )
     @CommandLine.Parameters( paramLabel = "OUTPUT",
         description = "File name or - for stdout. If left out, output is written to stdout.",
         arity = "0..1", index = "1" )
