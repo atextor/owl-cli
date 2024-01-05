@@ -8,8 +8,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <description>RDF Engineering Toolkit</description>
+    <name>RDF Engineering Toolkit</name>
+    <description>The RDF Engineering Toolkit (ret) provides APIs and a command line interface to transform, manipulate,
+        validate and visualize RDF and OWL documents.
+    </description>
+    <inceptionYear>2019</inceptionYear>
     <url>https://github.com/atextor/ret</url>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/atextor/ret/issues</url>
+    </issueManagement>
 
     <licenses>
         <license>
@@ -63,8 +72,12 @@
         <jqwik-version>1.8.0</jqwik-version>
 
         <!-- Plugin versions -->
+        <build-helper-maven-plugin-version>3.3.0</build-helper-maven-plugin-version>
+        <exec-maven-plugin-version>3.1.0</exec-maven-plugin-version>
         <flatten-maven-plugin-version>1.4.1</flatten-maven-plugin-version>
+        <git-commit-id-plugin-version>4.9.10</git-commit-id-plugin-version>
         <jacoco-maven-plugin-version>0.8.9</jacoco-maven-plugin-version>
+        <maven-clean-plugin-version>3.2.0</maven-clean-plugin-version>
         <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
         <maven-failsafe-plugin-version>3.0.0</maven-failsafe-plugin-version>
         <maven-gpg-plugin-version>3.0.1</maven-gpg-plugin-version>
@@ -273,13 +286,33 @@
             <plugins>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>${exec-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>${flatten-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>pl.project13.maven</groupId>
+                    <artifactId>git-commit-id-plugin</artifactId>
+                    <version>${git-commit-id-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
