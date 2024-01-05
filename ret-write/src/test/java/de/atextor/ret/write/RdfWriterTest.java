@@ -20,18 +20,20 @@ import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+import static de.atextor.ret.core.RdfLoader.load;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RdfWriterTest {
     private final RdfWriter writer = new RdfWriter();
@@ -54,21 +56,6 @@ public class RdfWriterTest {
         return new ByteArrayInputStream( turtleDocument.getBytes() );
     }
 
-    private Model parseModel( final String document, final String format ) {
-        final Model model = ModelFactory.createDefaultModel();
-        try {
-            model.read( new StringReader( document ), "", format );
-            return model;
-        } catch ( final Throwable t ) {
-            return null;
-        }
-    }
-
-    private boolean canBeParsedAs( final String document, final String format, final int expectedNumberOfStatements ) {
-        final Model model = parseModel( document, format );
-        return model != null && model.listStatements().toList().size() == expectedNumberOfStatements;
-    }
-
     @Test
     public void testWriteTurtle() {
         final Configuration configuration = Configuration.builder()
@@ -79,9 +66,9 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThat( canBeParsedAs( out.toString(), "TURTLE", 8 ) ).isTrue();
-        assertThat( canBeParsedAs( out.toString(), "N-TRIPLE", 8 ) ).isFalse();
-        assertThat( canBeParsedAs( out.toString(), "RDF/XML", 8 ) ).isFalse();
+        assertThatCode( () -> load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
+        assertThatThrownBy( () -> load( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
+        assertThatThrownBy( () -> load( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
     }
 
     @Test
@@ -94,10 +81,10 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
+        assertThatCode( () -> load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
         // N-TRIPLES is also valid Turtle
-        assertThat( canBeParsedAs( out.toString(), "TURTLE", 8 ) ).isTrue();
-        assertThat( canBeParsedAs( out.toString(), "N-TRIPLE", 8 ) ).isTrue();
-        assertThat( canBeParsedAs( out.toString(), "RDF/XML", 8 ) ).isFalse();
+        assertThatCode( () -> load( out.toString(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
+        assertThatThrownBy( () -> load( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
     }
 
     @Test
@@ -110,15 +97,14 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThat( canBeParsedAs( out.toString(), "TURTLE", 8 ) ).isFalse();
-        assertThat( canBeParsedAs( out.toString(), "N-TRIPLE", 8 ) ).isFalse();
-        assertThat( canBeParsedAs( out.toString(), "RDF/XML", 8 ) ).isTrue();
+        assertThatThrownBy( () -> load( out.toString(), Lang.TURTLE ) ).hasMessageContaining( "line:" );
+        assertThatThrownBy( () -> load( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
+        assertThatCode( () -> load( out.toString(), Lang.RDFXML ) ).doesNotThrowAnyException();
     }
 
     @Test
     public void testReadFromUrl() throws IOException {
-        final URL url = new URL( "https://raw.githubusercontent.com/atextor/turtle-formatting/main/turtle-formatting" +
-            ".ttl" );
+        final URL url = new URL( "https://raw.githubusercontent.com/atextor/turtle-formatting/main/turtle-formatting.ttl" );
         final Configuration configuration = Configuration.builder()
             .inputFormat( Configuration.Format.TURTLE )
             .outputFormat( Configuration.Format.TURTLE ).build();
@@ -127,7 +113,7 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( url, out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThat( parseModel( out.toString(), "TURTLE" ) ).isNotNull();
+        assertThatCode( () -> load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -147,12 +133,5 @@ public class RdfWriterTest {
             final InputStream stream = new ByteArrayInputStream( modelString.getBytes( StandardCharsets.UTF_8 ) );
             model.read( stream, TurtleFormatter.DEFAULT_EMPTY_BASE, "TURTLE" );
         } ).doesNotThrowAnyException();
-    }
-
-    private Model modelFromString( final String content ) {
-        final Model model = ModelFactory.createDefaultModel();
-        final InputStream stream = new ByteArrayInputStream( content.getBytes( StandardCharsets.UTF_8 ) );
-        model.read( stream, TurtleFormatter.DEFAULT_EMPTY_BASE, "TURTLE" );
-        return model;
     }
 }
