@@ -18,6 +18,7 @@ package de.atextor.ret.diagram.owl;
 
 import de.atextor.ret.diagram.owl.graph.node.Class;
 import com.google.common.collect.Ordering;
+import de.atextor.ret.core.util.StringTemplate;
 import de.atextor.ret.diagram.owl.graph.Edge;
 import de.atextor.ret.diagram.owl.graph.GraphElement;
 import de.atextor.ret.diagram.owl.graph.GraphVisitor;
@@ -198,13 +199,13 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
             }
         }
 
-        final Template literalNodeTemplate = new Template( """
+        final StringTemplate literalNodeTemplate = new StringTemplate( """
             ${nodeId} [label="${value}"] """ );
 
-        final Template htmlLabelNodeTemplate = new Template( """
+        final StringTemplate htmlLabelNodeTemplate = new StringTemplate( """
             ${nodeId} [label=<${value}>] """ );
 
-        final Template invisibleNodeTemplate = new Template( """
+        final StringTemplate invisibleNodeTemplate = new StringTemplate( """
             ${nodeId} [label="", width="0", style="invis"] """ );
 
         final Configuration configuration;

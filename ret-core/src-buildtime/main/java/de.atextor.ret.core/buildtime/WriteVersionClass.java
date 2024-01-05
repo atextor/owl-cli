@@ -16,6 +16,8 @@
 
 package de.atextor.ret.core.buildtime;
 
+import de.atextor.ret.core.util.StringTemplate;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -94,7 +96,7 @@ public class WriteVersionClass {
             gitBuildVersion, gitProperties.getProperty( "git.commit.id" ).substring( 0, 7 ) )
             : gitBuildVersion;
         final String buildDate = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( new Date() );
-        final String content = VERSION_CLASS_TEMPLATE.render( Map.of(
+        final String content = VERSION_CLASS_TEMPLATE.apply( Map.of(
             "year", new SimpleDateFormat( "yyyy" ).format( new Date() ),
             // For now. May read this from contributors file in the future.
             "copyrightHolder", "Andreas Textor",

@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-package de.atextor.ret.core.buildtime;
+package de.atextor.ret.core.util;
 
 import java.util.Map;
+import java.util.function.Function;
 
-public class StringTemplate {
-    private final String template;
+/**
+ * Minimalistic String template. The template string can contain references to (e.g. ${foo}) that are replaced
+ * with values on calling {@link #apply(Map)}.
+ */
+public class StringTemplate implements Function<Map<String, Object>, String> {
+    final private String template;
 
     public StringTemplate( final String template ) {
         this.template = template;
     }
 
-    public String render( final Map<String, Object> values ) {
+    /**
+     * Apply the context to the template and return the resulting string
+     *
+     * @param context the context
+     * @return the resulting string
+     */
+    @Override
+    public String apply( final Map<String, Object> context ) {
         String result = template;
-        for ( final Map.Entry<String, Object> entry : values.entrySet() ) {
+        for ( final Map.Entry<String, Object> entry : context.entrySet() ) {
             result = result.replace( "${" + entry.getKey() + "}", entry.getValue().toString() );
         }
         return result;

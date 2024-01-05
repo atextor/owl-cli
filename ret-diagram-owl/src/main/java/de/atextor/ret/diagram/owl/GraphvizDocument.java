@@ -17,6 +17,7 @@
 package de.atextor.ret.diagram.owl;
 
 import com.google.common.collect.ImmutableMap;
+import de.atextor.ret.core.util.StringTemplate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
 
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
 
-    private static final Template GRAPHVIZ_TEMPLATE = new Template( """
+    private static final StringTemplate GRAPHVIZ_TEMPLATE = new StringTemplate( """
         digraph G {
           rankdir = ${rankdir}
 
