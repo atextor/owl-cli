@@ -270,30 +270,30 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"de.atextor.owlcli.AbstractCommand",
+  "name":"de.atextor.ret.cli.AbstractCommand",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
 {
-  "name":"de.atextor.owlcli.LoggingMixin",
+  "name":"de.atextor.ret.cli.LoggingMixin",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
-  "name":"de.atextor.owlcli.OWLCLI",
+  "name":"de.atextor.ret.cli.OWLCLI",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allPublicMethods":true
 },
 {
-  "name":"de.atextor.owlcli.OWLCLIDiagramCommand",
+  "name":"de.atextor.ret.cli.OWLCLIDiagramCommand",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allPublicMethods":true
 },
 {
-  "name":"de.atextor.owlcli.OWLCLIWriteCommand",
+  "name":"de.atextor.ret.cli.OWLCLIWriteCommand",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
@@ -416,19 +416,11 @@
   "name":"java.util.PropertyPermission"
 },
 {
-  "name":"org.apache.jena.ext.com.google.common.cache.Striped64",
+  "name":"com.github.jsonldjava.shaded.com.google.common.cache.Striped64",
   "fields":[
     {"name":"base", "allowUnsafeAccess":true},
     {"name":"busy", "allowUnsafeAccess":true}
   ]
-},
-{
-  "name":"org.apache.jena.rdfxml.xmlinput.JenaReader",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
-  "name":"org.apache.jena.ttl.turtle.TurtleReader",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"org.apache.jena.rdf.model.impl.NTripleReader",
@@ -448,10 +440,6 @@
     {"name":"NOOP"},
     {"name":"REENTRANT"}
   ]
-},
-{
-  "name":"org.apache.jena.rdfxml.xmloutput.impl.Basic",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
   "name":"org.semanticweb.owlapi.dlsyntax.parser.DLSyntaxOWLParserFactory",

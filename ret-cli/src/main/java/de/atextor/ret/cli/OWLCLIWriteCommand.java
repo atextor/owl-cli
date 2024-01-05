@@ -40,7 +40,9 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-@CommandLine.Command( name = "write",
+import static de.atextor.ret.cli.OWLCLIWriteCommand.COMMAND_NAME;
+
+@CommandLine.Command( name = COMMAND_NAME,
     description = "Read a given RDF document and write it out, possibly in a different format",
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
@@ -49,6 +51,8 @@ import java.util.stream.Collectors;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#write-command"
 )
 public class OWLCLIWriteCommand extends AbstractCommand implements Runnable {
+    public static final String COMMAND_NAME = "write";
+
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIWriteCommand.class );
 
     private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;

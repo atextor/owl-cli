@@ -26,7 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
-@CommandLine.Command( name = "diagram",
+import static de.atextor.ret.cli.OWLCLIDiagramCommand.COMMAND_NAME;
+
+@CommandLine.Command( name = COMMAND_NAME,
     description = "Generate automatically-layouted diagrams for an ontology",
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
@@ -35,6 +37,8 @@ import picocli.CommandLine;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#diagram-command"
 )
 public class OWLCLIDiagramCommand extends AbstractCommand implements Runnable {
+    public static final String COMMAND_NAME = "diagram";
+
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLIDiagramCommand.class );
 
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;

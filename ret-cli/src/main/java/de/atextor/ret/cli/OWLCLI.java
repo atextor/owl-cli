@@ -26,7 +26,9 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.util.logging.LogManager;
 
-@CommandLine.Command( name = "owl",
+import static de.atextor.ret.cli.OWLCLI.COMMAND_NAME;
+
+@CommandLine.Command( name = COMMAND_NAME,
     description = "Command line tool for ontology engineering",
     subcommands = { CommandLine.HelpCommand.class },
     headerHeading = "@|bold Usage|@:%n%n",
@@ -36,6 +38,8 @@ import java.util.logging.LogManager;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class OWLCLI implements Runnable {
+    public static final String COMMAND_NAME = "owl";
+
     private static final Logger LOG = LoggerFactory.getLogger( OWLCLI.class );
 
     private static void printError( final CommandLine commandLine, final Exception exception ) {
