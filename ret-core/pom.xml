@@ -129,7 +129,8 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
-                            <compileSourceRoots>${build-time-sources}</compileSourceRoots>
+                            <compileSourceRoots>${build-time-sources},${basedir}/src</compileSourceRoots>
+                            <generatedSourcesDirectory>${generated-sources}</generatedSourcesDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -150,19 +151,14 @@
                             <!-- args[0]: the path to git.properties-->
                             <!-- args[1]: fully qualified class name to generate-->
                             <!-- args[2]: the path to the file to write-->
-                            <commandlineArgs>${git-properties-filename} de.atextor.ret.core.Version ${generated-sources}/main/java/de/atextor/ret/core/Version.java</commandlineArgs>
+                            <commandlineArgs>${git-properties-filename} de.atextor.ret.core.Version
+                                ${generated-sources}/main/java/de/atextor/ret/core/Version.java
+                            </commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 

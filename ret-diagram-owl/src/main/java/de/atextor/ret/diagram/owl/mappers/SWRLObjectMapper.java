@@ -49,7 +49,17 @@ import java.util.stream.Collectors;
 
 import static io.vavr.API.TODO;
 
+/**
+ * A mapper that translates SWRL rules into a {@link Graph}: The rule is represented as one distinct node that contains a
+ * human-readable string representation of the rule, with outgoing edges to the nodes representing the elements (classes etc.)
+ * that are referred to in the rule.
+ */
 public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
+    /**
+     * The "marker" ID, see {@link #IS_RULE_SYNTAX_PART}.
+     */
+    private static final IRI LITERAL_ID = IRI.create( "urn:owl-cli:literal-id" );
+
     /**
      * During traversal of the rule expression tree, both Literal nodes and other GraphElements
      * (mainly Edges) are collected. The values of the Literal nodes are concatenated in the end
@@ -58,14 +68,17 @@ public class SWRLObjectMapper implements SWRLObjectVisitorEx<Graph> {
      * identifier "marker" IRI. The concatenation is done in
      * {@link de.atextor.ret.diagram.owl.mappers.OWLAxiomMapper#visit(SWRLRule)}.
      */
-    private static final IRI LITERAL_ID = IRI.create( "urn:owl-cli:literal-id" );
-
     public static final Predicate<GraphElement> IS_RULE_SYNTAX_PART =
         graphElement -> graphElement.is( Literal.class ) &&
             graphElement.as( Literal.class ).getId().getIri().map( iri -> iri.equals( LITERAL_ID ) ).orElse( false );
 
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new SWRL object mapper from a given mapping config
+     *
+     * @param mappingConfig the mapping config
+     */
     public SWRLObjectMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

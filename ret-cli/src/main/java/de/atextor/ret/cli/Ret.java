@@ -28,6 +28,9 @@ import java.util.logging.LogManager;
 
 import static de.atextor.ret.cli.Ret.COMMAND_NAME;
 
+/**
+ * The main class for the command line interface
+ */
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Command line tool for ontology engineering",
     subcommands = { CommandLine.HelpCommand.class },
@@ -38,6 +41,9 @@ import static de.atextor.ret.cli.Ret.COMMAND_NAME;
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
 public class Ret implements Runnable {
+    /**
+     * The name of the top level command
+     */
     public static final String COMMAND_NAME = "ret";
 
     private static final Logger LOG = LoggerFactory.getLogger( Ret.class );
@@ -80,6 +86,11 @@ public class Ret implements Runnable {
     @CommandLine.Option( names = { "--version" }, description = "Show current version" )
     private boolean version;
 
+    /**
+     * The command's main function
+     *
+     * @param args the arguments
+     */
     public static void main( final String[] args ) {
         LogManager.getLogManager().reset();
         final List<AbstractCommand> commands = List.of(

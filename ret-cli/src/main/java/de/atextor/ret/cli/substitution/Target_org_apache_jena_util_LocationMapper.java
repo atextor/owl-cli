@@ -25,6 +25,9 @@ import org.slf4j.helpers.NOPLogger;
 
 import java.io.Serial;
 
+/**
+ * Substitution for {@link LocationMapper}. This will silence Jena's "can't find location-mapping.rdf" complaints.
+ */
 @SuppressWarnings( "unused" )
 @TargetClass( LocationMapper.class )
 public final class Target_org_apache_jena_util_LocationMapper {

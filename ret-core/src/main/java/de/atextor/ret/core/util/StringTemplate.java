@@ -26,6 +26,11 @@ import java.util.function.Function;
 public class StringTemplate implements Function<Map<String, Object>, String> {
     final private String template;
 
+    /**
+     * Construct the template from the template string
+     *
+     * @param template the template string
+     */
     public StringTemplate( final String template ) {
         this.template = template;
     }

@@ -25,9 +25,13 @@ import picocli.CommandLine;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 import static de.atextor.ret.cli.RetInfer.COMMAND_NAME;
 
+/**
+ * The 'infer' subcommand
+ */
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Runs an OWL reasoner on an ontology",
     descriptionHeading = "%n@|bold Description|@:%n%n",
@@ -37,6 +41,9 @@ import static de.atextor.ret.cli.RetInfer.COMMAND_NAME;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#infer-command"
 )
 public class RetInfer extends AbstractCommand implements Runnable {
+    /**
+     * The name of this subcommand
+     */
     public static final String COMMAND_NAME = "infer";
 
     private static final Logger LOG = LoggerFactory.getLogger( RetInfer.class );
@@ -69,7 +76,7 @@ public class RetInfer extends AbstractCommand implements Runnable {
             final Configuration configuration = configurationBuilder.build();
             try {
                 final URL inputUrl = new URL( input );
-                openOutput( input, output != null ? output : "-", "ttl" )
+                openOutput( input, output != null ? Optional.of( output ) : Optional.of( "-" ), "ttl" )
                     .map( outputStream -> inferrer.infer( inputUrl, outputStream, configuration ) )
                     .onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
                 return;
@@ -80,9 +87,14 @@ public class RetInfer extends AbstractCommand implements Runnable {
 
         openInput( input ).flatMap( inputStream -> {
                 final Configuration configuration = configurationBuilder.build();
-                return openOutput( input, output != null ? output : "-", "ttl" )
+                return openOutput( input, output != null ? Optional.of( output ) : Optional.of( "-" ), "ttl" )
                     .flatMap( outputStream -> inferrer.infer( inputStream, outputStream, configuration ) );
             }
         ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
+    }
+
+    @Override
+    public String commandName() {
+        return COMMAND_NAME;
     }
 }

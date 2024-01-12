@@ -31,6 +31,13 @@ import java.util.stream.Stream;
  * Base class for graph transformations
  */
 public abstract class GraphTransformer implements UnaryOperator<Set<GraphElement>> {
+    /**
+     * Finds the nodes in a graph that have a given IRI
+     *
+     * @param graph the graph
+     * @param iri the IRI to look for
+     * @return the resulting nodes
+     */
     protected Stream<Node> findNodesWithIri( final Set<GraphElement> graph, final IRI iri ) {
         return graph.stream()
             .filter( GraphElement::isNode )
@@ -38,10 +45,28 @@ public abstract class GraphTransformer implements UnaryOperator<Set<GraphElement
             .filter( node -> node.getId().getIri().map( nodeIri -> nodeIri.equals( iri ) ).orElse( false ) );
     }
 
+    /**
+     * Calculates a {@link ChangeSet} for a given graph in which all edges pointing to a given node are instead now pointing to a diffent
+     * node
+     *
+     * @param graph the graph
+     * @param oldToNode the old node
+     * @param newToNode the new node
+     * @return the change set
+     */
     protected ChangeSet updateEdgesTo( final Set<GraphElement> graph, final Node oldToNode, final Node newToNode ) {
         return updateEdge( graph, oldToNode, newToNode, Edge::getTo, Edge::setTo );
     }
 
+    /**
+     * Calculates a {@link ChangeSet} for a given graph in which all edges outgoing from a given node are instead now outgoing from a
+     * different node
+     *
+     * @param graph the graph
+     * @param oldFromNode the old node
+     * @param newFromNode the new node
+     * @return the change set
+     */
     protected ChangeSet updateEdgesFrom( final Set<GraphElement> graph, final Node oldFromNode, final Node newFromNode ) {
         return updateEdge( graph, oldFromNode, newFromNode, Edge::getFrom, Edge::setFrom );
     }

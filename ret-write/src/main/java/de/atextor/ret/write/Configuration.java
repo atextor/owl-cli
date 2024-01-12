@@ -19,23 +19,53 @@ package de.atextor.ret.write;
 import de.atextor.turtle.formatter.FormattingStyle;
 import lombok.Builder;
 
+/**
+ * The configuration for writing RDF document
+ */
 @Builder
 public class Configuration {
+    /**
+     * The format used to write the document
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format outputFormat = Format.TURTLE;
 
+    /**
+     * The format used to parse the input
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format inputFormat = Format.TURTLE;
 
+    /**
+     * The formatting style to use
+     */
     @Builder.Default
     public FormattingStyle formattingStyle = FormattingStyle.DEFAULT;
 
+    /**
+     * The possible input/output formats
+     */
     public enum Format {
+        /**
+         * RDF/Turtle
+         */
         TURTLE,
+
+        /**
+         * RDF/XML
+         */
         RDFXML,
+
+        /**
+         * N-Triple
+         */
         NTRIPLE,
+
+        /**
+         * N3 format
+         */
         N3;
 
         @Override

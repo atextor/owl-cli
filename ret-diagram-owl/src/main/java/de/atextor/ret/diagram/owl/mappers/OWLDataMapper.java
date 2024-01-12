@@ -45,6 +45,11 @@ import java.util.stream.Stream;
 public class OWLDataMapper implements OWLDataVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new data mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLDataMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

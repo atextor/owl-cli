@@ -39,6 +39,11 @@ public class OWLOntologyMapper implements Function<OWLOntology, Set<GraphElement
 
     private final List<Function<Set<GraphElement>, Set<GraphElement>>> transformers;
 
+    /**
+     * Creates a new ontology mapper from a given mapping config
+     *
+     * @param mappingConfiguration the config
+     */
     public OWLOntologyMapper( final MappingConfiguration mappingConfiguration ) {
         this.mappingConfiguration = mappingConfiguration;
         transformers = List.of(

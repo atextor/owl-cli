@@ -19,20 +19,47 @@ package de.atextor.ret.infer;
 import de.atextor.turtle.formatter.TurtleFormatter;
 import lombok.Builder;
 
+/**
+ * The configuration for inferring from models
+ */
 @Builder
 public class Configuration {
+    /**
+     * The format used to parse the input
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public Format inputFormat = Format.TURTLE;
 
+    /**
+     * The RDF base URL
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String base = TurtleFormatter.DEFAULT_EMPTY_BASE;
 
+    /**
+     * The possible input formats
+     */
     public enum Format {
+        /**
+         * RDF/Turtle
+         */
         TURTLE,
+
+        /**
+         * RDF/XML
+         */
         RDFXML,
+
+        /**
+         * N-Triple
+         */
         NTRIPLE,
+
+        /**
+         * N3 format
+         */
         N3;
 
         @Override

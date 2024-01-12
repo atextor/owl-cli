@@ -36,12 +36,16 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static de.atextor.ret.cli.RetWrite.COMMAND_NAME;
 
+/**
+ * The 'write' subcommand
+ */
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Read a given RDF document and write it out, possibly in a different format",
     descriptionHeading = "%n@|bold Description|@:%n%n",
@@ -51,6 +55,9 @@ import static de.atextor.ret.cli.RetWrite.COMMAND_NAME;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#write-command"
 )
 public class RetWrite extends AbstractCommand implements Runnable {
+    /**
+     * The name of this subcommand
+     */
     public static final String COMMAND_NAME = "write";
 
     private static final Logger LOG = LoggerFactory.getLogger( RetWrite.class );
@@ -242,7 +249,7 @@ public class RetWrite extends AbstractCommand implements Runnable {
             final Configuration configuration = configurationBuilder.build();
             try {
                 final URL inputUrl = new URL( input );
-                openOutput( input, output != null ? output : "-", "ttl" )
+                openOutput( input, output != null ? Optional.of( output ) : Optional.of( "-" ), "ttl" )
                     .map( outputStream -> writer.write( inputUrl, outputStream, configuration ) )
                     .onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
                 return;
@@ -253,7 +260,7 @@ public class RetWrite extends AbstractCommand implements Runnable {
 
         openInput( input ).flatMap( inputStream -> {
                 final Configuration configuration = configurationBuilder.build();
-                return openOutput( input, output != null ? output : "-", "ttl" )
+                return openOutput( input, output != null ? Optional.of( output ) : Optional.of( "-" ), "ttl" )
                     .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
             }
         ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
@@ -335,5 +342,10 @@ public class RetWrite extends AbstractCommand implements Runnable {
             final String propertyUri = buildResourceUri( value );
             return ResourceFactory.createResource( propertyUri );
         }
+    }
+
+    @Override
+    public String commandName() {
+        return COMMAND_NAME;
     }
 }

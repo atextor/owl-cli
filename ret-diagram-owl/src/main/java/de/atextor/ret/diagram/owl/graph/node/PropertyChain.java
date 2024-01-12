@@ -28,6 +28,9 @@ import lombok.With;
 @EqualsAndHashCode( callSuper = true )
 @With
 public class PropertyChain extends Node {
+    /**
+     * The symbol that represents property chains when they are rendered to strings
+     */
     public static final String OPERATOR_SYMBOL = "o";
 
     Id id;

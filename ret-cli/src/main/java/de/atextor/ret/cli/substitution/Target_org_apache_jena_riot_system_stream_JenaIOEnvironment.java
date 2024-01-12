@@ -25,6 +25,9 @@ import org.slf4j.helpers.NOPLogger;
 
 import java.io.Serial;
 
+/**
+ * Substitution class for {@link JenaIOEnvironment}
+ */
 @SuppressWarnings( "unused" )
 @TargetClass( JenaIOEnvironment.class )
 public final class Target_org_apache_jena_riot_system_stream_JenaIOEnvironment {

@@ -28,6 +28,10 @@ import picocli.CommandLine;
 
 import static picocli.CommandLine.Spec.Target.MIXEE;
 
+/**
+ * A <a href="https://picocli.info/#_mixing_options_and_positional_parameters">mixin</a> for logging functionality that is
+ * shared across commands. The mixing sets up and uses logback.
+ */
 public class LoggingMixin {
     @SuppressWarnings( { "unused", "SpellCheckingInspection" } )
     private @CommandLine.Spec( MIXEE )
@@ -39,11 +43,22 @@ public class LoggingMixin {
         return ( (Ret) commandSpec.root().userObject() ).loggingMixin;
     }
 
+    /**
+     * The method to set as the CLI execution strategy, to enable the logging mixin
+     *
+     * @param parseResult the result of the respective arguments parsing process
+     * @return the execution result
+     */
     public static int executionStrategy( final CommandLine.ParseResult parseResult ) {
         getTopLevelCommandLoggingMixin( parseResult.commandSpec() ).configureLoggers();
         return new CommandLine.RunLast().execute( parseResult );
     }
 
+    /**
+     * The option that is injected into commands using this mixin
+     *
+     * @param verbosity the verbosity, one array entry for every stacked -v occurrence
+     */
     @SuppressWarnings( "unused" )
     @CommandLine.Option( names = { "-v", "--verbose" }, description = {
         "Specify multiple -v options to increase verbosity,",
@@ -52,10 +67,20 @@ public class LoggingMixin {
         getTopLevelCommandLoggingMixin( mixee ).verbosity = verbosity;
     }
 
+    /**
+     * Gets the configured logging verbosity in raw format, with one array entry for every stacked -v occurrence
+     *
+     * @return the verbosity
+     */
     public boolean[] getVerbosity() {
         return getTopLevelCommandLoggingMixin( mixee ).verbosity;
     }
 
+    /**
+     * Determine the logback log level from the configured verbosity
+     *
+     * @return the log level
+     */
     public Level calcLogLevel() {
         return switch ( getVerbosity().length ) {
             case 0 -> Level.WARN;
@@ -65,6 +90,9 @@ public class LoggingMixin {
         };
     }
 
+    /**
+     * Set up the logback logging structure
+     */
     public void configureLoggers() {
         final Level level = getTopLevelCommandLoggingMixin( mixee ).calcLogLevel();
         final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();

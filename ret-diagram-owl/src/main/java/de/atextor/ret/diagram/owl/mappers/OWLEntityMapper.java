@@ -39,6 +39,11 @@ import javax.annotation.Nonnull;
 public class OWLEntityMapper implements OWLEntityVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new entity mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLEntityMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

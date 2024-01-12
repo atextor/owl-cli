@@ -25,7 +25,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Convenience class for loading RDF models
+ */
 public class RdfLoader {
+    /**
+     * Parses a string containing an RDF document in a given syntax into a model
+     *
+     * @param document the string containing literal RDF (i.e., not a file name or URL)
+     * @param syntax the RDF syntax
+     * @return the loaded model
+     */
     public static Model load( final String document, final Lang syntax ) {
         final InputStream input = new ByteArrayInputStream( document.getBytes( StandardCharsets.UTF_8 ) );
         final Model result = RDFParser.create()
@@ -40,6 +50,12 @@ public class RdfLoader {
         return result;
     }
 
+    /**
+     * Parses a string containing an RDF/Turtle document into a model
+     *
+     * @param document the string containing literal RDF (i.e., not a file name or URL)
+     * @return the loaded model
+     */
     public static Model loadTurtle( final String document ) {
         return load( document, Lang.TURTLE );
     }

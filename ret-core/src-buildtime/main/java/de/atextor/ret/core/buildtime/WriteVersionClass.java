@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * This class is executed at build time and will write Java file containing static build version information.
+ * This class is executed at build time and will write the Java file containing static build version information.
  */
 public class WriteVersionClass {
     private static final StringTemplate VERSION_CLASS_TEMPLATE = new StringTemplate( """
@@ -49,15 +49,22 @@ public class WriteVersionClass {
          * See the License for the specific language governing permissions and
          * limitations under the License.
          */
-          
+
          package ${package};
-                 
+
          /**
           * Provides static build version information.
           * Generated class, do not edit.
           */
          public class ${className} {
+            /**
+             * The version of the package
+             */
             public static final String VERSION = "${version}";
+
+            /**
+             * The build date
+             */
             public static final String BUILD_DATE = "${buildDate}";
          }
          """ );
@@ -66,6 +73,8 @@ public class WriteVersionClass {
      * args[0]: the path to git.properties
      * args[1]: fully qualified class name to generate
      * args[2]: the path to the file to write
+     *
+     * @param args the arguments
      */
     public static void main( final String[] args ) {
         final String gitPropertiesFile = args[0];

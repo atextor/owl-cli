@@ -34,6 +34,9 @@ import org.semanticweb.owlapi.model.SWRLObjectVisitorEx;
 
 import java.util.Optional;
 
+/**
+ * Default implementation for {@link MappingConfiguration}
+ */
 public class DefaultMappingConfiguration implements MappingConfiguration {
     private OWLAxiomVisitorEx<Graph> owlAxiomMapper;
 
@@ -186,7 +189,7 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlAnnotationSubjectMapper = owlAnnotationSubjectMapper;
     }
 
-    public void setSwrlObjectMapper( final SWRLObjectVisitorEx<Graph> swrlObjectMapper ) {
+    private void setSwrlObjectMapper( final SWRLObjectVisitorEx<Graph> swrlObjectMapper ) {
         this.swrlObjectMapper = swrlObjectMapper;
     }
 
@@ -214,10 +217,18 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
         this.owlClassExpressionPrinter = owlClassExpressionPrinter;
     }
 
+    /**
+     * Returns a new builder
+     *
+     * @return the builder
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * A builder class for the mapping configuration
+     */
     @SuppressWarnings( "unused" )
     public static class Builder {
         private Optional<OWLAxiomVisitorEx<Graph>> owlAxiomMapper = Optional.empty();
@@ -252,86 +263,187 @@ public class DefaultMappingConfiguration implements MappingConfiguration {
 
         private Optional<OWLClassExpressionVisitorEx<String>> owlClassExpressionPrinter = Optional.empty();
 
+        /**
+         * Sets the OWL axiom mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlAxiomMapper( final OWLAxiomVisitorEx<Graph> mapper ) {
             owlAxiomMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL class expression mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlClassExpressionMapper( final OWLClassExpressionVisitorEx<Graph> mapper ) {
             owlClassExpressionMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL individual mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlIndividualMapper( final OWLIndividualVisitorEx<Graph> mapper ) {
             owlIndividualMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL property expression mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlPropertyExpressionMapper( final OWLPropertyExpressionVisitorEx<Graph> mapper ) {
             owlPropertyExpressionMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL object mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlObjectMapper( final OWLObjectVisitorEx<Graph> mapper ) {
             owlObjectMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL data mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlDataMapper( final OWLDataVisitorEx<Graph> mapper ) {
             owlDataMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL entity mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlEntityMapper( final OWLEntityVisitorEx<Graph> mapper ) {
             owlEntityMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL annotation object mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlAnnotationObjectMapper( final OWLAnnotationObjectVisitorEx<Graph> mapper ) {
             owlAnnotationObjectMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL annotation subject mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder owlAnnotationSubjectMapper( final OWLAnnotationSubjectVisitorEx<Graph> mapper ) {
             owlAnnotationSubjectMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the SWRL object mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder swrlObjectMapper( final SWRLObjectVisitorEx<Graph> mapper ) {
             swrlObjectMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the identifier mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder identifierMapper( final IdentifierMapper mapper ) {
             identifierMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the name mapper
+         *
+         * @param mapper the mapper
+         * @return the builder
+         */
         public Builder nameMapper( final NameMapper mapper ) {
             nameMapper = Optional.of( mapper );
             return this;
         }
 
+        /**
+         * Sets the OWL data printer
+         *
+         * @param printer the printer
+         * @return the builder
+         */
         public Builder owlDataPrinter( final OWLDataVisitorEx<String> printer ) {
             owlDataPrinter = Optional.of( printer );
             return this;
         }
 
+        /**
+         * Sets the OWL property expression printer
+         *
+         * @param printer the printer
+         * @return the builder
+         */
         public Builder owlPropertyExpressionPrinter( final OWLPropertyExpressionVisitorEx<String> printer ) {
             owlPropertyExpressionPrinter = Optional.of( printer );
             return this;
         }
 
+        /**
+         * Sets the OWL individual printer
+         *
+         * @param printer the printer
+         * @return the builder
+         */
         public Builder owlIndividualPrinter( final OWLIndividualVisitorEx<String> printer ) {
             owlIndividualPrinter = Optional.of( printer );
             return this;
         }
 
+        /**
+         * Sets the OWL class expression printer
+         *
+         * @param printer the printer
+         * @return the builder
+         */
         public Builder owlClassExpressionPrinter( final OWLClassExpressionVisitorEx<String> printer ) {
             owlClassExpressionPrinter = Optional.of( printer );
             return this;
         }
 
+        /**
+         * Builds the mapping configuration using set values, otherwise with default values
+         *
+         * @return the mapping configuration
+         */
         public MappingConfiguration build() {
             final DefaultMappingConfiguration mappingConfig = new DefaultMappingConfiguration();
 

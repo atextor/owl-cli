@@ -59,6 +59,11 @@ import javax.annotation.Nonnull;
 public class OWLObjectMapper implements OWLObjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new object mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLObjectMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

@@ -23,25 +23,74 @@ import lombok.Value;
  * Sealed class that represents the types of edges in the graph
  */
 public abstract class Edge implements GraphElement {
+    /**
+     * The type of edge
+     */
     public enum Type {
+        /**
+         * Default filled black arrow, indicating default relation
+         */
         DEFAULT_ARROW,
+
+        /**
+         * Hollow tipped arrow, indicating inheritance
+         */
         HOLLOW_ARROW,
+
+        /**
+         * Double ended hollow tipped arrow, indicating equivalence
+         */
         DOUBLE_ENDED_HOLLOW_ARROW,
+
+        /**
+         * Dashed arrow, indicating implicit relation
+         */
         DASHED_ARROW,
+
+        /**
+         * Edge without arrows
+         */
         NO_ARROW
     }
 
     private Edge() {
     }
 
+    /**
+     * Returns the "from" node
+     *
+     * @return the node
+     */
     public abstract Node getFrom();
 
+    /**
+     * Returns the "to" node
+     *
+     * @return the node
+     */
     public abstract Node getTo();
 
+    /**
+     * Returns the edge's type
+     *
+     * @return the type
+     */
     public abstract Type getType();
 
+    /**
+     * Returns a new edge with the "from" node updated to a new value
+     *
+     * @param newFromId the new "from" node id
+     * @return the new edge
+     */
     public abstract Edge setFrom( Node newFromId );
 
+    /**
+     * Returns a new edge with the "to" node updated to a new value
+     *
+     * @param newToId the new "to" node id
+     * @return the new edge
+     */
     public abstract Edge setTo( Node newToId );
 
     @Override
@@ -54,6 +103,9 @@ public abstract class Edge implements GraphElement {
         return this;
     }
 
+    /**
+     * A plain edge (i.e., which does not have a label)
+     */
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static class Plain extends Edge {
@@ -79,17 +131,54 @@ public abstract class Edge implements GraphElement {
         }
     }
 
+    /**
+     * An Edge with an attached label
+     */
     @Value
     @EqualsAndHashCode( callSuper = true )
     public static class Decorated extends Edge {
+        /**
+         * The possible labels
+         */
         public enum Label {
+            /**
+             * Indicates an edge pointing to a class
+             */
             CLASS( "C" ),
+
+            /**
+             * Indicates an edge pointing to an object property
+             */
             OBJECT_PROPERTY( "P" ),
+
+            /**
+             * Indicates an edge pointing to a data property
+             */
             DATA_PROPERTY( "P" ),
+
+            /**
+             * Indicates an edge pointing to a (data) class
+             */
             DATA_RANGE( "C" ),
+
+            /**
+             * Indicates an edge pointing to an individual
+             */
             INDIVIDUAL( "v" ),
+
+            /**
+             * Indicates an edge pointing to a literal value
+             */
             LITERAL( "v" ),
+
+            /**
+             * Indicates an edge pointing to a given data range
+             */
             RANGE( "range" ),
+
+            /**
+             * Indicates an edge pointing to a given data domain
+             */
             DOMAIN( "domain" );
 
             final String label;
@@ -98,6 +187,11 @@ public abstract class Edge implements GraphElement {
                 this.label = label;
             }
 
+            /**
+             * Returns the label string
+             *
+             * @return the label string
+             */
             public String getLabel() {
                 return label;
             }

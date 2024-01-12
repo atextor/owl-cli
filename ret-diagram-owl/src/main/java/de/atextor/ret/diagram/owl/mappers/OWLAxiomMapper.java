@@ -109,6 +109,11 @@ import static io.vavr.API.TODO;
 public class OWLAxiomMapper implements OWLAxiomVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new OWL axiom mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLAxiomMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

@@ -31,13 +31,43 @@ import java.util.Set;
 @EqualsAndHashCode( callSuper = true )
 @With
 public class PropertyMarker extends Node {
+    /**
+     * The various kinds of markers
+     */
     public enum Kind {
+        /**
+         * The marked property is functional
+         */
         FUNCTIONAL,
+
+        /**
+         * The marked property is inverse functional
+         */
         INVERSE_FUNCTIONAL,
+
+        /**
+         * The marked property is transitive
+         */
         TRANSITIVE,
+
+        /**
+         * The marked property is symmetric
+         */
         SYMMETRIC,
+
+        /**
+         * The marked property is asymmetric
+         */
         ASYMMETRIC,
+
+        /**
+         * The marked property is reflexive
+         */
         REFLEXIVE,
+
+        /**
+         * The marked property is irreflexive
+         */
         IRREFLEXIVE
     }
 

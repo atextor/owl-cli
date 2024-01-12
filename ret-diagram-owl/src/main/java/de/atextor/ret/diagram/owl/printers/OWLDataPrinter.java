@@ -36,6 +36,11 @@ import java.util.stream.Collectors;
 public class OWLDataPrinter implements OWLDataVisitorEx<String> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new data printer from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLDataPrinter( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

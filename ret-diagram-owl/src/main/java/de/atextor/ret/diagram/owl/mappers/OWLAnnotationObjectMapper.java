@@ -35,6 +35,11 @@ public class OWLAnnotationObjectMapper implements OWLAnnotationObjectVisitorEx<G
     OWLAnnotationSubjectVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new annotation object mapper given a mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLAnnotationObjectMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

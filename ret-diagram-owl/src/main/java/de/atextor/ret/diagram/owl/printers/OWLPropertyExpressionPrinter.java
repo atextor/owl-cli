@@ -31,6 +31,11 @@ import javax.annotation.Nonnull;
 public class OWLPropertyExpressionPrinter implements OWLPropertyExpressionVisitorEx<String> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new property expression printer from a given mapping config
+     *
+     * @param mappingConfig the mapping config
+     */
     public OWLPropertyExpressionPrinter( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

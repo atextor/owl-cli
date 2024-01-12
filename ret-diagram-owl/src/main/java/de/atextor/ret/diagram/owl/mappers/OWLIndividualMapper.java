@@ -31,6 +31,11 @@ import javax.annotation.Nonnull;
 public class OWLIndividualMapper implements OWLIndividualVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new individual mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLIndividualMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

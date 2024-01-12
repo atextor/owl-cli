@@ -77,6 +77,11 @@ import java.util.stream.Stream;
 public class OWLClassExpressionMapper implements OWLClassExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new OWL axiom mapper from a given mapping config
+     *
+     * @param mappingConfig the mapping config
+     */
     public OWLClassExpressionMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

@@ -26,8 +26,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
+import java.util.Optional;
+
 import static de.atextor.ret.cli.RetDiagram.COMMAND_NAME;
 
+/**
+ * The 'diagram' subcommand
+ */
 @SuppressWarnings( "SpellCheckingInspection" )
 @CommandLine.Command( name = COMMAND_NAME,
     description = "Generate automatically-layouted diagrams for an ontology",
@@ -38,6 +43,9 @@ import static de.atextor.ret.cli.RetDiagram.COMMAND_NAME;
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#diagram-command"
 )
 public class RetDiagram extends AbstractCommand implements Runnable {
+    /**
+     * The name of this subcommand
+     */
     public static final String COMMAND_NAME = "diagram";
 
     private static final Logger LOG = LoggerFactory.getLogger( RetDiagram.class );
@@ -130,9 +138,14 @@ public class RetDiagram extends AbstractCommand implements Runnable {
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
         openInput( input ).flatMap( inputStream ->
             loadOntology( inputStream ).flatMap( ontology ->
-                openOutput( input, output, format.toString() ).flatMap( outputStream ->
+                openOutput( input, Optional.ofNullable( output ), format.toString() ).flatMap( outputStream ->
                     new DiagramGenerator( configuration, mappingConfig )
                         .generate( ontology, outputStream, configuration ) ) )
         ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
+    }
+
+    @Override
+    public String commandName() {
+        return COMMAND_NAME;
     }
 }

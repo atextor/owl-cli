@@ -39,27 +39,41 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class AbstractCommand {
+/**
+ * Base class for commands that bundles common functionality
+ */
+public abstract class AbstractCommand {
 
+    /**
+     * Will exit the program with status code 1
+     */
     protected void commandFailed() {
         System.exit( 1 );
     }
 
-    protected Try<OutputStream> openOutput( final @Nonnull String input, final String output,
-        final String targetFileExtension ) {
-        if ( output != null ) {
+    /**
+     * Try to open an output stream
+     *
+     * @param input the original input: file path or "-" for stdin
+     * @param output the designated output: an absolute or relative path or "-" for stdout. If empty, determine the output from the input
+     * @param targetFileExtension the target file extension to use, if the output is empty
+     * @return if successful, the output stream
+     */
+    protected Try<OutputStream> openOutput( final @Nonnull String input, final Optional<String> output, final String targetFileExtension ) {
+        if ( output.isPresent() ) {
             // Output is given as - --> write to stdout
-            if ( output.equals( "-" ) ) {
+            if ( output.get().equals( "-" ) ) {
                 return Try.success( System.out );
             }
 
             // Output is given as something else --> open as file
             try {
-                return Try.success( new FileOutputStream( output ) );
+                return Try.success( new FileOutputStream( output.get() ) );
             } catch ( final FileNotFoundException exception ) {
                 return Try.failure( exception );
             }
@@ -85,6 +99,12 @@ public class AbstractCommand {
         }
     }
 
+    /**
+     * Try to open a given input as input stream, either an absolute or relative file system path or "-" meaning stdin
+     *
+     * @param input the input
+     * @return an input stream on success
+     */
     protected Try<InputStream> openInput( final String input ) {
         if ( input.equals( "-" ) ) {
             return Try.success( System.in );
@@ -100,6 +120,12 @@ public class AbstractCommand {
         }
     }
 
+    /**
+     * Since the service loader feature is disabled in the GraalVM config, instead set up the OWL-API OWL ontology
+     * manager programmatically.
+     *
+     * @return the OWL ontology manager
+     */
     protected OWLOntologyManager createOWLOntologyManager() {
         final ImmutableSet<OWLParserFactory> parserFactories = ImmutableSet.<OWLParserFactory>builder()
             .add( new org.semanticweb.owlapi.manchestersyntax.parser.ManchesterOWLSyntaxOntologyParserFactory() )
@@ -159,8 +185,14 @@ public class AbstractCommand {
         }
     }
 
-    protected void exitWithErrorMessage( final Logger logger, final LoggingMixin loggingMixin,
-        final Throwable throwable ) {
+    /**
+     * Bail out after a command failed with a throwable
+     *
+     * @param logger the logger to print a message
+     * @param loggingMixin the logging mixin of the respective command, to determine verbosity
+     * @param throwable the cause
+     */
+    protected void exitWithErrorMessage( final Logger logger, final LoggingMixin loggingMixin, final Throwable throwable ) {
         if ( loggingMixin.getVerbosity().length == 0 ) {
             System.err.println( "Error: " + throwable.getMessage() );
         } else if ( loggingMixin.getVerbosity().length == 1 ) {
@@ -171,7 +203,19 @@ public class AbstractCommand {
         commandFailed();
     }
 
-    public void registerTypeConverters( CommandLine commandLine ) {
-
+    /**
+     * Provide a hook for subclasses to register custom {@link CommandLine.ITypeConverter}s
+     *
+     * @param commandLine the command line
+     */
+    public void registerTypeConverters( final CommandLine commandLine ) {
+        // empty by default
     }
+
+    /**
+     * Return the name of this command
+     *
+     * @return the command name
+     */
+    public abstract String commandName();
 }

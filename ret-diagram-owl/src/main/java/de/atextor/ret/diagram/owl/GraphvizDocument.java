@@ -37,8 +37,14 @@ import java.util.stream.Stream;
 @Getter
 @FieldDefaults( makeFinal = true, level = AccessLevel.PRIVATE )
 public class GraphvizDocument implements Function<Configuration, String> {
+    /**
+     * A document containing no elements
+     */
     public static final GraphvizDocument BLANK = new GraphvizDocument();
 
+    /**
+     * The default configuration for rendering the document
+     */
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
 
     @SuppressWarnings( "SpellCheckingInspection" )

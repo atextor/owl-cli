@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -33,31 +34,62 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * The RDF Writer is used to serialize RDF documents into various formats, while using configurable formatting for RDF/Turtle
+ * specifically, using the {@link TurtleFormatter}.
+ */
 public class RdfWriter {
+    /**
+     * The default configuration
+     */
     public static final Configuration DEFAULT_CONFIGURATION = Configuration.builder().build();
 
     private static final Logger LOG = LoggerFactory.getLogger( RdfWriter.class );
 
+    /**
+     * Writes an RDF document given by an input URL, to an output stream using a writing/formatting configuration
+     *
+     * @param inputUrl the input URL
+     * @param output the output stream
+     * @param configuration the configuration
+     * @return {@link io.vavr.control.Try.Success} if writing succeeded
+     */
     public Try<Void> write( final URL inputUrl, final OutputStream output, final Configuration configuration ) {
-        try {
-            final HttpClient client = HttpClient.newBuilder()
-                .followRedirects( HttpClient.Redirect.ALWAYS )
-                .build();
-            final HttpRequest request = HttpRequest.newBuilder()
-                .uri( inputUrl.toURI() )
-                .build();
-            final HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
-            if ( response.statusCode() == HttpURLConnection.HTTP_OK ) {
-                final ByteArrayInputStream inputStream = new ByteArrayInputStream( response.body().getBytes() );
-                return write( inputStream, output, configuration );
+        if ( inputUrl.getProtocol().equals( "http" ) || inputUrl.getProtocol().equals( "https" ) ) {
+            try {
+                final HttpClient client = HttpClient.newBuilder()
+                    .followRedirects( HttpClient.Redirect.ALWAYS )
+                    .build();
+                final HttpRequest request = HttpRequest.newBuilder()
+                    .uri( inputUrl.toURI() )
+                    .build();
+                final HttpResponse<String> response = client.send( request, HttpResponse.BodyHandlers.ofString() );
+                if ( response.statusCode() == HttpURLConnection.HTTP_OK ) {
+                    final ByteArrayInputStream inputStream = new ByteArrayInputStream( response.body().getBytes() );
+                    return write( inputStream, output, configuration );
+                }
+                return Try.failure( new RuntimeException( "Got unexpected HTTP response: " + response.statusCode() ) );
+            } catch ( final Exception exception ) {
+                LOG.debug( "Failure during reading from URL: {}", inputUrl );
+                return Try.failure( exception );
             }
-            return Try.failure( new RuntimeException( "Got unexpected HTTP response: " + response.statusCode() ) );
-        } catch ( final Exception exception ) {
-            LOG.debug( "Failure during reading from URL: {}", inputUrl );
+        }
+
+        try {
+            return write( inputUrl.openStream(), output, configuration );
+        } catch ( final IOException exception ) {
             return Try.failure( exception );
         }
     }
 
+    /**
+     * Writes an RDF document given by an input stream, to an output stream using a writing/formatting configuration
+     *
+     * @param input the input stream
+     * @param output the output stream
+     * @param configuration the configuration
+     * @return {@link io.vavr.control.Try.Success} if writing succeeded
+     */
     public Try<Void> write( final InputStream input, final OutputStream output, final Configuration configuration ) {
         final Model model = ModelFactory.createDefaultModel();
 
@@ -75,6 +107,14 @@ public class RdfWriter {
         return Try.success( null );
     }
 
+    /**
+     * Writes an RDF model to and output stream in RDF/Turtle format, using a formatting configuration
+     *
+     * @param model the model
+     * @param output the output stream
+     * @param style the formatting style
+     * @return {@link io.vavr.control.Try.Success} if writing succeeded
+     */
     public Try<Void> writeTurtle( final Model model, final OutputStream output, final FormattingStyle style ) {
         final TurtleFormatter formatter = new TurtleFormatter( style );
         formatter.accept( model, output );

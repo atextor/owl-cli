@@ -18,10 +18,18 @@ package de.atextor.ret.cli;
 
 import java.io.Serial;
 
+/**
+ * An error that can occur when loading/saving a file
+ */
 public class ErrorMessage extends Exception {
     @Serial
     private static final long serialVersionUID = 5086560337386407192L;
 
+    /**
+     * Default constructor
+     *
+     * @param message the message
+     */
     public ErrorMessage( final String message ) {
         super( message );
     }

@@ -29,6 +29,11 @@ import javax.annotation.Nonnull;
 public class OWLIndividualPrinter implements OWLIndividualVisitorEx<String> {
     final MappingConfiguration mappingConfiguration;
 
+    /**
+     * Creates a new individual printer from a given mapping config
+     *
+     * @param mappingConfiguration the config
+     */
     public OWLIndividualPrinter( final MappingConfiguration mappingConfiguration ) {
         this.mappingConfiguration = mappingConfiguration;
     }

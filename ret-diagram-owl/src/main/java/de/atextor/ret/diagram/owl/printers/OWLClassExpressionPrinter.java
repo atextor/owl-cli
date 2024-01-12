@@ -50,6 +50,11 @@ import java.util.stream.Collectors;
 public class OWLClassExpressionPrinter implements OWLClassExpressionVisitorEx<String> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates a new class expression printer from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLClassExpressionPrinter( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

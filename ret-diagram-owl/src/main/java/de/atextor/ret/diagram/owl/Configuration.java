@@ -23,54 +23,104 @@ import lombok.Builder;
  */
 @Builder
 public class Configuration {
+    /**
+     * The name (and possibly path) to the GraphViz dot binary
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String dotBinary = "dot";
 
+    /**
+     * The default font name
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String fontname = "Verdana";
 
+    /**
+     * The default font size
+     */
     @Builder.Default
     public int fontsize = 12;
 
+    /**
+     * The name of the font for nodes
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String nodeFontname = "Verdana";
 
+    /**
+     * The size of the font for nodes
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public int nodeFontsize = 12;
 
+    /**
+     * The default node shape, see <a href="https://graphviz.org/doc/info/shapes.html">Node Shapes</a> for the possible options
+     */
     @Builder.Default
     public String nodeShape = "box";
 
+    /**
+     * The margin values to be used for shapes, see <a href="https://graphviz.org/docs/attrs/margin/">margin</a> for syntax
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String nodeMargin = "0.05,0.0";
 
+    /**
+     * The style to use for nodes, see <a href="https://graphviz.org/docs/attr-types/style/">style</a> for details
+     */
     @Builder.Default
     public String nodeStyle = "rounded";
 
+    /**
+     * The background color for nodes
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String bgColor = "white";
 
+    /**
+     * The foreground color (lines and text)
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public String fgColor = "black";
 
+    /**
+     * The output format
+     */
     @Builder.Default
     public Format format = Format.SVG;
 
+    /**
+     * The diagram layout direction
+     */
     @SuppressWarnings( "CanBeFinal" )
     @Builder.Default
     public LayoutDirection layoutDirection = LayoutDirection.LEFT_TO_RIGHT;
 
+    /**
+     * The possible formats for diagram generation
+     */
     public enum Format {
+        /**
+         * PNG format
+         */
         PNG,
+        /**
+         * SVG format
+         */
         SVG;
 
+        /**
+         * The file extension according to the format, e.g. "png" or "svg"
+         *
+         * @return the file extension
+         */
         public String getExtension() {
             return toString().toLowerCase();
         }
@@ -84,8 +134,18 @@ public class Configuration {
         }
     }
 
+    /**
+     * The possible directions in which the generated diagrams are aligned
+     */
     public enum LayoutDirection {
+        /**
+         * Diagrams are aligned vertically, with the root node on top
+         */
         TOP_TO_BOTTOM,
+
+        /**
+         * Diagrams are aligned horizontally, with the root node on the left
+         */
         LEFT_TO_RIGHT;
 
         @Override

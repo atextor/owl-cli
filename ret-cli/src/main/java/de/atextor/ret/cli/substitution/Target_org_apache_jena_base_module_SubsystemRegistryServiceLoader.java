@@ -29,7 +29,12 @@ import org.apache.jena.sys.InitJenaCore;
 
 import java.util.List;
 
-@SuppressWarnings( "unused" )
+/**
+ * Substitution class for {@link SubsystemRegistryServiceLoader}
+ *
+ * @param <T> the type argument
+ */
+@SuppressWarnings( { "unused" } )
 @TargetClass( SubsystemRegistryServiceLoader.class )
 public final class Target_org_apache_jena_base_module_SubsystemRegistryServiceLoader<T extends SubsystemLifecycle> implements SubsystemRegistry<T> {
     @Override

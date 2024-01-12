@@ -38,6 +38,11 @@ import javax.annotation.Nonnull;
 public class OWLPropertyExpressionMapper implements OWLPropertyExpressionVisitorEx<Graph> {
     private final MappingConfiguration mappingConfig;
 
+    /**
+     * Creates an new property expression mapper from a given mapping config
+     *
+     * @param mappingConfig the config
+     */
     public OWLPropertyExpressionMapper( final MappingConfiguration mappingConfig ) {
         this.mappingConfig = mappingConfig;
     }

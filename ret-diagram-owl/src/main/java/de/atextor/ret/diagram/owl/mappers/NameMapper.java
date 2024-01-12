@@ -23,7 +23,19 @@ import org.semanticweb.owlapi.model.IRI;
  * Determines how the name (i.e. label) of a node is retrieved from the original ontology element
  */
 public interface NameMapper {
+    /**
+     * Determines a name for an object that has an IRI
+     *
+     * @param object the object
+     * @return the name
+     */
     String getName( final HasIRI object );
 
+    /**
+     * Determines a name for the given IRI
+     *
+     * @param object the IRI
+     * @return the name
+     */
     String getName( IRI object );
 }
