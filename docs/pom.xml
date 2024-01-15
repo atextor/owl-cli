@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2024 Andreas Textor
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ret</artifactId>
+        <groupId>de.atextor.ret</groupId>
+        <version>DEV-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>docs</artifactId>
+    <name>RET Docs</name>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+        <maven.surefire.skip>true</maven.surefire.skip>
+        <maven.failsafe.skip>true</maven.failsafe.skip>
+        <jacoco.skip>true</jacoco.skip>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!--        <maven.compiler.source>1.8</maven.compiler.source>-->
+        <!--        <maven.compiler.target>1.8</maven.compiler.target>-->
+        <!--        <asciidoctor.maven.plugin.version>2.2.4</asciidoctor.maven.plugin.version>-->
+        <asciidoctorj.version>2.5.11</asciidoctorj.version>
+        <asciidoctor-multipage.version>0.0.16</asciidoctor-multipage.version>
+        <jruby.version>9.4.5.0</jruby.version>
+        <mavengem-wagon-version>1.0.3</mavengem-wagon-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>rubygems</groupId>
+            <artifactId>asciidoctor-multipage</artifactId>
+            <version>${asciidoctor-multipage.version}</version>
+            <type>gem</type>
+            <exclusions>
+                <exclusion>
+                    <groupId>rubygems</groupId>
+                    <artifactId>asciidoctor</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension> <!-- this allows us to download gems -->
+                <groupId>org.torquebox.mojo</groupId>
+                <artifactId>mavengem-wagon</artifactId>
+                <version>${mavengem-wagon-version}</version>
+            </extension>
+        </extensions>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <id>generate-diagrams</id>
+                        <configuration>
+                            <target name="main">
+                                <apply executable="java"
+                                       dest="${project.basedir}/src/docs/asciidoc/images/generated"
+                                       parallel="false"
+                                       failonerror="true"
+                                       failifexecutionfails="true"
+                                       verbose="true">
+                                    <arg value="-jar"/>
+                                    <arg value="${project.basedir}/../ret-cli/target/ret-cli-${project.version}.jar"/>
+                                    <arg value="diagram"/>
+                                    <arg value="--direction"/>
+                                    <arg value="detect"/>
+                                    <srcfile/>
+                                    <targetfile/>
+                                    <fileset dir="${project.basedir}/src/docs/asciidoc/examples" includes="*.ttl"/>
+                                    <mapper type="glob" from="*.ttl" to="*.svg"/>
+                                </apply>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>de.saumya.mojo</groupId>
+                <artifactId>gem-maven-plugin</artifactId>
+                <configuration>
+                    <jrubyVersion>${jruby.version}</jrubyVersion>
+                    <gemHome>${project.build.directory}/gems</gemHome>
+                    <gemPath>${project.build.directory}/gems</gemPath>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>install-gems</id>
+                        <goals>
+                            <goal>initialize</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <dependencies>
+                    <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+                    <dependency>
+                        <groupId>org.jruby</groupId>
+                        <artifactId>jruby</artifactId>
+                        <version>${jruby.version}</version>
+                    </dependency>
+                    <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+                    <dependency>
+                        <groupId>org.asciidoctor</groupId>
+                        <artifactId>asciidoctorj</artifactId>
+                        <version>${asciidoctorj.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <sourceDirectory>src/docs/asciidoc</sourceDirectory>
+                    <attributes>
+                        <basedir>${project.basedir}</basedir>
+                        <project-version>${project.version}</project-version>
+                        <sourcedir>${project.build.sourceDirectory}</sourcedir>
+                        <source-highlighter>rouge</source-highlighter>
+                        <rouge-style>github</rouge-style>
+                        <icons>font</icons>
+                        <linkcss>true</linkcss>
+                        <stylesdir>assets/styles</stylesdir>
+                        <stylesheet>adoc-foundation.css</stylesheet>
+                        <toclevels>3</toclevels>
+                        <sectnums>true</sectnums>
+                        <sectnumlevels>3</sectnumlevels>
+                        <sectanchors>true</sectanchors>
+                    </attributes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-documentation</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>multipage_html5</backend>
+                            <doctype>book</doctype>
+                            <gemPath>${project.build.directory}/gems</gemPath>
+                            <requires>
+                                <require>asciidoctor-multipage</require>
+                            </requires>
+                            <outputDirectory>${project.build.directory}/docs</outputDirectory>
+                            <attributes>
+                                <toc>left</toc>
+                            </attributes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <skipSource>true</skipSource>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-install</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <configuration>
+                    <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>${maven-gpg-plugin-version}</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>mavengems</id>
+            <url>mavengem:https://rubygems.org</url>
+        </repository>
+    </repositories>
+</project>

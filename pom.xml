@@ -21,7 +21,7 @@
 
     <groupId>de.atextor.ret</groupId>
     <artifactId>ret</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>DEV-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>RDF Engineering Toolkit</name>
@@ -61,6 +61,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <maven.skip.surefire>false</maven.skip.surefire>
+        <maven.skip.failsafe>false</maven.skip.failsafe>
 
         <!-- General dependency versions -->
         <caffeine-version>2.9.2</caffeine-version>
@@ -88,16 +90,22 @@
         <jqwik-version>1.8.0</jqwik-version>
 
         <!-- Plugin versions -->
+        <asciidoctor-maven-plugin-version>2.2.4</asciidoctor-maven-plugin-version>
         <build-helper-maven-plugin-version>3.3.0</build-helper-maven-plugin-version>
         <exec-maven-plugin-version>3.1.0</exec-maven-plugin-version>
         <flatten-maven-plugin-version>1.4.1</flatten-maven-plugin-version>
+        <gem-maven-plugin-version>2.0.1</gem-maven-plugin-version>
         <git-commit-id-plugin-version>4.9.10</git-commit-id-plugin-version>
         <jacoco-maven-plugin-version>0.8.9</jacoco-maven-plugin-version>
+        <maven-antrun-plugin-version>1.8</maven-antrun-plugin-version>
         <maven-clean-plugin-version>3.2.0</maven-clean-plugin-version>
         <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
+        <maven-deploy-plugin-version>3.1.1</maven-deploy-plugin-version>
         <maven-failsafe-plugin-version>3.0.0</maven-failsafe-plugin-version>
         <maven-gpg-plugin-version>3.0.1</maven-gpg-plugin-version>
+        <maven-install-plugin-version>3.1.1</maven-install-plugin-version>
         <maven-javadoc-plugin-version>3.5.0</maven-javadoc-plugin-version>
+        <maven-jar-plugin-version>3.3.0</maven-jar-plugin-version>
         <maven-shade-plugin-version>3.4.1</maven-shade-plugin-version>
         <maven-source-plugin-version>3.2.1</maven-source-plugin-version>
         <maven-surefire-junit5-tree-reporter-version>1.2.1</maven-surefire-junit5-tree-reporter-version>
@@ -112,6 +120,7 @@
         <module>ret-infer</module>
         <module>ret-write</module>
         <module>ret-cli</module>
+        <module>docs</module>
     </modules>
 
     <distributionManagement>
@@ -243,6 +252,11 @@
                 <version>${picocli-version}</version>
             </dependency>
             <dependency>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli-codegen</artifactId>
+                <version>${picocli-version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j-api-version}</version>
@@ -301,6 +315,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctor-maven-plugin</artifactId>
+                    <version>${asciidoctor-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>${build-helper-maven-plugin-version}</version>
@@ -316,6 +335,11 @@
                     <version>${flatten-maven-plugin-version}</version>
                 </plugin>
                 <plugin>
+                    <groupId>de.saumya.mojo</groupId>
+                    <artifactId>gem-maven-plugin</artifactId>
+                    <version>${gem-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>${git-commit-id-plugin-version}</version>
@@ -324,6 +348,11 @@
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -337,6 +366,11 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${maven-failsafe-plugin-version}</version>
                 </plugin>
@@ -347,8 +381,18 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-install-plugin</artifactId>
+                    <version>${maven-install-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin-version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin-version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -488,7 +532,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <skip>false</skip>
+                    <skip>${maven.skip.surefire}</skip>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <includes>
                         <include>**/*Tests.java</include>
@@ -510,6 +554,14 @@
                         <printStderrOnFailure>true</printStderrOnFailure>
                         <printStderrOnSuccess>false</printStderrOnSuccess>
                     </statelessTestsetInfoReporter>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <skipITs>${maven.skip.failsafe}</skipITs>
                 </configuration>
             </plugin>
         </plugins>

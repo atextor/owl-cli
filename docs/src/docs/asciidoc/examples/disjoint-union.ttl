@@ -1,0 +1,7 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:C1 a owl:Class .
+:C2 a owl:Class .
+:C a owl:Class ;
+   owl:disjointUnionOf ( :C1 :C2 ) .

@@ -1,0 +1,1171 @@
+// -*- fill-column: 100; -*-
+[#rdf-engineering-toolkit]
+= RDF Engineering Toolkit
+Andreas Textor <mail@atextor.de>
+:revnumber: {project-version}
+:example-caption!:
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../../main/java]
+ifndef::examplesdir[:examplesdir: examples]
+:toc-title:
+:stem: latexmath
+
+*owl-cli* is a command line tool for ontology engineering.
+
+It targets the
+https://en.wikipedia.org/wiki/Web_Ontology_Language[Web Ontology Language] (OWL 2) and
+https://en.wikipedia.org/wiki/Resource_Description_Framework[RDF].
+You can
+
+* generate a diagram for an OWL ontology with the <<diagram-command>> ,
+* read any RDF document in https://www.w3.org/TR/turtle/[RDF/Turtle],
+https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
+https://www.w3.org/TR/n-triples/[RDF N-Triples] or
+https://www.w3.org/TeamSubmission/n3/[N3] format and write it in configurable, pretty-printed RDF/Turtle or one of the other formats using the <<write-command>>,
+* perform OWL DL reasoning on an input ontology using the <<infer-command>>.
+
+You can find the source code on https://github.com/atextor/owl-cli[Github].
+
+[.thumb]
+image::default/splash.svg[role=half-width]
+
+[#installation]
+== Installation
+
+=== Requirements
+
+Things you will need to have installed to run *owl-cli*:
+
+* https://www.graphviz.org/[Graphviz] for the generation of diagrams.
+** Install in Windows (using https://chocolatey.org/[Chocolatey]): `choco install graphviz`
+** Install in MacOs (using https://brew.sh/[Brew]): `brew install graphviz`
+** Install in Ubuntu/Debian Linux: `apt install graphviz`
+
+=== Download and Install `owl-cli`
+
+Download the pre-built binary for your platform:
+
+[cols="^,^,^"]
+|===
+.^|image:default/icon-windows.png[link="https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-windows-{project-version}.exe",width=70]
+
+https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-windows-{project-version}.exe[owl-x86_64-windows-{project-version}.exe]
+.^|image:default/icon-apple.png[link="https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-apple-darwin-{project-version}",width=70]
+
+https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-apple-darwin-{project-version}[owl-x86_64-apple-darwin-{project-version}]
+.^|image:default/icon-linux.png[link="https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-linux-{project-version}",width=70]
+
+https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-x86_64-linux-{project-version}[owl-x86_64-linux-{project-version}]
+|===
+
+For other platforms or architectures, please use the executable .jar file: https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-cli-{project-version}.jar[owl-cli-{project-version}.jar].
+This requires Java (OpenJDK) *17* or newer.
+
+Rename the binary to `owl.exe` (Windows) or `owl` (MacOs/Linux), put it in your favorite directory and add this directory to the PATH environment variable:
+
+* Windows: `setx /M path "%path%;C:\your\path\here\"`
+* MacOs/Linux: `echo 'export PATH=/your/path/here:$PATH' >> ~/.bashrc; source ~/.bashrc`
+
+[NOTE]
+====
+If using the executable .jar file, the following commands will make the jar available as `owl`
+command as well.
+This works in MacOs and Linux.
+
+[source,shell,subs="attributes+,+quotes"]
+----
+curl -L -o ~/.local/share/owl-cli/owl-cli.jar --create-dirs https://github.com/atextor/owl-cli/releases/download/{release-tag}/owl-cli-{project-version}.jar
+echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
+source ~/.bashrc
+----
+====
+
+After installation, you can use the `owl` command: See <<usage>> for more information.
+
+[#building-from-source]
+=== Building from Source
+
+[[building-executable-jar]]
+==== Building the executable JAR from source
+
+For building the executable JAR file for *owl-cli*, you need Java *17*.
+We recommend installation of the GraalVM-based JDK 17 using https://sdkman.io/[SDKMAN!].
+
+Run the following commands:
+
+[source,shell]
+----
+# The following commands install SDKMAN!. If you have it installed already, you can skip it.
+curl -sL https://get.sdkman.io | bash
+echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+source $HOME/.sdkman/bin/sdkman-init.sh
+
+# Use SDKMAN! to install JDK
+sdk install java 17.0.8-graal
+sdk use java 17.0.8-graal
+
+# Build the project
+git clone https://github.com/atextor/owl-cli.git
+cd owl-cli
+./gradlew
+----
+
+This will build `cli/build/libs/owl-cli-snapshot.jar`, which you then can install locally:
+
+[source,shell]
+----
+mkdir -p ~/.local/share/owl-cli
+cp cli/build/libs/owl-cli-snapshot.jar !$/owl-cli.jar
+echo 'function owl() { java -jar ~/.local/share/owl-cli/owl-cli.jar $*; }' >> ~/.bashrc
+source ~/.bashrc
+----
+
+After that, you can use the `owl` command: See <<usage>> for more information.
+
+[[building-native-binary]]
+==== Building the native binary from source
+
+For building the *owl-cli* native binary (also called native image),
+https://www.graalvm.org/[GraalVM] is used.
+As Java 15+ source features are used, a JDK 17-based GraalVM version is required.
+For calling GraalVM's `native-image` command, the `gradle` build relies on the install locations as used by https://sdkman.io/[SDKMAN!].
+
+The following instructions assume a BASH shell.
+On MacOs and Linux this is the default shell; on Windows you would have to use e.g. https://gitforwindows.org/[Git Bash] or
+https://docs.microsoft.com/en-us/windows/wsl/install-win10[WSL2].
+
+Also on Windows, you will need to install Microsoft Visual C++.
+Please follow the
+https://www.graalvm.org/docs/getting-started/windows/[GraalVM installation instructions].
+
+Run the following commands:
+
+[source,shell]
+----
+# The following commands install SDKMAN!. If you have it installed already,
+# you can skip it.
+# Ubuntu only: SDKMAN! installation requires zip/unzip:
+sudo apt-get install zip unzip
+# Windows only: SDKMAN! installation requires zip/unzip:
+choco install zip
+choco install unzip
+# Install SDKMAN!
+curl -sL https://get.sdkman.io | bash
+echo sdkman_auto_answer=true > $HOME/.sdkman/etc/config
+echo sdkman_auto_selfupdate=true >> $HOME/.sdkman/etc/config
+source $HOME/.sdkman/bin/sdkman-init.sh
+
+# Use SDKMAN! to install JDK
+sdk install java 17.0.8-graal
+sdk use java 17.0.8-graal
+# Use GraalVMs update tool to install the native-image command
+gu install native-image
+
+# Ubuntu only: Install build dependencies
+sudo apt-get install -y build-essential libz-dev
+
+# Build the project
+git clone https://github.com/atextor/owl-cli.git
+cd owl-cli
+./gradlew nativeImage
+----
+
+This will build `cli/build/bin/owl`, which you can put anywhere on your `PATH`.
+
+[#usage]
+== Usage
+
+NOTE: Although the package is called *owl-cli*, the command you invoke is called `owl`.
+
+You can call the built-in overview of commands and arguments via `--help`:
+
+[source,shell]
+----
+Usage:
+
+Usage: owl [-v] [--help] [--version] [COMMAND]
+
+Description:
+
+Command line tool for ontology engineering
+
+Options:
+      --help      Show short help
+  -v, --verbose   Specify multiple -v options to increase verbosity,
+                  e.g. use `-v`, `-vv` or `-vvv` for more details
+      --version   Show current version
+Commands:
+  ...
+----
+
+Other than the general help, you give one argument, the _command_, which will take its own arguments, for example:
+
+[source,shell]
+----
+owl diagram --format png
+----
+
+Commands that take ontology files as an input support all formats that are supported by https://github.com/owlcs/owlapi[OWL API], notably
+https://www.w3.org/TR/turtle/[RDF/Turtle],
+https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
+https://www.w3.org/TR/owl-xml-serialization/[OWL/XML] and
+https://www.w3.org/TR/owl2-syntax/[OWL Functional Syntax].
+
+[#diagram-command]
+=== `diagram` Command
+
+The `diagram` command takes an OWL ontology as input and generates an automatically layouted diagram for it in the SVG or PNG format.
+This is implemented by mapping the ontology's axioms into a graph description in the
+https://www.graphviz.org/[Graphviz] language, which is passed to its `dot`
+layouting engine.
+Attributes such as fonts can be customized using arguments.
+
+NOTE: As no standardized graphical notation for OWL exists, the diagram notation used here is described in detail on a separate page: <<owl-diagram-notation>>.
+
+[#diagram-usage]
+==== General Usage
+
+General usage: `owl diagram [options] input [output]`, where `input` can be either an ontology file or `-` (which means: read from standard in) and `output`
+can be either an ontology file or `-` (which means: write to standard out).
+If
+`output` is not given, the output filename is the input filename with its file extension changed, e.g. myontology.ttl -> myontology.svg.
+If `input` is `-` and
+`output` is not given, the output is set to standard out.
+
+[#diagram-options]
+==== Options
+
+.diagram Command Options
+[cols="<,<,<,<",options="header"]
+|===
+|Option|Description|Default|Notes
+
+|`--direction`
+|Diagram layout direction
+|left_to_right
+|Possible values: [top_to_bottom, left_to_right]
+
+|`--dotbinary`
+|Path to `dot` binary
+|dot
+|By default, `dot` is searched for in your `$PATH`
+
+|`--fontname`
+|Default font
+|Verdana
+|
+
+|`--fontsize`
+|Default font size
+|12
+|
+
+|`--format`
+|Output file format
+|svg
+|Possible values: [png, svg]
+
+|`--nodefontname`
+|Font for nodes
+|Verdana
+|
+
+|`--nodefontsize`
+|Font size for nodes
+|Verdana
+|
+
+|`--nodemargin`
+|The margin to render inside of nodes
+|0.05,0.0
+|See the https://www.graphviz.org/docs/attrs/margin/[Graphviz
+ documentation] for more information
+
+|`--nodeshape`
+|Node shape
+|box
+|See the https://www.graphviz.org/doc/info/shapes.html[Graphviz documentation]
+for more information
+
+|`--nodestyle`
+|Node style
+|rounded
+|See the https://www.graphviz.org/docs/attrs/style/[Graphviz documentation] for more information
+
+|`--fgcolor`
+|Color for boxes, fonts and edges
+|white
+|See the https://www.graphviz.org/docs/attrs/bgcolor/[Graphviz documentation] for more information
+
+|`--bgcolor`
+|Background color for the generated diagram
+|white
+|See the https://www.graphviz.org/docs/attrs/bgcolor/[Graphviz documentation] for more information
+
+|===
+
+[#diagram-example-usage]
+==== Example Usage
+
+Simple invocation with default arguments:
+
+[source,shell]
+----
+# Will create myontology.svg
+owl diagram myontology.ttl
+----
+
+Invocation where the output is specified as standard out and piped to
+https://imagemagick.org/script/convert.php[convert] to create a different format:
+
+[source,shell]
+----
+owl diagram myontology.ttl - | convert - myontology.jpg
+----
+
+Invocation where an ontology is downloaded, some terms are filtered and then piped to owl diagram:
+
+[source,shell]
+----
+curl http://www.ontologydesignpatterns.org/cp/owl/partof.owl | \
+grep -v 'comment|cpannotation|versionInfo' | owl diagram - partof.svg
+----
+
+[#write-command]
+=== `write` Command
+
+[#write-usage]
+==== General Usage
+
+The `write` command takes any RDF file in
+https://www.w3.org/TR/turtle/[RDF/Turtle],
+https://www.w3.org/TR/rdf-syntax-grammar/[RDF/XML],
+https://www.w3.org/TR/n-triples/[RDF N-Triples] or
+https://www.w3.org/TeamSubmission/n3/[N3] format as input and writes it out in any of those formats.
+When writing RDF/Turtle, the formatting of the resulting output can be configured extensively, as this makes use of the https://github.com/atextor/turtle-formatter[turtle-formatter library].
+
+General usage: `owl write [options] input [output]`, where `input` can be either an RDF file, a URL (starting with `http` or `https`) or `-` (which means: read from standard in) and `output` can be either an RDF file or `-` (which means: write to standard out).
+If
+`output` is not given, the output filename is the input filename with its file extension changed, e.g. myontology.nt -> myontology.ttl.
+If `input` is `-` or a URL and
+`output` is not given, the output is set to standard out.
+
+[#write-options]
+==== Options
+
+.write Command Options
+[cols="<,<,<,<",options="header"]
+|===
+|Option|Description|Default|Notes
+
+|`-o`, `--output`
+|Output file format
+|turtle
+|Possible values: [turtle, rdfxml, ntriple, n3]
+
+|`-i`, `--input`
+|Input file format
+|turtle
+|Possible values: [turtle, rdfxml, ntriple, n3]
+
+|`-p`, `--prefix`
+|Prefix with corresponding URI to add as `@prefix` when serializing Turtle.
+|
+|This can be given multiple times, for multiple prefixes. You can specify a well-known prefix
+(currently: rdf, rdfs, xsd, owl, dcterms), e.g. `-prdf` or `--prefix=rdf` or any other prefix with its url:
+`-pfoo=http://example.com/` or `--prefix=foo=http://example.com/`. To set the empty prefix, use
+`-p==http://example.com/` or `--prefix==http://example.com`.
+
+|`--prefixAlign`
+|Alignment of `@prefix` statements
+|off
+|Possible values: [left, off, right]
+
+|`--encoding`
+|Output encoding
+|utf_8
+|Possible values: [latin1, utf_16_be, utf_16_le, utf_8, utf_8_bom]
+
+|`--doubleFormat`
+|Defines how double numbers are formatted
+|`0.\####E0`
+| See
+https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html[here]
+for more information on the format
+
+|`--endOfLine`
+|End of line style
+|lf
+|Possible values: [cr, crlf, lf]
+
+|`--indent`
+|Indent style
+|space
+|Possible values: [tab, space]. Note that when choosing `tab`, `alignPredicates` and `alignObjects`
+are automatically treated as `false`.
+
+|`--firstPredicateInNewLine`
+|Write first predicate in new line of block
+|
+|Switched off by default
+
+|`--writeRdfType`
+|Write `rdf:type` instead of `a`
+|
+|Switched off by default
+
+|`--useCommaByDefault`
+|Use commas for multiple objects
+|
+|Switched off by default
+
+|`--noCommaForPredicate`
+|Use no commas for multiple objects for this predicate
+|
+|This can be given multiple times.
+
+|`--useLongLiterals`
+|Use long form for literals, e.g. `"5"^^xsd:integer` instead of `5`
+|
+|Switched off by default
+
+|`--alignObjects`
+|Align objects for same predicates
+|
+|Switched off by default
+
+|`--alignPredicates`
+|Align predicates for same subjects
+|
+|Switched off by default
+
+|`--continuationIndentSize`
+|Indentation size after forced line wraps
+|4
+|
+
+|`--doNotInsertFinalNewline`
+|Do not insert newline at end of file
+|
+|Switched off by default
+
+|`--indentSize`
+|Indentation size in spaces
+|2
+|
+
+|`--keepUnusedPrefixes`
+|Keeps prefixes that are not part of any statement
+|
+|Switched off by default
+
+|`--prefixOrder`
+|Sort order for prefixes (if they appear in a model)
+|[rdf,rdfs,xsd,owl]
+|Add this switch multiple times, once for each prefix, in the desired order
+
+|`--subjectOrder`
+|Sort order for subjects by type (if they appear in a model)
+|[`rdfs:Class`,`owl:Ontology`,`owl:Class`,`rdf:Property`,`owl:ObjectProperty`,`owl:DatatypeProperty`,`owl:AnnotationProperty`,`owl:NamedIndividual`,`owl:AllDifferent`,`owl:Axiom`]
+|Add this switch multiple times, once for each subject type, in the desired order
+
+|`--predicateOrder`
+|Sort order for predicates (if they appear on a subject)
+|[`rdf:type`,`rdfs:label`,`rdfs:comment`,`dcterms:description`]
+|Add this switch multiple times, once for each predicate, in the desired order
+
+|`--objectOrder`
+|Sort order for objects
+| [`owl:NamedIndividual`,`owl:ObjectProperty`,`owl:DatatypeProperty`,`owl:AnnotationProperty`,
+`owl:FunctionalProperty`, `owl:InverseFunctionalProperty`, `owl:TransitiveProperty`,
+`owl:SymmetricProperty`, `owl:AsymmetricProperty`, `owl:ReflexiveProperty`, `owl:IrreflexiveProperty`]
+|Add this switch multiple times, once for each object type, in the desired order
+
+|`--anonymousNodeIdPattern`
+|Name pattern for blank node IDs
+|`_:gen0`
+|A `0` inside the pattern will be replace with the index of the respective blank node
+
+|===
+
+[#write-example-usage]
+==== Example Usage
+
+Simple invocation with default arguments:
+
+[source,shell]
+----
+# Read myontology.ttl and print it in formatted Turtle format
+owl write myontology.ttl
+
+# Read myontology.owl in RDF/XML format and print it in formatted Turtle format, writing output.ttl
+owl write -i rdfxml myontology.owl output.ttl
+
+# Read myontology.n3 in N3 format and print it in formatted Turtle format to stdout
+owl write -i n3 myontology.n3
+
+# Read myontology.nt in N-Triples format and print it in RDF/XML format to stdout
+owl write -i ntriple -o rdfxml myontology.nt
+----
+
+Read an N-Triples file and write formatted Turtle, while also configuring which prefixes should be used:
+
+[source,shell]
+----
+owl write -prdf -powl -pxsd -p'ex=http://example.com#' -i ntriple myontology.nt
+----
+
+Read a Turtle file and print it out, while configuring the output's formatting and prefix order:
+
+[source,shell]
+----
+owl write --indentSize 4 --writeRdfType --prefixOrder owl --prefixOrder rdf myontology.turtle
+----
+
+Read a remote ontology in RDF/XML format and print it in formatted Turtle format:
+
+[source,shell]
+----
+owl write -i rdfxml 'http://www.ontologydesignpatterns.org/cp/owl/partof.owl'
+----
+
+[#infer-command]
+=== `infer` Command
+
+[#infer-usage]
+==== General Usage
+
+The `infer` command takes an OWL ontology as input and performs OWL 2 DL reasoning on it.
+Reasoning is done using the https://github.com/Galigator/openllet[Openllet] reasoner.
+
+General usage: `owl infer input [output]`, where `input` can be either an ontology file, an URL or
+`-` (which means: read from standard in) and `output` can be either an ontology file or `-` (which means: write to standard out).
+If `input` is a file and `output` is not given, the input file is overwritten with the inferenced result.
+If `input` is `-` and `output` is not given, the output is set to standard out.
+
+[#infer-example-usage]
+==== Example Usage
+
+Perform reasoning on the input ontology and write results to stdout:
+
+[source,shell]
+----
+owl infer ontology.ttl -
+----
+
+[#release-notes]
+== Release Notes
+
+=== Version 1.2.4
+
+* Changes in <<write-command>> command: Triple-quotes strings that happen to end with a quote are escaped correctly.
+
+=== Version 1.2.3
+
+* Changes in <<write-command>> command: Special characters in the URIs are serialized correctly (using Jena RIOT); if characters are invalid in a local name, the full URI is printed.
+The longest available prefixes are used.
+
+=== Version 1.2.2
+
+* Change in <<write-command>> command: Dashes, underscores and full stops in the name part of local names are not escaped any more.
+Both variants are valid, but reading RDF/Turtle is easier without the escapes.
+
+=== Version 1.2.1
+
+* Bugfix in <<write-command>> command: Dashes in the prefix part of local names are not escaped any more
+
+=== Version 1.2.0
+
+* Adds the <<infer-command>> command to perform OWL DL reasoning on an input ontology.
+* Bugfixes in <<write-command>> command: Local names (curies) with escaped special characters are correctly parsed now; local names and literals are correctly escaped when writing.
+
+=== Version 1.1.0
+
+* Adds the <<write-command>> command to read RDF files in multiple formats and write them out.
+When choosing RDF/Turtle as output format, the output is pretty-printed and formatting can be controlled.
+
+=== Version 1.0.0
+
+* This is the first released version.
+* It supports the <<diagram-command>> command to automatically generate diagrams from OWL ontologies.
+
+[#owl-diagram-notation]
+== OWL Diagram Notation
+
+=== Introduction
+
+This page describes the graphical notation for ontology diagrams generated by *owl-cli*.
+There is no standard diagram notation for OWL, but a number of tools provide their own notation.
+Popular options are the https://protege.stanford.edu/[Protégé] plugins
+https://protegewiki.stanford.edu/wiki/OWLViz[OWLViz] and
+https://protegewiki.stanford.edu/wiki/OntoGraf[OntoGraf], as well as the
+https://www.topquadrant.com/graphical-ontology-editing-with-topbraid-composers-diagram-tab/[graphical
+notation] of https://www.topquadrant.com/products/topbraid-composer/[Topbraid Composer].
+Most notations have a strong focus on class and instance relationships, which is well-suited for visualizing this particular kind of ontology.
+However, other types of axioms, in particular more complex class expressions, are usually not represented.
+For this reason, during the writing of the
+https://kobra.uni-kassel.de/handle/123456789/2018051455498[PhD thesis], a more general graphical notation for ontologies was developed.
+
+The notation by *owl-cli* is influenced by the following other notations for OWL ontologies:
+
+* The symbols and colors for classes, properties and data types as popularized by the Protégé ontology editor and also used by Topbraid Composer.
+* The notation from the https://kobra.uni-kassel.de/handle/123456789/2018051455498[PhD thesis] (as shown on pages 43 and 44), but with less focus on Description Logics notation and instead using the expressions syntax from Protégé.
+* Arrows from UML (hollow arrow for inheritance, solid arrow for relations).
+* Representation of OWL class restrictions and other elements in the specification of the
+https://www.omg.org/spec/ODM[OMG Ontology Definition Metamodel 1.1], cf. for example Figures 14.25, 14.26 and 14.27.
+* The symbol for disjoint unions that is used in http://vowl.visualdataweb.org/[VOWL].
+
+The notation was designed with the following goals in mind:
+
+* It must be possible to represent all OWL axioms in a meaningful way.
+* The diagrams are used mainly for visualizing in documents, not necessarily for interactively editing an ontology.
+* The diagram should be understandable for people familiar with the Protégé editor, because it is probably the most popular ontology editor.
+* The semantics should be unambiguous from the visual representation: For example, using a UML-like class diagram for an OWL class that includes properties in its box like class attributes in UML is not self-explanatory: Are the properties restrictions on the class (existential? universal?
+both?), is the class the domain of the properties?
+Both have very different meanings than what a UML-like representation suggests.
+
+The following sections describe the graphical notation using examples.
+
+TIP: All diagrams on this page were generated with *owl-cli*.
+Each diagram links to the RDF/Turtle file it was generated from.
+
+=== Element Types
+
+.Mapping Syntax for OWL Element Types
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Element|Description Logics Notation|Diagram
+
+|Class(latexmath:[C])
+|latexmath:[C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-class.ttl]
+image::generated/declaration-class.svg[Class Declaration]
+
+|ObjectProperty(latexmath:[P])
+|latexmath:[P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-object-property.ttl]
+image::generated/declaration-object-property.svg[Object Property Declaration]
+
+|DataProperty(latexmath:[P])
+|latexmath:[P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-data-property.ttl]
+image::generated/declaration-data-property.svg[Data Property Declaration]
+
+|AnnotationProperty(latexmath:[P])
+|_no notation_
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-annotation-property.ttl]
+image::generated/declaration-annotation-property.svg[Annotation Property Declaration]
+
+|NamedIndividual(latexmath:[o])
+|latexmath:[o]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-individual.ttl]
+image::generated/declaration-individual.svg[Named Individual Declaration]
+
+|Datatype(latexmath:[D])
+|_no notation_
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/declaration-datatype.ttl]
+image::generated/declaration-datatype.svg[Datatype Declaration]
+
+|===
+
+=== Data Ranges
+
+NOTE: This section is aligned to the https://www.w3.org/TR/owl2-syntax/#Data_Ranges[corresponding section] in the OWL 2 Specification.
+
+.Mapping Syntax for Data Ranges
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Intersection_of_Data_Ranges[DataIntersectionOf](latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcap\,\cdots\,\sqcap\,U_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-intersection-of.ttl]
+image::generated/data-intersection-of.svg[Intersection of Data Ranges]
+
+|https://www.w3.org/TR/owl2-syntax/#Union_of_Data_Ranges[DataUnionOf](latexmath:[U_1\,\dots\,U_n])
+|latexmath:[U_1\,\sqcup\,\cdots\,\sqcup\,U_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-union-of.ttl]
+image::generated/data-union-of.svg[Union of Data Ranges]
+
+|https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[DataComplementOf](latexmath:[U])
+|latexmath:[\neg\,U]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-complement-of.ttl]
+image::generated/data-complement-of.svg[Complement of Data Ranges]
+
+|https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Literals[DataOneOf](latexmath:[v_1\,\dots\,v_n])
+|latexmath:[\{v_1\}\,\sqcup\,\cdots\,\sqcup\,\{v_n\}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-one-of.ttl]
+image::generated/data-one-of.svg[Enumeration of Literals]
+
+|https://www.w3.org/TR/owl2-syntax/#Datatype_Restrictions[DatatypeRestriction]( int minExclusive 4 maxInclusive 10 )
+|_no notation_
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/datarange-expression.ttl]
+image::generated/datarange-expression.svg[Data Range with Numeric Restriction]
+
+|===
+
+=== Class Expressions
+
+NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-syntax/#Class_Expressions[corresponding section] in the OWL 2 Specification.
+
+==== Propositional Connectives and Enumeration of Individuals
+
+.Mapping Syntax for Propositional Connectives and Enumeration of Individuals
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Intersection_of_Class_Expressions[ObjectIntersectionOf](latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\sqcap\,\cdots\,\sqcap\,C_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-intersection.ttl]
+image::generated/class-intersection.svg[Class Intersection]
+
+|https://www.w3.org/TR/owl2-syntax/#Union_of_Class_Expressions[ObjectUnionOf](latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\sqcup\,\cdots\,\sqcup\,C_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-union.ttl]
+image::generated/class-union.svg[Class Union]
+
+|https://www.w3.org/TR/owl2-syntax/#Complement_of_Class_Expressions[ObjectComplementOf](latexmath:[C])
+|latexmath:[\neg\,C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-complement-of.ttl]
+image::generated/object-complement-of.svg[Complement of a Class Expression]
+
+|https://www.w3.org/TR/owl2-syntax/#Enumeration_of_Individuals[ObjectOneOf](latexmath:[o_1\,\dots\,o_n])
+|latexmath:[\{o_1\}\,\sqcup\,\cdots\,\sqcup\,\{o_n\}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-one-of.ttl]
+image::generated/object-one-of.svg[Enumeration of Individuals]
+
+|===
+
+==== Object Property Restrictions
+
+.Mapping Syntax for Object Property Restrictions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Existential_Quantification[ObjectSomeValuesFrom](latexmath:[P\,C])
+|latexmath:[\exists\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-some-values-from.ttl]
+image::generated/object-some-values-from.svg[Object Some-Values-From Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Universal_Quantification[ObjectAllValuesFrom](latexmath:[P\,C])
+|latexmath:[\forall\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-all-values-from.ttl]
+image::generated/object-all-values-from.svg[Object All-Values-From Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Individual_Value_Restriction[ObjectHasValue](latexmath:[P\,o])
+|latexmath:[P\,\ni\,o]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-has-value.ttl]
+image::generated/object-has-value.svg[Object Has-Value Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties[ObjectInverseOf](latexmath:[P])
+|latexmath:[P^{-}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-inverse-of.ttl]
+image::generated/object-inverse-of.svg[Object Inverse-Of Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Self-Restriction[ObjectHasSelf](latexmath:[P])
+|latexmath:[\text{Self}(P)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-has-self.ttl]
+image::generated/object-has-self.svg[Object Has-Self Property Restriction]
+|===
+
+==== Object Property Cardinality Restrictions
+
+.Mapping Syntax for Object Property Cardinality Restrictions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P])
+|latexmath:[\geq\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-min-cardinality-unqualified.ttl]
+image::generated/object-min-cardinality-unqualified.svg[Object Mininum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality[ObjectMinCardinality](latexmath:[n\,P\,C])
+|latexmath:[\geq\,n\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-min-cardinality-qualified.ttl]
+image::generated/object-min-cardinality-qualified.svg[Object Qualified Mininum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P])
+|latexmath:[\leq\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-max-cardinality-unqualified.ttl]
+image::generated/object-max-cardinality-unqualified.svg[Object Maximum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality[ObjectMaxCardinality](latexmath:[n\,P\,C])
+|latexmath:[\leq\,n\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-max-cardinality-qualified.ttl]
+image::generated/object-max-cardinality-qualified.svg[Object Qualified Maximum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P])
+|latexmath:[=\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-exact-cardinality-unqualified.ttl]
+image::generated/object-exact-cardinality-unqualified.svg[Object Exact Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality[ObjectExactCardinality](latexmath:[n\,P\,C])
+|latexmath:[=\,n\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-exact-cardinality-qualified.ttl]
+image::generated/object-exact-cardinality-qualified.svg[Object Qualified Exact Cardinality Restriction]
+
+|===
+
+==== Data Property Restrictions
+
+.Mapping Syntax for Data Property Restrictions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Existential_Quantification_2[DataSomeValuesFrom](latexmath:[P\,C])
+|latexmath:[\exists\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-some-values-from.ttl]
+image::generated/data-some-values-from.svg[Data Some-Values-From Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Universal_Quantification_2[DataAllValuesFrom](latexmath:[P\,C])
+|latexmath:[\forall\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-all-values-from.ttl]
+image::generated/data-all-values-from.svg[Data All-Values-From Property Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Literal_Value_Restriction[DataHasValue](latexmath:[P\,v])
+|latexmath:[P\,\ni\,v]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-has-value.ttl]
+image::generated/data-has-value.svg[Data Has-Value Property Restriction]
+
+|===
+
+==== Data Property Cardinality Restrictions
+
+.Mapping Syntax for Data Property Cardinality Restrictions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Expression|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Minimum_Cardinality_2[DataMinCardinality](latexmath:[n\,P])
+|latexmath:[\geq\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-min-cardinality.ttl]
+image::generated/data-min-cardinality.svg[Data Minimum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Maximum_Cardinality_2[DataMaxCardinality](latexmath:[n\,P])
+|latexmath:[\leq\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-max-cardinality.ttl]
+image::generated/data-max-cardinality.svg[Data Maximum Cardinality Restriction]
+
+|https://www.w3.org/TR/owl2-syntax/#Exact_Cardinality_2[DataExactCardinality](latexmath:[n\,P])
+|latexmath:[=\,n\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-exact-cardinality.ttl]
+image::generated/data-exact-cardinality.svg[Data Exact Cardinality Restriction]
+
+|===
+
+=== Axioms
+
+NOTE: The outline of this section is aligned to the https://www.w3.org/TR/owl2-syntax/#Axioms[corresponding section] in the OWL 2 Specification.
+
+==== Class Expression Axioms
+
+.Mapping Syntax for Class Expression Axioms
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Subclass_Axioms[SubClassOf](latexmath:[C_1\,C_2])
+|latexmath:[C_1\,\sqsubseteq\,C_2]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/subclassof.ttl]
+image::generated/subclassof.svg[Subclasses]
+
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Classes[EquivalentClasses](latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_1\,\equiv\,\cdots\,\equiv\,C_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-classes.ttl]
+image::generated/equivalent-classes.svg[Equivalent Classes]
+
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Classes[DisjointClasses](latexmath:[C_1\,\dots\,C_n])
+|latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-classes.ttl]
+image::generated/disjoint-classes.svg[Disjoint Classes]
+
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Union_of_Class_Expressions[DisjointUnion](latexmath:[C\,C_1\,\dots\,C_n])
+a|latexmath:[C\,\equiv\,C_1\,\sqcup\,\cdots\,\sqcup\,C_n,]
+latexmath:[C_i\,\sqcap\,C_j\,\sqsubseteq\,\bot,\,i\,\neq\,j]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-union.ttl]
+image::generated/disjoint-union.svg[Disjoint Union]
+
+|===
+
+==== Object Property Axioms
+
+.Mapping Syntax for Object Property Axioms
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[SubObjectPropertyOf](latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\sqsubseteq\,P_2]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/sub-object-property-of.ttl]
+image::generated/sub-object-property-of.svg[Sub-Object-Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Object_Subproperties[ObjectPropertyChain](latexmath:[P_1\,\dots\,P_n])
+|latexmath:[P_1\,\circ\,\cdots\,\circ\,P_n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-chain.ttl]
+image::generated/object-property-chain.svg[Object Property Chains]
+
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Object_Properties[EquivalentObjectProperties](latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-object-properties.ttl]
+image::generated/equivalent-object-properties.svg[Equivalent Object Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Object_Properties[DisjointObjectProperties](latexmath:[P_1\,P_2])
+|latexmath:[\text{Disjoint}(P_1,P_2)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-object-properties.ttl]
+image::generated/disjoint-object-properties.svg[Disjoint Object Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties_2[InverseObjectProperties](latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2^{-}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/inverse-object-properties.ttl]
+image::generated/inverse-object-properties.svg[Inverse Object Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Object_Property_Domain[ObjectPropertyDomain](latexmath:[C\,P])
+|latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-domain.ttl]
+image::generated/object-property-domain.svg[Object Property Domain]
+
+|https://www.w3.org/TR/owl2-syntax/#Object_Property_Range[ObjectPropertyRange](latexmath:[C\,P])
+|latexmath:[\top\,\sqsubseteq\,\forall\,P.C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-range.ttl]
+image::generated/object-property-range.svg[Object Property Range]
+
+|https://www.w3.org/TR/owl2-syntax/#Functional_Object_Properties[FunctionalObjectProperty](latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/functional-object-property.ttl]
+image::generated/functional-object-property.svg[Functional Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Inverse-Functional_Object_Properties[InverseFunctionalObjectProperty](latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1\,P^{-}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/inverse-functional-object-property.ttl]
+image::generated/inverse-functional-object-property.svg[Inverse Functional Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Reflexive_Object_Properties[ReflexiveObjectProperty](latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\exists\,P.\text{Self}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/reflexive-object-property.ttl]
+image::generated/reflexive-object-property.svg[Reflexive Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Irreflexive_Object_Properties[IrreflexiveObjectProperty](latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\neg\exists\,P.\text{Self}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/irreflexive-object-property.ttl]
+image::generated/irreflexive-object-property.svg[Irreflexive Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Symmetric_Object_Properties[SymmetricObjectProperty](latexmath:[P])
+|latexmath:[P\,\equiv\,P^{-}]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/symmetric-object-property.ttl]
+image::generated/symmetric-object-property.svg[Symmetric Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Asymmetric_Object_Properties[AsymmetricObjectProperty](latexmath:[P])
+|latexmath:[\text{Disjoint}(P,P^{-})]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/asymmetric-object-property.ttl]
+image::generated/asymmetric-object-property.svg[Symmetric Object Property]
+
+|https://www.w3.org/TR/owl2-syntax/#Transitive_Object_Properties[TransitiveObjectProperty](latexmath:[P])
+|latexmath:[P\,\circ\,P\,\sqsubseteq\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/transitive-object-property.ttl]
+image::generated/transitive-object-property.svg[Transitive Object Property]
+
+|===
+
+==== Data Property Axioms
+
+.Mapping Syntax for Data Property Axioms
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Data_Subproperties[SubDataPropertyOf](latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\sqsubseteq\,P_2]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/sub-data-property-of.ttl]
+image::generated/sub-data-property-of.svg[Sub-Data-Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Equivalent_Data_Properties[EquivalentDataProperties](latexmath:[P_1\,P_2])
+|latexmath:[P_1\,\equiv\,P_2]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/equivalent-data-properties.ttl]
+image::generated/equivalent-data-properties.svg[Equivalent Data Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Disjoint_Data_Properties[DisjointDataProperties](latexmath:[P_1\,P_2])
+|latexmath:[\text{Disjoint}(P_1,P_2)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/disjoint-data-properties.ttl]
+image::generated/disjoint-data-properties.svg[Disjoint Data Properties]
+
+|https://www.w3.org/TR/owl2-syntax/#Data_Property_Domain[DataPropertyDomain](latexmath:[C\,P])
+|latexmath:[\geq\,1\,P\,\sqsubseteq\,C]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-domain.ttl]
+image::generated/data-property-domain.svg[Data Property Domain]
+
+|https://www.w3.org/TR/owl2-syntax/#Data_Property_Range[DataPropertyRange](latexmath:[D\,P])
+|latexmath:[\top\,\sqsubseteq\,\forall\,P.D]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-range.ttl]
+image::generated/data-property-range.svg[Data Property Range]
+
+|https://www.w3.org/TR/owl2-syntax/#Functional_Data_Properties[FunctionalDataProperty](latexmath:[P])
+|latexmath:[\top\,\sqsubseteq\,\leq\,1D]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/functional-data-property.ttl]
+image::generated/functional-data-property.svg[Functional Data Property]
+
+|===
+
+==== Datatype Definitions
+
+.Mapping Syntax for Datatype Definitions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Datatype_Definitions[DatatypeDefinition](latexmath:[D\,\text{range}])
+|_no notation_
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/datatype-definition.ttl]
+image::generated/datatype-definition.svg[Datatype Definition]
+
+|===
+
+==== Keys
+
+.Mapping Syntax for Keys
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Keys[HasKeys](latexmath:[C\,P_1\,\dots\,P_n])
+|_no notation_
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/has-key.ttl]
+image::generated/has-key.svg[Has Keys]
+
+|===
+
+==== Assertions
+
+.Mapping Syntax for Assertions
+[cols="^.^,^.^,^.^a",options="header"]
+|===
+|OWL Axiom|Description Logics Notation|Diagram
+
+|https://www.w3.org/TR/owl2-syntax/#Individual_Equality[SameIndividuals](latexmath:[o_1\,\dots\,o_n])
+|latexmath:[o_i\,=\,o_j,1 \leq i \lt j \leq n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/same-individuals.ttl]
+image::generated/same-individuals.svg[Same Individuals Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Individual_Inequality[DifferentIndividuals](latexmath:[o_1\,\dots\,o_n])
+|latexmath:[o_i\,\not=\,o_j,1 \leq i \lt j \leq n]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/different-individuals.ttl]
+image::generated/different-individuals.svg[Different Individuals Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Class_Assertions[ClassAssertion](latexmath:[C\,o])
+|latexmath:[C(o)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/class-assertion.ttl]
+image::generated/class-assertion.svg[Class Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Positive_Object_Property_Assertions[ObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
+|latexmath:[P(o_1,o_2)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/object-property-assertion.ttl]
+image::generated/object-property-assertion.svg[Object Property Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Negative_Object_Property_Assertions[NegativeObjectPropertyAssertion](latexmath:[P\,o_1\,o_2])
+|latexmath:[(o_1,o_2):\neg\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/negative-object-property-assertion.ttl]
+image::generated/negative-object-property-assertion.svg[Negative Object Property Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Positive_Data_Property_Assertions[DataPropertyAssertion](latexmath:[P\,o\,v])
+|latexmath:[P(o,v)]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/data-property-assertion.ttl]
+image::generated/data-property-assertion.svg[Data Property Assertion]
+
+|https://www.w3.org/TR/owl2-syntax/#Negative_Data_Property_Assertions[NegativeDataPropertyAssertion](latexmath:[P\,o\,v])
+|latexmath:[(o,v):\neg\,P]
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/negative-data-property-assertion.ttl]
+image::generated/negative-data-property-assertion.svg[Negative Data Property Assertion]
+
+|===
+
+=== SWRL Rules
+
+Rules defined in the https://www.w3.org/Submission/SWRL/[Semantic Web Rule Language] (SWRL) can be embedded in an OWL ontology.
+Rules are rendered as described in
+https://www.w3.org/Submission/SWRL/#2.2[Human Readable Syntax], and are linked with the ontology entities they refer to.
+The following table shows rendering examples for the different kinds of rule atoms.
+
+.Mapping Syntax for SWRL Rules
+[cols="^.^,^.^a",options="header"]
+|===
+|Atom Type|Diagram
+
+|Class
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-class-atom.ttl]
+image::generated/swrl-rule-class-atom.svg[SWRL Rule with Class Atoms]
+
+|Class with Expression
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-class-atom-with-expression.ttl]
+image::generated/swrl-rule-class-atom-with-expression.svg[SWRL Rule with Class Atoms with Class Expression]
+
+|Object Property
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-object-property-atom.ttl]
+image::generated/swrl-rule-object-property-atom.svg[SWRL Rule with Object Property Atom]
+
+|Data Property, Data Range
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-data-range-atom.ttl]
+image::generated/swrl-rule-data-range-atom.svg[SWRL Rule with Data Property Atom and Data Range Atom]
+
+|Data Property, Builtin
+|[link=https://github.com/atextor/owl-cli/blob/{release-tag}/docs/modules/ROOT/examples/swrl-rule-builtin-atom.ttl]
+image::generated/swrl-rule-builtin-atom.svg[SWRL Rule with Data Property Atom and Builtin Atom]
+
+|===
+
+// [#introduction]
+// == Introduction
+
+// This project does something.
+// We just haven't decided what that is yet.
+
+// [#source-code]
+// == Source Code
+
+// [source,java]
+// .Java code from project
+// ----
+// include::{sourcedir}/example/StringUtils.java[tags=contains,indent=0]
+// ----
+
+// This page was built by the following command:
+
+//  $ mvn
+
+// [#images]
+// == Images
+
+// [.thumb]
+// image::sunset.jpg[maxwidth=75%]
+
+// [#attributes]
+// == Attributes
+
+// === Attributes Part 1
+
+// .Built-in
+// asciidoctor-version:: {asciidoctor-version}
+// safe-mode-name:: {safe-mode-name}
+// docdir:: {docdir}
+// docfile:: {docfile}
+// imagesdir:: {imagesdir}
+
+// === Attributes Part 2
+
+// .Custom
+// project-version:: {project-version}
+// sourcedir:: {sourcedir}
+// endpoint-url:: {endpoint-url}
+
+// [#includes]
+// == Includes
+
+// .include::subdir/_b.adoc[]
+// ====
+// include::subdir/_b.adoc[]
+// ====
+
+// WARNING: Includes can be tricky!

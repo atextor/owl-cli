@@ -1,0 +1,11 @@
+@prefix : <https://github.com/atextor/owl-cli#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:o a owl:NamedIndividual .
+:P a owl:DatatypeProperty .
+[
+   a owl:NegativePropertyAssertion ;
+   owl:sourceIndividual :o ;
+   owl:assertionProperty :P ;
+   owl:targetValue "hello" ;
+] .
