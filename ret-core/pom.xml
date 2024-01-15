@@ -27,6 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ret-core</artifactId>
+    <name>RET Core</name>
 
     <properties>
         <git-properties-filename>${project.basedir}/src-gen/main/resources/git.properties</git-properties-filename>
