@@ -1,4 +1,0 @@
-* xref:index.adoc[Getting Started]
-* xref:usage.adoc[Usage]
-* xref:release-notes.adoc[Release Notes]
-* xref:diagram-notation.adoc[Diagram Notation]

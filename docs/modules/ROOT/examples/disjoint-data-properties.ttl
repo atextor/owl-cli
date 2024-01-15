@@ -1,6 +1,0 @@
-@prefix : <https://github.com/atextor/owl-cli#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-
-:P1 a owl:DatatypeProperty .
-:P2 a owl:DatatypeProperty ;
-   owl:propertyDisjointWith :P1 .
