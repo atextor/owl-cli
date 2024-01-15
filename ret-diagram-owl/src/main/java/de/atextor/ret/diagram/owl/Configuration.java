@@ -146,13 +146,21 @@ public class Configuration {
         /**
          * Diagrams are aligned horizontally, with the root node on the left
          */
-        LEFT_TO_RIGHT;
+        LEFT_TO_RIGHT,
+
+        /**
+         * Check if the file contains the {@link #HINT_PREFIX} followed by either "top_to_bottom" or "left_to_right"
+         */
+        DETECT;
+
+        public static final String HINT_PREFIX = "#pragma diagram: ";
 
         @Override
         public String toString() {
             return switch ( this ) {
                 case TOP_TO_BOTTOM -> "top_to_bottom";
                 case LEFT_TO_RIGHT -> "left_to_right";
+                case DETECT -> "detect";
             };
         }
     }

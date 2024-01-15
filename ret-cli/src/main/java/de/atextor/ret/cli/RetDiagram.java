@@ -22,11 +22,17 @@ import de.atextor.ret.diagram.owl.DiagramGenerator;
 import de.atextor.ret.diagram.owl.GraphvizDocument;
 import de.atextor.ret.diagram.owl.mappers.DefaultMappingConfiguration;
 import de.atextor.ret.diagram.owl.mappers.MappingConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static de.atextor.ret.cli.RetDiagram.COMMAND_NAME;
 
@@ -120,27 +126,58 @@ public class RetDiagram extends AbstractCommand implements Runnable {
 
     @Override
     public void run() {
-        final Configuration configuration = Configuration.builder()
-            .fontname( fontname )
-            .fontsize( fontsize )
-            .nodeFontname( nodeFontName )
-            .nodeFontsize( nodeFontsize )
-            .nodeShape( nodeShape )
-            .nodeMargin( nodeMargin )
-            .nodeStyle( nodeStyle )
-            .format( format )
-            .layoutDirection( layoutDirection )
-            .dotBinary( dotBinary )
-            .fgColor( fgColor )
-            .bgColor( bgColor )
-            .build();
-
         final MappingConfiguration mappingConfig = DefaultMappingConfiguration.builder().build();
-        openInput( input ).flatMap( inputStream ->
-            loadOntology( inputStream ).flatMap( ontology ->
-                openOutput( input, Optional.ofNullable( output ), format.toString() ).flatMap( outputStream ->
-                    new DiagramGenerator( configuration, mappingConfig )
-                        .generate( ontology, outputStream, configuration ) ) )
+        openInput( input ).flatMap( inputStream -> {
+                try {
+                    final Configuration.LayoutDirection configureLayoutdirection;
+                    final InputStream configuredInput;
+                    if ( layoutDirection == Configuration.LayoutDirection.DETECT ) {
+                        final byte[] bytes = IOUtils.toByteArray( inputStream );
+                        configuredInput = new ByteArrayInputStream( bytes );
+                        final String ontologyString = new String( bytes );
+                        final Pattern pattern = Pattern.compile( Configuration.LayoutDirection.HINT_PREFIX + "([a-z_]*)" );
+                        final Matcher matcher = pattern.matcher( ontologyString );
+
+                        if ( matcher.find() ) {
+                            // Either we found a #pragma in the file
+                            configureLayoutdirection = Configuration.LayoutDirection.valueOf( matcher.group( 1 ).toUpperCase() );
+                            if ( configureLayoutdirection == Configuration.LayoutDirection.DETECT ) {
+                                throw new ErrorMessage( "pragma must not set layout direction to 'detect'" );
+                            }
+                        } else {
+                            // Or we use whatever was set via command line
+                            configureLayoutdirection = layoutDirection;
+                        }
+                    } else {
+                        configureLayoutdirection = layoutDirection;
+                        configuredInput = inputStream;
+                    }
+
+                    final Configuration configuration = Configuration.builder()
+                        .fontname( fontname )
+                        .fontsize( fontsize )
+                        .nodeFontname( nodeFontName )
+                        .nodeFontsize( nodeFontsize )
+                        .nodeShape( nodeShape )
+                        .nodeMargin( nodeMargin )
+                        .nodeStyle( nodeStyle )
+                        .format( format )
+                        .layoutDirection( configureLayoutdirection )
+                        .dotBinary( dotBinary )
+                        .fgColor( fgColor )
+                        .bgColor( bgColor )
+                        .build();
+
+                    return loadOntology( configuredInput ).flatMap( ontology ->
+                        openOutput( input, Optional.ofNullable( output ), format.toString() ).flatMap( outputStream ->
+                            new DiagramGenerator( configuration, mappingConfig )
+                                .generate( ontology, outputStream, configuration ) ) );
+                } catch ( final IOException exception ) {
+                    throw new ErrorMessage( "Could not open input" );
+                } catch ( final IllegalArgumentException exception ) {
+                    throw new RuntimeException( "Illegal pragma" );
+                }
+            }
         ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
     }
 
