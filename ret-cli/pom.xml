@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ret</artifactId>
-        <groupId>de.atextor.ret</groupId>
+        <groupId>cool.rdf</groupId>
         <version>DEV-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -39,26 +39,26 @@
         <skip.native.build>false</skip.native.build>
         <regular-jar>${project.artifactId}-${project.version}</regular-jar>
         <native-image-jar>${project.artifactId}-${project.version}-for-native</native-image-jar>
-        <main-class>de.atextor.ret.cli.Ret</main-class>
+        <main-class>cool.rdf.ret.cli.Ret</main-class>
         <binary-name>ret</binary-name>
     </properties>
 
     <dependencies>
         <!-- Module dependencies -->
         <dependency>
-            <groupId>de.atextor.ret</groupId>
+            <groupId>cool.rdf</groupId>
             <artifactId>ret-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.atextor.ret</groupId>
+            <groupId>cool.rdf</groupId>
             <artifactId>ret-diagram-owl</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.atextor.ret</groupId>
+            <groupId>cool.rdf</groupId>
             <artifactId>ret-infer</artifactId>
         </dependency>
         <dependency>
-            <groupId>de.atextor.ret</groupId>
+            <groupId>cool.rdf</groupId>
             <artifactId>ret-write</artifactId>
         </dependency>
 
@@ -267,7 +267,7 @@
                                     </includes>
                                     <excludes>
                                         <!-- Explicitly exclude build-time-only code from jar -->
-                                        <exclude>de/atextor/ret/core/buildtime/**</exclude>
+                                        <exclude>cool/rdf/ret/core/buildtime/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -334,7 +334,7 @@
                                     </includes>
                                     <excludes>
                                         <!-- Explicitly exclude build-time-only code from jar -->
-                                        <exclude>de/atextor/ret/core/buildtime/**</exclude>
+                                        <exclude>cool/rdf/ret/core/buildtime/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

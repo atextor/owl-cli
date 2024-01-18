@@ -20,7 +20,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ret</artifactId>
-        <groupId>de.atextor.ret</groupId>
+        <groupId>cool.rdf</groupId>
         <version>DEV-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

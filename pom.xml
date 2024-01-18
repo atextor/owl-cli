@@ -19,7 +19,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.atextor.ret</groupId>
+    <groupId>cool.rdf</groupId>
     <artifactId>ret</artifactId>
     <version>DEV-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -138,27 +138,27 @@
         <dependencies>
             <!-- Modules of this project -->
             <dependency>
-                <groupId>de.atextor.ret</groupId>
+                <groupId>cool.rdf</groupId>
                 <artifactId>ret-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.atextor.ret</groupId>
+                <groupId>cool.rdf</groupId>
                 <artifactId>ret-diagram-owl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.atextor.ret</groupId>
+                <groupId>cool.rdf</groupId>
                 <artifactId>ret-infer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.atextor.ret</groupId>
+                <groupId>cool.rdf</groupId>
                 <artifactId>ret-write</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>de.atextor.ret</groupId>
+                <groupId>cool.rdf</groupId>
                 <artifactId>ret-cli</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -560,6 +560,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin-version}</version>
                 <configuration>
                     <skipITs>${maven.skip.failsafe}</skipITs>
                 </configuration>
