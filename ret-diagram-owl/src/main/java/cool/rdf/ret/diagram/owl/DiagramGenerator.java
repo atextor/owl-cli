@@ -68,10 +68,8 @@ public class DiagramGenerator {
         }
     }
 
-    Try<Void> executeDot( final ThrowingConsumer<OutputStream, IOException> contentProvider,
-        final OutputStream output,
-        final File workingDir,
-        final Configuration configuration ) {
+    Try<Void> executeDot( final ThrowingConsumer<OutputStream, IOException> contentProvider, final OutputStream output,
+        final File workingDir, final Configuration configuration ) {
         final String command = configuration.dotBinary + " -T" + configuration.format.getExtension();
         final Process process;
         try {

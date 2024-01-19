@@ -27,8 +27,10 @@ import cool.rdf.ret.diagram.owl.graph.node.Class;
 import cool.rdf.ret.diagram.owl.graph.node.ClosedClass;
 import cool.rdf.ret.diagram.owl.graph.node.Complement;
 import cool.rdf.ret.diagram.owl.graph.node.DataExactCardinality;
+import cool.rdf.ret.diagram.owl.graph.node.DataMaximalCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.DataMinimalCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.DataProperty;
+import cool.rdf.ret.diagram.owl.graph.node.Datatype;
 import cool.rdf.ret.diagram.owl.graph.node.DisjointUnion;
 import cool.rdf.ret.diagram.owl.graph.node.Disjointness;
 import cool.rdf.ret.diagram.owl.graph.node.Equality;
@@ -43,6 +45,7 @@ import cool.rdf.ret.diagram.owl.graph.node.Key;
 import cool.rdf.ret.diagram.owl.graph.node.Literal;
 import cool.rdf.ret.diagram.owl.graph.node.ObjectExactCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.ObjectMaximalCardinality;
+import cool.rdf.ret.diagram.owl.graph.node.ObjectMinimalCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.ObjectProperty;
 import cool.rdf.ret.diagram.owl.graph.node.ObjectQualifiedExactCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.ObjectQualifiedMaximalCardinality;
@@ -52,11 +55,8 @@ import cool.rdf.ret.diagram.owl.graph.node.PropertyMarker;
 import cool.rdf.ret.diagram.owl.graph.node.Rule;
 import cool.rdf.ret.diagram.owl.graph.node.Self;
 import cool.rdf.ret.diagram.owl.graph.node.Union;
-import cool.rdf.ret.diagram.owl.graph.node.ValueRestriction;
-import cool.rdf.ret.diagram.owl.graph.node.DataMaximalCardinality;
-import cool.rdf.ret.diagram.owl.graph.node.Datatype;
-import cool.rdf.ret.diagram.owl.graph.node.ObjectMinimalCardinality;
 import cool.rdf.ret.diagram.owl.graph.node.UniversalRestriction;
+import cool.rdf.ret.diagram.owl.graph.node.ValueRestriction;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,16 +136,11 @@ public class GraphvizGenerator implements Function<Stream<GraphElement>, Graphvi
     @SuppressWarnings( "SpellCheckingInspection" )
     private Optional<String> edgeTypeToGraphviz( final Edge.Type type ) {
         return switch ( type ) {
-            case DEFAULT_ARROW:
-                yield Optional.of( "arrowhead = normal" );
-            case DASHED_ARROW:
-                yield Optional.of( "arrowhead = normal, style = dashed" );
-            case HOLLOW_ARROW:
-                yield Optional.of( "arrowhead = empty" );
-            case DOUBLE_ENDED_HOLLOW_ARROW:
-                yield Optional.of( "dir = both, arrowhead = empty, arrowtail = empty" );
-            case NO_ARROW:
-                yield Optional.of( "arrowhead = none" );
+            case DEFAULT_ARROW -> Optional.of( "arrowhead = normal" );
+            case DASHED_ARROW -> Optional.of( "arrowhead = normal, style = dashed" );
+            case HOLLOW_ARROW -> Optional.of( "arrowhead = empty" );
+            case DOUBLE_ENDED_HOLLOW_ARROW -> Optional.of( "dir = both, arrowhead = empty, arrowtail = empty" );
+            case NO_ARROW -> Optional.of( "arrowhead = none" );
         };
     }
 
