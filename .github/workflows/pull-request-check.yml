@@ -15,7 +15,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Install dependencies (Linux)
+        if: matrix.os == 'ubuntu-20.04'
         # - Install msttcorefonts, so we have the Verdana font available for diagram generation
         # - Install graphviz, so we have the dot binary available for diagram generation
         run: |-
@@ -25,6 +26,21 @@ jobs:
           sudo apt-get install ttf-mscorefonts-installer
           sudo apt-get install -y graphviz
           sudo apt-get install -y build-essential libz-dev
+
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-latest'
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        run: |-
+          choco install zip --execution-timeout=600
+          choco install unzip --execution-timeout=600
+          choco install graphviz --execution-timeout=600
+        shell: bash
+
+      - name: Install dependencies (MacOs)
+        if: matrix.os == 'macos-latest'
+        # - Install graphviz, so we have the dot binary available for diagram generation
+        run: |-
+          brew install graphviz
 
       - name: Setup JDK
         uses: graalvm/setup-graalvm@v1
