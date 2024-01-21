@@ -114,7 +114,8 @@ public class Ret implements Runnable {
         }
 
         if ( version ) {
-            System.out.printf( "owl-cli version: %s build date: %s%n", Version.VERSION, Version.BUILD_DATE );
+            System.out.printf( "%s %s%n  commit: %s%n  build date: %s%n", COMMAND_NAME,
+                Version.VERSION, Version.COMMIT_ID.substring( 0, 7 ), Version.BUILD_DATE );
             System.exit( 0 );
         }
 
