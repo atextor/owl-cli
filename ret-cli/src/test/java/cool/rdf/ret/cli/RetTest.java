@@ -78,7 +78,7 @@ public class RetTest {
 
     @Test
     void testNoArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( List.of() ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( List.of( "--disable-color" ) ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "Usage:" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
@@ -86,7 +86,7 @@ public class RetTest {
 
     @Test
     void testHelp() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--help" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "--help" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "Usage:" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
@@ -94,7 +94,7 @@ public class RetTest {
 
     @Test
     void testInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "invalid_argument" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
@@ -102,7 +102,7 @@ public class RetTest {
 
     @Test
     void testHelpDiagram() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetDiagram.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetDiagram.COMMAND_NAME );
@@ -112,7 +112,7 @@ public class RetTest {
 
     @Test
     void testDiagramWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
@@ -122,7 +122,8 @@ public class RetTest {
 
     @Test
     void testDiagramWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME, "invalid_argument" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", RetDiagram.COMMAND_NAME,
+            "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
@@ -139,7 +140,7 @@ public class RetTest {
         assertThat( output ).isFile();
         assertThat( output ).content().isNotEmpty();
 
-        final List<String> arguments = List.of( RetDiagram.COMMAND_NAME, output.getAbsolutePath() );
+        final List<String> arguments = List.of( "--disable-color", RetDiagram.COMMAND_NAME, output.getAbsolutePath() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
@@ -151,7 +152,7 @@ public class RetTest {
 
     @Test
     void testHelpWrite() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetWrite.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetWrite.COMMAND_NAME );
@@ -161,7 +162,7 @@ public class RetTest {
 
     @Test
     void testWriteWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
@@ -171,7 +172,8 @@ public class RetTest {
 
     @Test
     void testWriteWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME, "invalid_argument" ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", RetWrite.COMMAND_NAME,
+            "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
@@ -193,7 +195,7 @@ public class RetTest {
                     :city "City Z"
                 ] .
             """;
-        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( "--disable-color", RetWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -230,7 +232,7 @@ public class RetTest {
               </rdf:Description>
             </rdf:RDF>
             """;
-        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
+        final List<String> arguments = List.of( "--disable-color", RetWrite.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( rdfXmlDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -250,7 +252,7 @@ public class RetTest {
             <http://test.de#Max> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://test.de#Person> .
             <http://test.de#city> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Property> .
             """;
-        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
+        final List<String> arguments = List.of( "--disable-color", RetWrite.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( ntripleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -267,7 +269,7 @@ public class RetTest {
             :Person a rdfs:Class ;
                 :foo <> .
             """;
-        final List<String> arguments = List.of( RetWrite.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( "--disable-color", RetWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );

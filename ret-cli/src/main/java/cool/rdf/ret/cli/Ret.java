@@ -86,12 +86,29 @@ public class Ret implements Runnable {
     @CommandLine.Option( names = { "--version" }, description = "Show current version" )
     private boolean version;
 
+    @SuppressWarnings( "unused" )
+    @CommandLine.Option( names = { "--disable-color", "-D" }, description = "Disable colored output" )
+    private boolean disableColor;
+
     /**
      * The command's main function
      *
      * @param args the arguments
      */
     public static void main( final String[] args ) {
+        // Check disabling color switch before PicoCLI initialization
+        boolean disableColor = false;
+        for ( final String arg : args ) {
+            if ( arg.equals( "--disable-color" ) || arg.equals( "-D" ) ) {
+                disableColor = true;
+                break;
+            }
+        }
+
+        if ( disableColor ) {
+            System.setProperty( "picocli.ansi", "false" );
+        }
+
         LogManager.getLogManager().reset();
         final List<AbstractCommand> commands = List.of(
             new RetDiagram(),
@@ -104,7 +121,9 @@ public class Ret implements Runnable {
             .setCaseInsensitiveEnumValuesAllowed( true )
             .setExecutionStrategy( LoggingMixin::executionStrategy );
         commands.forEach( command -> command.registerTypeConverters( cmd ) );
-        System.exit( cmd.execute( args ) );
+
+        final int resultCode = cmd.execute( args );
+        System.exit( resultCode );
     }
 
     @Override
