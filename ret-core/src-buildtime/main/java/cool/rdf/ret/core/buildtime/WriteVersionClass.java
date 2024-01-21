@@ -63,6 +63,11 @@ public class WriteVersionClass {
             public static final String VERSION = "${version}";
 
             /**
+             * The commit id of the package
+             */
+            public static final String COMMIT_ID = "${commitId}";
+
+            /**
              * The build date
              */
             public static final String BUILD_DATE = "${buildDate}";
@@ -99,20 +104,15 @@ public class WriteVersionClass {
             System.exit( 1 );
         }
 
-        final String gitBuildVersion = gitProperties.getProperty( "git.build.version" );
-        final String version = gitBuildVersion.contains( "SNAPSHOT" )
-            ? "%s (commit %s)".formatted(
-            gitBuildVersion, gitProperties.getProperty( "git.commit.id" ).substring( 0, 7 ) )
-            : gitBuildVersion;
-        final String buildDate = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( new Date() );
         final String content = VERSION_CLASS_TEMPLATE.apply( Map.of(
             "year", new SimpleDateFormat( "yyyy" ).format( new Date() ),
             // For now. May read this from contributors file in the future.
             "copyrightHolder", "Andreas Textor",
             "package", packageName,
             "className", className,
-            "version", version,
-            "buildDate", buildDate
+            "version", gitProperties.getProperty( "git.build.version" ),
+            "commitId", gitProperties.getProperty( "git.commit.id" ),
+            "buildDate", new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( new Date() )
         ) );
 
         try {
