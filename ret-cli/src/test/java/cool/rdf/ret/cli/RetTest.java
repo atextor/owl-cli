@@ -80,7 +80,7 @@ public class RetTest {
     void testNoArguments() {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( List.of() ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
-        assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "Usage:" );
+        assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "Usage:" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
@@ -88,7 +88,7 @@ public class RetTest {
     void testHelp() {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--help" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
-        assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "Usage:" );
+        assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "Usage:" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
@@ -97,16 +97,16 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
-        assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
+        assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
     }
 
     @Test
     void testHelpDiagram() {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
-        assertThat( result.stdOut().asString() ).as( "stdout" )
+        assertThat( result.stdOut().cleaned() ).as( "stdout" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetDiagram.COMMAND_NAME );
-        assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "--direction=" );
+        assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--direction=" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
@@ -115,8 +115,8 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
-        assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
-        assertThat( result.stdErr().asString() ).as( "stderr" )
+        assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
+        assertThat( result.stdErr().cleaned() ).as( "stderr" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetDiagram.COMMAND_NAME );
     }
 
@@ -125,7 +125,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetDiagram.COMMAND_NAME, "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
-        assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
+        assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
     }
 
     @ParameterizedTest
@@ -153,9 +153,9 @@ public class RetTest {
     void testHelpWrite() {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "help", RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
-        assertThat( result.stdOut().asString() ).as( "stdout" )
+        assertThat( result.stdOut().cleaned() ).as( "stdout" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetWrite.COMMAND_NAME );
-        assertThat( result.stdOut().asString() ).as( "stdout" ).contains( "--alignObjects" );
+        assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--alignObjects" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
@@ -164,8 +164,8 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
-        assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
-        assertThat( result.stdErr().asString() ).as( "stderr" )
+        assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
+        assertThat( result.stdErr().cleaned() ).as( "stderr" )
             .contains( "Usage: " + Ret.COMMAND_NAME + " " + RetWrite.COMMAND_NAME );
     }
 
@@ -174,7 +174,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( RetWrite.COMMAND_NAME, "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
-        assertThat( result.stdErr().asString() ).as( "stderr" ).contains( "Error:" );
+        assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
     }
 
     @Test
@@ -198,7 +198,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> loadTurtle( result.stdOut().asString() ) ).doesNotThrowAnyException();
+        assertThatCode( () -> loadTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -235,7 +235,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> load( result.stdOut().asString(), Lang.RDFXML ) ).doesNotThrowAnyException();
+        assertThatCode( () -> load( result.stdOut().cleaned(), Lang.RDFXML ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -255,7 +255,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> load( result.stdOut().asString(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
+        assertThatCode( () -> load( result.stdOut().cleaned(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -272,7 +272,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> loadTurtle( result.stdOut().asString() ) ).doesNotThrowAnyException();
-        assertThat( result.stdOut().asString() ).isEqualToIgnoringWhitespace( turtleDocument );
+        assertThatCode( () -> loadTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
+        assertThat( result.stdOut().cleaned() ).isEqualToIgnoringWhitespace( turtleDocument );
     }
 }

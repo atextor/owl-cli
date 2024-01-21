@@ -41,7 +41,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * This method uses {@link System#getSecurityManager()} and {@link System#setSecurityManager(SecurityManager)} that
+ * Convenient test runner to execute a command line interface either via main class, executable jar or native binary.
+ * Arguments and stdin can be provided, return code, stderr and stdout are captured.
+ * This class uses {@link System#getSecurityManager()} and {@link System#setSecurityManager(SecurityManager)} that
  * are deprecated as of Java 17. However, until
  * <a href="https://bugs.openjdk.java.net/browse/JDK-8199704">JDK-8199704</a> is addressed,
  * we have still to rely on it.
@@ -50,9 +52,28 @@ import java.util.stream.Stream;
 public class CliRunner {
     private static final Logger LOG = LoggerFactory.getLogger( CliRunner.class );
 
+    /**
+     * Represents the content of a stream (stdin/stdout/stderr)
+     *
+     * @param raw the raw byte content
+     */
     record StreamContent( byte[] raw ) {
+        /**
+         * Returns the stream content as UTF-8 string
+         *
+         * @return the stream content as string
+         */
         public String asString() {
             return new String( raw, StandardCharsets.UTF_8 );
+        }
+
+        /**
+         * Returns the stream content as string with all non-printable non-ASCII characters removed
+         *
+         * @return the stream without non-printable non-ASCII characters
+         */
+        public String cleaned() {
+            return asString().replaceAll( "\\P{Print}", "" );
         }
     }
 
@@ -114,6 +135,13 @@ public class CliRunner {
         }
     }
 
+    /**
+     * Executes a command line tool via its main class. This also captures any System.exit() calls that might be done.
+     *
+     * @param clazz the class
+     * @param execArguments the arguments
+     * @return the execution result
+     */
     public static Result runMainClass( final Class<?> clazz, final ExecArguments execArguments ) {
         final SecurityManager originalSecurityManager = System.getSecurityManager();
         final CaptureSystemExitSecurityManager securityManager = new CaptureSystemExitSecurityManager( originalSecurityManager );
@@ -164,6 +192,14 @@ public class CliRunner {
     }
 
 
+    /**
+     * Executes a command line interface via its executable jar
+     *
+     * @param jarFile the jar file
+     * @param execArguments the arguments
+     * @param jvmArguments additional arguments that should be passed to the Java call
+     * @return the execution result
+     */
     public static Result runJar( final File jarFile, final ExecArguments execArguments, final List<String> jvmArguments ) {
         final File javaBinary = new File( ProcessHandle.current().info().command().orElse( "java" ) );
 
@@ -176,6 +212,13 @@ public class CliRunner {
         return runBinary( javaBinary, new ExecArguments( javaExecArguments, execArguments.stdin(), execArguments.workingDirectory() ) );
     }
 
+    /**
+     * Executes a command line interface via its native executable
+     *
+     * @param binary the executable file
+     * @param executionArgument the arguments
+     * @return the execution result
+     */
     public static Result runBinary( final File binary, final ExecArguments executionArgument ) {
         LOG.debug( "Executing command (in {}): \"{}\" {}",
             executionArgument.workingDirectory(), binary, executionArgument.arguments().stream()
