@@ -142,7 +142,7 @@ public class DiagramGenerator {
         LOG.trace( "Generated Graphviz document: {}", graphvizGraph );
 
         final ThrowingConsumer<OutputStream, IOException> contentProvider = outputStream -> {
-            outputStream.write( graphvizGraph.getBytes() );
+            outputStream.write( graphvizGraph.getBytes( StandardCharsets.UTF_8 ) );
             outputStream.flush();
             if ( outputStream != System.out ) {
                 outputStream.close();

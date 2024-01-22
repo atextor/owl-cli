@@ -51,6 +51,7 @@ public class GraphvizDocument implements Function<Configuration, String> {
     private static final StringTemplate GRAPHVIZ_TEMPLATE = new StringTemplate( """
         digraph G {
           rankdir = ${rankdir}
+          charset = "utf-8"
 
           bgcolor = "${bgcolor}"
           color = "${fgcolor}"

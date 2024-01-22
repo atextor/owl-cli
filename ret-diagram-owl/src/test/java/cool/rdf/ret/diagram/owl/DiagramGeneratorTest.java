@@ -62,14 +62,13 @@ import net.jqwik.api.Combinators;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.Provide;
-import org.junit.jupiter.api.condition.DisabledOnOs;
-import org.junit.jupiter.api.condition.OS;
 import org.semanticweb.owlapi.model.IRI;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 
@@ -207,19 +206,15 @@ public class DiagramGeneratorTest {
     /**
      * Tests that any Graphviz diagram that can be generated is actually syntactically valid, i.e., can be processed
      * by Graphviz without errors.
-     * This property-based test is disabled on Windows. Since Graphviz documents are create that happen to contain specific
-     * symbols (e.g., the disjoint union symbol, ⚭) which are only representable in UTF-8 but not Windows-1252 or US-ASCII,
-     * Graphviz will refuse to render this document (because of "unknown tokens").
      *
      * @param graph the input graph
      * @return true if it could successfully be rendered
      */
     @Property
-    @DisabledOnOs( OS.WINDOWS )
     public boolean everyGeneratedDiagramIsSyntacticallyValid( @ForAll( "anyGraph" ) final Set<GraphElement> graph ) {
         final String graphvizDocument = graphvizGenerator.apply( graph.stream() ).apply( configuration );
         final ThrowingConsumer<OutputStream, IOException> contentProvider = outputStream -> {
-            outputStream.write( graphvizDocument.getBytes() );
+            outputStream.write( graphvizDocument.getBytes( StandardCharsets.UTF_8 ) );
             outputStream.flush();
             outputStream.close();
         };
