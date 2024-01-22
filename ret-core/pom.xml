@@ -150,12 +150,11 @@
                         </goals>
                         <configuration>
                             <mainClass>cool.rdf.ret.core.buildtime.WriteVersionClass</mainClass>
-                            <!-- args[0]: the path to git.properties-->
-                            <!-- args[1]: fully qualified class name to generate-->
-                            <!-- args[2]: the path to the file to write-->
-                            <commandlineArgs>${git-properties-filename} cool.rdf.ret.core.Version
-                                ${generated-sources}/main/java/cool/rdf/ret/core/Version.java
-                            </commandlineArgs>
+                            <!-- args[0]: the path to git.properties -->
+                            <!-- args[1]: fully qualified class name to generate -->
+                            <!-- args[2]: the path to the file to write -->
+                            <!-- args[3]: the copyright holder -->
+                            <commandlineArgs>${git-properties-filename} cool.rdf.ret.core.Version ${generated-sources}/main/java/cool/rdf/ret/core/Version.java "${project.developers[0].name}"</commandlineArgs>
                         </configuration>
                     </execution>
                 </executions>

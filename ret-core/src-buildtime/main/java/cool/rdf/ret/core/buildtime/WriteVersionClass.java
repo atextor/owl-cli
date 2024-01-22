@@ -84,6 +84,7 @@ public class WriteVersionClass {
     public static void main( final String[] args ) {
         final String gitPropertiesFile = args[0];
         final String fullyQualifiedClassName = args[1];
+        final String copyrightHolder = args[3];
         final int lastDot = fullyQualifiedClassName.lastIndexOf( "." );
         final String packageName = fullyQualifiedClassName.substring( 0, lastDot );
         final String className = fullyQualifiedClassName.substring( lastDot + 1 );
@@ -106,8 +107,7 @@ public class WriteVersionClass {
 
         final String content = VERSION_CLASS_TEMPLATE.apply( Map.of(
             "year", new SimpleDateFormat( "yyyy" ).format( new Date() ),
-            // For now. May read this from contributors file in the future.
-            "copyrightHolder", "Andreas Textor",
+            "copyrightHolder", copyrightHolder,
             "package", packageName,
             "className", className,
             "version", gitProperties.getProperty( "git.build.version" ),
