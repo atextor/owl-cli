@@ -30,13 +30,6 @@
     <name>RET Command Line Interface</name>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <skip.maven.surefire>false</skip.maven.surefire>
-        <skip.maven.shade>false</skip.maven.shade>
-        <skip.native.build>false</skip.native.build>
         <regular-jar>${project.artifactId}-${project.version}</regular-jar>
         <native-image-jar>${project.artifactId}-${project.version}-for-native</native-image-jar>
         <main-class>cool.rdf.ret.cli.Ret</main-class>
@@ -161,7 +154,7 @@
                 <configuration>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
-                    <skip>${skip.maven.surefire}</skip>
+                    <skip>${maven.surefire.skip}</skip>
                     <includes>
                         <include>**/RetTest.java</include>
                     </includes>
@@ -206,7 +199,7 @@
                         <configuration>
                             <finalName>${native-image-jar}</finalName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <skip>${skip.maven.shade}</skip>
+                            <skip>${maven.shade.skip}</skip>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -282,7 +275,7 @@
                         <configuration>
                             <finalName>${regular-jar}</finalName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <skip>${skip.maven.shade}</skip>
+                            <skip>${maven.shade.skip}</skip>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -350,7 +343,7 @@
         <profile>
             <id>native</id>
             <properties>
-                <skip.maven.surefire>true</skip.maven.surefire>
+                <maven.surefire.skip>true</maven.surefire.skip>
                 <maven.resources.skip>true</maven.resources.skip>
             </properties>
 
@@ -373,7 +366,7 @@
                         <configuration>
                             <mainClass>${main-class}</mainClass>
                             <imageName>${binary-name}</imageName>
-                            <skipNativeBuild>${skip.native.build}</skipNativeBuild>
+                            <skipNativeBuild>${native.build.skip}</skipNativeBuild>
                             <skipNativeTests>true</skipNativeTests>
                             <buildArgs>
                                 <arg>-J-XX:MaxRAMPercentage=90.0</arg>

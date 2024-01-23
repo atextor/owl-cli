@@ -29,12 +29,6 @@
     <artifactId>ret-infer</artifactId>
     <name>RET Infer</name>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <!-- General dependencies -->
         <dependency>

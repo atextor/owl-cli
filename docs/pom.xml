@@ -30,16 +30,11 @@
     <name>RET Docs</name>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <maven.surefire.skip>false</maven.surefire.skip>
+        <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
-        <maven.surefire.skip>true</maven.surefire.skip>
-        <maven.failsafe.skip>true</maven.failsafe.skip>
         <jacoco.skip>true</jacoco.skip>
 
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <asciidoctorj.version>2.5.11</asciidoctorj.version>
         <asciidoctor-multipage.version>0.0.16</asciidoctor-multipage.version>
         <jruby.version>9.4.5.0</jruby.version>

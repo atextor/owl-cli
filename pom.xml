@@ -61,8 +61,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.skip.surefire>false</maven.skip.surefire>
-        <maven.skip.failsafe>false</maven.skip.failsafe>
+        <maven.surefire.skip>false</maven.surefire.skip>
+        <maven.failsafe.skip>false</maven.failsafe.skip>
+        <maven.shade.skip>false</maven.shade.skip>
+        <native.build.skip>false</native.build.skip>
+        <jacoco.skip>false</jacoco.skip>
 
         <!-- General dependency versions -->
         <caffeine-version>2.9.2</caffeine-version>
@@ -532,7 +535,7 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <skip>${maven.skip.surefire}</skip>
+                    <skip>${maven.surefire.skip}</skip>
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                     <includes>
                         <include>**/*Tests.java</include>
@@ -562,7 +565,7 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${maven-failsafe-plugin-version}</version>
                 <configuration>
-                    <skipITs>${maven.skip.failsafe}</skipITs>
+                    <skipITs>${maven.failsafe.skip}</skipITs>
                 </configuration>
             </plugin>
         </plugins>
