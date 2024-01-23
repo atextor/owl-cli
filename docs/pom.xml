@@ -34,14 +34,15 @@
         <maven.failsafe.skip>false</maven.failsafe.skip>
         <maven.javadoc.skip>true</maven.javadoc.skip>
         <jacoco.skip>true</jacoco.skip>
-
-        <asciidoctorj.version>2.5.11</asciidoctorj.version>
-        <asciidoctor-multipage.version>0.0.16</asciidoctor-multipage.version>
-        <jruby.version>9.4.5.0</jruby.version>
-        <mavengem-wagon-version>1.0.3</mavengem-wagon-version>
     </properties>
 
     <dependencies>
+        <!-- build CLI first, so that we can generate diagrams -->
+        <dependency>
+            <groupId>cool.rdf</groupId>
+            <artifactId>ret-cli</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>rubygems</groupId>
             <artifactId>asciidoctor-multipage</artifactId>
@@ -61,7 +62,7 @@
             <extension> <!-- this allows us to download gems -->
                 <groupId>org.torquebox.mojo</groupId>
                 <artifactId>mavengem-wagon</artifactId>
-                <version>${mavengem-wagon-version}</version>
+                <version>${mavengem-wagon.version}</version>
             </extension>
         </extensions>
 
@@ -218,7 +219,7 @@
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin-version}</version>
+                <version>${nexus-staging-maven-plugin.version}</version>
                 <configuration>
                     <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                 </configuration>
@@ -227,7 +228,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>${maven-gpg-plugin-version}</version>
+                <version>${maven-gpg-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>

@@ -30,10 +30,10 @@
     <name>RET Command Line Interface</name>
 
     <properties>
-        <regular-jar>${project.artifactId}-${project.version}</regular-jar>
-        <native-image-jar>${project.artifactId}-${project.version}-for-native</native-image-jar>
-        <main-class>cool.rdf.ret.cli.Ret</main-class>
-        <binary-name>ret</binary-name>
+        <regular.jar>${project.artifactId}-${project.version}</regular.jar>
+        <native.image.jar>${project.artifactId}-${project.version}-for-native</native.image.jar>
+        <main.class>cool.rdf.ret.cli.Ret</main.class>
+        <binary.name>ret</binary.name>
     </properties>
 
     <dependencies>
@@ -128,13 +128,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin-version}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths combine.children="append">
                         <path>
                             <groupId>info.picocli</groupId>
                             <artifactId>picocli-codegen</artifactId>
-                            <version>${picocli-version}</version>
+                            <version>${picocli.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
@@ -172,8 +172,8 @@
                         </goals>
                         <configuration>
                             <systemPropertyVariables>
-                                <executableJar>${project.build.directory}/${regular-jar}.jar</executableJar>
-                                <binary>${project.build.directory}/${binary-name}</binary>
+                                <executableJar>${project.build.directory}/${regular.jar}.jar</executableJar>
+                                <binary>${project.build.directory}/${binary.name}</binary>
                             </systemPropertyVariables>
                             <forkCount>1</forkCount>
                             <reuseForks>true</reuseForks>
@@ -197,14 +197,14 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${native-image-jar}</finalName>
+                            <finalName>${native.image.jar}</finalName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <skip>${maven.shade.skip}</skip>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>${main-class}</Main-Class>
+                                        <Main.Class>${main.class}</Main.Class>
                                     </manifestEntries>
                                 </transformer>
                                 <transformer
@@ -273,14 +273,14 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${regular-jar}</finalName>
+                            <finalName>${regular.jar}</finalName>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <skip>${maven.shade.skip}</skip>
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>${main-class}</Main-Class>
+                                        <Main.Class>${main.class}</Main.Class>
                                     </manifestEntries>
                                 </transformer>
                                 <transformer
@@ -352,7 +352,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>${native-maven-plugin-version}</version>
+                        <version>${native-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
@@ -364,8 +364,8 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <mainClass>${main-class}</mainClass>
-                            <imageName>${binary-name}</imageName>
+                            <mainClass>${main.class}</mainClass>
+                            <imageName>${binary.name}</imageName>
                             <skipNativeBuild>${native.build.skip}</skipNativeBuild>
                             <skipNativeTests>true</skipNativeTests>
                             <buildArgs>
@@ -376,7 +376,7 @@
                             </buildArgs>
                             <quickBuild>true</quickBuild>
                             <classpath>
-                                <param>${project.build.directory}/${native-image-jar}.jar</param>
+                                <param>${project.build.directory}/${native.image.jar}.jar</param>
                             </classpath>
                         </configuration>
                     </plugin>

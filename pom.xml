@@ -68,53 +68,57 @@
         <jacoco.skip>false</jacoco.skip>
 
         <!-- General dependency versions -->
-        <caffeine-version>2.9.2</caffeine-version>
-        <classgraph-version>4.8.162</classgraph-version>
-        <commons-codec-version>1.16.0</commons-codec-version>
-        <commons-io-version>2.15.0</commons-io-version>
-        <commons-text-version>1.10.0</commons-text-version>
-        <graalvm-version>23.0.1</graalvm-version>
-        <guava-version>32.1.2-jre</guava-version>
-        <httpclient-version>4.5.14</httpclient-version>
-        <jackson-databind-version>2.15.2</jackson-databind-version>
-        <jena-version>4.9.0</jena-version>
-        <logback-version>1.4.11</logback-version>
-        <lombok-version>1.18.30</lombok-version>
-        <openllet-version>2.6.5</openllet-version>
-        <owlapi-version>5.5.0</owlapi-version>
-        <picocli-version>4.7.5</picocli-version>
-        <slf4j-api-version>2.0.9</slf4j-api-version>
-        <turtle-formatter-version>1.2.10</turtle-formatter-version>
-        <vavr-version>0.10.4</vavr-version>
+        <asciidoctorj.version>2.5.11</asciidoctorj.version>
+        <asciidoctor-multipage.version>0.0.16</asciidoctor-multipage.version>
+        <caffeine.version>2.9.2</caffeine.version>
+        <classgraph.version>4.8.162</classgraph.version>
+        <commons-codec.version>1.16.0</commons-codec.version>
+        <commons-io.version>2.15.0</commons-io.version>
+        <commons-text.version>1.10.0</commons-text.version>
+        <graalvm.version>23.0.1</graalvm.version>
+        <guava.version>32.1.2-jre</guava.version>
+        <httpclient.version>4.5.14</httpclient.version>
+        <jackson-databind.version>2.15.2</jackson-databind.version>
+        <jena.version>4.9.0</jena.version>
+        <jruby.version>9.4.5.0</jruby.version>
+        <logback.version>1.4.11</logback.version>
+        <lombok.version>1.18.30</lombok.version>
+        <mavengem-wagon.version>1.0.3</mavengem-wagon.version>
+        <openllet.version>2.6.5</openllet.version>
+        <owlapi.version>5.5.0</owlapi.version>
+        <picocli.version>4.7.5</picocli.version>
+        <slf4j-api.version>2.0.9</slf4j-api.version>
+        <turtle-formatter.version>1.2.10</turtle-formatter.version>
+        <vavr.version>0.10.4</vavr.version>
 
         <!-- Test dependency versions -->
-        <assertj-version>3.24.2</assertj-version>
-        <junit-jupiter-version>5.10.0</junit-jupiter-version>
-        <jqwik-version>1.8.0</jqwik-version>
+        <assertj.version>3.24.2</assertj.version>
+        <junit-jupiter.version>5.10.0</junit-jupiter.version>
+        <jqwik.version>1.8.0</jqwik.version>
 
         <!-- Plugin versions -->
-        <asciidoctor-maven-plugin-version>2.2.4</asciidoctor-maven-plugin-version>
-        <build-helper-maven-plugin-version>3.3.0</build-helper-maven-plugin-version>
-        <exec-maven-plugin-version>3.1.0</exec-maven-plugin-version>
-        <flatten-maven-plugin-version>1.4.1</flatten-maven-plugin-version>
-        <gem-maven-plugin-version>2.0.1</gem-maven-plugin-version>
-        <git-commit-id-plugin-version>4.9.10</git-commit-id-plugin-version>
-        <jacoco-maven-plugin-version>0.8.9</jacoco-maven-plugin-version>
-        <maven-antrun-plugin-version>1.8</maven-antrun-plugin-version>
-        <maven-clean-plugin-version>3.2.0</maven-clean-plugin-version>
-        <maven-compiler-plugin-version>3.8.1</maven-compiler-plugin-version>
-        <maven-deploy-plugin-version>3.1.1</maven-deploy-plugin-version>
-        <maven-failsafe-plugin-version>3.0.0</maven-failsafe-plugin-version>
-        <maven-gpg-plugin-version>3.0.1</maven-gpg-plugin-version>
-        <maven-install-plugin-version>3.1.1</maven-install-plugin-version>
-        <maven-javadoc-plugin-version>3.5.0</maven-javadoc-plugin-version>
-        <maven-jar-plugin-version>3.3.0</maven-jar-plugin-version>
-        <maven-shade-plugin-version>3.4.1</maven-shade-plugin-version>
-        <maven-source-plugin-version>3.2.1</maven-source-plugin-version>
-        <maven-surefire-junit5-tree-reporter-version>1.2.1</maven-surefire-junit5-tree-reporter-version>
-        <maven-surefire-plugin-version>3.0.0-M7</maven-surefire-plugin-version>
-        <native-maven-plugin-version>0.9.28</native-maven-plugin-version>
-        <nexus-staging-maven-plugin-version>1.6.8</nexus-staging-maven-plugin-version>
+        <asciidoctor-maven-plugin.version>2.2.4</asciidoctor-maven-plugin.version>
+        <build-helper-maven-plugin.version>3.3.0</build-helper-maven-plugin.version>
+        <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
+        <flatten-maven-plugin.version>1.4.1</flatten-maven-plugin.version>
+        <gem-maven-plugin.version>2.0.1</gem-maven-plugin.version>
+        <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+        <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
+        <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
+        <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0</maven-failsafe-plugin.version>
+        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
+        <maven-install-plugin.version>3.1.1</maven-install-plugin.version>
+        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+        <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-surefire-junit5-tree-reporter.version>1.2.1</maven-surefire-junit5-tree-reporter.version>
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+        <native-maven-plugin.version>0.9.28</native-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
     </properties>
 
     <modules>
@@ -168,147 +172,157 @@
 
             <!-- General dependencies -->
             <dependency>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctorj</artifactId>
+                <version>${asciidoctorj.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
-                <version>${caffeine-version}</version>
+                <version>${caffeine.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.github.classgraph</groupId>
                 <artifactId>classgraph</artifactId>
-                <version>${classgraph-version}</version>
+                <version>${classgraph.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
-                <version>${commons-codec-version}</version>
+                <version>${commons-codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>${commons-io-version}</version>
+                <version>${commons-io.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
-                <version>${commons-text-version}</version>
+                <version>${commons-text.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>${guava-version}</version>
+                <version>${guava.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
-                <version>${httpclient-version}</version>
+                <version>${httpclient.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${jackson-databind-version}</version>
+                <version>${jackson-databind.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena</artifactId>
-                <version>${jena-version}</version>
+                <version>${jena.version}</version>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena-arq</artifactId>
-                <version>${jena-version}</version>
+                <version>${jena.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>jena-core</artifactId>
-                <version>${jena-version}</version>
+                <version>${jena.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.jena</groupId>
                 <artifactId>apache-jena-libs</artifactId>
-                <version>${jena-version}</version>
+                <version>${jena.version}</version>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.jruby</groupId>
+                <artifactId>jruby</artifactId>
+                <version>${jruby.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>${logback-version}</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>${lombok-version}</version>
+                <version>${lombok.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.galigator.openllet</groupId>
                 <artifactId>openllet-jena</artifactId>
-                <version>${openllet-version}</version>
+                <version>${openllet.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sourceforge.owlapi</groupId>
                 <artifactId>owlapi-distribution</artifactId>
-                <version>${owlapi-version}</version>
+                <version>${owlapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli</artifactId>
-                <version>${picocli-version}</version>
+                <version>${picocli.version}</version>
             </dependency>
             <dependency>
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli-codegen</artifactId>
-                <version>${picocli-version}</version>
+                <version>${picocli.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>${slf4j-api-version}</version>
+                <version>${slf4j-api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.graalvm.nativeimage</groupId>
                 <artifactId>svm</artifactId>
-                <version>${graalvm-version}</version>
+                <version>${graalvm.version}</version>
             </dependency>
             <dependency>
                 <groupId>de.atextor</groupId>
                 <artifactId>turtle-formatter</artifactId>
-                <version>${turtle-formatter-version}</version>
+                <version>${turtle-formatter.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vavr</groupId>
                 <artifactId>vavr</artifactId>
-                <version>${vavr-version}</version>
+                <version>${vavr.version}</version>
             </dependency>
 
             <!-- Test dependencies -->
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
-                <version>${assertj-version}</version>
+                <version>${assertj.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit-jupiter-version}</version>
+                <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit-jupiter-version}</version>
+                <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
-                <version>${junit-jupiter-version}</version>
+                <version>${junit-jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>net.jqwik</groupId>
                 <artifactId>jqwik</artifactId>
-                <version>${jqwik-version}</version>
+                <version>${jqwik.version}</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -320,107 +334,107 @@
                 <plugin>
                     <groupId>org.asciidoctor</groupId>
                     <artifactId>asciidoctor-maven-plugin</artifactId>
-                    <version>${asciidoctor-maven-plugin-version}</version>
+                    <version>${asciidoctor-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>${build-helper-maven-plugin-version}</version>
+                    <version>${build-helper-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>${exec-maven-plugin-version}</version>
+                    <version>${exec-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
-                    <version>${flatten-maven-plugin-version}</version>
+                    <version>${flatten-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>de.saumya.mojo</groupId>
                     <artifactId>gem-maven-plugin</artifactId>
-                    <version>${gem-maven-plugin-version}</version>
+                    <version>${gem-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
-                    <version>${git-commit-id-plugin-version}</version>
+                    <version>${git-commit-id-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin-version}</version>
+                    <version>${jacoco-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <version>${maven-antrun-plugin-version}</version>
+                    <version>${maven-antrun-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>${maven-clean-plugin-version}</version>
+                    <version>${maven-clean-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven-compiler-plugin-version}</version>
+                    <version>${maven-compiler-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>${maven-deploy-plugin-version}</version>
+                    <version>${maven-deploy-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>${maven-failsafe-plugin-version}</version>
+                    <version>${maven-failsafe-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>${maven-gpg-plugin-version}</version>
+                    <version>${maven-gpg-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>${maven-install-plugin-version}</version>
+                    <version>${maven-install-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>${maven-javadoc-plugin-version}</version>
+                    <version>${maven-javadoc-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>${maven-jar-plugin-version}</version>
+                    <version>${maven-jar-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>${maven-shade-plugin-version}</version>
+                    <version>${maven-shade-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>${maven-source-plugin-version}</version>
+                    <version>${maven-source-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin-version}</version>
+                    <version>${maven-surefire-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.graalvm.buildtools</groupId>
                     <artifactId>native-maven-plugin</artifactId>
-                    <version>${native-maven-plugin-version}</version>
+                    <version>${native-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexus-staging-maven-plugin-version}</version>
+                    <version>${nexus-staging-maven-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -429,7 +443,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>${flatten-maven-plugin-version}</version>
+                <version>${flatten-maven-plugin.version}</version>
                 <configuration>
                     <!-- see https://central.sonatype.org/publish/requirements -->
                     <flattenMode>ossrh</flattenMode>
@@ -455,7 +469,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco-maven-plugin-version}</version>
+                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
@@ -478,7 +492,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin-version}</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
@@ -486,7 +500,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok-version}</version>
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
@@ -495,7 +509,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin-version}</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -512,7 +526,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin-version}</version>
+                <version>${maven-source-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -526,12 +540,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin-version}</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <dependencies>
                     <dependency>
                         <groupId>me.fabriciorby</groupId>
                         <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
-                        <version>${maven-surefire-junit5-tree-reporter-version}</version>
+                        <version>${maven-surefire-junit5-tree-reporter.version}</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -563,7 +577,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${maven-failsafe-plugin-version}</version>
+                <version>${maven-failsafe-plugin.version}</version>
                 <configuration>
                     <skipITs>${maven.failsafe.skip}</skipITs>
                 </configuration>
@@ -579,7 +593,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin-version}</version>
+                        <version>${maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -600,7 +614,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin-version}</version>
+                        <version>${nexus-staging-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
