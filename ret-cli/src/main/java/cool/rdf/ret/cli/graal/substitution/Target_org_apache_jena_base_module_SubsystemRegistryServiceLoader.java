@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cool.rdf.ret.cli.substitution;
+package cool.rdf.ret.cli.graal.substitution;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.Substitute;

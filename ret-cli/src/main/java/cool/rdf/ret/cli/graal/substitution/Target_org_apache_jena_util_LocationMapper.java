@@ -14,27 +14,27 @@
  * limitations under the License.
  */
 
-package cool.rdf.ret.cli.substitution;
+package cool.rdf.ret.cli.graal.substitution;
 
 import com.oracle.svm.core.annotate.Alias;
 import com.oracle.svm.core.annotate.RecomputeFieldValue;
 import com.oracle.svm.core.annotate.TargetClass;
-import org.apache.jena.riot.system.stream.JenaIOEnvironment;
+import org.apache.jena.util.LocationMapper;
 import org.slf4j.Logger;
 import org.slf4j.helpers.NOPLogger;
 
 import java.io.Serial;
 
 /**
- * Substitution class for {@link JenaIOEnvironment}
+ * Substitution for {@link LocationMapper}. This will silence Jena's "can't find location-mapping.rdf" complaints.
  */
 @SuppressWarnings( "unused" )
-@TargetClass( JenaIOEnvironment.class )
-public final class Target_org_apache_jena_riot_system_stream_JenaIOEnvironment {
+@TargetClass( LocationMapper.class )
+public final class Target_org_apache_jena_util_LocationMapper {
     @Alias
     @RecomputeFieldValue( kind = RecomputeFieldValue.Kind.FromAlias )
     static Logger log = new NOPLogger() {
         @Serial
-        private static final long serialVersionUID = 5468256729459336798L;
+        private static final long serialVersionUID = 6664642930049031320L;
     };
 }
