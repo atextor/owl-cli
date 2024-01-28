@@ -16,11 +16,12 @@
 
 package cool.rdf.ret.write;
 
+import cool.rdf.ret.core.RdfLoader;
 import de.atextor.turtle.formatter.FormattingStyle;
 import de.atextor.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.riot.Lang;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,14 +92,14 @@ public class RdfWriter {
      * @return {@link io.vavr.control.Try.Success} if writing succeeded
      */
     public Try<Void> write( final InputStream input, final OutputStream output, final Configuration configuration ) {
-        final Model model = ModelFactory.createDefaultModel();
-
+        LOG.debug( "Load model" );
+        final Model model = RdfLoader.load( input, configurationFormatToJenaSyntax( configuration.inputFormat ),
+            configuration.formattingStyle.emptyRdfBase );
         try {
-            model.read( input, configuration.formattingStyle.emptyRdfBase,
-                configurationFormatToJenaFormat( configuration.inputFormat ) );
             if ( configuration.outputFormat == Configuration.Format.TURTLE ) {
                 return writeTurtle( model, output, configuration.formattingStyle );
             }
+            LOG.debug( "Writing model using Jena" );
             model.write( output, configurationFormatToJenaFormat( configuration.outputFormat ) );
         } catch ( final Exception exception ) {
             LOG.debug( "Failure during RDF I/O", exception );
@@ -116,7 +117,9 @@ public class RdfWriter {
      * @return {@link io.vavr.control.Try.Success} if writing succeeded
      */
     public Try<Void> writeTurtle( final Model model, final OutputStream output, final FormattingStyle style ) {
+        LOG.debug( "Create turtle formatter" );
         final TurtleFormatter formatter = new TurtleFormatter( style );
+        LOG.debug( "Writing model using TurtleFormatter" );
         formatter.accept( model, output );
         return Try.success( null );
     }
@@ -134,5 +137,17 @@ public class RdfWriter {
             case NTRIPLE -> "N-TRIPLE";
             case N3 -> "N3";
         };
+    }
+
+    private Lang configurationFormatToJenaSyntax( final Configuration.Format format ) {
+        LOG.debug( "Determining syntax for {}", format );
+        final Lang result = switch ( format ) {
+            case TURTLE -> Lang.TURTLE;
+            case RDFXML -> Lang.RDFXML;
+            case NTRIPLE -> Lang.NTRIPLES;
+            case N3 -> Lang.N3;
+        };
+        LOG.debug( "Target syntax: {}", result );
+        return result;
     }
 }

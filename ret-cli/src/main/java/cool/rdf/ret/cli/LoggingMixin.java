@@ -30,7 +30,7 @@ import static picocli.CommandLine.Spec.Target.MIXEE;
 
 /**
  * A <a href="https://picocli.info/#_mixing_options_and_positional_parameters">mixin</a> for logging functionality that is
- * shared across commands. The mixing sets up and uses logback.
+ * shared across commands. The mixin sets up and uses logback.
  */
 public class LoggingMixin {
     @SuppressWarnings( { "unused", "SpellCheckingInspection" } )

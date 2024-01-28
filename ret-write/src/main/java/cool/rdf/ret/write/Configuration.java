@@ -44,6 +44,15 @@ public class Configuration {
     @Builder.Default
     public FormattingStyle formattingStyle = FormattingStyle.DEFAULT;
 
+    @Override
+    public String toString() {
+        return "Configuration{" +
+            "outputFormat=" + outputFormat +
+            ", inputFormat=" + inputFormat +
+            ", formattingStyle=" + formattingStyle +
+            '}';
+    }
+
     /**
      * The possible input/output formats
      */
