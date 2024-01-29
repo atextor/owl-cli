@@ -19,6 +19,7 @@ package cool.rdf.ret.cli.graal.feature;
 import org.graalvm.nativeimage.hosted.Feature;
 
 import static org.graalvm.nativeimage.hosted.RuntimeClassInitialization.initializeAtBuildTime;
+import static org.graalvm.nativeimage.hosted.RuntimeReflection.register;
 
 public class LogbackFeature implements Feature {
     @Override
@@ -34,5 +35,45 @@ public class LogbackFeature implements Feature {
         initializeAtBuildTime( ch.qos.logback.core.spi.AppenderAttachableImpl.class );
         initializeAtBuildTime( "ch.qos.logback.core.pattern.parser.TokenStream$1" );
         initializeAtBuildTime( ch.qos.logback.core.pattern.parser.Parser.class );
+
+        register( ch.qos.logback.classic.pattern.ClassOfCallerConverter.class );
+        register( ch.qos.logback.classic.pattern.ContextNameConverter.class );
+        register( ch.qos.logback.classic.pattern.DateConverter.class );
+        register( ch.qos.logback.classic.pattern.ExtendedThrowableProxyConverter.class );
+        register( ch.qos.logback.classic.pattern.FileOfCallerConverter.class );
+        register( ch.qos.logback.classic.pattern.LevelConverter.class );
+        register( ch.qos.logback.classic.pattern.LineOfCallerConverter.class );
+        register( ch.qos.logback.classic.pattern.LineSeparatorConverter.class );
+        register( ch.qos.logback.classic.pattern.LocalSequenceNumberConverter.class );
+        register( ch.qos.logback.classic.pattern.LoggerConverter.class );
+        register( ch.qos.logback.classic.pattern.MDCConverter.class );
+        register( ch.qos.logback.classic.pattern.MarkerConverter.class );
+        register( ch.qos.logback.classic.pattern.MessageConverter.class );
+        register( ch.qos.logback.classic.pattern.MethodOfCallerConverter.class );
+        register( ch.qos.logback.classic.pattern.NopThrowableInformationConverter.class );
+        register( ch.qos.logback.classic.pattern.PropertyConverter.class );
+        register( ch.qos.logback.classic.pattern.RelativeTimeConverter.class );
+        register( ch.qos.logback.classic.pattern.RootCauseFirstThrowableProxyConverter.class );
+        register( ch.qos.logback.classic.pattern.ThreadConverter.class );
+        register( ch.qos.logback.classic.pattern.ThrowableProxyConverter.class );
+        register( ch.qos.logback.classic.pattern.color.HighlightingCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.IdentityCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.ReplacingCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BlackCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldBlueCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldCyanCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldGreenCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldMagentaCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldRedCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldWhiteCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.BoldYellowCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.CyanCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.GrayCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.GreenCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.MagentaCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.RedCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.WhiteCompositeConverter.class );
+        register( ch.qos.logback.core.pattern.color.YellowCompositeConverter.class );
+        register( ch.qos.logback.core.util.StatusPrinter.class );
     }
 }
