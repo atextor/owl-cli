@@ -16,6 +16,7 @@
 
 package cool.rdf.ret.cli;
 
+import cool.rdf.ret.core.RdfLoader;
 import cool.rdf.ret.core.Version;
 import cool.rdf.ret.write.Configuration;
 import cool.rdf.ret.write.RdfWriter;
@@ -235,7 +236,7 @@ public class RetWrite extends AbstractCommand implements Runnable {
             .objectOrder( objectOrder )
             .anonymousNodeIdGenerator( buildAnonymousNodeIdGenerator( anonymousNodeIdPattern ) )
             .knownPrefixes( buildKnownPrefixes( prefixMap ) )
-            .emptyRdfBase( "https://github.com/atextor/owl-cli/internal" )
+            .emptyRdfBase( RdfLoader.DEFAULT_EMPTY_PREFIX )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()
@@ -261,7 +262,10 @@ public class RetWrite extends AbstractCommand implements Runnable {
         openInput( input ).flatMap( inputStream -> {
                 final Configuration configuration = configurationBuilder.build();
                 return openOutput( input, output != null ? Optional.of( output ) : Optional.of( "-" ), "ttl" )
-                    .flatMap( outputStream -> writer.write( inputStream, outputStream, configuration ) );
+                    .flatMap( outputStream -> {
+                        LOG.debug( "Calling write command with config {}", configuration );
+                        return writer.write( inputStream, outputStream, configuration );
+                    } );
             }
         ).onFailure( throwable -> exitWithErrorMessage( LOG, loggingMixin, throwable ) );
     }
