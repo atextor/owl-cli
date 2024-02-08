@@ -117,8 +117,8 @@
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-junit5-tree-reporter.version>1.2.1</maven-surefire-junit5-tree-reporter.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-        <native-maven-plugin.version>0.9.28</native-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <native-maven-plugin.version>0.10.0</native-maven-plugin.version>
     </properties>
 
     <modules>

@@ -151,6 +151,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <forkCount>1</forkCount>
                     <reuseForks>false</reuseForks>
@@ -164,6 +165,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>integration-test</phase>
@@ -189,7 +191,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <version>${maven-shade-plugin.version}</version>
                 <executions>
+                    <!-- Builds the .jar file that is passed to GraalVM native-image -->
                     <execution>
                         <id>shade-for-native-image</id>
                         <phase>package</phase>
@@ -266,6 +270,7 @@
                             </filters>
                         </configuration>
                     </execution>
+                    <!-- Builds the regular standalone executable .jar -->
                     <execution>
                         <id>default-shade</id>
                         <phase>package</phase>
@@ -328,6 +333,8 @@
                                     <excludes>
                                         <!-- Explicitly exclude build-time-only code from jar -->
                                         <exclude>cool/rdf/ret/core/buildtime/**</exclude>
+                                        <!-- Exclude the GraalVM setup code and substitution classes -->
+                                        <exclude>cool/rdf/ret/cli/graal/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -365,14 +372,27 @@
                         </executions>
                         <configuration>
                             <mainClass>${main.class}</mainClass>
-                            <imageName>${binary.name}</imageName>
                             <skipNativeBuild>${native.build.skip}</skipNativeBuild>
                             <skipNativeTests>true</skipNativeTests>
                             <buildArgs>
+                                <arg>-H:Name=${project.build.directory}/${binary.name}</arg>
+                                <arg>--verbose</arg>
+                                <arg>--no-fallback</arg>
+                                <arg>--report-unsupported-elements-at-runtime</arg>
+                                <arg>-H:EnableURLProtocols=http,https</arg>
+                                <arg>--enable-https</arg>
+                                <arg>-H:-UseServiceLoaderFeature</arg>
+                                <arg>-H:+AllowIncompleteClasspath</arg>
+                                <arg>-H:+ReportExceptionStackTraces</arg>
+                                <arg>-H:+PrintClassInitialization</arg>
+                                <arg>-H:-DeadlockWatchdogExitOnTimeout</arg>
+                                <arg>-H:DeadlockWatchdogInterval=0</arg>
+                                <arg>--features=cool.rdf.ret.cli.graal.feature.RetFeature</arg>
                                 <arg>-J-XX:MaxRAMPercentage=90.0</arg>
                                 <arg>-J-XX:GCTimeRatio=19</arg>
                                 <arg>-J--add-exports=java.desktop/sun.awt=ALL-UNNAMED</arg>
                                 <arg>-J--add-exports=java.desktop/sun.font=ALL-UNNAMED</arg>
+                                <arg>-J--add-exports=org.graalvm.nativeimage.builder/com.oracle.svm.core.jni=ALL-UNNAMED</arg>
                             </buildArgs>
                             <quickBuild>true</quickBuild>
                             <classpath>
