@@ -142,6 +142,10 @@ public class RetTest {
 
         final List<String> arguments = List.of( "--disable-color", RetDiagram.COMMAND_NAME, output.getAbsolutePath() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments ) );
+        if ( result.stdErr().raw().length > 0 || result.exitStatus() != OK ) {
+            System.out.println( "stderr:" );
+            System.out.println( result.stdErr().asString() );
+        }
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();

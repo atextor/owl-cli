@@ -34,6 +34,9 @@ public class BinaryTest extends RetTest {
         binary = new File( binaryPath );
         assumeThat( binary ).isFile();
         assumeThat( binary ).exists();
+
+        final String packaging = System.getProperty( "packaging.type" );
+        assumeThat( packaging ).isEqualTo( "native" );
     }
 
     @Override

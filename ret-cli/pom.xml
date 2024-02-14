@@ -34,6 +34,7 @@
         <native.image.jar>${project.artifactId}-${project.version}-for-native</native.image.jar>
         <main.class>cool.rdf.ret.cli.Ret</main.class>
         <binary.name>ret</binary.name>
+        <packaging.type>jar</packaging.type>
     </properties>
 
     <dependencies>
@@ -176,6 +177,7 @@
                             <systemPropertyVariables>
                                 <executableJar>${project.build.directory}/${regular.jar}.jar</executableJar>
                                 <binary>${project.build.directory}/${binary.name}</binary>
+                                <packaging.type>${packaging.type}</packaging.type>
                             </systemPropertyVariables>
                             <forkCount>1</forkCount>
                             <reuseForks>true</reuseForks>
@@ -352,6 +354,7 @@
             <properties>
                 <maven.surefire.skip>true</maven.surefire.skip>
                 <maven.resources.skip>true</maven.resources.skip>
+                <packaging.type>native</packaging.type>
             </properties>
 
             <build>
