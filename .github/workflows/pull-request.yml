@@ -5,18 +5,26 @@ on:
       - main
 jobs:
   build-and-test:
-    name: ${{ matrix.os }} build
+    name: ${{ runner.os }} build
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
-        os: [windows-latest, ubuntu-20.04, macos-latest]
+        os: [ windows-latest, ubuntu-20.04, macos-latest ]
+        include:
+          - os: windows-latest
+            binary-file-extension: .exe
+          - os: ubuntu-20.04
+            binary-file-extension: ''
+          - os: macos-latest
+            binary-file-extension: ''
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies (Linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: runner.os == 'Linux'
         # - Install msttcorefonts, so we have the Verdana font available for diagram generation
         # - Install graphviz, so we have the dot binary available for diagram generation
         run: |-
@@ -28,7 +36,7 @@ jobs:
           sudo apt-get install -y build-essential libz-dev
 
       - name: Install dependencies (Windows)
-        if: matrix.os == 'windows-latest'
+        if: runner.os == 'Windows'
         # - Install graphviz, so we have the dot binary available for diagram generation
         run: |-
           choco install zip --execution-timeout=600
@@ -37,13 +45,13 @@ jobs:
         shell: bash
 
       - name: Install dependencies (MacOs)
-        if: matrix.os == 'macos-latest'
+        if: runner.os == 'macOS'
         # - Install graphviz, so we have the dot binary available for diagram generation
         run: |-
           brew install graphviz
 
       - name: Setup JDK
-        uses: graalvm/setup-graalvm@v1
+        uses: graalvm/setup-graalvm@b8dc5fccfbc65b21dd26e8341e7b21c86547f61b # v1
         with:
           java-version: '17.0.10'
           distribution: 'graalvm'
@@ -52,7 +60,7 @@ jobs:
           native-image-job-reports: 'true'
 
       - name: Cache Maven packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -60,7 +68,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Configure Pagefile (Windows)
-        if: matrix.os == 'windows-latest'
+        if: runner.os == 'Windows'
         # Fix for "LINK : fatal error LNK1171: unable to load mspdbcore.dll (error code: 1455)":
         # This seems to be caused by running out of memory; increasing page file
         # size suggested here:
@@ -72,7 +80,7 @@ jobs:
           disk-root: "C:"
 
       - name: Set Swap Space (Linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: runner.os == 'Linux'
         uses: pierotofy/set-swap-space@49819abfb41bd9b44fb781159c033dba90353a7c # master
         with:
           swap-size-gb: 12
@@ -81,58 +89,43 @@ jobs:
         run: |
           mvn -B clean install
           mvn -B clean verify -pl ret-cli -Pnative
+          mv ret-cli/target/ret${{ matrix.binary-file-extension }} ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
         shell: bash
 
       - name: Switch to Temurin JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
           overwrite-settings: false
 
       - name: Test executable jar on Temurin
-        if: matrix.os == 'ubuntu-20.04'
+        if: runner.os == 'Linux'
         run: |
           mvn -B -Dskip.maven.surefire -pl ret-cli failsafe:integration-test@default
 
-      - name: Run UPX (Linux)
+      - name: Compress executable
         # UPX doesn't work on mac
-        if: matrix.os == 'ubuntu-20.04'
+        if: runner.os != 'macOS'
         uses: crazy-max/ghaction-upx@0fc45e912669ba9e8fa2b430e97c8da2a632e29b # v3.0.0
         with:
           version: latest
-          files: ret-cli/target/ret
+          files: ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
           args: -9
 
-      - name: Run UPX (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: crazy-max/ghaction-upx@0fc45e912669ba9e8fa2b430e97c8da2a632e29b # v3.0.0
-        with:
-          version: latest
-          files: ret-cli/target/ret.exe
-          args: -9
-
-      - name: Upload executable jar
+      - name: Upload jar
         # We only need one OS job to upload the jar
-        if: matrix.os == 'ubuntu-20.04'
-        uses: actions/upload-artifact@v3
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
         with:
           name: ret-cli-jar
           path: ret-cli/target/ret-cli-DEV-SNAPSHOT.jar
 
-      - name: Upload binary (Windows)
-        if: matrix.os == 'windows-latest'
-        uses: actions/upload-artifact@v3
+      - name: Upload executable
+        uses: actions/upload-artifact@v4
         with:
-          name: ret-cli-${{ matrix.os }}
+          name: ret-cli-${{ runner.os }}
+          # .dlls only exist on Windows of course
           path: |
-            ret-cli/target/ret.exe
+            ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
             ret-cli/target/*.dll
-
-      - name: Upload binary (Linux/Mac)
-        if: matrix.os == 'ubuntu-20.04' || matrix.os == 'macos-latest'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ret-cli-${{ matrix.os }}
-          path: |
-            ret-cli/target/ret
