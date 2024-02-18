@@ -5,7 +5,7 @@ on:
       - main
 jobs:
   build-and-test:
-    name: ${{ runner.os }} build
+    name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
