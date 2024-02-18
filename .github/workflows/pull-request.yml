@@ -1,13 +1,11 @@
-name: Release
+name: Build Pull Request
 on:
-  workflow_dispatch:
-    inputs:
-      release_version:
-        description: 'Version number'
-        required: true
+  pull_request:
+    branches:
+      - main
 jobs:
-  build:
-    name: ${{ runner.os }} build
+  build-and-test:
+    name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -89,15 +87,9 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # Required for reactor dependencies
-          mvn -B clean install -DskipTests
-          mvn -B versions:set -DnewVersion=${{ github.event.inputs.release_version }}
-          mvn -B versions:commit
-
-          # Actual build
           mvn -B clean install
           mvn -B clean verify -pl ret-cli -Pnative
-          mv target/ret${{ matrix.binary-file-extension }} target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+          mv ret-cli/target/ret${{ matrix.binary-file-extension }} ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
         shell: bash
 
       - name: Switch to Temurin JDK
@@ -108,10 +100,11 @@ jobs:
           overwrite-settings: false
 
       - name: Test executable jar on Temurin
+        if: runner.os == 'Linux'
         run: |
           mvn -B -Dskip.maven.surefire -pl ret-cli failsafe:integration-test@default
 
-      - name: Compress native executable
+      - name: Compress executable
         # UPX doesn't work on mac
         if: runner.os != 'macOS'
         uses: crazy-max/ghaction-upx@0fc45e912669ba9e8fa2b430e97c8da2a632e29b # v3.0.0
@@ -120,17 +113,15 @@ jobs:
           files: ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
           args: -9
 
-      - name: Upload workspace
-        # We need to upload the generated jars for every submodule,
-        # so that we have it available for release. Also includes the Linux executable.
+      - name: Upload jar
+        # We only need one OS job to upload the jar
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: workspace
-          path: .
+          name: ret-cli-jar
+          path: ret-cli/target/ret-cli-DEV-SNAPSHOT.jar
 
       - name: Upload executable
-        if: ${{ runner.os == 'Windows' || runner.os == 'macOS' }}
         uses: actions/upload-artifact@v4
         with:
           name: ret-cli-${{ runner.os }}
@@ -138,69 +129,3 @@ jobs:
           path: |
             ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
             ret-cli/target/*.dll
-
-  release:
-    name: Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Configure GPG
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-          gpg-private-key: ${{ secrets.PGP_KEY }}
-          gpg-passphrase: PGP_KEY_PASSWORD
-          server-id: central
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
-          overwrite-settings: false
-
-      - name: Fetch source tree
-        uses: actions/download-artifact@v4
-        with:
-          name: workspace
-
-      - name: Release to Maven Central
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          mvn -B -DreleaseVersion=${{ github.event.inputs.release_version }} \
-            -DskipTests -Darguments="-DskipTests" release:prepare release:release
-        env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
-          PGP_KEY_PASSWORD: ${{ secrets.PGP_KEY_PASSWORD }}
-
-      - name: Fetch Windows executable
-        uses: actions/download-artifact@v4
-        with:
-          name: ret-cli-Windows
-
-      - name: Fetch macOS executable
-        uses: actions/download-artifact@v4
-        with:
-          name: ret-cli-macOS
-
-      - name: Create Windows zip
-        run: |
-          cd target
-          zip -9 -r ret-cli-Windows-X64.zip ret*.exe *.dll
-
-      - name: Create Github release
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844v1 # v0.1.15
-        with:
-          body: "Release version ${{ github.event.inputs.release_version }}"
-          tag_name: v${{ github.event.inputs.release_version }}
-          draft: false
-          prerelease: false
-          files: |
-            target/ret-cli-${{ github.event.inputs.release_version }}.jar
-            target/ret-cli-Linux-X64
-            target/ret-cli-Windows-X64.zip
-            target/ret-cli-macOS-X64
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
