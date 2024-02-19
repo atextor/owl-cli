@@ -7,7 +7,7 @@ on:
         required: true
 jobs:
   build:
-    name: ${{ runner.os }} build
+    name: Build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -204,3 +204,9 @@ jobs:
             target/ret-cli-macOS-X64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
+
+      - name: Deploy GH Pages
+        uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e # 4.5.0
+        with:
+          branch: gh-pages
+          folder: docs/target/docs
