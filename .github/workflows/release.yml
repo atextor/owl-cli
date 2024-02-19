@@ -147,7 +147,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configure GPG
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -155,8 +155,8 @@ jobs:
           gpg-private-key: ${{ secrets.PGP_KEY }}
           gpg-passphrase: PGP_KEY_PASSWORD
           server-id: central
-          server-username: OSSRH_USERNAME
-          server-password: OSSRH_TOKEN
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_TOKEN
           overwrite-settings: false
 
       - name: Fetch source tree
@@ -171,8 +171,8 @@ jobs:
           mvn -B -DreleaseVersion=${{ github.event.inputs.release_version }} \
             -DskipTests -Darguments="-DskipTests" release:prepare release:release
         env:
-          OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
           PGP_KEY_PASSWORD: ${{ secrets.PGP_KEY_PASSWORD }}
 
       - name: Fetch Windows executable
@@ -190,7 +190,7 @@ jobs:
           cd target
           zip -9 -r ret-cli-Windows-X64.zip ret*.exe *.dll
 
-      - name: Create Github release
+      - name: Create GitHub release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844v1 # v0.1.15
         with:
           body: "Release version ${{ github.event.inputs.release_version }}"
@@ -205,7 +205,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
-      - name: Deploy GH Pages
+      - name: Deploy GitHub Pages
         uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e # 4.5.0
         with:
           branch: gh-pages
