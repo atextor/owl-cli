@@ -33,9 +33,9 @@
 <text text-anchor="start" x="266" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="271" y="-8.2" font-family="Verdana" font-size="12.00">hasUncle</text>
 </g>
-<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2 -->
+<!-- _8555135aabf64dc98e58458e5b344644 -->
 <g id="node4" class="node">
-<title>_06436b61d4404a7a8af2e8ce6fa2f6e2</title>
+<title>_8555135aabf64dc98e58458e5b344644</title>
 <path fill="none" stroke="black" d="M360.67,-80C360.67,-80 7.33,-80 7.33,-80 3.67,-80 0,-76.33 0,-72.67 0,-72.67 0,-65.33 0,-65.33 0,-61.67 3.67,-58 7.33,-58 7.33,-58 360.67,-58 360.67,-58 364.33,-58 368,-61.67 368,-65.33 368,-65.33 368,-72.67 368,-72.67 368,-76.33 364.33,-80 360.67,-80"/>
 <text text-anchor="start" x="4" y="-66.9" font-family="Verdana" font-size="12.00">hasParent(?a, ?b) ∧ hasBrother(?b, ?c)</text>
 <text text-anchor="start" x="243" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
@@ -43,21 +43,21 @@
 <text text-anchor="start" x="258" y="-66.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="263" y="-66.9" font-family="Verdana" font-size="12.00">hasUncle(?a, ?c)</text>
 </g>
-<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasBrother -->
-<g id="edge3" class="edge">
-<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasBrother</title>
+<!-- _8555135aabf64dc98e58458e5b344644&#45;&gt;hasBrother -->
+<g id="edge1" class="edge">
+<title>_8555135aabf64dc98e58458e5b344644&#45;&gt;hasBrother</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M164.16,-57.99C146.9,-49.28 121.67,-36.55 102.12,-26.69"/>
 <polygon fill="black" stroke="black" points="103.55,-23.49 93.05,-22.11 100.4,-29.74 103.55,-23.49"/>
 </g>
-<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasParent -->
-<g id="edge1" class="edge">
-<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasParent</title>
+<!-- _8555135aabf64dc98e58458e5b344644&#45;&gt;hasParent -->
+<g id="edge2" class="edge">
+<title>_8555135aabf64dc98e58458e5b344644&#45;&gt;hasParent</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M184,-57.99C184,-50.91 184,-41.17 184,-32.48"/>
 <polygon fill="black" stroke="black" points="187.5,-32.3 184,-22.3 180.5,-32.3 187.5,-32.3"/>
 </g>
-<!-- _06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasUncle -->
-<g id="edge2" class="edge">
-<title>_06436b61d4404a7a8af2e8ce6fa2f6e2&#45;&gt;hasUncle</title>
+<!-- _8555135aabf64dc98e58458e5b344644&#45;&gt;hasUncle -->
+<g id="edge3" class="edge">
+<title>_8555135aabf64dc98e58458e5b344644&#45;&gt;hasUncle</title>
 <path fill="none" stroke="black" stroke-dasharray="5,2" d="M202.59,-57.99C218.61,-49.36 241.97,-36.79 260.21,-26.96"/>
 <polygon fill="black" stroke="black" points="262.07,-29.94 269.22,-22.11 258.75,-23.77 262.07,-29.94"/>
 </g>
