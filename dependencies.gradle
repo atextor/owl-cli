@@ -15,35 +15,35 @@
  */
 
 ext.deps = [
-    caffeine:                'com.github.ben-manes.caffeine:caffeine:2.9.2',
-    commons_codec:           'commons-codec:commons-codec:1.16.0',
-    commons_io:              'org.apache.commons:commons-io:1.3.2',
-    commons_text:            'org.apache.commons:commons-text:1.10.0',
-    guava:                   'com.google.guava:guava:32.1.2-jre',
-    httpclient:              'org.apache.httpcomponents:httpclient:4.5.14',
-    jackson_databind:        'com.fasterxml.jackson.core:jackson-databind:2.15.2',
-    jena:                    'org.apache.jena:jena:4.9.0',
-    jena_core:               'org.apache.jena:jena-core:4.9.0',
-    jena_arq:                'org.apache.jena:jena-arq:4.9.0',
-    logback:                 'ch.qos.logback:logback-classic:1.4.11',
-    openllet:                'com.github.galigator.openllet:openllet-jena:2.6.5',
-    owlapi:                  'net.sourceforge.owlapi:owlapi-distribution:5.5.0',
-    picocli:                 'info.picocli:picocli:4.7.5',
-    picocli_codegen:         'info.picocli:picocli-codegen:4.7.5',
-    slf4j_api:               'org.slf4j:slf4j-api:2.0.9',
-    svm:                     'org.graalvm.nativeimage:svm:23.1.0',
-    turtle_formatter:        'de.atextor:turtle-formatter:1.2.9',
-    vavr:                    'io.vavr:vavr:0.10.4',
+        caffeine            : 'com.github.ben-manes.caffeine:caffeine:2.9.2',
+        commons_codec       : 'commons-codec:commons-codec:1.16.1',
+        commons_io          : 'org.apache.commons:commons-io:1.3.2',
+        commons_text        : 'org.apache.commons:commons-text:1.11.0',
+        guava               : 'com.google.guava:guava:33.0.0-jre',
+        httpclient          : 'org.apache.httpcomponents:httpclient:4.5.14',
+        jackson_databind    : 'com.fasterxml.jackson.core:jackson-databind:2.16.2',
+        jena                : 'org.apache.jena:jena:4.10.0',
+        jena_core           : 'org.apache.jena:jena-core:4.10.0',
+        jena_arq            : 'org.apache.jena:jena-arq:4.10.0',
+        logback             : 'ch.qos.logback:logback-classic:1.5.3',
+        openllet            : 'com.github.galigator.openllet:openllet-jena:2.6.5',
+        owlapi              : 'net.sourceforge.owlapi:owlapi-distribution:5.5.0',
+        picocli             : 'info.picocli:picocli:4.7.5',
+        picocli_codegen     : 'info.picocli:picocli-codegen:4.7.5',
+        slf4j_api           : 'org.slf4j:slf4j-api:2.0.12',
+        svm                 : 'org.graalvm.nativeimage:svm:23.1.2',
+        turtle_formatter    : 'de.atextor:turtle-formatter:1.2.11',
+        vavr                : 'io.vavr:vavr:0.10.4',
 
-    // Test
-    junit_jupiter_api:       'org.junit.jupiter:junit-jupiter-api:5.10.0',
-    junit_jupiter_params:    'org.junit.jupiter:junit-jupiter-params:5.10.0',
-    junit_jupiter_engine:    'org.junit.jupiter:junit-jupiter-engine:5.10.0',
-    assertj:                 'org.assertj:assertj-core:3.24.2',
-    jqwik:                   'net.jqwik:jqwik:1.8.0',
-    classgraph:              'io.github.classgraph:classgraph:4.8.162',
+        // Test
+        junit_jupiter_api   : 'org.junit.jupiter:junit-jupiter-api:5.10.2',
+        junit_jupiter_params: 'org.junit.jupiter:junit-jupiter-params:5.10.2',
+        junit_jupiter_engine: 'org.junit.jupiter:junit-jupiter-engine:5.10.2',
+        assertj             : 'org.assertj:assertj-core:3.25.3',
+        jqwik               : 'net.jqwik:jqwik:1.8.3',
+        classgraph          : 'io.github.classgraph:classgraph:4.8.168',
 
-    // Documentation
-    nodejs:                  '12.13.1',
-    npm:                     '6.9.0'
+        // Documentation
+        nodejs              : '12.13.1',
+        npm                 : '6.9.0'
 ]

@@ -17,11 +17,11 @@
 plugins {
     id 'java'
     id 'jacoco'
-    id 'com.github.ben-manes.versions' version '0.48.0'
-    id 'com.adarshr.test-logger' version '3.2.0' apply false
-    id 'io.freefair.lombok' version '8.3' apply false
+    id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'com.adarshr.test-logger' version '4.0.0' apply false
+    id 'io.freefair.lombok' version '8.6' apply false
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id 'org.ajoberstar.grgit' version '5.2.0'
+    id 'org.ajoberstar.grgit' version '5.2.2'
 }
 
 allprojects {
@@ -31,8 +31,8 @@ allprojects {
 }
 
 def currentTag = {
-    def grgit = grgit.open{ dir = "${projectDir}" }
-    def tag = grgit.describe{ tags = true }
+    def grgit = grgit.open { dir = "${projectDir}" }
+    def tag = grgit.describe { tags = true }
     if (tag != null) {
         tag.startsWith('snapshot') ? 'snapshot' : tag.replace('v', '')
     } else {
@@ -57,16 +57,16 @@ apply plugin: 'java'
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
     description = 'Generates an aggregate report from all subprojects'
     classDirectories.from = [
-        "${projectDir}/cli/build/classes/java/main",
-        "${projectDir}/diagram/build/classes/java/main",
-        "${projectDir}/write/build/classes/java/main",
-        "${projectDir}/infer/build/classes/java/main",
+            "${projectDir}/cli/build/classes/java/main",
+            "${projectDir}/diagram/build/classes/java/main",
+            "${projectDir}/write/build/classes/java/main",
+            "${projectDir}/infer/build/classes/java/main",
     ]
     sourceDirectories.from = [
-        "${projectDir}/cli/src/main/java",
-        "${projectDir}/diagram/src/main/java",
-        "${projectDir}/write/src/main/java",
-        "${projectDir}/infer/src/main/java",
+            "${projectDir}/cli/src/main/java",
+            "${projectDir}/diagram/src/main/java",
+            "${projectDir}/write/src/main/java",
+            "${projectDir}/infer/src/main/java",
     ]
 
     executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
