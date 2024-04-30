@@ -30,6 +30,12 @@
     <name>RET Infer</name>
 
     <dependencies>
+        <!-- Module dependencies -->
+        <dependency>
+            <groupId>cool.rdf</groupId>
+            <artifactId>ret-turtle-formatter</artifactId>
+        </dependency>
+
         <!-- General dependencies -->
         <dependency>
             <groupId>org.apache.jena</groupId>
@@ -43,10 +49,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.atextor</groupId>
-            <artifactId>turtle-formatter</artifactId>
         </dependency>
         <dependency>
             <groupId>io.vavr</groupId>

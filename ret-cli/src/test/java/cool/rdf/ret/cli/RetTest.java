@@ -16,7 +16,7 @@
 
 package cool.rdf.ret.cli;
 
-import cool.rdf.ret.core.RdfModel;
+import cool.rdf.ret.core.model.RdfModel;
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.riot.Lang;
 import org.junit.jupiter.api.AfterAll;

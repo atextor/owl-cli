@@ -20,7 +20,7 @@ import cool.rdf.ret.core.Version;
 import cool.rdf.ret.core.model.RdfModel;
 import cool.rdf.ret.write.Configuration;
 import cool.rdf.ret.write.RdfWriter;
-import de.atextor.turtle.formatter.FormattingStyle;
+import cool.rdf.turtle.formatter.FormattingStyle;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;

@@ -16,7 +16,7 @@
 
 package cool.rdf.ret.write;
 
-import de.atextor.turtle.formatter.FormattingStyle;
+import cool.rdf.turtle.formatter.FormattingStyle;
 import lombok.Builder;
 
 /**

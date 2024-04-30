@@ -16,8 +16,8 @@
 
 package cool.rdf.ret.infer;
 
-import de.atextor.turtle.formatter.FormattingStyle;
-import de.atextor.turtle.formatter.TurtleFormatter;
+import cool.rdf.turtle.formatter.FormattingStyle;
+import cool.rdf.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.ontology.OntModel;

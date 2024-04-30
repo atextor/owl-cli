@@ -88,7 +88,6 @@
         <owlapi.version>5.5.0</owlapi.version>
         <picocli.version>4.7.5</picocli.version>
         <slf4j-api.version>2.0.9</slf4j-api.version>
-        <turtle-formatter.version>1.2.10</turtle-formatter.version>
         <vavr.version>0.10.4</vavr.version>
 
         <!-- Test dependency versions -->
@@ -119,13 +118,14 @@
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <maven-surefire-junit5-tree-reporter.version>1.2.1</maven-surefire-junit5-tree-reporter.version>
         <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-        <native-maven-plugin.version>0.10.0</native-maven-plugin.version>
+        <native-maven-plugin.version>0.10.1</native-maven-plugin.version>
     </properties>
 
     <modules>
         <module>ret-core</module>
         <module>ret-diagram-owl</module>
         <module>ret-infer</module>
+        <module>ret-turtle-formatter</module>
         <module>ret-write</module>
         <module>ret-cli</module>
         <module>docs</module>
@@ -147,6 +147,11 @@
             <dependency>
                 <groupId>cool.rdf</groupId>
                 <artifactId>ret-infer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cool.rdf</groupId>
+                <artifactId>ret-turtle-formatter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -272,11 +277,6 @@
                 <groupId>org.graalvm.nativeimage</groupId>
                 <artifactId>svm</artifactId>
                 <version>${graalvm.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>de.atextor</groupId>
-                <artifactId>turtle-formatter</artifactId>
-                <version>${turtle-formatter.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.vavr</groupId>

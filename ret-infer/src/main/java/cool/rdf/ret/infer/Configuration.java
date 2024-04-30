@@ -16,7 +16,7 @@
 
 package cool.rdf.ret.infer;
 
-import de.atextor.turtle.formatter.TurtleFormatter;
+import cool.rdf.turtle.formatter.TurtleFormatter;
 import lombok.Builder;
 
 /**

@@ -16,8 +16,8 @@
 
 package cool.rdf.ret.write;
 
-import de.atextor.turtle.formatter.TurtleFormatter;
 import cool.rdf.ret.core.model.RdfModel;
+import cool.rdf.turtle.formatter.TurtleFormatter;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
