@@ -16,6 +16,7 @@
 
 package cool.rdf.ret.cli;
 
+import cool.rdf.ret.core.RdfModel;
 import org.apache.commons.io.FileUtils;
 import org.apache.jena.riot.Lang;
 import org.junit.jupiter.api.AfterAll;
@@ -33,8 +34,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static cool.rdf.ret.core.RdfLoader.load;
-import static cool.rdf.ret.core.RdfLoader.loadTurtle;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
@@ -204,7 +203,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> loadTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -241,7 +240,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> load( result.stdOut().cleaned(), Lang.RDFXML ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromDocument( result.stdOut().cleaned(), Lang.RDFXML ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -261,7 +260,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> load( result.stdOut().cleaned(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromDocument( result.stdOut().cleaned(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -278,7 +277,7 @@ public class RetTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
-        assertThatCode( () -> loadTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromTurtle( result.stdOut().cleaned() ) ).doesNotThrowAnyException();
         assertThat( result.stdOut().cleaned() ).isEqualToIgnoringWhitespace( turtleDocument );
     }
 }

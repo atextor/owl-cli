@@ -16,8 +16,8 @@
 
 package cool.rdf.ret.cli;
 
-import cool.rdf.ret.core.RdfLoader;
 import cool.rdf.ret.core.Version;
+import cool.rdf.ret.core.model.RdfModel;
 import cool.rdf.ret.write.Configuration;
 import cool.rdf.ret.write.RdfWriter;
 import de.atextor.turtle.formatter.FormattingStyle;
@@ -236,7 +236,7 @@ public class RetWrite extends AbstractCommand implements Runnable {
             .objectOrder( objectOrder )
             .anonymousNodeIdGenerator( buildAnonymousNodeIdGenerator( anonymousNodeIdPattern ) )
             .knownPrefixes( buildKnownPrefixes( prefixMap ) )
-            .emptyRdfBase( RdfLoader.DEFAULT_EMPTY_PREFIX )
+            .emptyRdfBase( RdfModel.DEFAULT_EMPTY_PREFIX )
             .build();
 
         final Configuration.ConfigurationBuilder configurationBuilder = Configuration.builder()

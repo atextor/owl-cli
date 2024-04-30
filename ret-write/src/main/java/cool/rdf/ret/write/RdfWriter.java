@@ -16,9 +16,9 @@
 
 package cool.rdf.ret.write;
 
-import cool.rdf.ret.core.RdfLoader;
 import de.atextor.turtle.formatter.FormattingStyle;
 import de.atextor.turtle.formatter.TurtleFormatter;
+import cool.rdf.ret.core.model.RdfModel;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.riot.Lang;
@@ -93,7 +93,7 @@ public class RdfWriter {
      */
     public Try<Void> write( final InputStream input, final OutputStream output, final Configuration configuration ) {
         LOG.debug( "Load model" );
-        final Model model = RdfLoader.load( input, configurationFormatToJenaSyntax( configuration.inputFormat ),
+        final Model model = RdfModel.fromDocument( input, configurationFormatToJenaSyntax( configuration.inputFormat ),
             configuration.formattingStyle.emptyRdfBase );
         try {
             if ( configuration.outputFormat == Configuration.Format.TURTLE ) {

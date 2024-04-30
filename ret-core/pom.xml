@@ -36,9 +36,17 @@
     </properties>
 
     <dependencies>
+        <!-- General dependencies -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-arq</artifactId>
+        </dependency>
+
+        <!-- Compile time only dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

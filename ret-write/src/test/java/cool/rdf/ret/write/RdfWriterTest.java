@@ -16,8 +16,8 @@
 
 package cool.rdf.ret.write;
 
-import cool.rdf.ret.core.RdfLoader;
 import de.atextor.turtle.formatter.TurtleFormatter;
+import cool.rdf.ret.core.model.RdfModel;
 import io.vavr.control.Try;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -66,9 +66,9 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThatCode( () -> RdfLoader.load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
-        assertThatThrownBy( () -> RdfLoader.load( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
-        assertThatThrownBy( () -> RdfLoader.load( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
+        assertThatCode( () -> RdfModel.fromDocument( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
+        assertThatThrownBy( () -> RdfModel.fromDocument( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
+        assertThatThrownBy( () -> RdfModel.fromDocument( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
     }
 
     @Test
@@ -81,10 +81,10 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThatCode( () -> RdfLoader.load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromDocument( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
         // N-TRIPLES is also valid Turtle
-        assertThatCode( () -> RdfLoader.load( out.toString(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
-        assertThatThrownBy( () -> RdfLoader.load( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
+        assertThatCode( () -> RdfModel.fromDocument( out.toString(), Lang.NTRIPLES ) ).doesNotThrowAnyException();
+        assertThatThrownBy( () -> RdfModel.fromDocument( out.toString(), Lang.RDFXML ) ).hasMessageContaining( "line:" );
     }
 
     @Test
@@ -97,9 +97,9 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( turtleInputStream(), out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThatThrownBy( () -> RdfLoader.load( out.toString(), Lang.TURTLE ) ).hasMessageContaining( "line:" );
-        assertThatThrownBy( () -> RdfLoader.load( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
-        assertThatCode( () -> RdfLoader.load( out.toString(), Lang.RDFXML ) ).doesNotThrowAnyException();
+        assertThatThrownBy( () -> RdfModel.fromDocument( out.toString(), Lang.TURTLE ) ).hasMessageContaining( "line:" );
+        assertThatThrownBy( () -> RdfModel.fromDocument( out.toString(), Lang.NTRIPLES ) ).hasMessageContaining( "line:" );
+        assertThatCode( () -> RdfModel.fromDocument( out.toString(), Lang.RDFXML ) ).doesNotThrowAnyException();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class RdfWriterTest {
         final Try<Void> result = writer.write( url, out, configuration );
 
         assertThat( result ).hasSize( 1 );
-        assertThatCode( () -> RdfLoader.load( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
+        assertThatCode( () -> RdfModel.fromDocument( out.toString(), Lang.TURTLE ) ).doesNotThrowAnyException();
     }
 
     @Test
