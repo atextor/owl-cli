@@ -26,6 +26,7 @@ import org.apache.jena.riot.RDFParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
@@ -82,6 +83,22 @@ public interface RdfModel extends Model {
      */
     static RdfModel fromTurtle( final String document ) {
         return fromDocument( document, Lang.TURTLE );
+    }
+
+    static RdfModel fromTurtle( final URI uri ) {
+        return fromDocument( uri, Lang.TURTLE );
+    }
+
+    static RdfModel fromDocument( final URI uri, final Lang syntax ) {
+        return fromDocument( uri, syntax, DEFAULT_EMPTY_PREFIX );
+    }
+
+    static RdfModel fromDocument( final URI uri, final Lang syntax, final String base ) {
+        return fromModel( RDFParser.create()
+            .source( uri.toString() )
+            .lang( syntax )
+            .base( base )
+            .toModel() );
     }
 
     /**
