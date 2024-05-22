@@ -35,6 +35,8 @@
         <main.class>cool.rdf.cli.Cool</main.class>
         <binary.name>cool</binary.name>
         <packaging.type>jar</packaging.type>
+        <generated.sources>${project.basedir}/src-gen</generated.sources>
+        <build.time.sources>${project.basedir}/src-buildtime</build.time.sources>
     </properties>
 
     <dependencies>
@@ -127,26 +129,113 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-src-gen-source</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated.sources}/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-src-buildtime-source</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${build.time.sources}/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${generated.sources}</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <annotationProcessorPaths combine.children="append">
-                        <path>
-                            <groupId>info.picocli</groupId>
-                            <artifactId>picocli-codegen</artifactId>
-                            <version>${picocli.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
-                        <arg>--add-exports</arg>
-                        <arg>java.desktop/sun.awt=ALL-UNNAMED</arg>
-                        <arg>--add-exports</arg>
-                        <arg>java.desktop/sun.font=ALL-UNNAMED</arg>
-                    </compilerArgs>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile-build-time-code</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <compileSourceRoots>${build.time.sources}</compileSourceRoots>
+                            <generatedSourcesDirectory>${generated.sources}</generatedSourcesDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-compile</id>
+                        <phase>compile</phase>
+                        <configuration>
+                            <annotationProcessorPaths combine.children="append">
+                                <path>
+                                    <groupId>info.picocli</groupId>
+                                    <artifactId>picocli-codegen</artifactId>
+                                    <version>${picocli.version}</version>
+                                </path>
+                            </annotationProcessorPaths>
+                            <compilerArgs>
+                                <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+                                <arg>--add-exports</arg>
+                                <arg>java.desktop/sun.awt=ALL-UNNAMED</arg>
+                                <arg>--add-exports</arg>
+                                <arg>java.desktop/sun.font=ALL-UNNAMED</arg>
+                            </compilerArgs>
+                            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-static-cli-info-class</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>cool.rdf.cli.buildtime.WriteStaticCliInfoClass</mainClass>
+                            <!-- args[0]: the name of the CLI command -->
+                            <!-- args[1]: fully qualified class name to generate -->
+                            <!-- args[2]: the path to the file to write -->
+                            <!-- args[3]: the copyright holder -->
+                            <arguments>
+                                <argument>${binary.name}</argument>
+                                <argument>cool.rdf.cli.StaticCliInfo</argument>
+                                <argument>${generated.sources}/main/java/cool/rdf/cli/StaticCliInfo.java</argument>
+                                <argument>${project.developers}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -279,7 +368,7 @@
                                     </includes>
                                     <excludes>
                                         <!-- Explicitly exclude build-time-only code from jar -->
-                                        <exclude>cool/rdf/core/buildtime/**</exclude>
+                                        <exclude>cool/rdf/*/buildtime/**</exclude>
                                     </excludes>
                                 </filter>
                             </filters>

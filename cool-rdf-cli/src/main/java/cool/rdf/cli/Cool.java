@@ -26,7 +26,7 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.util.logging.LogManager;
 
-import static cool.rdf.cli.Cool.COMMAND_NAME;
+import static cool.rdf.cli.StaticCliInfo.COMMAND_NAME;
 
 /**
  * The main class for the command line interface
@@ -44,8 +44,6 @@ public class Cool implements Runnable {
     /**
      * The name of the top level command
      */
-    public static final String COMMAND_NAME = "cool";
-
     private static final Logger LOG = LoggerFactory.getLogger( Cool.class );
 
     private static void printError( final CommandLine commandLine, final Exception exception ) {

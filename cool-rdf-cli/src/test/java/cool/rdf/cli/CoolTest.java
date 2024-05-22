@@ -104,7 +104,7 @@ public class CoolTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CoolDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
-            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
+            .contains( "Usage: " + StaticCliInfo.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--direction=" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
@@ -116,7 +116,7 @@ public class CoolTest {
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().cleaned() ).as( "stderr" )
-            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
+            .contains( "Usage: " + StaticCliInfo.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
     }
 
     @Test
@@ -158,7 +158,7 @@ public class CoolTest {
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CoolWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
-            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
+            .contains( "Usage: " + StaticCliInfo.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--alignObjects" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
@@ -170,7 +170,7 @@ public class CoolTest {
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().cleaned() ).as( "stderr" )
-            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
+            .contains( "Usage: " + StaticCliInfo.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
     }
 
     @Test
