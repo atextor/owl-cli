@@ -227,11 +227,13 @@
                             <!-- args[1]: fully qualified class name to generate -->
                             <!-- args[2]: the path to the file to write -->
                             <!-- args[3]: the copyright holder -->
+                            <!-- args[4]: the project URL -->
                             <arguments>
                                 <argument>${binary.name}</argument>
                                 <argument>cool.rdf.cli.StaticCliInfo</argument>
                                 <argument>${generated.sources}/main/java/cool/rdf/cli/StaticCliInfo.java</argument>
                                 <argument>${project.developers}</argument>
+                                <argument>${project.parent.url}</argument>
                             </arguments>
                         </configuration>
                     </execution>

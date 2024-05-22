@@ -56,6 +56,11 @@ public class WriteStaticCliInfoClass {
              * The name of the CLI command
              */
             public static final String COMMAND_NAME = "${commandName}";
+            
+            /**
+             * The project URL
+             */
+            public static final String PROJECT_URL = "${projectUrl}";
          }
          """ );
 
@@ -64,6 +69,7 @@ public class WriteStaticCliInfoClass {
      * args[1]: fully qualified class name to generate
      * args[2]: the path to the file to write
      * args[3]: name of the copyright holder
+     * args[4]: the project URL
      *
      * @param args the arguments
      */
@@ -74,6 +80,7 @@ public class WriteStaticCliInfoClass {
         final int lastDot = fullyQualifiedClassName.lastIndexOf( "." );
         final String packageName = fullyQualifiedClassName.substring( 0, lastDot );
         final String className = fullyQualifiedClassName.substring( lastDot + 1 );
+        final String projectUrl = args[4];
 
         final File targetFile = new File( args[2] );
         targetFile.getParentFile().mkdirs();
@@ -84,6 +91,7 @@ public class WriteStaticCliInfoClass {
             "package", packageName,
             "className", className,
             "commandName", commandName,
+            "projectUrl", projectUrl,
             "buildDate", new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( new Date() )
         ) );
 

@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.util.logging.LogManager;
 
 import static cool.rdf.cli.StaticCliInfo.COMMAND_NAME;
+import static cool.rdf.cli.StaticCliInfo.PROJECT_URL;
 
 /**
  * The main class for the command line interface
@@ -38,7 +39,7 @@ import static cool.rdf.cli.StaticCliInfo.COMMAND_NAME;
     descriptionHeading = "%n@|bold Description|@:%n%n",
     parameterListHeading = "%n@|bold Parameters|@:%n",
     optionListHeading = "%n@|bold Options|@:%n",
-    footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
+    footer = "%nSee the online documentation: " + PROJECT_URL
 )
 public class Cool implements Runnable {
     /**
