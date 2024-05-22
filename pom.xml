@@ -20,20 +20,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cool.rdf</groupId>
-    <artifactId>ret</artifactId>
+    <artifactId>cool-rdf-parent</artifactId>
     <version>DEV-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>RDF Engineering Toolkit</name>
-    <description>The RDF Engineering Toolkit (ret) provides APIs and a command line interface to transform, manipulate,
+    <name>Cool RDF</name>
+    <description>Cool RDF provides APIs and a command line interface to transform, manipulate,
         validate and visualize RDF and OWL documents.
     </description>
     <inceptionYear>2019</inceptionYear>
-    <url>https://github.com/atextor/ret</url>
+    <url>https://github.com/cool-rdf/cool-rdf</url>
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/atextor/ret/issues</url>
+        <url>https://github.com/atextor/cool-rdf/issues</url>
     </issueManagement>
 
     <licenses>
@@ -51,9 +51,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:https://github.com/atextor/ret.git</connection>
-        <developerConnection>scm:git:https://github.com/atextor/ret.git</developerConnection>
-        <url>https://github.com/atextor/ret/tree/main</url>
+        <connection>scm:git:https://github.com/cool-rdf/cool-rdf.git</connection>
+        <developerConnection>scm:git:https://github.com/cool-rdf/cool-rdf.git</developerConnection>
+        <url>https://github.com/atextor/cool-rdf/tree/main</url>
     </scm>
 
     <properties>
@@ -103,6 +103,7 @@
         <flatten-maven-plugin.version>1.4.1</flatten-maven-plugin.version>
         <gem-maven-plugin.version>2.0.1</gem-maven-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
+        <groovy-maven-plugin.version>2.1.1</groovy-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
         <maven-antrun-plugin.version>1.8</maven-antrun-plugin.version>
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
@@ -122,12 +123,12 @@
     </properties>
 
     <modules>
-        <module>ret-core</module>
-        <module>ret-diagram-owl</module>
-        <module>ret-infer</module>
-        <module>ret-turtle-formatter</module>
-        <module>ret-write</module>
-        <module>ret-cli</module>
+        <module>cool-rdf-core</module>
+        <module>cool-rdf-diagram-owl</module>
+        <module>cool-rdf-infer</module>
+        <module>cool-rdf-formatter</module>
+        <module>cool-rdf-write</module>
+        <module>cool-rdf-cli</module>
         <module>docs</module>
     </modules>
 
@@ -136,32 +137,32 @@
             <!-- Modules of this project -->
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-core</artifactId>
+                <artifactId>cool-rdf-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-diagram-owl</artifactId>
+                <artifactId>cool-rdf-diagram-owl</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-infer</artifactId>
+                <artifactId>cool-rdf-infer</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-turtle-formatter</artifactId>
+                <artifactId>cool-rdf-formatter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-write</artifactId>
+                <artifactId>cool-rdf-write</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>cool.rdf</groupId>
-                <artifactId>ret-cli</artifactId>
+                <artifactId>cool-rdf-cli</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -355,6 +356,11 @@
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
                     <version>${git-commit-id-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>groovy-maven-plugin</artifactId>
+                    <version>${groovy-maven-plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.jacoco</groupId>

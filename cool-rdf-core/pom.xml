@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2024 Andreas Textor
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cool-rdf-parent</artifactId>
+        <groupId>cool.rdf</groupId>
+        <version>DEV-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cool-rdf-core</artifactId>
+    <name>Cool RDF Core</name>
+
+    <properties>
+        <git-properties-filename>${project.basedir}/src-gen/main/resources/git.properties</git-properties-filename>
+        <generated-sources>${project.basedir}/src-gen</generated-sources>
+        <build-time-sources>${project.basedir}/src-buildtime</build-time-sources>
+    </properties>
+
+    <dependencies>
+        <!-- General dependencies -->
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>jena-arq</artifactId>
+        </dependency>
+
+        <!-- Compile time only dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>add-src-gen-source</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${generated-sources}/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-src-gen-resource</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>add-resource</goal>
+                        </goals>
+                        <configuration>
+                            <resources>
+                                <resource>
+                                    <directory>${generated-sources}/main/resources</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>add-src-buildtime-source</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>${build-time-sources}/main/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${generated-sources}</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${git-properties-filename}</generateGitPropertiesFilename>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>compile-build-time-code</id>
+                        <phase>process-sources</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <compileSourceRoots>${build-time-sources},${basedir}/src</compileSourceRoots>
+                            <generatedSourcesDirectory>${generated-sources}</generatedSourcesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>determine-project-developers</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>
+                        def developers = project.developers.collect { it.name }.join(', ')
+                        project.properties.setProperty('project-developers', developers)
+                    </source>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-version-class</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>cool.rdf.core.buildtime.WriteVersionClass</mainClass>
+                            <!-- args[0]: the path to git.properties -->
+                            <!-- args[1]: fully qualified class name to generate -->
+                            <!-- args[2]: the path to the file to write -->
+                            <!-- args[3]: the copyright holder -->
+                            <arguments>
+                                <argument>${git-properties-filename}</argument>
+                                <argument>cool.rdf.core.Version</argument>
+                                <argument>${generated-sources}/main/java/cool/rdf/core/Version.java</argument>
+                                <argument>${project-developers}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>generate-prefixes-class</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <mainClass>cool.rdf.core.buildtime.WritePrefixesClass</mainClass>
+                            <!-- args[0]: the path to resources directory containing prefix definitions -->
+                            <!-- args[1]: fully qualified class name to generate -->
+                            <!-- args[2]: the path to the file to write -->
+                            <!-- args[3]: the copyright holder -->
+                            <arguments>
+                                <argument>${build-time-sources}/main/resources</argument>
+                                <argument>cool.rdf.core.Prefixes</argument>
+                                <argument>${generated-sources}/main/java/cool/rdf/core/Prefixes.java</argument>
+                                <argument>${project-developers}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

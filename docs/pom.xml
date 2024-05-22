@@ -19,7 +19,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ret</artifactId>
+        <artifactId>cool-rdf-parent</artifactId>
         <groupId>cool.rdf</groupId>
         <version>DEV-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -27,7 +27,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>docs</artifactId>
-    <name>RET Docs</name>
+    <name>Cool RDF Docs</name>
 
     <properties>
         <maven.surefire.skip>false</maven.surefire.skip>
@@ -40,7 +40,7 @@
         <!-- build CLI first, so that we can generate diagrams -->
         <dependency>
             <groupId>cool.rdf</groupId>
-            <artifactId>ret-cli</artifactId>
+            <artifactId>cool-rdf-cli</artifactId>
         </dependency>
 
         <dependency>
@@ -83,7 +83,7 @@
                                        failifexecutionfails="true"
                                        verbose="true">
                                     <arg value="-jar"/>
-                                    <arg value="${project.basedir}/../ret-cli/target/ret-cli-${project.version}.jar"/>
+                                    <arg value="${project.basedir}/../cool-rdf-cli/target/cool-rdf-cli-${project.version}.jar"/>
                                     <arg value="diagram"/>
                                     <arg value="--direction"/>
                                     <arg value="detect"/>
