@@ -1,0 +1,4 @@
+SAMM_2_1_0	samm	urn:samm:org.eclipse.esmf.samm:meta-model:2.1.0#
+SAMM_C_2_1_0	samm-c	urn:samm:org.eclipse.esmf.samm:characteristic:2.1.0#
+SAMM_E_2_1_0	samm-e	urn:samm:org.eclipse.esmf.samm:entity:2.1.0#
+SAMM_UNIT_2_1_0	unit	urn:samm:org.eclipse.esmf.samm:unit:2.1.0#
