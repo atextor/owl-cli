@@ -6,6 +6,7 @@ Andreas Textor <mail@atextor.de>
 :example-caption!:
 ifndef::imagesdir[:imagesdir: images]
 ifndef::sourcedir[:sourcedir: ../../main/java]
+ifndef::targetdir[:targetdir: ../../../target]
 ifndef::examplesdir[:examplesdir: examples]
 :toc-title:
 :stem: latexmath

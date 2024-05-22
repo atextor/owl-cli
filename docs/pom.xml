@@ -153,6 +153,9 @@
                         <sectnums>true</sectnums>
                         <sectnumlevels>3</sectnumlevels>
                         <sectanchors>true</sectanchors>
+                        <nofooter>true</nofooter>
+                        <noheader>true</noheader>
+                        <docinfo>shared-header,shared-footer</docinfo>
                     </attributes>
                 </configuration>
                 <executions>
@@ -163,7 +166,7 @@
                             <goal>process-asciidoc</goal>
                         </goals>
                         <configuration>
-                            <backend>multipage_html5</backend>
+                            <backend>html5</backend>
                             <doctype>book</doctype>
                             <gemPath>${project.build.directory}/gems</gemPath>
                             <requires>
