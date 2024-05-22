@@ -26,7 +26,7 @@ import picocli.CommandLine;
 import java.io.PrintWriter;
 import java.util.logging.LogManager;
 
-import static cool.rdf.cli.Crdf.COMMAND_NAME;
+import static cool.rdf.cli.Cool.COMMAND_NAME;
 
 /**
  * The main class for the command line interface
@@ -40,13 +40,13 @@ import static cool.rdf.cli.Crdf.COMMAND_NAME;
     optionListHeading = "%n@|bold Options|@:%n",
     footer = "%nSee the online documentation: https://atextor.de/owl-cli/"
 )
-public class Crdf implements Runnable {
+public class Cool implements Runnable {
     /**
      * The name of the top level command
      */
-    public static final String COMMAND_NAME = "crdf";
+    public static final String COMMAND_NAME = "cool";
 
-    private static final Logger LOG = LoggerFactory.getLogger( Crdf.class );
+    private static final Logger LOG = LoggerFactory.getLogger( Cool.class );
 
     private static void printError( final CommandLine commandLine, final Exception exception ) {
         final Level logLevel = ( (LoggingMixin) commandLine.getMixins().values().iterator().next() ).calcLogLevel();
@@ -111,11 +111,11 @@ public class Crdf implements Runnable {
 
         LogManager.getLogManager().reset();
         final List<AbstractCommand> commands = List.of(
-            new CrdfDiagram(),
-            new CrdfWrite(),
-            new CrdfInfer()
+            new CoolDiagram(),
+            new CoolWrite(),
+            new CoolInfer()
         );
-        final CommandLine cmd = commands.foldLeft( new Crdf().commandLine, CommandLine::addSubcommand )
+        final CommandLine cmd = commands.foldLeft( new Cool().commandLine, CommandLine::addSubcommand )
             .setParameterExceptionHandler( PARAMETER_EXCEPTION_HANDLER )
             .setExecutionExceptionHandler( EXECUTION_EXCEPTION_HANDLER )
             .setCaseInsensitiveEnumValuesAllowed( true )

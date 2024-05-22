@@ -38,9 +38,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 @ExtendWith( TestExecutionLogger.class )
-public class CrdfTest {
+public class CoolTest {
     protected CliRunner.Result runCli( final CliRunner.ExecArguments arguments ) {
-        return CliRunner.runMainClass( Crdf.class, arguments );
+        return CliRunner.runMainClass( Cool.class, arguments );
     }
 
     private static Path tempDir;
@@ -101,27 +101,27 @@ public class CrdfTest {
 
     @Test
     void testHelpDiagram() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CrdfDiagram.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CoolDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
-            .contains( "Usage: " + Crdf.COMMAND_NAME + " " + CrdfDiagram.COMMAND_NAME );
+            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--direction=" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
     @Test
     void testDiagramWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CrdfDiagram.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CoolDiagram.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().cleaned() ).as( "stderr" )
-            .contains( "Usage: " + Crdf.COMMAND_NAME + " " + CrdfDiagram.COMMAND_NAME );
+            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolDiagram.COMMAND_NAME );
     }
 
     @Test
     void testDiagramWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CrdfDiagram.COMMAND_NAME,
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CoolDiagram.COMMAND_NAME,
             "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
@@ -131,7 +131,7 @@ public class CrdfTest {
     @ParameterizedTest
     @ArgumentsSource( ResourceArgumentsProvider.class )
     void testDiagramGeneration( final String testFileName ) throws IOException {
-        final URL input = CrdfTest.class.getResource( "/" + testFileName + ".ttl" );
+        final URL input = CoolTest.class.getResource( "/" + testFileName + ".ttl" );
         final File output = tempDir.resolve( testFileName + ".ttl" ).toFile();
 
         assertThat( input ).isNotNull();
@@ -139,7 +139,7 @@ public class CrdfTest {
         assertThat( output ).isFile();
         assertThat( output ).content().isNotEmpty();
 
-        final List<String> arguments = List.of( "--disable-color", CrdfDiagram.COMMAND_NAME, output.getAbsolutePath() );
+        final List<String> arguments = List.of( "--disable-color", CoolDiagram.COMMAND_NAME, output.getAbsolutePath() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments ) );
         if ( result.stdErr().raw().length > 0 || result.exitStatus() != OK ) {
             System.out.println( "stderr:" );
@@ -155,27 +155,27 @@ public class CrdfTest {
 
     @Test
     void testHelpWrite() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CrdfWrite.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", "help", CoolWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
         assertThat( result.stdOut().cleaned() ).as( "stdout" )
-            .contains( "Usage: " + Crdf.COMMAND_NAME + " " + CrdfWrite.COMMAND_NAME );
+            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
         assertThat( result.stdOut().cleaned() ).as( "stdout" ).contains( "--alignObjects" );
         assertThat( result.stdErr().raw() ).as( "stderr" ).isEmpty();
     }
 
     @Test
     void testWriteWithoutArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CrdfWrite.COMMAND_NAME ) );
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CoolWrite.COMMAND_NAME ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
         assertThat( result.stdErr().cleaned() ).as( "stderr" ).contains( "Error:" );
         assertThat( result.stdErr().cleaned() ).as( "stderr" )
-            .contains( "Usage: " + Crdf.COMMAND_NAME + " " + CrdfWrite.COMMAND_NAME );
+            .contains( "Usage: " + Cool.COMMAND_NAME + " " + CoolWrite.COMMAND_NAME );
     }
 
     @Test
     void testWriteWithInvalidArguments() {
-        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CrdfWrite.COMMAND_NAME,
+        final CliRunner.Result result = runCli( new CliRunner.ExecArguments( "--disable-color", CoolWrite.COMMAND_NAME,
             "invalid_argument" ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( ERROR );
         assertThat( result.stdOut().raw() ).as( "stdout" ).isEmpty();
@@ -198,7 +198,7 @@ public class CrdfTest {
                     :city "City Z"
                 ] .
             """;
-        final List<String> arguments = List.of( "--disable-color", CrdfWrite.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( "--disable-color", CoolWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -235,7 +235,7 @@ public class CrdfTest {
               </rdf:Description>
             </rdf:RDF>
             """;
-        final List<String> arguments = List.of( "--disable-color", CrdfWrite.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
+        final List<String> arguments = List.of( "--disable-color", CoolWrite.COMMAND_NAME, "-i", "rdfxml", "-o", "rdfxml", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( rdfXmlDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -255,7 +255,7 @@ public class CrdfTest {
             <http://test.de#Max> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://test.de#Person> .
             <http://test.de#city> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2000/01/rdf-schema#Property> .
             """;
-        final List<String> arguments = List.of( "--disable-color", CrdfWrite.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
+        final List<String> arguments = List.of( "--disable-color", CoolWrite.COMMAND_NAME, "-i", "ntriple", "-o", "ntriple", "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( ntripleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );
@@ -272,7 +272,7 @@ public class CrdfTest {
             :Person a rdfs:Class ;
                 :foo <> .
             """;
-        final List<String> arguments = List.of( "--disable-color", CrdfWrite.COMMAND_NAME, "-" );
+        final List<String> arguments = List.of( "--disable-color", CoolWrite.COMMAND_NAME, "-" );
         final CliRunner.StreamContent stdin = new CliRunner.StreamContent( turtleDocument.getBytes() );
         final CliRunner.Result result = runCli( new CliRunner.ExecArguments( arguments, stdin ) );
         assertThat( result.exitStatus() ).as( "command return code" ).isEqualTo( OK );

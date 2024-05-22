@@ -46,7 +46,7 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static cool.rdf.cli.CrdfWrite.COMMAND_NAME;
+import static cool.rdf.cli.CoolWrite.COMMAND_NAME;
 
 /**
  * The 'write' subcommand
@@ -59,13 +59,13 @@ import static cool.rdf.cli.CrdfWrite.COMMAND_NAME;
     footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#write-command"
 )
-public class CrdfWrite extends AbstractCommand implements Runnable {
+public class CoolWrite extends AbstractCommand implements Runnable {
     /**
      * The name of this subcommand
      */
     public static final String COMMAND_NAME = "write";
 
-    private static final Logger LOG = LoggerFactory.getLogger( CrdfWrite.class );
+    private static final Logger LOG = LoggerFactory.getLogger( CoolWrite.class );
 
     private static final Configuration config = RdfWriter.DEFAULT_CONFIGURATION;
 

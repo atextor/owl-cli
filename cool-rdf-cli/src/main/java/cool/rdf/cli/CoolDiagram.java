@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static cool.rdf.cli.CrdfDiagram.COMMAND_NAME;
+import static cool.rdf.cli.CoolDiagram.COMMAND_NAME;
 
 /**
  * The 'diagram' subcommand
@@ -48,13 +48,13 @@ import static cool.rdf.cli.CrdfDiagram.COMMAND_NAME;
     footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#diagram-command"
 )
-public class CrdfDiagram extends AbstractCommand implements Runnable {
+public class CoolDiagram extends AbstractCommand implements Runnable {
     /**
      * The name of this subcommand
      */
     public static final String COMMAND_NAME = "diagram";
 
-    private static final Logger LOG = LoggerFactory.getLogger( CrdfDiagram.class );
+    private static final Logger LOG = LoggerFactory.getLogger( CoolDiagram.class );
 
     private static final Configuration config = GraphvizDocument.DEFAULT_CONFIGURATION;
 

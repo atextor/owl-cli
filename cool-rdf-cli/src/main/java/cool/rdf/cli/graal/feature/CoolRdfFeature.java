@@ -17,11 +17,11 @@
 package cool.rdf.cli.graal.feature;
 
 import cool.rdf.cli.AbstractCommand;
+import cool.rdf.cli.Cool;
+import cool.rdf.cli.CoolDiagram;
+import cool.rdf.cli.CoolInfer;
+import cool.rdf.cli.CoolWrite;
 import cool.rdf.cli.LoggingMixin;
-import cool.rdf.cli.Crdf;
-import cool.rdf.cli.CrdfDiagram;
-import cool.rdf.cli.CrdfInfer;
-import cool.rdf.cli.CrdfWrite;
 import org.graalvm.nativeimage.Platform;
 import org.graalvm.nativeimage.Platforms;
 import org.graalvm.nativeimage.hosted.Feature;
@@ -30,15 +30,15 @@ import picocli.CommandLine;
 import java.util.List;
 
 @Platforms( Platform.HOSTED_ONLY.class )
-public class CrdfFeature implements Feature {
+public class CoolRdfFeature implements Feature {
     @Override
     public void beforeAnalysis( final BeforeAnalysisAccess access ) {
         Native.forClass( AbstractCommand.class ).registerClass().registerAllFields().registerAllMethods();
         Native.forClass( LoggingMixin.class ).registerClass().registerConstructor().registerAllFields().registerAllMethods();
-        Native.forClass( Crdf.class ).registerClass().registerAllFields().registerAllMethods();
-        Native.forClass( CrdfDiagram.class ).registerClass().registerAllFields().registerAllMethods();
-        Native.forClass( CrdfWrite.class ).registerClass().registerAllFields().registerAllMethods();
-        Native.forClass( CrdfInfer.class ).registerClass().registerAllFields().registerAllMethods();
+        Native.forClass( Cool.class ).registerClass().registerAllFields().registerAllMethods();
+        Native.forClass( CoolDiagram.class ).registerClass().registerAllFields().registerAllMethods();
+        Native.forClass( CoolWrite.class ).registerClass().registerAllFields().registerAllMethods();
+        Native.forClass( CoolInfer.class ).registerClass().registerAllFields().registerAllMethods();
 
         Native.forClass( java.io.FilePermission.class ).registerClass();
         Native.forClass( java.lang.Object.class ).registerClass().registerAllFields().registerAllMethods();

@@ -25,7 +25,7 @@ import java.util.List;
 import static org.assertj.core.api.Assumptions.assumeThat;
 
 @ExtendWith( TestExecutionLogger.class )
-public class ExecutableJarTest extends CrdfTest {
+public class ExecutableJarTest extends CoolTest {
     private static File executableJar;
 
     @BeforeAll

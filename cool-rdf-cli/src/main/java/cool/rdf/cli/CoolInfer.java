@@ -27,7 +27,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
-import static cool.rdf.cli.CrdfInfer.COMMAND_NAME;
+import static cool.rdf.cli.CoolInfer.COMMAND_NAME;
 
 /**
  * The 'infer' subcommand
@@ -40,13 +40,13 @@ import static cool.rdf.cli.CrdfInfer.COMMAND_NAME;
     footer = "%nSee the online documentation for details:%n" +
         "https://atextor.de/owl-cli/main/" + Version.VERSION + "/usage.html#infer-command"
 )
-public class CrdfInfer extends AbstractCommand implements Runnable {
+public class CoolInfer extends AbstractCommand implements Runnable {
     /**
      * The name of this subcommand
      */
     public static final String COMMAND_NAME = "infer";
 
-    private static final Logger LOG = LoggerFactory.getLogger( CrdfInfer.class );
+    private static final Logger LOG = LoggerFactory.getLogger( CoolInfer.class );
 
     @SuppressWarnings( "unused" )
     private static final Configuration config = Inferrer.DEFAULT_CONFIGURATION;

@@ -32,8 +32,8 @@
     <properties>
         <regular.jar>${project.artifactId}-${project.version}</regular.jar>
         <native.image.jar>${project.artifactId}-${project.version}-for-native</native.image.jar>
-        <main.class>cool.rdf.cli.Crdf</main.class>
-        <binary.name>crdf</binary.name>
+        <main.class>cool.rdf.cli.Cool</main.class>
+        <binary.name>cool</binary.name>
         <packaging.type>jar</packaging.type>
     </properties>
 
@@ -158,7 +158,7 @@
                     <reuseForks>false</reuseForks>
                     <skip>${maven.surefire.skip}</skip>
                     <includes>
-                        <include>**/CrdfTest.java</include>
+                        <include>**/CoolTest.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -389,7 +389,7 @@
                                 <arg>-H:+PrintClassInitialization</arg>
                                 <arg>-H:-DeadlockWatchdogExitOnTimeout</arg>
                                 <arg>-H:DeadlockWatchdogInterval=0</arg>
-                                <arg>--features=cool.rdf.cli.graal.feature.CrdfFeature</arg>
+                                <arg>--features=cool.rdf.cli.graal.feature.CoolRdfFeature</arg>
                                 <arg>-J-XX:MaxRAMPercentage=90.0</arg>
                                 <arg>-J-XX:GCTimeRatio=19</arg>
                                 <arg>-J--add-exports=java.desktop/sun.awt=ALL-UNNAMED</arg>

@@ -40,7 +40,7 @@ public class LoggingMixin {
     private boolean[] verbosity = new boolean[0];
 
     private static LoggingMixin getTopLevelCommandLoggingMixin( final CommandLine.Model.CommandSpec commandSpec ) {
-        return ( (Crdf) commandSpec.root().userObject() ).loggingMixin;
+        return ( (Cool) commandSpec.root().userObject() ).loggingMixin;
     }
 
     /**
