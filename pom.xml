@@ -29,11 +29,11 @@
         validate and visualize RDF and OWL documents.
     </description>
     <inceptionYear>2019</inceptionYear>
-    <url>https://github.com/cool-rdf/cool-rdf</url>
+    <url>https://rdf.cool</url>
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/atextor/cool-rdf/issues</url>
+        <url>https://github.com/cool-rdf/cool-rdf/issues</url>
     </issueManagement>
 
     <licenses>
@@ -53,7 +53,7 @@
     <scm>
         <connection>scm:git:https://github.com/cool-rdf/cool-rdf.git</connection>
         <developerConnection>scm:git:https://github.com/cool-rdf/cool-rdf.git</developerConnection>
-        <url>https://github.com/atextor/cool-rdf/tree/main</url>
+        <url>https://github.com/cool-rdf/cool-rdf/tree/main</url>
     </scm>
 
     <properties>
