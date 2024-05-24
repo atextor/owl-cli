@@ -42,30 +42,9 @@
             <groupId>cool.rdf</groupId>
             <artifactId>cool-rdf-cli</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>rubygems</groupId>
-            <artifactId>asciidoctor-multipage</artifactId>
-            <version>${asciidoctor-multipage.version}</version>
-            <type>gem</type>
-            <exclusions>
-                <exclusion>
-                    <groupId>rubygems</groupId>
-                    <artifactId>asciidoctor</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
 
     <build>
-        <extensions>
-            <extension> <!-- this allows us to download gems -->
-                <groupId>org.torquebox.mojo</groupId>
-                <artifactId>mavengem-wagon</artifactId>
-                <version>${mavengem-wagon.version}</version>
-            </extension>
-        </extensions>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -168,10 +147,6 @@
                         <configuration>
                             <backend>html5</backend>
                             <doctype>book</doctype>
-                            <gemPath>${project.build.directory}/gems</gemPath>
-                            <requires>
-                                <require>asciidoctor-multipage</require>
-                            </requires>
                             <outputDirectory>${project.build.directory}/docs</outputDirectory>
                             <attributes>
                                 <toc>left</toc>
