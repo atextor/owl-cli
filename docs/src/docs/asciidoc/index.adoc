@@ -1,15 +1,36 @@
 // -*- fill-column: 100; -*-
 [#rdf-engineering-toolkit]
 = RDF Engineering Toolkit
-Andreas Textor <mail@atextor.de>
+:project-version: DEV-SNAPSHOT
 :revnumber: {project-version}
 :example-caption!:
 ifndef::imagesdir[:imagesdir: images]
 ifndef::sourcedir[:sourcedir: ../../main/java]
 ifndef::targetdir[:targetdir: ../../../target]
 ifndef::examplesdir[:examplesdir: examples]
+:stylesdir: assets/styles
+:stylesheet: adoc-foundation.css
+:toc: left
+:numbered:
+:toclevels: 2
 :toc-title:
 :stem: latexmath
+:source-highlighter: rouge
+:rouge-style: github
+:rouge-languages: java, shell, turtle
+:icons: font
+:linkcss:
+:linkattrs:
+:sectnums:
+:setnumlevels: 3
+:sectanchors:
+ifdef::env-github[]
+:caution-caption: :fire:
+:important-caption: :heavy_exclamation_mark:
+:note-caption: :information_source:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
 
 *owl-cli* is a command line tool for ontology engineering.
 

@@ -122,19 +122,6 @@
                         <basedir>${project.basedir}</basedir>
                         <project-version>${project.version}</project-version>
                         <sourcedir>${project.build.sourceDirectory}</sourcedir>
-                        <source-highlighter>rouge</source-highlighter>
-                        <rouge-style>github</rouge-style>
-                        <icons>font</icons>
-                        <linkcss>true</linkcss>
-                        <stylesdir>assets/styles</stylesdir>
-                        <stylesheet>adoc-foundation.css</stylesheet>
-                        <toclevels>3</toclevels>
-                        <sectnums>true</sectnums>
-                        <sectnumlevels>3</sectnumlevels>
-                        <sectanchors>true</sectanchors>
-                        <nofooter>true</nofooter>
-                        <noheader>true</noheader>
-                        <docinfo>shared-header,shared-footer</docinfo>
                     </attributes>
                 </configuration>
                 <executions>
@@ -148,9 +135,6 @@
                             <backend>html5</backend>
                             <doctype>book</doctype>
                             <outputDirectory>${project.build.directory}/docs</outputDirectory>
-                            <attributes>
-                                <toc>left</toc>
-                            </attributes>
                         </configuration>
                     </execution>
                 </executions>
