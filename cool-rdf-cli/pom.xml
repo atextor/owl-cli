@@ -478,7 +478,7 @@
                         </executions>
                         <configuration>
                             <mainClass>${main.class}</mainClass>
-                            <skipNativeBuild>${native.build.skip}</skipNativeBuild>
+                            <skip>${native.build.skip}</skip>
                             <skipNativeTests>true</skipNativeTests>
                             <buildArgs>
                                 <arg>-H:Name=${project.build.directory}/${binary.name}</arg>
