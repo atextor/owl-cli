@@ -621,3 +621,5 @@ span.icon > [class^="icon-"], span.icon > [class*=" icon-"] { cursor: default; }
 .conum + b { display: none; }
 .conum:after { content: attr(data-value); }
 .conum:not([data-value]):empty { display: none; }
+
+.fork-banner { position: absolute; right: 0; top: 0; z-index: 1000; }

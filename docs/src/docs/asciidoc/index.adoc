@@ -24,6 +24,7 @@ ifndef::examplesdir[:examplesdir: examples]
 :sectnums:
 :setnumlevels: 3
 :sectanchors:
+:docinfo: shared-header
 ifdef::env-github[]
 :caution-caption: :fire:
 :important-caption: :heavy_exclamation_mark:
