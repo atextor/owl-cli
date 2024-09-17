@@ -96,8 +96,8 @@ jobs:
 
           # Actual build
           mvn -B clean install
-          mvn -B clean verify -pl ret-cli -Pnative
-          mv target/ret${{ matrix.binary-file-extension }} target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+          mvn -B clean verify -pl cool-rdf-cli -Pnative
+          mv target/cool${{ matrix.binary-file-extension }} target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
         shell: bash
 
       - name: Switch to Temurin JDK
@@ -109,7 +109,7 @@ jobs:
 
       - name: Test executable jar on Temurin
         run: |
-          mvn -B -Dskip.maven.surefire -pl ret-cli failsafe:integration-test@default
+          mvn -B -Dskip.maven.surefire -pl cool-rdf-cli failsafe:integration-test@default
 
       - name: Compress native executable
         # UPX doesn't work on mac
@@ -117,7 +117,7 @@ jobs:
         uses: crazy-max/ghaction-upx@0fc45e912669ba9e8fa2b430e97c8da2a632e29b # v3.0.0
         with:
           version: latest
-          files: ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+          files: cool-rdf-cli/target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
           args: -9
 
       - name: Upload workspace
@@ -133,11 +133,11 @@ jobs:
         if: ${{ runner.os == 'Windows' || runner.os == 'macOS' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ret-cli-${{ runner.os }}
+          name: cool-rdf-cli-${{ runner.os }}
           # .dlls only exist on Windows of course
           path: |
-            ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
-            ret-cli/target/*.dll
+            cool-rdf-cli/target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+            cool-rdf-cli/target/*.dll
 
   release:
     name: Release
@@ -178,17 +178,17 @@ jobs:
       - name: Fetch Windows executable
         uses: actions/download-artifact@v4
         with:
-          name: ret-cli-Windows
+          name: cool-rdf-cli-Windows
 
       - name: Fetch macOS executable
         uses: actions/download-artifact@v4
         with:
-          name: ret-cli-macOS
+          name: cool-rdf-cli-macOS
 
       - name: Create Windows zip
         run: |
           cd target
-          zip -9 -r ret-cli-Windows-X64.zip ret*.exe *.dll
+          zip -9 -r cool-rdf-cli-Windows-X64.zip cool*.exe *.dll
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844v1 # v0.1.15
@@ -198,10 +198,10 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            target/ret-cli-${{ github.event.inputs.release_version }}.jar
-            target/ret-cli-Linux-X64
-            target/ret-cli-Windows-X64.zip
-            target/ret-cli-macOS-X64
+            target/cool-rdf-cli-${{ github.event.inputs.release_version }}.jar
+            target/cool-rdf-cli-Linux-X64
+            target/cool-rdf-cli-Windows-X64.zip
+            target/cool-rdf-cli-macOS-X64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 

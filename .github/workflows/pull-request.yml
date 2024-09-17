@@ -88,8 +88,8 @@ jobs:
       - name: Build and run tests
         run: |
           mvn -B clean install
-          mvn -B clean verify -pl ret-cli -Pnative
-          mv ret-cli/target/ret${{ matrix.binary-file-extension }} ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+          mvn -B clean verify -pl cool-rdf-cli -Pnative
+          mv cool-rdf-cli/target/cool${{ matrix.binary-file-extension }} cool-rdf-cli/target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
         shell: bash
 
       - name: Switch to Temurin JDK
@@ -102,7 +102,7 @@ jobs:
       - name: Test executable jar on Temurin
         if: runner.os == 'Linux'
         run: |
-          mvn -B -Dskip.maven.surefire -pl ret-cli failsafe:integration-test@default
+          mvn -B -Dskip.maven.surefire -pl cool-rdf-cli failsafe:integration-test@default
 
       - name: Compress executable
         # UPX doesn't work on mac
@@ -110,7 +110,7 @@ jobs:
         uses: crazy-max/ghaction-upx@0fc45e912669ba9e8fa2b430e97c8da2a632e29b # v3.0.0
         with:
           version: latest
-          files: ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+          files: cool-rdf-cli/target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
           args: -9
 
       - name: Upload jar
@@ -118,14 +118,14 @@ jobs:
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: ret-cli-jar
-          path: ret-cli/target/ret-cli-DEV-SNAPSHOT.jar
+          name: cool-rdf-cli-jar
+          path: cool-rdf-cli/target/cool-rdf-cli-DEV-SNAPSHOT.jar
 
       - name: Upload executable
         uses: actions/upload-artifact@v4
         with:
-          name: ret-cli-${{ runner.os }}
+          name: cool-rdf-cli-${{ runner.os }}
           # .dlls only exist on Windows of course
           path: |
-            ret-cli/target/ret-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
-            ret-cli/target/*.dll
+            cool-rdf-cli/target/cool-${{ runner.os }}-${{ runner.arch }}${{ matrix.binary-file-extension }}
+            cool-rdf-cli/target/*.dll
