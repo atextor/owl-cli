@@ -1,6 +1,11 @@
 // -*- fill-column: 100; -*-
 = Release Notes
 
+== Version 1.2.6
+* Changes in xref:usage.adoc#write-command[write] command: Correct formatting of `rdf:Lists` with
+  additional properties; fixed decimal formatting in locales other than US, deterministic ordering
+  of blank nodes. Double values are now by default formatted like in the source model.
+
 == Version 1.2.5
 * Changes in xref:usage.adoc#write-command[write] command: `rdf:type` used as an object in a triple
   is not rendered as `a` any more.
