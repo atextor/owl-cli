@@ -66,7 +66,7 @@ jobs:
           mv cli/build/bin/owl owl-x86_64-linux-${RELEASE_VERSION}
           mv cli/build/libs/owl-cli-${RELEASE_VERSION}.jar .
       - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts-linux
           path: |
@@ -120,7 +120,7 @@ jobs:
       - name: Prepare Artifacts
         run: mv cli/build/bin/owl owl-x86_64-apple-darwin-${RELEASE_VERSION}
       - name: Upload Macos Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts-macos
           path: owl-x86_64-apple-darwin-${{ env.RELEASE_VERSION }}
@@ -191,7 +191,7 @@ jobs:
           files: ./*.exe
           args: -9
       - name: Upload Windows Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: artifacts-windows
           path: owl-x86_64-windows-${{ env.RELEASE_VERSION }}.exe
@@ -205,15 +205,15 @@ jobs:
         with:
           fetch-depth: 0
       - name: Fetch Linux Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: artifacts-linux
       - name: Fetch Macos Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: artifacts-macos
       - name: Fetch Windows Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: artifacts-windows
       - name: Set env
