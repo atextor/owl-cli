@@ -37,6 +37,7 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.vocabulary.RDF;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -795,12 +796,110 @@ public class TurtleFormatterTest {
    @ParameterizedTest
    @MethodSource
    void testConsistentBlankNodeOrdering( final String content ) {
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 1; i++ ) {
          final String result = formatter.applyToContent( content );
          assertThat( result.trim() ).isEqualTo( content.trim() );
       }
+   }
+
+   @Test
+   void testBlankNodeLabelsAndOrderingAreNotPreservedWhenDisabled() {
+      final String content = """
+         @prefix ex: <http://example.com/ns#> .
+
+         ex:aThing ex:has [
+             ex:value "z" ;
+           ] ;
+           ex:has [
+             ex:value "a" ;
+           ] .
+         """;
+      final String expected = """
+         @prefix ex: <http://example.com/ns#> .
+
+         ex:aThing ex:has [
+             ex:value "a" ;
+           ] ;
+           ex:has [
+             ex:value "z" ;
+           ] .
+         """;
+      final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .preserveBlankNodeLabelsAndOrdering( false )
+            .build();
+      assertThat( style.preserveBlankNodeLabelsAndOrdering() ).isFalse();
+      final TurtleFormatter formatter = new TurtleFormatter( style );
+
+      final String result = formatter.applyToContent( content );
+
+      assertThat( result.trim() ).isEqualTo( expected.trim() );
+   }
+
+   @Test
+   void testBlankNodeLabelsAndOrderingArePreservedByDefault() {
+      final String content = """
+         @prefix ex: <http://example.com/ns#> .
+
+         ex:aThing ex:has [
+             ex:value "z" ;
+           ] ;
+           ex:has [
+             ex:value "a" ;
+           ] .
+         """;
+      final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .build();
+      assertThat( style.preserveBlankNodeLabelsAndOrdering() ).isTrue();
+      final TurtleFormatter formatter = new TurtleFormatter( style );
+
+      final String result = formatter.applyToContent( content );
+
+      assertThat( result.trim() ).isEqualTo( content.trim() );
+   }
+
+   @Test
+   void testBlankNodeLabelsAreNotPreservedWhenDisabled() {
+      final String content = """
+         @prefix ex: <http://example.com/ns#> .
+
+         ex:left ex:has _:sourceLabel .
+         ex:right ex:has _:sourceLabel .
+         _:sourceLabel ex:value "a" .
+         """;
+      final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .preserveBlankNodeLabelsAndOrdering( false )
+            .build();
+      assertThat( style.preserveBlankNodeLabelsAndOrdering() ).isFalse();
+      final TurtleFormatter formatter = new TurtleFormatter( style );
+
+      final String result = formatter.applyToContent( content );
+
+      assertThat( result ).doesNotContain( "_:sourceLabel" );
+   }
+
+   @Test
+   void testBlankNodeLabelsCanBePreserved() {
+      final String content = """
+         @prefix ex: <http://example.com/ns#> .
+
+         ex:left ex:has _:sourceLabel .
+         ex:right ex:has _:sourceLabel .
+         _:sourceLabel ex:value "a" .
+         """;
+      final FormattingStyle style = FormattingStyle.builder()
+            .knownPrefixes( Set.of() )
+            .preserveBlankNodeLabelsAndOrdering( true )
+            .build();
+      final TurtleFormatter formatter = new TurtleFormatter( style );
+
+      final String result = formatter.applyToContent( content );
+
+      assertThat( result ).contains( "_:sourceLabel" );
    }
 
    static Stream<Arguments> testConsistentBlankNodeOrdering() {
@@ -838,6 +937,36 @@ public class TurtleFormatterTest {
       ).map( Arguments::of );
    }
 
+   @RepeatedTest( 10 )
+   void testInMemorySiblingBlankNodesAreOrderedByPrintableStructure() {
+      final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+
+      final String result = formatter.apply( inMemorySiblingBlankNodeModel( true ) );
+      final String resultWithDifferentAllocationOrder = formatter.apply( inMemorySiblingBlankNodeModel( false ) );
+
+      assertThat( result ).isEqualTo( resultWithDifferentAllocationOrder );
+   }
+
+   @RepeatedTest( 10 )
+   void testInMemoryGeneratedBlankNodeIdsAreOrderedByPrintableStructure() {
+      final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+
+      final String result = formatter.apply( inMemorySharedBlankNodeModel( true ) );
+      final String resultWithDifferentAllocationOrder = formatter.apply( inMemorySharedBlankNodeModel( false ) );
+
+      assertThat( result ).isEqualTo( resultWithDifferentAllocationOrder );
+   }
+
+   @RepeatedTest( 10 )
+   void testInMemoryBlankNodeCycleIsOrderedByPrintableStructure() {
+      final TurtleFormatter formatter = new TurtleFormatter( FormattingStyle.DEFAULT );
+
+      final String result = formatter.apply( inMemoryBlankNodeCycleModel( true ) );
+      final String resultWithDifferentAllocationOrder = formatter.apply( inMemoryBlankNodeCycleModel( false ) );
+
+      assertThat( result ).isEqualTo( resultWithDifferentAllocationOrder );
+   }
+
    @Test
    void testPreviouslyIdentifiedBlankNode() {
       final String content = """
@@ -852,7 +981,7 @@ public class TurtleFormatterTest {
          _:gen0 ex:has [
              ex:has _:gen0 ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -875,7 +1004,7 @@ public class TurtleFormatterTest {
          _:blank1 ex:has [
              ex:has _:blank1 ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -898,7 +1027,7 @@ public class TurtleFormatterTest {
          ex:A ex:has [
              ex:has ex:A ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -927,7 +1056,7 @@ public class TurtleFormatterTest {
                ] ;
              ] ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -953,7 +1082,7 @@ public class TurtleFormatterTest {
                ex:has ex:A ;
              ] ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       final String result = formatter.applyToContent( content );
       assertThat( result.trim() ).isEqualTo( expected );
@@ -980,7 +1109,7 @@ public class TurtleFormatterTest {
          ex:B ex:has [
              ex:has ex:A ;
            ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       final String result = formatter.applyToContent( content );
       assertThat( result.trim() ).isEqualTo( expected );
@@ -1003,7 +1132,7 @@ public class TurtleFormatterTest {
            ] ;
            :foo _:b3 ;
          ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -1033,7 +1162,7 @@ public class TurtleFormatterTest {
            ] ;
            :foo _:b3 ;
          ] .""";
-      final FormattingStyle style = FormattingStyle.DEFAULT;
+      final FormattingStyle style = preserveBlankNodeLabelsAndOrderingStyle();
       final TurtleFormatter formatter = new TurtleFormatter( style );
       for ( int i = 0; i < 20; i++ ) {
          final String result = formatter.applyToContent( content );
@@ -1343,6 +1472,93 @@ public class TurtleFormatterTest {
       final TurtleFormatter formatter = new TurtleFormatter( style );
       final String result = formatter.applyToContent( content );
       assertThat( result.trim() ).isEqualTo( expected );
+   }
+
+   private FormattingStyle preserveBlankNodeLabelsAndOrderingStyle() {
+      return FormattingStyle.builder()
+            .preserveBlankNodeLabelsAndOrdering( true )
+            .build();
+   }
+
+   private Model inMemorySiblingBlankNodeModel( final boolean allocateSomethingElseFirst ) {
+      final String ex = "http://example.com/ns#";
+      final Model model = ModelFactory.createDefaultModel();
+      model.setNsPrefix( "ex", ex );
+
+      final Resource root = createResource( ex + "aThing" );
+      final Property has = createProperty( ex + "has" );
+      final Resource something = createResource( ex + "Something" );
+      final Resource somethingElse = createResource( ex + "SomethingElse" );
+
+      final Resource blankSomethingElse;
+      final Resource blankSomething;
+      if ( allocateSomethingElseFirst ) {
+         blankSomethingElse = model.createResource();
+         blankSomething = model.createResource();
+      } else {
+         blankSomething = model.createResource();
+         blankSomethingElse = model.createResource();
+      }
+      model.add( root, has, blankSomethingElse );
+      model.add( root, has, blankSomething );
+      model.add( blankSomethingElse, RDF.type, somethingElse );
+      model.add( blankSomething, RDF.type, something );
+      return model;
+   }
+
+   private Model inMemorySharedBlankNodeModel( final boolean allocateSomethingElseFirst ) {
+      final String ex = "http://example.com/ns#";
+      final Model model = inMemorySiblingBlankNodeModel( allocateSomethingElseFirst );
+      final Resource other = createResource( ex + "otherThing" );
+      final Property has = createProperty( ex + "has" );
+      final Resource blankSomethingElse = model.listStatements( null, RDF.type, createResource( ex + "SomethingElse" ) )
+            .nextStatement()
+            .getSubject();
+      final Resource blankSomething = model.listStatements( null, RDF.type, createResource( ex + "Something" ) )
+            .nextStatement()
+            .getSubject();
+      model.add( other, has, blankSomethingElse );
+      model.add( other, has, blankSomething );
+      return model;
+   }
+
+   private Model inMemoryBlankNodeCycleModel( final boolean allocateSecondBranchFirst ) {
+      final String ex = "http://example.com/ns#";
+      final Model model = ModelFactory.createDefaultModel();
+      model.setNsPrefix( "ex", ex );
+
+      final Resource root = createResource( ex + "aThing" );
+      final Property has = createProperty( ex + "has" );
+      final Property next = createProperty( ex + "next" );
+      final Property detail = createProperty( ex + "detail" );
+      final Resource firstType = createResource( ex + "First" );
+      final Resource secondType = createResource( ex + "Second" );
+
+      final Resource first;
+      final Resource second;
+      final Resource firstDetail;
+      final Resource secondDetail;
+      if ( allocateSecondBranchFirst ) {
+         second = model.createResource();
+         secondDetail = model.createResource();
+         first = model.createResource();
+         firstDetail = model.createResource();
+      } else {
+         first = model.createResource();
+         firstDetail = model.createResource();
+         second = model.createResource();
+         secondDetail = model.createResource();
+      }
+
+      model.add( root, has, first );
+      model.add( root, has, second );
+      model.add( first, next, second );
+      model.add( second, next, first );
+      model.add( first, detail, firstDetail );
+      model.add( second, detail, secondDetail );
+      model.add( firstDetail, RDF.type, firstType );
+      model.add( secondDetail, RDF.type, secondType );
+      return model;
    }
 
    private Model prefixModel() {

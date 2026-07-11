@@ -78,6 +78,7 @@ public record FormattingStyle(
       @RecordBuilder.Initializer( "DEFAULT_MAX_LINE_LENGTH" ) int maxLineLength,
       @RecordBuilder.Initializer( "DEFAULT_TRIM_TRAILING_WHITESPACE" ) boolean trimTrailingWhitespace,
       @RecordBuilder.Initializer( "DEFAULT_KEEP_UNUSED_PREFIXES" ) boolean keepUnusedPrefixes,
+      @RecordBuilder.Initializer( "DEFAULT_PRESERVE_BLANK_NODE_LABELS_AND_ORDERING" ) boolean preserveBlankNodeLabelsAndOrdering,
       @RecordBuilder.Initializer( "DEFAULT_PREFIX_ORDER" ) List<String> prefixOrder,
       @RecordBuilder.Initializer( "DEFAULT_SUBJECT_ORDER" ) List<Resource> subjectOrder,
       @RecordBuilder.Initializer( "DEFAULT_PREDICATE_ORDER" ) List<Property> predicateOrder,
@@ -130,6 +131,7 @@ public record FormattingStyle(
    public static final int DEFAULT_MAX_LINE_LENGTH = 100;
    public static final boolean DEFAULT_TRIM_TRAILING_WHITESPACE = true;
    public static final boolean DEFAULT_KEEP_UNUSED_PREFIXES = false;
+   public static final boolean DEFAULT_PRESERVE_BLANK_NODE_LABELS_AND_ORDERING = true;
    public static final List<String> DEFAULT_PREFIX_ORDER = List.of(
          "rdf",
          "rdfs",
