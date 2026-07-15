@@ -9,17 +9,17 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 106)">
 <title>G</title>
 <polygon fill="white" stroke="transparent" points="-4,4 -4,-106 456,-106 456,4 -4,4"/>
-<!-- age -->
+<!-- Person -->
 <g id="node1" class="node">
-<title>age</title>
-<path fill="none" stroke="black" d="M437.17,-102C437.17,-102 399.83,-102 399.83,-102 396.17,-102 392.5,-98.33 392.5,-94.67 392.5,-94.67 392.5,-87.33 392.5,-87.33 392.5,-83.67 396.17,-80 399.83,-80 399.83,-80 437.17,-80 437.17,-80 440.83,-80 444.5,-83.67 444.5,-87.33 444.5,-87.33 444.5,-94.67 444.5,-94.67 444.5,-98.33 440.83,-102 437.17,-102"/>
-<text text-anchor="start" x="396.5" y="-88.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#38a14a">▬</text>
-<text text-anchor="start" x="412.5" y="-88.2" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="417.5" y="-88.2" font-family="Verdana" font-size="12.00">age</text>
+<title>Person</title>
+<path fill="none" stroke="black" d="M444.67,-102C444.67,-102 392.33,-102 392.33,-102 388.67,-102 385,-98.33 385,-94.67 385,-94.67 385,-87.33 385,-87.33 385,-83.67 388.67,-80 392.33,-80 392.33,-80 444.67,-80 444.67,-80 448.33,-80 452,-83.67 452,-87.33 452,-87.33 452,-94.67 452,-94.67 452,-98.33 448.33,-102 444.67,-102"/>
+<text text-anchor="start" x="389" y="-88.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
+<text text-anchor="start" x="403" y="-88.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="408" y="-88.9" font-family="Verdana" font-size="12.00">Person</text>
 </g>
-<!-- _7b3646dd644c4ef98b6de527bf6d95c2 -->
+<!-- _e5b70aca224d4d789d0da9d79e2330c3 -->
 <g id="node2" class="node">
-<title>_7b3646dd644c4ef98b6de527bf6d95c2</title>
+<title>_e5b70aca224d4d789d0da9d79e2330c3</title>
 <path fill="none" stroke="black" d="M341.67,-62C341.67,-62 7.33,-62 7.33,-62 3.67,-62 0,-58.33 0,-54.67 0,-54.67 0,-47.33 0,-47.33 0,-43.67 3.67,-40 7.33,-40 7.33,-40 341.67,-40 341.67,-40 345.33,-40 349,-43.67 349,-47.33 349,-47.33 349,-54.67 349,-54.67 349,-58.33 345.33,-62 341.67,-62"/>
 <text text-anchor="start" x="4" y="-48.9" font-family="Verdana" font-size="12.00">Person(?p) ∧ int [&gt;= 18](?a) ∧ age(?p, ?a)</text>
 <text text-anchor="start" x="269" y="-48.9" font-family="Verdana" font-size="12.00"> </text>
@@ -27,39 +27,39 @@
 <text text-anchor="start" x="284" y="-48.9" font-family="Verdana" font-size="12.00"> </text>
 <text text-anchor="start" x="289" y="-48.9" font-family="Verdana" font-size="12.00">Adult(?p)</text>
 </g>
-<!-- _7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;age -->
-<g id="edge1" class="edge">
-<title>_7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;age</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M242.27,-62.04C287.6,-69.53 345.73,-79.14 382.31,-85.18"/>
-<polygon fill="black" stroke="black" points="382.04,-88.69 392.48,-86.86 383.19,-81.78 382.04,-88.69"/>
-</g>
-<!-- Person -->
-<g id="node3" class="node">
-<title>Person</title>
-<path fill="none" stroke="black" d="M444.67,-62C444.67,-62 392.33,-62 392.33,-62 388.67,-62 385,-58.33 385,-54.67 385,-54.67 385,-47.33 385,-47.33 385,-43.67 388.67,-40 392.33,-40 392.33,-40 444.67,-40 444.67,-40 448.33,-40 452,-43.67 452,-47.33 452,-47.33 452,-54.67 452,-54.67 452,-58.33 448.33,-62 444.67,-62"/>
-<text text-anchor="start" x="389" y="-48.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
-<text text-anchor="start" x="403" y="-48.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="408" y="-48.9" font-family="Verdana" font-size="12.00">Person</text>
-</g>
-<!-- _7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;Person -->
-<g id="edge3" class="edge">
-<title>_7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;Person</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M349.12,-51C358.25,-51 366.89,-51 374.75,-51"/>
-<polygon fill="black" stroke="black" points="374.96,-54.5 384.96,-51 374.96,-47.5 374.96,-54.5"/>
+<!-- _e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;Person -->
+<g id="edge2" class="edge">
+<title>_e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;Person</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M242.27,-62.04C284.72,-69.05 338.41,-77.93 375.1,-83.99"/>
+<polygon fill="black" stroke="black" points="374.54,-87.45 384.98,-85.62 375.68,-80.54 374.54,-87.45"/>
 </g>
 <!-- Adult -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>Adult</title>
-<path fill="none" stroke="black" d="M440.17,-22C440.17,-22 396.83,-22 396.83,-22 393.17,-22 389.5,-18.33 389.5,-14.67 389.5,-14.67 389.5,-7.33 389.5,-7.33 389.5,-3.67 393.17,0 396.83,0 396.83,0 440.17,0 440.17,0 443.83,0 447.5,-3.67 447.5,-7.33 447.5,-7.33 447.5,-14.67 447.5,-14.67 447.5,-18.33 443.83,-22 440.17,-22"/>
-<text text-anchor="start" x="393.5" y="-8.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
-<text text-anchor="start" x="407.5" y="-8.9" font-family="Verdana" font-size="12.00"> </text>
-<text text-anchor="start" x="412.5" y="-8.9" font-family="Verdana" font-size="12.00">Adult</text>
+<path fill="none" stroke="black" d="M440.17,-62C440.17,-62 396.83,-62 396.83,-62 393.17,-62 389.5,-58.33 389.5,-54.67 389.5,-54.67 389.5,-47.33 389.5,-47.33 389.5,-43.67 393.17,-40 396.83,-40 396.83,-40 440.17,-40 440.17,-40 443.83,-40 447.5,-43.67 447.5,-47.33 447.5,-47.33 447.5,-54.67 447.5,-54.67 447.5,-58.33 443.83,-62 440.17,-62"/>
+<text text-anchor="start" x="393.5" y="-48.9" font-family="owlcli" font-weight="bold" font-size="12.00" fill="#cfa500">⬤</text>
+<text text-anchor="start" x="407.5" y="-48.9" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="412.5" y="-48.9" font-family="Verdana" font-size="12.00">Adult</text>
 </g>
-<!-- _7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;Adult -->
-<g id="edge2" class="edge">
-<title>_7b3646dd644c4ef98b6de527bf6d95c2&#45;&gt;Adult</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M242.27,-39.96C286.33,-32.68 342.48,-23.4 379.18,-17.33"/>
-<polygon fill="black" stroke="black" points="380.15,-20.72 389.45,-15.64 379.01,-13.81 380.15,-20.72"/>
+<!-- _e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;Adult -->
+<g id="edge3" class="edge">
+<title>_e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;Adult</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M349.12,-51C360.08,-51 370.32,-51 379.37,-51"/>
+<polygon fill="black" stroke="black" points="379.42,-54.5 389.42,-51 379.42,-47.5 379.42,-54.5"/>
+</g>
+<!-- age -->
+<g id="node4" class="node">
+<title>age</title>
+<path fill="none" stroke="black" d="M437.17,-22C437.17,-22 399.83,-22 399.83,-22 396.17,-22 392.5,-18.33 392.5,-14.67 392.5,-14.67 392.5,-7.33 392.5,-7.33 392.5,-3.67 396.17,0 399.83,0 399.83,0 437.17,0 437.17,0 440.83,0 444.5,-3.67 444.5,-7.33 444.5,-7.33 444.5,-14.67 444.5,-14.67 444.5,-18.33 440.83,-22 437.17,-22"/>
+<text text-anchor="start" x="396.5" y="-8.2" font-family="owlcli" font-weight="bold" font-size="16.00" fill="#38a14a">▬</text>
+<text text-anchor="start" x="412.5" y="-8.2" font-family="Verdana" font-size="12.00"> </text>
+<text text-anchor="start" x="417.5" y="-8.2" font-family="Verdana" font-size="12.00">age</text>
+</g>
+<!-- _e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;age -->
+<g id="edge1" class="edge">
+<title>_e5b70aca224d4d789d0da9d79e2330c3&#45;&gt;age</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M242.27,-39.96C287.6,-32.47 345.73,-22.86 382.31,-16.82"/>
+<polygon fill="black" stroke="black" points="383.19,-20.22 392.48,-15.14 382.04,-13.31 383.19,-20.22"/>
 </g>
 </g>
 </svg>

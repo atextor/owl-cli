@@ -137,7 +137,7 @@
 <div class="sect2">
 <h3 id="download-and-install-cool"><a class="anchor" href="#download-and-install-cool"></a>Download and Install <code>cool</code></h3>
 <div class="paragraph">
-<p>The latest version is <strong>2.0.0</strong>. Download here: <strong><a href="https://github.com/cool-rdf/cool-rdf/releases/download/v2.0.0/cool-rdf-cli-2.0.0.jar">cool-rdf-cli-2.0.0.jar</a></strong></p>
+<p>The latest version is <strong>2.0.1</strong>. Download here: <strong><a href="https://github.com/cool-rdf/cool-rdf/releases/download/v2.0.1/cool-rdf-cli-2.0.1.jar">cool-rdf-cli-2.0.1.jar</a></strong></p>
 </div>
 <div class="paragraph">
 <p>You can find older releases at the <a href="https://github.com/cool-rdf/cool-rdf/releases/">Github releases</a>.</p>
@@ -155,7 +155,7 @@ and install it as <code>cool</code> command in your shell.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl -L -o ~/.local/share/cool-rdf/cool-rdf-cli.jar --create-dirs https://github.com/cool-rdf/cool-rdf/releases/download/v2.0.0/cool-rdf-cli-2.0.0.jar
+<pre class="highlightjs highlight"><code class="language-shell hljs" data-lang="shell">curl -L -o ~/.local/share/cool-rdf/cool-rdf-cli.jar --create-dirs https://github.com/cool-rdf/cool-rdf/releases/download/v2.0.1/cool-rdf-cli-2.0.1.jar
 echo 'function cool() { java -jar ~/.local/share/cool-rdf/cool-rdf-cli.jar $*; }' &gt;&gt; ~/.bashrc
 source ~/.bashrc</code></pre>
 </div>
@@ -174,7 +174,7 @@ source ~/.bashrc</code></pre>
 <h2 id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You call <code>cool</code> (or alternatively <code>java -jar cool-rdf-cli-2.0.0.jar</code>) with subcommands and arguments.</p>
+<p>You call <code>cool</code> (or alternatively <code>java -jar cool-rdf-cli-2.0.1.jar</code>) with subcommands and arguments.</p>
 </div>
 <div class="paragraph">
 <p>You can call the built-in overview of commands and arguments via <code>--help</code>:</p>
@@ -631,8 +631,7 @@ cool write -i ntriple -o rdfxml myontology.nt</code></pre>
 <div class="sect2">
 <h3 id="infer-usage"><a class="anchor" href="#infer-usage"></a>General Usage</h3>
 <div class="paragraph">
-<p>The <code>infer</code> command takes an OWL ontology as input and performs OWL 2 DL reasoning on it. Reasoning
-is done using the <a href="https://github.com/Galigator/openllet">Openllet</a> reasoner.</p>
+<p>The <code>infer</code> command takes an OWL ontology as input and performs OWL 2 DL reasoning on it.</p>
 </div>
 <div class="paragraph">
 <p>General usage: <code>cool infer input [output]</code>, where <code>input</code> can be either an ontology file, an URL or

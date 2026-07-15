@@ -258,15 +258,15 @@ understand. The exception to this rule is for different <code>rdf:type</code>&#8
 <pre class="highlightjs highlight"><code class="language-xml hljs" data-lang="xml">&lt;dependency&gt;
   &lt;groupId&gt;cool.rdf&lt;/groupId&gt;
   &lt;artifactId&gt;cool-rdf-formatter&lt;/artifactId&gt;
-  &lt;version&gt;2.0.0&lt;/version&gt;
+  &lt;version&gt;2.0.1&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Gradle/Groovy: <code>implementation 'de.atextor:turtle-formatter:2.0.0'</code></p>
+<p>Gradle/Groovy: <code>implementation 'de.atextor:turtle-formatter:2.0.1'</code></p>
 </div>
 <div class="paragraph">
-<p>Gradle/Kotlin: <code>implementation("de.atextor:turtle-formatter:2.0.0")</code></p>
+<p>Gradle/Kotlin: <code>implementation("de.atextor:turtle-formatter:2.0.1")</code></p>
 </div>
 </div>
 <div class="sect2">
@@ -332,15 +332,19 @@ formatter.accept(model, System.out);</code></pre>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>alignPrefixes</code></p></td>
 <td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
-<p>Boolean. Example:</p>
+<p>One of <code>LEFT</code>, <code>RIGHT</code>, <code>OFF</code>. Example:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-turtle hljs" data-lang="turtle"># true
+<pre class="highlightjs highlight"><code class="language-turtle hljs" data-lang="turtle"># left
 @prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix example: &lt;http://example.com/&gt; .
 
-# false
+# right
+@prefix     rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix example: &lt;http://example.com/&gt; .
+
+# off
 @prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
 @prefix example: &lt;http://example.com/&gt; .</code></pre>
 </div>
